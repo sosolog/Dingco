@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,6 +28,19 @@ public class MemberController {
         }
         model.addAttribute("memberList", memberList);
         return "login";
+    }
+
+    @RequestMapping(value = "/mypage", method = RequestMethod.GET) // 명지 브랜치 테스트
+    public String selectMypageInfo(Model model, HttpServletRequest request){
+        List<MemberDTO> memberList = null;
+        try {
+            memberList = mService.selectAllMember();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("memberList", memberList);
+        return "login";
+
     }
 
 }
