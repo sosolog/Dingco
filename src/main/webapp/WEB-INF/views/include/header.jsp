@@ -34,7 +34,7 @@
     <script type="text/javascript" src="/resources/asset/script/common.js"></script>
 </head>
 
-<%-- ${URL}로 활용하면 됨 --%>
+<%-- ${url}로 활용하면 됨!! --%>
 <c:set var="url" value="${requestScope['javax.servlet.forward.request_uri']}" />
 
 
