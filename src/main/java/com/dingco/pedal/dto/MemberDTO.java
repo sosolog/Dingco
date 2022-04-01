@@ -2,9 +2,7 @@ package com.dingco.pedal.dto;
 
 import lombok.*;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 
 @AllArgsConstructor // 인자 있는 생성자
 @NoArgsConstructor // 인자 없는 생성자
