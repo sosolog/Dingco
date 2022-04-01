@@ -31,5 +31,11 @@ public class MemberController {
     }
 
     // 멤버 브랜치 생성
-    // 주황 Login 생성
+  // 주황 Login 생성
+
+    @RequestMapping(value = "/join", method = RequestMethod.GET)
+    public String join(){
+        return "join";
+    }
+
 }
