@@ -30,12 +30,15 @@ public class MemberController {
         return "login";
     }
 
-    // 멤버 브랜치 생성
+  // 멤버 브랜치 생성
+ 
   // 주황 Login 생성
 
     @RequestMapping(value = "/join", method = RequestMethod.GET)
     public String join(){
         return "join";
     }
+  
+   // 명지 마이페이지 브랜치 생성
 
 }
