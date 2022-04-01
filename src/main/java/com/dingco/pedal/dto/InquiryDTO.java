@@ -6,13 +6,12 @@ import lombok.*;
 @NoArgsConstructor // 인자 없는 생성자
 @Getter @Setter
 @ToString
-
 public class InquiryDTO {
-    int i_idx;
-    int m_idx;
-    String category_id;
-    String comment;
-    String file1;
-    String upload_date;
-    int i_idx2;
+    private int i_idx;
+    private int m_idx;
+    private String category_id;
+    private String comment;
+    private String file1;
+    private String upload_date;
+    private int i_idx2;
 }
