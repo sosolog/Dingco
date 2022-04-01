@@ -109,7 +109,6 @@
             <version>2.9.2</version>
         </dependency>
         <!-- End: Swagger -->
-
     </dependencies>
 
     <build>

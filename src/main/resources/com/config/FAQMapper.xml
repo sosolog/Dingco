@@ -4,6 +4,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.config.FAQMapper">
 
+    <select id="selectAll" resultType="FAQDTO">
+        <![CDATA[
+            select
+            number_idx,
+            category_idx,
+            m_idx,
+            title,
+            content,
+            readcnt
+            from FAQ
+            where category_idx = #{category_idx}
+        ]]>
+    </select>
+
+    <insert id="insert" parameterType="FAQDTO">
+        insert into FAQ (f.number_idx, f.m_idx, f.title, f.content,
+                         f.readcnt, c.category_name)
+        from FAQ f join CATEGORY c
+            on f.category_idx = c.category_idx
+        value (#{f.m_idx}, #{f.title}, #{f.content}, #{c.category_name})
+    </insert>
+
+    <update id="readcnt" parameterType="int">
+        update FAQ
+        set readcnt = readcnt + 1
+        where num = #{num}
+
+    </update>
 
 
 </mapper>
