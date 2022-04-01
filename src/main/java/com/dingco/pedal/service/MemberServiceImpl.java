@@ -4,7 +4,9 @@ import com.dingco.pedal.dao.MemberDAO;
 import com.dingco.pedal.dto.MemberDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService {
@@ -18,5 +20,10 @@ public class MemberServiceImpl implements MemberService {
 
     public List<MemberDTO> selectAllMember() throws Exception {
         return dao.selectAllMember();
+    }
+
+    @Override
+    public MemberDTO login(Map<String, String> map) throws Exception {
+        return dao.login(map);
     }
 }

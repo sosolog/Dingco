@@ -6,7 +6,6 @@ import lombok.*;
 @NoArgsConstructor // 인자 없는 생성자
 @Getter @Setter
 @ToString
-
 public class MemberDTO {
     int m_idx;
     String name;
