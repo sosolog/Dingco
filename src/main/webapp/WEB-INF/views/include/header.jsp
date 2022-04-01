@@ -27,11 +27,11 @@
     <meta name="description" content="">
 
     <link rel="shortcut icon" href="">
-    <link rel="stylesheet" type="text/css" href="/resources/asset/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="css/common.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
 
-    <script type="text/javascript" src="/resources/asset/script/jquery-3.6.0.js"></script>
-    <script type="text/javascript" src="/resources/asset/script/common.js"></script>
+    <script type="text/javascript" src="script/jquery-3.6.0.js"></script>
+    <script type="text/javascript" src="script/common.js"></script>
 </head>
 
 <%-- ${url}로 활용하면 됨!! --%>

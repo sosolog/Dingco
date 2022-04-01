@@ -5,6 +5,7 @@ import com.dingco.pedal.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,7 +35,8 @@ public class MemberController {
  
   // 주황 Login 생성
 
-    @RequestMapping(value = "/join", method = RequestMethod.GET)
+    // 회원가입 폼
+    @GetMapping("/join")
     public String join(){
         return "join";
     }
