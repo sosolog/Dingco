@@ -31,5 +31,5 @@ public class MemberController {
     }
 
     // 멤버 브랜치 생성
-
+    // 명지 마이페이지 브랜치 생성
 }
