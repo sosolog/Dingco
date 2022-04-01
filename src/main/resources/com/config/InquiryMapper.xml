@@ -4,6 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.config.InquiryMapper">
 
-
+    <select id="showUserInquiry" resultType="InquiryDTO" parameterType="MemberDTO">
+        select inquiry_idx as i_idx,
+               m_idx,
+               category_id,
+               content as content,
+               image,
+               image_db,
+               upload_date,
+               inquiry_idx2 as i_idx2
+        from INQUIRY
+        <if test="autorities == '사용자'">
+            where m_idx = #{m_idx}
+        </if>
+    </select>
 
 </mapper>
