@@ -30,17 +30,6 @@ public class MemberController {
         return "login";
     }
 
-    @RequestMapping(value = "/mypage", method = RequestMethod.GET) // 명지 브랜치 테스트
-    public String selectMypageInfo(Model model, HttpServletRequest request){
-        List<MemberDTO> memberList = null;
-        try {
-            memberList = mService.selectAllMember();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("memberList", memberList);
-        return "login";
-
-    }
+    // 멤버 브랜치 생성
 
 }
