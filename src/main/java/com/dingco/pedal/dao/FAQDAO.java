@@ -15,7 +15,18 @@ public class FAQDAO {
     SqlSession session;
     //SqlSessionTemplate session;
 
-    public List<FAQDTO> selectAll(String category_idx)throws Exception{
-        return session.selectList("com.config.FAQMapper.FAQList",category_idx);
+    //전체 테이블 select
+    public List<FAQDTO> selectAll(int category_idx)throws Exception{
+       return session.selectList("com.config.FAQMapper.selectAll",category_idx);
+    }
+
+    //글 생성
+    public int insert(FAQDTO dto)throws Exception{
+        return session.insert("com.config.FAQMapper.insert",dto);
+    }
+
+    //조회수 수정(임시)
+    private int readcnt(int num)throws Exception{
+        return session.update("com.config.FAQMapper.readcnt",num);
     }
 }

@@ -14,4 +14,5 @@ public class FAQDTO {
     private String title;
     private String content;
     private int readcnt;
+    private String category_name;
 }
