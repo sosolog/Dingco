@@ -16,4 +16,8 @@ public class MemberDAO {
     public List<MemberDTO> selectAllMember() throws Exception {
         return session.selectList("com.config.MemberMapper.selectAllMember");
     }
+    // 회원 추가(DB접근)
+    public int memberAdd(MemberDTO memberDTO) throws Exception{
+        return session.insert("com.config.MemberMapper.memberAdd", memberDTO);
+    }
 }

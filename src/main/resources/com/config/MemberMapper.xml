@@ -9,4 +9,9 @@
         from MEMBER
     </select>
 
+    <!-- 회원 추가-->
+    <insert id="memberAdd" parameterType="MemberDTO">
+        INSERT	INTO MEMBER (userid, passwd, name, phone1, phone2, phone3, email1, email2, image, image_db)
+        VALUES (#{userid},#{passwd},#{name},#{phone1},#{phone2},#{phone3},#{email1},#{email2}, #{image}, #{image_db})
+    </insert>
 </mapper>

@@ -10,14 +10,14 @@
 </script>
 <h2>회원가입 페이지</h2>
 <br>
-<form action="memberAdd" method="post" onsubmit="">
-    * 아이디:<input type="text" name="userid" id="userid" onkeyup="">
+<form action="memberAdd" id="memberAdd" method="post" onsubmit="">
+    * 아이디:<input type="text"  id="userid" name="userid"onkeyup="">
     <span id="idCheckResult" style="color:red"></span><br><br>
-    * 비밀번호:<input type="text" name="passwd" id="passwd" ><br><br>
-    * 비밀번호확인:<input type="text" name="passwd1" id="passwd1" onkeyup="" >
+    * 비밀번호:<input type="text"  id="passwd" name="passwd"><br><br>
+    * 비밀번호확인:<input type="text" id="passwd1" name="passwd1" onkeyup="" >
     <span id="pwCheckResult" style="color:#722424" ></span>
     <br><br>
-    * 이름:<input type="text" name="username"><br><br>
+    * 이름:<input type="text" id= "name" name="name"><br><br>
     * 전화번호:<select name="phone1">
         <option value="010">010</option>
         <option value="011">011</option>

@@ -2,17 +2,29 @@ package com.dingco.pedal.dto;
 
 import lombok.*;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 @AllArgsConstructor // 인자 있는 생성자
 @NoArgsConstructor // 인자 없는 생성자
 @Getter @Setter
 @ToString
-
 public class MemberDTO {
+
+
     int m_idx;
     String name;
     String userid;
     String passwd;
     String email1;
     String email2;
-    String autorities;
+    String phone1;
+    String phone2;
+    String phone3;
+    String image;
+    String image_db;
+    String authorities;
+
+
 }

@@ -95,6 +95,14 @@
         </dependency>
         <!-- End: Developer Tool -->
 
+        <!-- Start: validation 유효성검사 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!-- End: validation 유효성검사 -->
+
+
     </dependencies>
 
     <build>

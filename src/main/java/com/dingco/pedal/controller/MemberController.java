@@ -5,10 +5,7 @@ import com.dingco.pedal.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -40,7 +37,14 @@ public class MemberController {
     public String join(){
         return "join";
     }
-  
+
+    // 회원 추가
+    @PostMapping("/memberAdd")
+    public String memberAdd(MemberDTO memberDTO) throws Exception{
+        int num = mService.memberAdd(memberDTO);
+        return "main";
+    }
+
    // 명지 마이페이지 브랜치 생성
 
 }
