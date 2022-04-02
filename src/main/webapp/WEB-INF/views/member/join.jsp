@@ -10,13 +10,14 @@
 <script>
     <c:set var="memberDTO" value="${memberDTO}"/>
     <c:set var="errors" value="${errors}"/>
+    <c:set var="bindingerrors" value="${bindingerrors}"/> //BindingResult(실패_JSP와 연동이 어려움)
 </script>
 
 
 
 <h2>회원가입 페이지</h2>
 <!--<p class="errors_join">${errors}</p> -->
-
+<p>${bindingerrors}</p>
 <br>
 <form action="memberAdd" id="memberAdd" method="post" onsubmit="">
     * 아이디:<input type="text"  id="userid" name="userid"onkeyup="" value="${memberDTO.userid}" >
