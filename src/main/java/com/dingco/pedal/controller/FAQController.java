@@ -1,6 +1,7 @@
 package com.dingco.pedal.controller;
 
 import com.dingco.pedal.dao.FAQDAO;
+import com.dingco.pedal.dto.DeptDTO;
 import com.dingco.pedal.dto.FAQDTO;
 import com.dingco.pedal.service.FAQService;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,24 @@ public class FAQController {
     @GetMapping("/faq")
     @ResponseBody
     public List<FAQDTO> faq(@RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx)throws Exception {
-        logger.info("로그");
+//        logger.info("로그");
         return service.selectAll(category_idx);
     }
+
+    @GetMapping("/faq/write")
+    @ResponseBody
+    public String boardRetrieve(@RequestBody FAQDTO dto)throws Exception{
+        service.insert(dto);
+        return "redirect:faq";
+    }
+
+
+//    @PostMapping("/faq/{m_idx}")
+//    @ResponseBody
+//    public void boardRetrieve(@PathVariable("m_idx") int m_idx,@RequestBody FAQDTO dto)throws Exception{
+//       dto.setM_idx(m_idx);
+//        service.insert(dto);
+//    }
 
 
     // 에러처리

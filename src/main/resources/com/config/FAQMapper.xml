@@ -26,6 +26,11 @@
         value (#{f.m_idx}, #{f.title}, #{f.content}, #{c.category_name})
     </insert>
 
+    <select id="retrieve" parameterType="">
+
+    </select>
+
+
     <update id="readcnt" parameterType="int">
         update FAQ
         set readcnt = readcnt + 1
