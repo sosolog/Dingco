@@ -49,19 +49,18 @@ public class MemberController {
 
     // 회원 추가 + 검증(validation) + BindingResult(성공)
     @PostMapping("/memberAdd") // BindingResult 타입의 객체는 사용하는 데이터 뒤에 넣어야함(그래야 인식 가능)
-        public String memberAdd(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, @RequestParam("passwd1") String passCheck, BindingResult bindingResult) throws Exception{
+    public String memberAdd(@ModelAttribute("memberDTO") @Valid MemberDTO memberDTO, BindingResult bindingResult) throws Exception{
 
-            // 검증에 실패하면 다시 입력 폼으로(기존코드 주석 처리)
-            if(bindingResult.hasErrors()) {
-                log.info("errors={}", bindingResult);
-                //model.addAttribute("errors", errors); //bindingResult는 모델에 따로 안 넣어줘도 된다. 자동적으로 넘어간다.
-                return "join";
-            }
-            // 성공 로직
-            int num = mService.memberAdd(memberDTO);
-            System.out.println("");
-            System.out.println(memberDTO);
-            return "redirect:main";
+        // 검증에 실패하면 다시 입력 폼으로(기존코드 주석 처리)
+        if(bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            //model.addAttribute("errors", errors); //bindingResult는 모델에 따로 안 넣어줘도 된다. 자동적으로 넘어간다.
+            return "join";
+        }
+        // 성공 로직
+        int num = mService.memberAdd(memberDTO);
+        System.out.println(memberDTO);
+        return "redirect:main";
     }
 
 

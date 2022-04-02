@@ -14,19 +14,26 @@ public class MemberDTO {
 
     int m_idx;
 
-    @NotBlank(message = "아하하하")
-    @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
+    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-z].{1,9}$", message = "2~10자의 영문, 한글를 사용하세요.")
     String name;
-    @NotEmpty(message = "아하아하")
+    @Pattern(regexp = "^[a-zA-z0-9-_].{4,19}$", message = "5~20자의 영문 대 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
+    @NotEmpty(message = "아이디는 필수 입력 값입니다.")
     String userid;
-    @NotEmpty(message = "아하호호")
+    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{7,15}$", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
     String passwd;
-    @NotEmpty(message = "아하호하")
+    @Pattern(regexp = "^[a-zA-z0-9-].{1,19}$", message = "이메일을 정확히 입력해주세요.<br>")
+    @NotBlank(message = "이메일은 필수 입력 값입니다.<br>")
     String email1;
+    @Pattern(regexp = "^[a-zA-z0-9.].{1,19}$", message = "이메일을 정확히 입력해주세요.")
+    @NotBlank(message = "이메일은 필수 입력 값입니다.")
     String email2;
-    @NotEmpty(message = "아니되오")
     String phone1;
+    @NotBlank(message = "연락처는 필수 입력 값입니다.<br>")
+    @Pattern(regexp = "^[0-9].{2,3}$", message = "연락처의 중간 자리는 숫자 3~4자리여야 합니다.<br>")
     String phone2;
+    @NotBlank(message = "연락처는 필수 입력 값입니다.")
+    @Pattern(regexp = "^[0-9].{3}$", message = "연락처의 마지막 자리는 숫자 4자리여야 합니다.")
     String phone3;
 
     String image;

@@ -26,8 +26,8 @@
         </spring:bind>
     </span><br>
     <br>
-    * 비밀번호:<input type="text"  id="passwd" name="passwd" ><br><br>
-    * 비밀번호 확인:<input type="text" id="passwd1" name="passwd1" onkeyup=""><br>
+    * 비밀번호:<input type="password"  id="passwd" name="passwd" ><br><br>
+    * 비밀번호 확인:<input type="password" id="passwd1" name="passwd1" onkeyup=""><br>
     <span>
         <spring:bind path="memberDTO.passwd">
             ${status.errorMessage }
@@ -36,7 +36,7 @@
     * 이름:<input type="text" id= "name" name="name" value="${memberDTO.name}"><br>
     <span>
         <spring:bind path="memberDTO.name">
-                ${status.errorMessage }
+                ${status.errorMessage}
         </spring:bind>
     </span><br>
     * 전화번호:<select name="phone1" value="${memberDTO.phone1}">
@@ -48,7 +48,13 @@
     <button>휴대전화 인증</button>
     <br>
     <spring:bind path="memberDTO.phone1">
-        ${status.errorMessage }
+        ${status.errorMessage}
+    </spring:bind>
+    <spring:bind path="memberDTO.phone2">
+        ${status.errorMessage}
+    </spring:bind>
+    <spring:bind path="memberDTO.phone3">
+        ${status.errorMessage}
     </spring:bind>
     <br>
     <img src="images/KakaoTalk_Photo_2022-04-01-19-55-13.jpeg", width="250", height="150"><br>
@@ -62,6 +68,9 @@
     </select>
     <br>
     <spring:bind path="memberDTO.email1">
+        ${status.errorMessage }
+    </spring:bind>
+    <spring:bind path="memberDTO.email2">
         ${status.errorMessage }
     </spring:bind>
     <br>
