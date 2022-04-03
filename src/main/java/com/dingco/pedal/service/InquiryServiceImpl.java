@@ -18,4 +18,14 @@ public class InquiryServiceImpl implements InquiryService {
     public List<InquiryDTO> showUserInquiry(MemberDTO dto) throws Exception {
         return dao.showUserInquiry(dto);
     }
+
+    @Override
+    public int writeUserInquiry(InquiryDTO dto) throws Exception {
+        return dao.writeUserInquiry(dto);
+    }
+
+    @Override
+    public int updateUserInquiry(InquiryDTO dto) throws Exception {
+        return dao.updateUserInquiry(dto);
+    }
 }

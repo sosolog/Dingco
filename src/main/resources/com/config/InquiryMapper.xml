@@ -8,7 +8,7 @@
         select inquiry_idx as i_idx,
                m_idx,
                category_id,
-               content as content,
+               content,
                image,
                image_db,
                upload_date,
@@ -18,5 +18,36 @@
             where m_idx = #{m_idx}
         </if>
     </select>
+    <insert id="writeUserInquiry" parameterType="InquiryDTO">
+        insert into INQUIRY (m_idx, category_id, content
+                             <if test="image != null">
+                                 ,image, image_db
+                             </if>
+                             ,upload_date
+                             <if test="i_idx2 != 0">
+                                 ,inquiry_idx2
+                             </if>
+                             )
+        values(#{m_idx}, #{category_id}, #{content}
+            <if test="image != null">
+                ,#{image}, #{image_db}
+            </if>
+            ,now()
+            <if test="i_idx2 != 0">
+                ,#{i_idx2}
+            </if>
+        )
+    </insert>
 
+    <update id="updateUserInquiry" parameterType="InquiryDTO">
+        update INQUIRY
+        <set>
+            category_id = #{category_id}
+            ,content = #{content}
+            <if test="image != null">
+                ,image = #{image}, image_db = #{image_db}
+            </if>
+        </set>
+        where inquiry_idx = #{i_idx}
+    </update>
 </mapper>
