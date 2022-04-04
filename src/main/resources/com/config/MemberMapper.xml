@@ -9,6 +9,12 @@
         from MEMBER
     </select>
 
+    <!-- 회원 추가-->
+    <insert id="memberAdd" parameterType="MemberDTO">
+        INSERT	INTO MEMBER (userid, passwd, username, phone1, phone2, phone3, email1, email2, image, image_db)
+        VALUES (#{userid},#{passwd},#{username},#{phone1},#{phone2},#{phone3},#{email1},#{email2}, #{image}, #{image_db})
+    </insert>
+  
     <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
         select m_idx, M_IDX, username, userid, passwd, email1, email2, authorities, image, image_db, phone1, phone2, phone3, DATE_FORMAT(joindate, '%Y-%m-%d') joindate
         from MEMBER
