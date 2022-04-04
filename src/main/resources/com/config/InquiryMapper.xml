@@ -5,7 +5,7 @@
 <mapper namespace="com.config.InquiryMapper">
     <select id="countTotalInquiries" resultType="int" parameterType="MemberDTO">
         select count(*) from INQUIRY
-        <if test="autorities == '사용자'">
+        <if test="authorities == '사용자'">
             where m_idx = #{m_idx}
         </if>
     </select>
@@ -27,7 +27,7 @@
                 end as inq_group
             from INQUIRY
         ) t
-        <if test="autorities == '사용자'">
+        <if test="authorities == '사용자'">
             where m_idx = #{m_idx}
         </if>
         order by inq_group desc, i_idx

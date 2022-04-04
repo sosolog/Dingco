@@ -8,7 +8,6 @@ import java.util.Map;
 
 public interface MemberService {
 
-    public List<MemberDTO> selectAllMember() throws Exception;
     // 회원 추가
     public int memberAdd(MemberDTO memberDTO) throws Exception;
 

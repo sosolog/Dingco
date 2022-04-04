@@ -91,10 +91,10 @@ public class InquiryController {
         logger.debug(login.toString());
         if(memberDTO != null){
             logger.debug("memberDTO is not null");
-            String memberAuthorities = memberDTO.getAutorities();
+            String memberAuthorities = memberDTO.getAuthorities();
             System.out.println("memberAuthorities = " + memberAuthorities);
             inquiryDTO = service.showOneUserInquiry(i_idx);
-            if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAutorities())){
+            if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
                 throw new NotMatchedException("유효하지 않은 접근입니다.");
             }
             logger.debug("result = "+inquiryDTO);
@@ -112,37 +112,13 @@ public class InquiryController {
         if(memberDTO != null){
             logger.debug("memberDTO is not null");
             InquiryDTO inquiryDTO = service.showOneUserInquiry(i_idx);
-            if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAutorities())){
+            if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
                 throw new NotMatchedException("유효하지 않은 접근입니다.");
             }
             result = service.deleteUserInquiry(i_idx);
             logger.debug("result = "+result);
         }
         return result;
-    }
-
-    // TEST 용 - 사용자로그인 세션 생성
-    @ResponseBody
-    @GetMapping("/login/user")
-    public String loginUser(HttpSession session){
-        session.setAttribute("login", new MemberDTO(2, "명지", "Ddingji", "1234", "ddingji12", "gmail.com", "사용자"));
-        return "로그인성공";
-    }
-
-    // Test 용 - 관리자 로그인세셩 생성
-    @ResponseBody
-    @GetMapping("/login/admin")
-    public String loginAdmin(HttpSession session){
-        session.setAttribute("login", new MemberDTO(1, "관리자", "admin", "admin", "amdin", "pedal.com", "관리자"));
-        return "로그인성공";
-    }
-
-    // TEST 용 - 로그아웃
-    @ResponseBody
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.invalidate();
-        return "로그아웃됨";
     }
 
     @ExceptionHandler({NotMatchedException.class})
