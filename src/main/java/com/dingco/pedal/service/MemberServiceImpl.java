@@ -21,7 +21,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-
     @Override
     public List<MemberDTO> selectAllMember() throws Exception {
         return dao.selectAllMember();
@@ -32,7 +31,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public int memberAdd(MemberDTO memberDTO) throws Exception {
         return dao.memberAdd(memberDTO);
-      
+    }
+
     @Override
     public MemberDTO selectMypageInfo(int m_idx) throws Exception {
         return dao.selectMypageInfo(m_idx);
@@ -41,8 +41,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public int updateMypage(MemberDTO memberDTO) throws Exception {
         return dao.updateMypage(memberDTO);
-    @Override
-    public MemberDTO login(Map<String, String> map) throws Exception {
-        return dao.login(map);
     }
-}
+        @Override
+        public MemberDTO login (Map < String, String > map) throws Exception {
+            return dao.login(map);
+        }
+    }
+
