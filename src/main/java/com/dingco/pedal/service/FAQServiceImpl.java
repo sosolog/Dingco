@@ -2,6 +2,7 @@ package com.dingco.pedal.service;
 
 import com.dingco.pedal.dao.FAQDAO;
 import com.dingco.pedal.dto.FAQDTO;
+import com.dingco.pedal.dto.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +24,11 @@ public class FAQServiceImpl implements FAQService {
     public int insert(FAQDTO dto) throws Exception {
         int num = dao.insert(dto);
         return num;
+    }
+
+    @Override
+    public PageDTO selectAllPage(int curPage) {
+        PageDTO pageDTO = dao.selectAllPage(curPage);
+        return pageDTO;
     }
 }

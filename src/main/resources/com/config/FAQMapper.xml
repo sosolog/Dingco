@@ -4,19 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.config.FAQMapper">
 
-    <select id="selectAll" resultType="FAQDTO">
-        <![CDATA[
-            select
+    <select id="selectAllPage" resultType="FAQDTO" parameterType="HashMap">
+	<![CDATA[
+        select
             number_idx,
             category_idx,
             m_idx,
             title,
             content,
+            date_format(writeday, '%Y-%m-%d') writeday,
             readcnt
-            from FAQ
-            where category_idx = #{category_idx}
+        from FAQ
+        order by number_idx desc
+            limit ${perPage} offset ${offset}
         ]]>
-    </select>
+	</select>
+
 
     <insert id="insert" parameterType="FAQDTO">
         insert into FAQ (f.number_idx, f.m_idx, f.title, f.content,
@@ -26,8 +29,19 @@
         value (#{f.m_idx}, #{f.title}, #{f.content}, #{c.category_name})
     </insert>
 
-    <select id="retrieve" parameterType="">
-
+    <select id="retrieve" parameterType="int" resultType="FAQDTO">
+        <![CDATA[
+        select
+            number_idx,
+            category_idx,
+            m_idx,
+            title,
+            content,
+            to_char(writeday, 'YYYY/MM/DD') writeday,
+            readcnt
+        from FAQ
+        where number_idx = #{number_idx}
+        ]]>
     </select>
 
 
@@ -37,6 +51,12 @@
         where num = #{num}
 
     </update>
+
+
+    <select id="totalRecord" resultType="int">
+        select count(*)
+        from FAQ
+    </select>
 
 
 </mapper>
