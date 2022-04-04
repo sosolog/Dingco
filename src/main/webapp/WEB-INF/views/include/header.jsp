@@ -21,7 +21,6 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="">
     <link rel="stylesheet" type="text/css" href="css/common.css" />
-    <link rel="stylesheet" href="css/common.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 
     <script type="text/javascript" src="script/jquery-3.6.0.js"></script>

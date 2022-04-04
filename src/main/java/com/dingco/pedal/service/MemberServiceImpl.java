@@ -5,7 +5,9 @@ import com.dingco.pedal.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService {
@@ -39,5 +41,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public int updateMypage(MemberDTO memberDTO) throws Exception {
         return dao.updateMypage(memberDTO);
+    @Override
+    public MemberDTO login(Map<String, String> map) throws Exception {
+        return dao.login(map);
     }
 }

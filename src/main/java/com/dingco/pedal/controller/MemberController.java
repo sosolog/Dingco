@@ -1,8 +1,10 @@
 package com.dingco.pedal.controller;
 
+import com.dingco.pedal.dto.MailDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
+import com.dingco.pedal.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,25 +43,12 @@ public class MemberController {
 
     @Value("${file.dir}")
     private String fileDir;
-
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
-    public String viewMainPage(Model model, HttpServletRequest request){
-        return "/main";
-    }
+  
+   @Autowired
+    SendEmailService sendEmailService;
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String selectAll(Model model, HttpServletRequest request){
-        List<MemberDTO> memberList = null;
-        try {
-            memberList = mService.selectAllMember();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("memberList", memberList);
-        return "/login";
-    }
-
+    ///////////////////////////////////명지///////////////////////////////////
     @RequestMapping(value = "/mypage", method = RequestMethod.GET)
     public String selectMypageInfo(Model model, HttpServletRequest request){
         String m_idx = request.getParameter("m_idx");
@@ -71,11 +62,26 @@ public class MemberController {
         model.addAttribute("userInfo", userInfo);
         return "/mypage";
     }
+  
+     @RequestMapping(value = "/editMypage.action", method = RequestMethod.GET)
+    public String editMypage (Model model, HttpServletRequest request, @RequestParam MemberDTO userinfo){
+        String next = "";
 
-  // 멤버 브랜치 생성
- 
-  // 주황 Login 생성
+        try {
+            mService.updateMypage(userinfo);
+            next = "redirect:/mypage";
+        } catch (Exception e) {
+            e.printStackTrace();
+            next = "/error";
+        }
+        return next;
+    }
+   
+  
+///////////////////////////////////명지///////////////////////////////////
 
+  
+///////////////////////////////////민욱///////////////////////////////////
     // 회원가입 폼
     @GetMapping("/join")
     public String join(@ModelAttribute("memberDTO") MemberDTO memberDTO){
@@ -148,25 +154,82 @@ public class MemberController {
         }
 
 
+///////////////////////////////////민욱///////////////////////////////////
 
 
-
-   // 명지 마이페이지 브랜치 생성
-
-
-    @RequestMapping(value = "/editMypage.action", method = RequestMethod.GET)
-    public String editMypage (Model model, HttpServletRequest request, @RequestParam MemberDTO userinfo){
-        String next = "";
-
-        try {
-            mService.updateMypage(userinfo);
-            next = "redirect:/mypage";
-        } catch (Exception e) {
-            e.printStackTrace();
-            next = "/error";
-        }
-        return next;
+///////////////////////////////////주황///////////////////////////////////
+    //주황 - 로그인폼(로그인, 회원가입, 계정찾기, SNS API 로그인)
+    @GetMapping("/login")
+    public String loginForm(){
+        return "loginForm";
     }
+
+
+    //주황 - 로그인(아이디, 비밀번호에 입력된 값을 HashMap으로 가져와서 DB와 비교)
+    @PostMapping("/login")
+    public String login(@RequestParam Map<String,String> map, HttpSession session, HttpServletRequest request) throws Exception {
+
+
+
+
+        MemberDTO dto = mService.login(map);
+        if(dto!=null){
+            session.setAttribute("login",dto);
+            return "main";
+        }else{
+            return "/member/loginFail";
+        }
+
+    }
+
+    //주황 - 로그아웃
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+
+        session.invalidate();
+        return "main";
+    }
+
+    //주황 - 아이디/비밀번호 찾기
+    @GetMapping("/find_ID_PW")
+    public String find_ID_PW(){
+
+        return "find_ID_PW";
+    }
+
+    @GetMapping("/sessionInvalidate")
+    public String sessionInvalidate(){
+
+        return "member/sessionInvalidate";
+    }
+
+
+
+    //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
+    //Email과 userid의 일치여부를 check하는 컨트롤러
+    @GetMapping("/check/findPw")
+    public @ResponseBody Map<String, Boolean> pw_find(@RequestParam Map<String,String> map) throws Exception {
+        Map<String,Boolean> json = new HashMap<>();
+
+        //이메일과 회원정보가 맞는지 체크하는 서비스
+        boolean pwFindCheck = sendEmailService.userEmailCheck(map);
+
+        json.put("check", pwFindCheck);
+        return json;
+    }
+
+    //등록된 이메일로 임시비밀번호를 발송하고 발송된 임시비밀번호로 사용자의 pw를 변경하는 컨트롤러
+    @PutMapping("/check/findPw/sendEmail")
+    public @ResponseBody void sendEmail(@RequestParam Map<String,String> map) throws Exception {
+        sendEmailService.fakePasswordCreate(map);
+    }
+    //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
+
+
+///////////////////////////////////주황///////////////////////////////////
+
+
+ 
 
 
 }

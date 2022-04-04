@@ -36,4 +36,21 @@
             phone1=#{phone3}
             where m_idx=#{m_idx}
     </update>
+    <select id="login" resultType="MemberDTO" parameterType="map">
+        select *
+        from MEMBER
+        where userid = #{userid} and passwd = #{passwd}
+    </select>
+
+    <update id="updateFakePassword" parameterType="map">
+      update MEMBER
+      set passwd = #{str}
+      where concat(EMAIL1,'@',EMAIL2)=#{userEmail} and userid = #{userid}
+    </update>
+
+    <select id="userEmailCheck" parameterType="map" resultType="boolean">
+        select count(*)
+        from MEMBER
+        where userid = #{userid} and concat(EMAIL1,'@',EMAIL2)= #{userEmail}
+    </select>
 </mapper>

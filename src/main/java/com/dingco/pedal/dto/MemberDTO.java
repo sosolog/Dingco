@@ -7,7 +7,8 @@ import javax.validation.constraints.*;
 
 @AllArgsConstructor // 인자 있는 생성자
 @NoArgsConstructor // 인자 없는 생성자
-@Data
+@Getter @Setter
+@ToString
 public class MemberDTO {
 
 

@@ -108,6 +108,12 @@
 <!--            <artifactId>spring-boot-starter-security</artifactId>-->
 <!--        </dependency>-->
         <!-- End: Spring Security -->
+        <!-- Start: 이메일 API -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- End: 이메일 API -->
 
     </dependencies>
 
