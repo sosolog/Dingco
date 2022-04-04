@@ -20,6 +20,11 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
+    public InquiryDTO showOneUserInquiry(int i_idx) throws Exception {
+        return dao.showOneUserInquiry(i_idx);
+    }
+
+    @Override
     public int writeUserInquiry(InquiryDTO dto) throws Exception {
         return dao.writeUserInquiry(dto);
     }
@@ -27,5 +32,10 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public int updateUserInquiry(InquiryDTO dto) throws Exception {
         return dao.updateUserInquiry(dto);
+    }
+
+    @Override
+    public int deleteUserInquiry(int i_idx) throws Exception {
+        return dao.deleteUserInquiry(i_idx);
     }
 }

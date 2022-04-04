@@ -8,6 +8,8 @@ import java.util.List;
 public interface InquiryService {
 
     public List<InquiryDTO> showUserInquiry(MemberDTO dto) throws Exception;
+    public InquiryDTO showOneUserInquiry(int i_idx) throws Exception;
     public int writeUserInquiry(InquiryDTO dto) throws Exception;
     public int updateUserInquiry(InquiryDTO dto) throws Exception;
+    public int deleteUserInquiry(int i_idx) throws Exception;
 }

@@ -18,6 +18,18 @@
             where m_idx = #{m_idx}
         </if>
     </select>
+    <select id="showOneUserInquiry" resultType="InquiryDTO" parameterType="int">
+        select inquiry_idx as i_idx,
+               m_idx,
+               category_id,
+               content,
+               image,
+               image_db,
+               upload_date,
+               inquiry_idx2 as i_idx2
+        from INQUIRY
+        where inquiry_idx = #{i_idx}
+    </select>
     <insert id="writeUserInquiry" parameterType="InquiryDTO">
         insert into INQUIRY (m_idx, category_id, content
                              <if test="image != null">
@@ -50,4 +62,8 @@
         </set>
         where inquiry_idx = #{i_idx}
     </update>
+    <delete id="deleteUserInquiry" parameterType="int">
+        delete from INQUIRY
+        where inquiry_idx = #{i_idx}
+    </delete>
 </mapper>

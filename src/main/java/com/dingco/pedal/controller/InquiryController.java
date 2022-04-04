@@ -70,6 +70,45 @@ public class InquiryController {
         return result;
     }
 
+    @ResponseBody
+    @GetMapping("/inquiry/{idx}")
+    public InquiryDTO showOneUserInquiry(HttpSession session, @PathVariable("idx") int i_idx) throws Exception {
+        InquiryDTO inquiryDTO = null;
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
+        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
+        logger.debug(login.toString());
+        if(memberDTO != null){
+            logger.debug("memberDTO is not null");
+            String memberAuthorities = memberDTO.getAutorities();
+            System.out.println("memberAuthorities = " + memberAuthorities);
+            inquiryDTO = service.showOneUserInquiry(i_idx);
+            if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAutorities())){
+                throw new NotMatchedException("유효하지 않은 접근입니다.");
+            }
+            logger.debug("result = "+inquiryDTO);
+        }
+        return inquiryDTO;
+    }
+
+    @ResponseBody
+    @DeleteMapping("/inquiry/{idx}")
+    public int deleteUserInquiry(HttpSession session, @PathVariable("idx") int i_idx) throws Exception {
+        int result = 0;
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
+        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
+        logger.debug(login.toString());
+        if(memberDTO != null){
+            logger.debug("memberDTO is not null");
+            InquiryDTO inquiryDTO = service.showOneUserInquiry(i_idx);
+            if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAutorities())){
+                throw new NotMatchedException("유효하지 않은 접근입니다.");
+            }
+            result = service.deleteUserInquiry(i_idx);
+            logger.debug("result = "+result);
+        }
+        return result;
+    }
+
     // TEST 용 - 사용자로그인 세션 생성
     @ResponseBody
     @GetMapping("/login/user")
@@ -114,7 +153,7 @@ public class InquiryController {
         return "현재 서비스를 이용할 수 없습니다. 잠시 후 다시 시도해주세요.";
     }
 
-    class NotMatchedException extends RuntimeException {
+    private class NotMatchedException extends RuntimeException {
         public NotMatchedException(String message) {
             super(message);
         }
