@@ -22,17 +22,18 @@
         <th>조회수</th>
     </tr>
     <c:set var="pageDTO" value="${pageDTO}"></c:set>
-    <c:forEach var="dto" items="${pageDTO.list}" varStatus="status">
-        <tr>
-            <td>${status.count}</td>
-            <td>${dto.number_idx}</td>
-<%--            <td><a href="boardRetrieve?num=${dto.num}">${dto.title}</a></td>--%>
-            <td>${dto.title}</td>
-            <td>${dto.m_idx}</td>
-            <td>${dto.writeday}</td>
-            <td>${dto.readcnt}</td>
-        </tr>
-    </c:forEach>
+    ${pageDTO}
+<%--    <c:forEach var="dto" items="${pageDTO.list}" varStatus="status">--%>
+<%--        <tr>--%>
+<%--            <td>${status.count}</td>--%>
+<%--            <td>${dto.number_idx}</td>--%>
+<%--&lt;%&ndash;            <td><a href="boardRetrieve?num=${dto.num}">${dto.title}</a></td>&ndash;%&gt;--%>
+<%--            <td>${dto.title}</td>--%>
+<%--            <td>${dto.m_idx}</td>--%>
+<%--            <td>${dto.writeday}</td>--%>
+<%--            <td>${dto.readcnt}</td>--%>
+<%--        </tr>--%>
+<%--    </c:forEach>--%>
 </table>
 <!-- 페이지 번호 출력 -->
 <jsp:include page="../page.jsp"></jsp:include>

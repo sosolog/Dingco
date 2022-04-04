@@ -14,25 +14,24 @@ import java.util.List;
 @Repository("FAQDAO")
 public class FAQDAO {
 
+    private final int perPage = 3; // 페이지당 보여줄 레코드
+    private final int pagesPerBlock = 2;
+
     @Autowired
     SqlSession session;
     //SqlSessionTemplate session;
 
     //페이징
-    public PageDTO selectAllPage(int curPage)throws Exception{
-        PageDTO pageDTO = new PageDTO();
+    public PageDTO<FAQDTO> selectAllPage(int curPage)throws Exception{
         int totalRecord = totalRecord();    //전체 레코드 갯수
-        int perPage = pageDTO.getPerPage(); // 페이지당 보여줄 레코드
+//        int perPage = pageDTO.getPerPage();
         int offset = (curPage - 1)*perPage;      // select시 시작점
         HashMap<String, Integer> map = new HashMap<>();
         map.put("perPage",perPage);
         map.put("offset",offset);
         List<FAQDTO> list = session.selectList("com.config.FAQMapper.selectAllPage",map);
-
-        // pageDTO 저장
-        pageDTO.setList(list);
-        pageDTO.setCurPage(curPage);
-        pageDTO.setTotalRecord(totalRecord);
+        PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(list, totalRecord, curPage, perPage); // pageDTO 저장
+        pageDTO.setPageBlock(pagesPerBlock);
 
         return pageDTO;
     }

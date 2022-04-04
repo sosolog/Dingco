@@ -34,7 +34,7 @@ public class FAQController {
         logger.info("로그");
 
         //페이징 처리
-        PageDTO pageDTO = service.selectAllPage(Integer.parseInt(curPage));
+        PageDTO<FAQDTO> pageDTO = service.selectAllPage(Integer.parseInt(curPage));
 
         model.addAttribute("pageDTO",pageDTO);
 
