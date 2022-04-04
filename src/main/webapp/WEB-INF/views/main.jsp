@@ -13,6 +13,9 @@
         </button><br><br>
         <button onclick="location.href='/login'">
             로그인
+        </button><br><br>
+        <button onclick="location.href='/fileUpload'">
+            파일 업로드 테스트 폼
         </button>
     </body>
 </html>

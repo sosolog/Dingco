@@ -33,9 +33,9 @@
             ${status.errorMessage }
         </spring:bind>
     </span><br>
-    * 이름:<input type="text" id= "name" name="name" value="${memberDTO.name}"><br>
+    * 이름:<input type="text" id= "username" name="username" value="${memberDTO.username}"><br>
     <span>
-        <spring:bind path="memberDTO.name">
+        <spring:bind path="memberDTO.username">
                 ${status.errorMessage}
         </spring:bind>
     </span><br>
@@ -57,14 +57,17 @@
         ${status.errorMessage}
     </spring:bind>
     <br>
-    <img src="images/KakaoTalk_Photo_2022-04-01-19-55-13.jpeg", width="250", height="150"><br>
-    <button>프로필 사진 등록</button><br><br>
+    <br>
+    <img src="images/KakaoTalk_Photo_2022-04-01-19-55-13.jpeg", width="250", height="150"><br><br>
+    <br>
+    <br>
+
     * 이메일:<input type="text" name="email1" id="email1" value="${memberDTO.email1}">@
     <input type="text" name="email2" id="email2" value="${memberDTO.email2}">
     <select id="url">
         <option value="daum.net">daum.net</option>
         <option value="naver.com">naver.com</option>
-        <option value="google.com">google.com</option>
+        <option value="gmail.com">gmail.com</option>
     </select>
     <br>
     <spring:bind path="memberDTO.email1">

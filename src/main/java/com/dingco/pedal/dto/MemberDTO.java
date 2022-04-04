@@ -7,15 +7,16 @@ import javax.validation.constraints.*;
 
 @AllArgsConstructor // 인자 있는 생성자
 @NoArgsConstructor // 인자 없는 생성자
-@Getter @Setter
-@ToString
+@Data
 public class MemberDTO {
 
 
     int m_idx;
 
+
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-z].{1,9}$", message = "2~10자의 영문, 한글를 사용하세요.")
-    String name;
+    @NotEmpty(message = "사용자 이름은 필수 입력 값입니다.")
+    String username;
     @Pattern(regexp = "^[a-zA-z0-9-_].{4,19}$", message = "5~20자의 영문 대 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
     @NotEmpty(message = "아이디는 필수 입력 값입니다.")
     String userid;
