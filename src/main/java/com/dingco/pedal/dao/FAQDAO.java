@@ -18,26 +18,8 @@ public class FAQDAO {
     SqlSession session;
     //SqlSessionTemplate session;
 
-    //전체 테이블 select
-    public List<FAQDTO> selectAll(int category_idx)throws Exception{
-       return session.selectList("com.config.FAQMapper.selectAll",category_idx);
-    }
-
-    //글 생성
-    public int insert(FAQDTO dto)throws Exception{
-        return session.insert("com.config.FAQMapper.insert",dto);
-    }
-
-    //글 자세히 보기
-
-
-    //조회수 수정(임시)
-    private int readcnt(int num)throws Exception{
-        return session.update("com.config.FAQMapper.readcnt",num);
-    }
-
     //페이징
-    public PageDTO selectAllPage(int curPage){
+    public PageDTO selectAllPage(int curPage)throws Exception{
         PageDTO pageDTO = new PageDTO();
         int totalRecord = totalRecord();    //전체 레코드 갯수
         int perPage = pageDTO.getPerPage(); // 페이지당 보여줄 레코드
@@ -59,4 +41,19 @@ public class FAQDAO {
     public int totalRecord(){
         return session.selectOne("com.config.FAQMapper.totalRecord");
     }
+
+    //글 생성
+    public int insert(FAQDTO dto)throws Exception{
+        return session.insert("com.config.FAQMapper.insert",dto);
+    }
+
+    //글 자세히 보기
+
+
+    //조회수 수정(임시)
+    private int readcnt(int num)throws Exception{
+        return session.update("com.config.FAQMapper.readcnt",num);
+    }
+
+
 }

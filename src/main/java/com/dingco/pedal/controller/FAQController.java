@@ -29,7 +29,7 @@ public class FAQController {
     //localhost:9090/faq
     @GetMapping("/faq")
     public String faq(@RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx,
-                            @RequestParam(value = "curPage", required = false, defaultValue = "1") String curPage, Model model)throws Exception {
+                      @RequestParam(value = "curPage", required = false, defaultValue = "1") String curPage, Model model)throws Exception {
 
         logger.info("로그");
 
@@ -42,18 +42,14 @@ public class FAQController {
     }
 
     @GetMapping("/faq/write")
-    public String boardWrite(@RequestBody FAQDTO dto)throws Exception{
+
+    public String boardWrite(@RequestParam FAQDTO dto)throws Exception{
         service.insert(dto);
         return "redirect:faq";
     }
 
 
-//    @PostMapping("/faq/{m_idx}")
-//    @ResponseBody
-//    public void boardRetrieve(@PathVariable("m_idx") int m_idx,@RequestBody FAQDTO dto)throws Exception{
-//       dto.setM_idx(m_idx);
-//        service.insert(dto);
-//    }
+
 
 
     // 에러처리

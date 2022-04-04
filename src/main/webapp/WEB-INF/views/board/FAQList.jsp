@@ -38,7 +38,7 @@
 <jsp:include page="../page.jsp"></jsp:include>
 <br>
 <!-- 페이지 번호 출력 -->
-<a href="boardWrite">글쓰기</a>
+<a href="/faq/write">글쓰기</a>
 </body>
 </html>
 

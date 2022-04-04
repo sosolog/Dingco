@@ -15,19 +15,13 @@ public class FAQServiceImpl implements FAQService {
     FAQDAO dao;
 
     @Override
-    public List<FAQDTO> selectAll(int category_idx) throws Exception {
-        List<FAQDTO> list = dao.selectAll(category_idx);
-        return list;
-    }
-
-    @Override
     public int insert(FAQDTO dto) throws Exception {
         int num = dao.insert(dto);
         return num;
     }
 
     @Override
-    public PageDTO selectAllPage(int curPage) {
+    public PageDTO selectAllPage(int curPage)throws Exception {
         PageDTO pageDTO = dao.selectAllPage(curPage);
         return pageDTO;
     }
