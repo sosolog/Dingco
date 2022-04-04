@@ -48,17 +48,17 @@ public class MemberController {
     SendEmailService sendEmailService;
 
 
-    ///////////////////////////////////명지///////////////////////////////////
-    @RequestMapping(value = "/mypage", method = RequestMethod.GET)
+    // -------------------------------- Start : 명지 -------------------------------- //
+    @RequestMapping(value = "/login/mypage", method = RequestMethod.GET)
     public String selectMypageInfo(Model model, HttpServletRequest request){
-        String m_idx = request.getParameter("m_idx");
-        MemberDTO userInfo = null;
+        HttpSession session = request.getSession();
+        MemberDTO userInfo = (MemberDTO) session.getAttribute("login");
+
         try {
-            userInfo = mService.selectMypageInfo(Integer.parseInt(m_idx));
+            userInfo = mService.selectMypageInfo(userInfo.getM_idx());
         } catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println("Controller-userInfo: "+userInfo);
         model.addAttribute("userInfo", userInfo);
         return "/mypage";
     }
@@ -76,12 +76,11 @@ public class MemberController {
         }
         return next;
     }
-   
-  
-///////////////////////////////////명지///////////////////////////////////
 
-  
-///////////////////////////////////민욱///////////////////////////////////
+    // -------------------------------- End : 명지 -------------------------------- //
+
+
+    // -------------------------------- Start : 민욱 -------------------------------- //
     // 회원가입 폼
     @GetMapping("/join")
     public String join(@ModelAttribute("memberDTO") MemberDTO memberDTO){

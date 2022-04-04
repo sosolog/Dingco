@@ -24,11 +24,12 @@ public class MemberDAO {
         return session.insert("com.config.MemberMapper.memberAdd", memberDTO);
     }
 
-
+    // 명지 : 마이페이지 정보 가져오기
     public MemberDTO selectMypageInfo(int m_idx) throws Exception {
         return session.selectOne("com.config.MemberMapper.selectMypageInfo", m_idx);
     }
-
+    
+    // 명지 : 마이페이지 정보 수정
     public int updateMypage(MemberDTO memberDTO) throws Exception {
         return session.update("com.config.MemberMapper.updateMypage", memberDTO);
     }
