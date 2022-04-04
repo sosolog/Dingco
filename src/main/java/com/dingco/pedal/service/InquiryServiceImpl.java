@@ -3,6 +3,7 @@ package com.dingco.pedal.service;
 import com.dingco.pedal.dao.InquiryDAO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,14 @@ public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryDAO dao;
 
+//    @Override
+//    public List<InquiryDTO> showUserInquiry(MemberDTO dto) throws Exception {
+//        return dao.showUserInquiry(dto);
+//    }
+
     @Override
-    public List<InquiryDTO> showUserInquiry(MemberDTO dto) throws Exception {
-        return dao.showUserInquiry(dto);
+    public PageDTO<InquiryDTO> showUserInquiry(MemberDTO dto, int curPage) throws Exception {
+        return dao.showUserInquiry(dto, curPage);
     }
 
     @Override

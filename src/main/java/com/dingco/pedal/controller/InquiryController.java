@@ -2,6 +2,7 @@ package com.dingco.pedal.controller;
 
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.dto.PageDTO;
 import com.dingco.pedal.service.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -26,12 +27,23 @@ public class InquiryController {
 
     @ResponseBody
     @GetMapping("/inquiry")
-    public List<InquiryDTO> showUserInquiry(HttpSession session) throws Exception {
+    public PageDTO<InquiryDTO> showUserInquiry(
+            HttpSession session,
+            @RequestParam(value = "pnum", required = false, defaultValue = "1") int curPage
+    ) throws Exception {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
         Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
         logger.debug(login.toString());
-        return service.showUserInquiry(memberDTO);
+        return service.showUserInquiry(memberDTO, curPage);
     }
+//    @ResponseBody
+//    @GetMapping("/inquiry")
+//    public List<InquiryDTO> showUserInquiry(HttpSession session) throws Exception {
+//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
+//        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
+//        logger.debug(login.toString());
+//        return service.showUserInquiry(memberDTO);
+//    }
 
     @PostMapping("/inquiry")
     public String writeUserInquiry(HttpSession session, @RequestBody InquiryDTO inquiryDTO) throws Exception {
