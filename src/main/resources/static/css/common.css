@@ -1,0 +1,218 @@
+@charset "UTF-8";
+@import url('./NanumSquareRound.css');
+
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    min-width: 1300px;
+    font-family: NanumSquareRound;
+}
+
+
+#wrap_editUser {
+    padding-top: 20px;
+    width: 700px;
+    margin: 0px auto;
+}
+
+#wrap_editUser #main {
+    margin: 0px auto;
+    padding: 20px 70px 50px;
+    font-family: NanumSquareRound;
+}
+
+#wrap_editUser #main .title {
+    color: #444;
+    font-size: 25px;
+}
+
+#wrap_editUser #main .title span {
+    display: block;
+    margin: 2px 0px;
+    font-family: Jalnan;
+}
+
+#wrap_editUser #main .editUser_table {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#wrap_editUser #main .editUser_table .item_th {
+    padding: 15px 0px;
+    width: 100px;
+    color: #444;
+}
+
+#wrap_editUser #main .editUser_table .item_th div {
+    margin-top: 20px;
+}
+
+.editUser_table .item_box div {
+    width: 100%;
+    height: 50px;
+    line-height: 47px;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: #F0F0F0;
+}
+
+.editUser_table .item_box input[type=text] {
+    display: block;
+    overflow: hidden;
+    width: 90%;
+    height: 49px;
+    padding: 0 3%;
+    margin-top: 20px;
+}
+
+.editUser_table .item_box input[readonly=readonly] {
+    display: block;
+    overflow: hidden;
+    width: 90%;
+    height: 49px;
+    padding: 0 3%;
+    margin-top: 20px;
+    color: #888;
+}
+
+.editUser_table .item_box textarea {
+    resize: none;
+    margin: 10px 0px;
+    width: 90%;
+    padding: 20px;
+    height: 200px;
+    border: 2px solid #f0f0f0;
+    font-size: 17px;
+    font-family: NanumSquareRound;
+    line-height: 22px;
+    color: #222;
+}
+
+.editUser_table .item_box textarea:focus {
+    outline: none;
+}
+
+.editUser_table .id_check {
+    display: inline-block;
+    padding: 10px 15px 0px;
+    color: #CA3433;
+    font-size: 15px !important;
+}
+
+
+.editUser_table .radio {
+    display: inline-block !important;
+    width: 45% !important;
+    font-size: 30px !important;
+    color: #333 !important;
+    padding: 15px 0px !important;
+}
+
+.editUser_table .radio input {
+    left: 0.466em !important;
+    top: 50% !important;
+    width: 15px !important;
+    height: 50px !important;
+    margin: 10px 0 0 15px !important;
+    outline: 0 !important;
+    z-index: 1;
+    float: left;
+}
+
+.editUser_table .radio span {
+    height:  50px;
+    color: #222;
+    font-size: 17px;
+    font-weight: 500;
+    display: inline-block;
+    margin-top: 13px;
+    margin-left: 20px;
+}
+
+
+#editUser_form input[type=text] {
+    font-family: NanumSquareRound;
+    font-size: 17px;
+}
+
+#editUser_form input[readonly=readonly] {
+    font-family: NanumSquareRound;
+    font-size: 17px;
+}
+
+#editUser_form .td_phone select {
+    margin-top: 20px;
+    height: 40px;
+    font-family: NanumSquareRound;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 17px;
+    color: #444;
+}
+
+#editUser_form .td_phone .link {
+    display: inline-block;
+    margin: auto 5px;
+}
+
+#editUser_form .td_phone input[type=text]{
+    width: 100px;
+    overflow: hidden;
+    height: 40px;
+    padding: 0 3%;
+    margin-top: 20px;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: #F0F0F0;
+}
+
+#editUser_form .td_email input[type=text]{
+    width: 110px;
+    overflow: hidden;
+    height: 40px;
+    padding: 0 3%;
+    margin-top: 20px;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: #F0F0F0;
+}
+
+#editUser_form .td_email select {
+    margin-top: 20px;
+    height: 40px;
+    font-family: NanumSquareRound;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+    color: #444;
+}
+
+
+#editUser_form .wrap_btn .submit_box {
+    display: block;
+    margin: 35px 0px 10px;
+    padding: 15px 0px;
+    background-color: #F9E000;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 4px;
+    color: #3C1E1E;
+    cursor: pointer;
+}
+
+#editUser_form .wrap_btn .delete_box {
+    display: block;
+    margin: 10px 0px 20px;
+    padding: 15px 0px;
+    border: 1px solid #ff4e45;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 4px;
+    color: #ff4e45;
+    cursor: pointer;
+}

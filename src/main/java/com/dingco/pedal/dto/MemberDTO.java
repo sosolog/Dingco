@@ -19,6 +19,7 @@ public class MemberDTO {
     String username;
     @Pattern(regexp = "^[a-zA-z0-9-_].{4,19}$", message = "5~20자의 영문 대 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
     @NotEmpty(message = "아이디는 필수 입력 값입니다.")
+
     String userid;
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{7,15}$", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
@@ -41,5 +42,5 @@ public class MemberDTO {
     String image_db;
     String authorities;
 
-
+    String joindate;
 }

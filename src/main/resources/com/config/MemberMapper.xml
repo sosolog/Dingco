@@ -14,4 +14,26 @@
         INSERT	INTO MEMBER (userid, passwd, username, phone1, phone2, phone3, email1, email2, image, image_db)
         VALUES (#{userid},#{passwd},#{username},#{phone1},#{phone2},#{phone3},#{email1},#{email2}, #{image}, #{image_db})
     </insert>
+  
+    <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
+        select m_idx, M_IDX, username, userid, passwd, email1, email2, authorities, image, image_db, phone1, phone2, phone3, DATE_FORMAT(joindate, '%Y-%m-%d') joindate
+        from MEMBER
+        WHERE m_idx=#{m_idx}
+    </select>
+
+    <update id="updateMypage" parameterType="MemberDTO">
+        update MEMBER
+        set username=#{username},
+            userid=#{userid},
+            passwd=#{passwd},
+            email1=#{email1},
+            email2=#{email2},
+            authorities=#{authorities},
+            image=#{image},
+            image_db=#{image_db},
+            phone1=#{phone1},
+            phone1=#{phone2},
+            phone1=#{phone3}
+            where m_idx=#{m_idx}
+    </update>
 </mapper>

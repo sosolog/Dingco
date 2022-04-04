@@ -25,9 +25,19 @@ public class MemberServiceImpl implements MemberService {
         return dao.selectAllMember();
     }
 
+
     // 회원 추가
     @Override
     public int memberAdd(MemberDTO memberDTO) throws Exception {
         return dao.memberAdd(memberDTO);
+      
+    @Override
+    public MemberDTO selectMypageInfo(int m_idx) throws Exception {
+        return dao.selectMypageInfo(m_idx);
+    }
+
+    @Override
+    public int updateMypage(MemberDTO memberDTO) throws Exception {
+        return dao.updateMypage(memberDTO);
     }
 }
