@@ -15,36 +15,29 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     MemberDAO dao;
 
-    // 생성자 주입
-    public MemberServiceImpl(MemberDAO dao) {
-        this.dao = dao;
-    }
-
-
-    @Override
-    public List<MemberDTO> selectAllMember() throws Exception {
-        return dao.selectAllMember();
-    }
-
-
-    // 회원 추가
+    // 민욱 : 회원 추가
     @Override
     public int memberAdd(MemberDTO memberDTO) throws Exception {
         return dao.memberAdd(memberDTO);
     }
 
+    // 명지 : 마이페이지 정보 가져오기
     @Override
     public MemberDTO selectMypageInfo(int m_idx) throws Exception {
         return dao.selectMypageInfo(m_idx);
     }
 
+    // 명지 : 마이페이지 정보 수정
     @Override
     public int updateMypage(MemberDTO memberDTO) throws Exception {
         return dao.updateMypage(memberDTO);
     }
-        @Override
-        public MemberDTO login (Map < String, String > map) throws Exception {
-            return dao.login(map);
-        }
+  
+    // 주황 : 로그인
+    @Override
+    public MemberDTO login(Map<String, String> map) throws Exception {
+        return dao.login(map);
     }
+        
+}
 

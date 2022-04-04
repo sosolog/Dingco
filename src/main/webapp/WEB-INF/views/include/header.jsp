@@ -31,7 +31,7 @@
 <body>
 
 <%-- ${url}로 활용하면 됨!! --%>
-<c:set var="url" value="${requestScope['javax.servlet.forward.request_uri']}" />
+<c:set var="url" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 
 
 
