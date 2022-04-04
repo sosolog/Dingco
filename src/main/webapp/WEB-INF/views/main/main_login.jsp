@@ -3,7 +3,7 @@
 
 
 <h2>메인 화면(로그인)</h2>
-<button onclick="location.href='/myPage'">
+<button onclick="location.href='/login/mypage'">
     마이페이지
 </button>
 <button onclick="location.href='/logout'">

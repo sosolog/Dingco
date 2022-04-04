@@ -107,6 +107,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     public void mailSend(MailDTO dto){
 
+
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
             @Override

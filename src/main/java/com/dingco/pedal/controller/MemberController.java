@@ -24,31 +24,23 @@ public class MemberController {
     @Autowired
     SendEmailService sendEmailService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String selectAll(Model model, HttpServletRequest request){
-        List<MemberDTO> memberList = null;
-        try {
-            memberList = mService.selectAllMember();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        model.addAttribute("memberList", memberList);
-        return "loginForm";
-    }
 
-  // 멤버 브랜치 생성
  
     @RequestMapping(value = "/join", method = RequestMethod.GET)
     public String join(){
         return "join";
     }
-  
-   // 명지 마이페이지 브랜치 생성
+
 
     //주황 - 로그인폼(로그인, 회원가입, 계정찾기, SNS API 로그인)
-    @GetMapping("/loginForm")
+    @GetMapping("/login")
     public String loginForm(){
         return "loginForm";
+    }
+
+    @GetMapping("/login/mypage")
+    public String mypage(){
+        return "mypage";
     }
 
     //주황 - 로그인(아이디, 비밀번호에 입력된 값을 HashMap으로 가져와서 DB와 비교)
@@ -84,6 +76,12 @@ public class MemberController {
         return "find_ID_PW";
     }
 
+    @GetMapping("/sessionInvalidate")
+    public String sessionInvalidate(){
+
+        return "member/sessionInvalidate";
+    }
+
 
 
     //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
@@ -105,6 +103,8 @@ public class MemberController {
         sendEmailService.fakePasswordCreate(map);
     }
     //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
+
+
 
 
 }
