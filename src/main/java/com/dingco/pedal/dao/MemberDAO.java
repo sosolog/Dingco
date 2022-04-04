@@ -16,4 +16,13 @@ public class MemberDAO {
     public List<MemberDTO> selectAllMember() throws Exception {
         return session.selectList("com.config.MemberMapper.selectAllMember");
     }
+
+    public MemberDTO selectMypageInfo(int m_idx) throws Exception {
+        return session.selectOne("com.config.MemberMapper.selectMypageInfo", m_idx);
+    }
+
+    public int updateMypage(MemberDTO memberDTO) throws Exception {
+        return session.update("com.config.MemberMapper.updateMypage", memberDTO);
+    }
+
 }

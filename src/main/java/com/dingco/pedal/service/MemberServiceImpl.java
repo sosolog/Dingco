@@ -19,4 +19,14 @@ public class MemberServiceImpl implements MemberService {
     public List<MemberDTO> selectAllMember() throws Exception {
         return dao.selectAllMember();
     }
+
+    @Override
+    public MemberDTO selectMypageInfo(int m_idx) throws Exception {
+        return dao.selectMypageInfo(m_idx);
+    }
+
+    @Override
+    public int updateMypage(MemberDTO memberDTO) throws Exception {
+        return dao.updateMypage(memberDTO);
+    }
 }
