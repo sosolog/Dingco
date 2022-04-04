@@ -37,7 +37,7 @@
 <form action="login" method="post">
     * 아이디:<input type="text" name="userid" id="userid">
     <span id="result" style="color:red"></span><br>
-    * 비밀번호:<input type="text" name="passwd" id="passwd" >
+    * 비밀번호:<input type="password" name="passwd" id="passwd" >
     <button>로그인</button>
 </form>
     <button id="joinBtn">회원가입</button><br>

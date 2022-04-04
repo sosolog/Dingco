@@ -12,7 +12,7 @@
     <label for="userEmail"><span class="glyphicon glyphicon-user"></span>email</label>
     <input type="text" id="userEmail" placeholder="가입시 이메일을 입력하세요.">
 <br>
-    <label for="userid"><span class="glyphicon glyphicon-eye-open"></span> name</label>
+    <label for="userid"><span class="glyphicon glyphicon-eye-open"></span>id</label>
     <input type="text" id="userid" placeholder="아이디를 입력하세요.">
 <br>
     <button type="button" id="checkEmail">OK</button>

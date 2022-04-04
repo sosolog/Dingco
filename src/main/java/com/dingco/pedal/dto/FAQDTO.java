@@ -8,10 +8,11 @@ import lombok.*;
 @ToString
 
 public class FAQDTO {
-    int number_idx;
-    int category_idx;
-    int m_idx;
-    String title;
-    String content;
-    int readcnt;
+    private int number_idx;
+    private int category_idx;
+    private int m_idx;
+    private String title;
+    private String content;
+    private int readcnt;
+    private String category_name;
 }
