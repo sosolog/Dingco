@@ -9,14 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
-//@RestController
 @Controller
 @RequiredArgsConstructor
 public class InquiryController {
@@ -25,25 +24,27 @@ public class InquiryController {
 
     private final InquiryService service;
 
-    @ResponseBody
     @GetMapping("/inquiry")
-    public PageDTO<InquiryDTO> showUserInquiry(
+    public ModelAndView showUserInquiry(
+            HttpServletRequest request,
             HttpSession session,
-            @RequestParam(value = "pnum", required = false, defaultValue = "1") int curPage
+            @RequestParam(value = "curPage", required = false, defaultValue = "1") int curPage
     ) throws Exception {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
+
         Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
         logger.debug(login.toString());
-        return service.showUserInquiry(memberDTO, curPage);
+        logger.debug(request.getServletPath());
+
+        PageDTO<InquiryDTO> pageDTO = service.showUserInquiry(memberDTO, curPage);
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("board/InquiryList");
+        mav.addObject("pageDTO", pageDTO);
+        mav.addObject("requestMapping", request.getServletPath());
+
+        return mav;
     }
-//    @ResponseBody
-//    @GetMapping("/inquiry")
-//    public List<InquiryDTO> showUserInquiry(HttpSession session) throws Exception {
-//        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-//        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
-//        logger.debug(login.toString());
-//        return service.showUserInquiry(memberDTO);
-//    }
 
     @PostMapping("/inquiry")
     public String writeUserInquiry(HttpSession session, @RequestBody InquiryDTO inquiryDTO) throws Exception {
@@ -82,24 +83,22 @@ public class InquiryController {
         return result;
     }
 
-    @ResponseBody
     @GetMapping("/inquiry/{idx}")
-    public InquiryDTO showOneUserInquiry(HttpSession session, @PathVariable("idx") int i_idx) throws Exception {
-        InquiryDTO inquiryDTO = null;
+    public ModelAndView showOneUserInquiry(HttpSession session, @PathVariable("idx") int i_idx) throws Exception {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
         Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
         logger.debug(login.toString());
-        if(memberDTO != null){
-            logger.debug("memberDTO is not null");
-            String memberAuthorities = memberDTO.getAuthorities();
-            System.out.println("memberAuthorities = " + memberAuthorities);
-            inquiryDTO = service.showOneUserInquiry(i_idx);
-            if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
-                throw new NotMatchedException("유효하지 않은 접근입니다.");
-            }
-            logger.debug("result = "+inquiryDTO);
+
+        InquiryDTO inquiryDTO = service.showOneUserInquiry(i_idx);
+        if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
+            throw new NotMatchedException("유효하지 않은 접근입니다.");
         }
-        return inquiryDTO;
+        logger.debug("result = "+inquiryDTO);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("board/InquiryRetrieve");
+        modelAndView.addObject("inquiryDTO", inquiryDTO);
+        return modelAndView;
     }
 
     @ResponseBody

@@ -5,29 +5,32 @@
 <mapper namespace="com.config.InquiryMapper">
     <select id="countTotalInquiries" resultType="int" parameterType="MemberDTO">
         select count(*) from INQUIRY
-        <if test="authorities == '사용자'">
+        <if test="authorities == 'USER'">
             where m_idx = #{m_idx}
         </if>
     </select>
     <select id="showUserInquiry" resultType="InquiryDTO" parameterType="MemberDTO">
-        select t.i_idx, t.m_idx, t.category_id, t.content, t.image, t.image_db, t.upload_date, t.i_idx2
+        select t.i_idx, t.m_idx, t.category_id, t.title, t.content, t.image, t.image_db, t.upload_date, t.last_updated_date, t.i_idx2, t.status
         from (
             select
                 inquiry_idx as i_idx,
                 m_idx,
                 category_id,
+                title,
                 content,
                 image,
                 image_db,
-                upload_date,
+                date_format(upload_date, "%Y/%m/%d %H:%i:%s") as upload_date,
+                date_format(last_updated_date, "%Y/%m/%d %H:%i:%s") as last_updated_date,
                 inquiry_idx2 as i_idx2,
                 case
                     when inquiry_idx2 is null then inquiry_idx
                     else inquiry_idx2
-                end as inq_group
+                end as inq_group,
+                i_status as status
             from INQUIRY
         ) t
-        <if test="authorities == '사용자'">
+        <if test="authorities == 'USER'">
             where m_idx = #{m_idx}
         </if>
         order by inq_group desc, i_idx
@@ -36,11 +39,14 @@
         select inquiry_idx as i_idx,
                m_idx,
                category_id,
+               title,
                content,
                image,
                image_db,
-               upload_date,
-               inquiry_idx2 as i_idx2
+               date_format(upload_date, "%Y/%m/%d %H:%i:%s") as upload_date,
+               date_format(last_updated_date, "%Y/%m/%d %H:%i:%s") as last_updated_date,
+               inquiry_idx2 as i_idx2,
+               i_status as status
         from INQUIRY
         where inquiry_idx = #{i_idx}
     </select>

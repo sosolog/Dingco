@@ -10,6 +10,7 @@
 <c:set var="lastPageInPrevBlock" value="${dto.lastPageInPrevBlock}"></c:set>
 <c:set var="pageListInBlock" value="${dto.pageListInBlock}"></c:set>
 <c:set var="totalPage" value="${totalRecord/perPage}"></c:set>
+<c:set var="path" value="${requestMapping}"></c:set>
 <c:if test="${pageListInBlock == null}">
 	<c:if test="${totalRecord%perPage != 0}">
 	   <c:set var="totalPage" value="${totalPage+1}" ></c:set>
@@ -19,23 +20,23 @@
 			${i}
 		</c:if>
 		<c:if test="${i!=curPage}">
-		<a href="faq?curPage=${i}">${i}</a>
+		<a href="${path}?curPage=${i}">${i}</a>
 		</c:if>
 	</c:forEach>
 </c:if>
 <c:if test="${pageListInBlock != null}">
 	<c:if test="${firstPageInNextBlock != null}">
-		<a href="faq?curPage=${firstPageInNextBlock}">&lt;</a>
+		<a href="${path}?curPage=${firstPageInNextBlock}">&lt;</a>
 	</c:if>
 	<c:forEach var="i" items="${pageListInBlock}">
 		<c:if test="${i==curPage}">
 			${i}
 		</c:if>
 		<c:if test="${i!=curPage}">
-			<a href="faq?curPage=${i}">${i}</a>
+			<a href="${path}?curPage=${i}">${i}</a>
 		</c:if>
 	</c:forEach>
 	<c:if test="${lastPageInPrevBlock != null}">
-		<a href="faq?curPage=${lastPageInPrevBlock}">&gt;</a>
+		<a href="${path}?curPage=${lastPageInPrevBlock}">&gt;</a>
 	</c:if>
 </c:if>
