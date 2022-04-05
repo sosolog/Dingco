@@ -1,7 +1,6 @@
 package com.dingco.pedal.interceptor;
 
 import com.dingco.pedal.dto.MemberDTO;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 

@@ -5,9 +5,7 @@ import com.dingco.pedal.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService {
@@ -33,10 +31,13 @@ public class MemberServiceImpl implements MemberService {
         return dao.updateMypage(memberDTO);
     }
   
-    // 주황 : 로그인
+    // 주황 : 아이디로 로그인 찾기
     @Override
-    public MemberDTO login(Map<String, String> map) throws Exception {
-        return dao.login(map);
+    public MemberDTO selectByLoginId(String userid, String passwd) throws Exception {
+        return dao.selectByLoginId(userid)
+                .filter(m -> m.getPasswd().equals(passwd))
+                .orElse(null);
+
     }
         
 }
