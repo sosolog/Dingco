@@ -28,9 +28,9 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 public class SendEmailController {
 
+    @Autowired
     SendEmailService sendEmailService;
 
 
