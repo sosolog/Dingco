@@ -27,6 +27,9 @@
             location.href="find_ID_PW";
         })
 
+        $("#upload").on("click",function (){
+            location.href="upload";
+        })
 
     })
 

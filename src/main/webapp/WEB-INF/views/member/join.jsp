@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
+<!-- 이메일 선택-->
 <script>
     $(function () {
         $("#url").on("change", function () {
@@ -11,13 +12,29 @@
     });
 </script>
 
+<!-- 파일 크기 제한(ajax_2MB)-->
+<script>
+    $(function () {
+        $("input[name=file]").off().on("change", function(){
+            if (this.files && this.files[0]) {
 
+                var maxSize = 2 * 1024 * 1024;
+                var fileSize = this.files[0].size;
+
+                if(fileSize > maxSize){
+                    alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다.");
+                    $(this).val('');
+                    return false;
+                }
+            }
+        });
+    });
+</script>
 
 
 <h2>회원가입 페이지</h2>
-
 <br>
-<form action="memberAdd" id="memberAdd" method="post">
+<form action="memberAdd" id="memberAdd" method="post" enctype="multipart/form-data">
     * 아이디:<input type="text" id="userid" name="userid" value="${memberDTO.userid}">
     <button>아이디 중복확인</button><br>
     <span>
@@ -58,10 +75,15 @@
     </spring:bind>
     <br>
     <br>
-    <img src="images/KakaoTalk_Photo_2022-04-01-19-55-13.jpeg", width="250", height="150"><br><br>
+    프로필 사진 업로드(크기:5MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)<br>
+    <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
+    <input id="file" name = "file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic"/>
     <br>
-    <br>
+    <c:if test = "${fn:contains(errors, 'size_limit')}">
+        <span id = "errors_size_limit">${errors['size_limit']}</span>
+    </c:if><br>
 
+    <br>
     * 이메일:<input type="text" name="email1" id="email1" value="${memberDTO.email1}">@
     <input type="text" name="email2" id="email2" value="${memberDTO.email2}">
     <select id="url">
@@ -81,4 +103,3 @@
     <input type="submit" value="회원가입">
     <input type="reset" value="취소">
 </form>
-<%--</form:form>--%>

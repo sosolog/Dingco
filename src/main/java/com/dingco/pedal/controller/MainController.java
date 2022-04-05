@@ -10,5 +10,11 @@ public class MainController {
     public String main(){
         return "main";
     }
+
+
+    @GetMapping("/upload")
+    public String upload(){
+        return "upload";
+    }
 }
 

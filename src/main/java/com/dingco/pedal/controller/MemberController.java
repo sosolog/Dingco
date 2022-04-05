@@ -20,19 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
+import java.util.*;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -44,8 +43,9 @@ public class MemberController {
     @Value("${file.dir}")
     private String fileDir;
   
-   @Autowired
+    @Autowired
     SendEmailService sendEmailService;
+
 
 
     // -------------------------------- Start : 명지 -------------------------------- //
@@ -87,71 +87,60 @@ public class MemberController {
         return "join";
     }
 
-    // 회원 추가 + 검증(validation) + BindingResult(성공)
+    // 회원 추가 + 검증(@validation) + 파일업로드
     @PostMapping("/memberAdd") // BindingResult 타입의 객체는 사용하는 데이터 뒤에 넣어야함(그래야 인식 가능)
-    public String memberAdd(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult) throws Exception{
+    public String memberAdd(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
+                            @RequestParam(required=false) MultipartFile file, HttpServletRequest request) throws Exception{
 
-        System.out.println(memberDTO);
 
-        // 검증에 실패하면 다시 입력 폼으로(기존코드 주석 처리)
+        // 살패 로직(검증에 실패하면 다시 입력 폼으로)
         if(bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
             //model.addAttribute("errors", errors); //bindingResult는 모델에 따로 안 넣어줘도 된다. 자동적으로 넘어간다.
             return "join";
         }
-        // 성공 로직
+        // 성공 로직(회원 추가 및 파일 업로드)
+
+        ////////////////////파일 업로드////////////////////
+
+        // 사용자의 이미지 파일을 들고 옴 => img.png
+        String originalFilename = file.getOriginalFilename();
+
+        // 서버에 저장하는 파일명 세팅(같은 이름으로 저장하면 덮어쓰는 오류를 막기 위함)
+        String storeFileName = createStoreFileName(originalFilename);
+
+        // 전달받은 데이터(파라미터)를 저장소에 저장해준다.
+        file.transferTo(new File(getFullPath(storeFileName)));
+
+        // memberDTO에 이미지 파일명, 서버에 저장할 이미지 파일명 담아주기
+        memberDTO.setUploadFileName(originalFilename);
+        memberDTO.setStoreFileName(storeFileName);
+
+        ////////////////////회원 추가////////////////////
         int num = mService.memberAdd(memberDTO);
-        System.out.println(memberDTO);
+
         return "redirect:main";
     }
 
-    // 파일 업로드 폼
-    @GetMapping("/fileUpload")
-    public String upload(){
-        return "fileUpload";
+    // 서버에 저장하는 파일 : 서부 내부에서 관리하는 파일은 유일한 이름을 생성하는 UUID를 사용해서 충돌을 피함(+확장자)
+    private String createStoreFileName(String originalFilename) {
+        String uuid = UUID.randomUUID().toString(); // UUID
+        String ext = extractExt(originalFilename); // 확장자
+        return uuid + "." + ext; // 서버에 저장하는 파일명 : UUID + 확장자
+
+        // 예시>> 51041c62-8634-4274-801d-61a7d994edb.png
     }
 
-    // 파일 업로드
-    @PostMapping("/fileUpload")
-    public String saveFile(HttpServletRequest request) throws ServletException, IOException {
-        log.info("request={}", request);
+    // 사용자의 이미지 파일의 확장자 추출(.png/.jpg ...)
+    private String extractExt(String originalFilename) {
+        int pos = originalFilename.lastIndexOf(".");
+        return originalFilename.substring(pos + 1);
+    }
 
-        Collection<Part> parts = request.getParts();
-        log.info("parts={}", parts);
-
-        for (Part part : parts) {
-            log.info("==== parts 세부사항 ====");
-
-            // part.getHeaderNames() : 업로드 파일의 헤더 이름
-            Collection<String> headerNames = part.getHeaderNames();
-
-            for (String headerName : headerNames) {
-                log.info("{}", part.getHeader(headerName));
-            }
-
-            // WebKitFormBoundary 하위 content-disposition에 있는 내용 꺼내오기
-            log.info("submittedFilename={}", part.getSubmittedFileName()); // 파일명
-            log.info("size={}", part.getSize()); // 크기
-
-
-            // 데이터 읽기 => 바이너리 값이라서 억지로 UTF-8로 변경하지만 사실상 읽지는 못함
-            InputStream inputStream = part.getInputStream();
-            String body = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
-
-            //log.info("body= {}", body);
-
-            // 파일에 저장하기
-            if(StringUtils.hasText(part.getSubmittedFileName())){
-                String fullPath = fileDir + part.getSubmittedFileName();
-                log.info("파일 저장 위치 fullPath={}", fullPath);
-
-                part.write(fullPath);
-            }
-        }
-
-        return "fileUpload";
-        }
-
+    // 서버의 저장소 위치
+    public String getFullPath(String filename) {
+        return fileDir + filename;
+    }
 
 ///////////////////////////////////민욱///////////////////////////////////
 

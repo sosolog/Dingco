@@ -11,8 +11,8 @@
 
     <!-- 회원 추가-->
     <insert id="memberAdd" parameterType="MemberDTO">
-        INSERT	INTO MEMBER (userid, passwd, username, phone1, phone2, phone3, email1, email2, image, image_db)
-        VALUES (#{userid},#{passwd},#{username},#{phone1},#{phone2},#{phone3},#{email1},#{email2}, #{image}, #{image_db})
+        INSERT	INTO MEMBER (userid, passwd, username, phone1, phone2, phone3, email1, email2, uploadFileName, storeFileName)
+        VALUES (#{userid},#{passwd},#{username},#{phone1},#{phone2},#{phone3},#{email1},#{email2},#{uploadFileName},#{storeFileName})
     </insert>
   
     <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
