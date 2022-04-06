@@ -1,5 +1,6 @@
 package com.dingco.pedal.controller;
 
+import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.session.SessionConst;
 import org.springframework.stereotype.Controller;
@@ -13,21 +14,13 @@ import javax.servlet.http.HttpSession;
 public class MainController {
 
     @GetMapping("/main")
-    public String main(HttpServletRequest request, Model model) {
+    public String main(@Login MemberDTO memberDTO, Model model) {
 
-
-        HttpSession session = request.getSession(false);
-        if(session==null){
+        if(memberDTO==null){
             return "main";
         }
 
-        MemberDTO loginMember = (MemberDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
-
-        if(loginMember==null){
-            return "main";
-        }
-
-        model.addAttribute("member",loginMember);
+        model.addAttribute("member",memberDTO);
         return "loginMain";
 
 
