@@ -1,5 +1,6 @@
 package com.dingco.pedal.controller;
 
+import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.MailDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.service.MemberService;
