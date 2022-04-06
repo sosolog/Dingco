@@ -1,20 +1,14 @@
 package com.dingco.pedal.controller;
 
-import com.dingco.pedal.dao.FAQDAO;
-import com.dingco.pedal.dto.DeptDTO;
 import com.dingco.pedal.dto.FAQDTO;
 import com.dingco.pedal.dto.PageDTO;
 import com.dingco.pedal.service.FAQService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

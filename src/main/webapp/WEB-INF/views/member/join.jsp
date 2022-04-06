@@ -12,17 +12,17 @@
     });
 </script>
 
-<!-- 파일 크기 제한(ajax_2MB)-->
+<!-- 파일 크기 제한(ajax_3MB)-->
 <script>
     $(function () {
         $("input[name=file]").off().on("change", function(){
             if (this.files && this.files[0]) {
 
-                var maxSize = 2 * 1024 * 1024;
+                var maxSize = 3 * 1024 * 1024;
                 var fileSize = this.files[0].size;
 
                 if(fileSize > maxSize){
-                    alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다.");
+                    alert("첨부파일 사이즈는 3MB 이내로 등록 가능합니다.");
                     $(this).val('');
                     return false;
                 }
@@ -31,13 +31,41 @@
     });
 </script>
 
+<!-- 회원가입 아이디 유효성 체크 -->
+<script>
+    $(function () {
+        $("#idCheck").on("click", function () {
+            var userid = $('#userid').val(); //id값이 "id"인 입력란의 값을 저장
+            $.ajax({
+                url:'memberIdCheck', //Controller에서 인식할 주소
+                type:'get', //POST 방식으로 전달
+                data:{userid:userid},
+                datatype: 'int',
+                success:function(data){
+                    if(data != 0) { //cnt가 0일 경우 -> 사용 가능한 아이디
+                        $('#userid').val("")
+                        $("#idCheckResult").text("이미 사용중인 아이디입니다.");
+
+                    }else{
+                        $("#idCheckResult").text("사용 가능한 아이디입니다.");
+                    }
+                }
+                ,
+                error:function(data){
+                    console.log(data)
+                    alert("에러입니다!");
+                }
+            });
+        });
+    });
+</script>
 
 <h2>회원가입 페이지</h2>
 <br>
 <form action="memberAdd" id="memberAdd" method="post" enctype="multipart/form-data">
     * 아이디:<input type="text" id="userid" name="userid" value="${memberDTO.userid}">
-    <button>아이디 중복확인</button><br>
-    <span>
+    <input type="button" id="idCheck" value="아이디 중복확인"><br>
+    <span id = "idCheckResult">
         <spring:bind path="memberDTO.userid">
             ${status.errorMessage }
         </spring:bind>

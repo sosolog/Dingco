@@ -122,6 +122,15 @@ public class MemberController {
         return "redirect:main";
     }
 
+    // 회원가입 아이디 유효성 체크
+    @ResponseBody
+    @GetMapping ("/memberIdCheck" )
+    public int  memberIdCheck(@RequestParam("userid") String userid) throws Exception{
+        int cnt = mService.idDuplicateCheck(userid);
+        return cnt;
+    }
+
+
     // 서버에 저장하는 파일 : 서부 내부에서 관리하는 파일은 유일한 이름을 생성하는 UUID를 사용해서 충돌을 피함(+확장자)
     private String createStoreFileName(String originalFilename) {
         String uuid = UUID.randomUUID().toString(); // UUID
