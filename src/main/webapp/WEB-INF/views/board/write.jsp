@@ -6,3 +6,4 @@ ${category}
     작성자:<input type="text" name="${dto.userid}"><br>
     내용:<textarea rows="10" cols="10" name="content"></textarea>
     <input type="submit" value="저장">
+</form>
