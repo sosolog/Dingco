@@ -3,6 +3,7 @@ package com.dingco.pedal.controller;
 import com.dingco.pedal.dao.FAQDAO;
 import com.dingco.pedal.dto.DeptDTO;
 import com.dingco.pedal.dto.FAQDTO;
+import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
 import com.dingco.pedal.service.FAQService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -28,8 +31,11 @@ public class FAQController {
     //  from FAQ f join CATEGORY c on f.category_idx = c.CATEGORY_IDX;
     //localhost:9090/faq
     @GetMapping("/faq")
-    public String faq(@RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx,
+    public String faq(HttpSession session,
+                      @RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx,
                       @RequestParam(value = "curPage", required = false, defaultValue = "1") String curPage, Model model)throws Exception {
+
+        MemberDTO dto = (MemberDTO) session.getAttribute("login");
 
         logger.info("로그");
 
@@ -40,9 +46,20 @@ public class FAQController {
 
         return "faq";
     }
+    // 단축키 : ctrl + alt + v
+
 
     @GetMapping("/faq/write")
+    public String boardWriteUI(Model m)throws Exception{
 
+        List<HashMap<String, String>> category = service.category();
+        m.addAttribute("category",category);
+        return "write";
+    }
+
+
+
+    @PostMapping("/faq/write")
     public String boardWrite(@RequestParam FAQDTO dto)throws Exception{
         service.insert(dto);
         return "redirect:faq";

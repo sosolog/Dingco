@@ -13,7 +13,9 @@
         <th>번호</th>
         <th>글번호</th>
         <th>제목</th>
+        <th>카테고리</th>
         <th>작성자</th>
+        <th>내용</th>
         <th>작성일</th>
         <th>조회수</th>
     </tr>
@@ -23,9 +25,10 @@
         <tr>
             <td>${status.count}</td>
             <td>${dto.number_idx}</td>
-                <%--            <td><a href="boardRetrieve?num=${dto.num}">${dto.title}</a></td>--%>
-            <td>${dto.title}</td>
-            <td>${dto.m_idx}</td>
+            <td><a href="retrieve?num=${dto.number_idx}">${dto.title}</a>a></td>
+            <td>${dto.category_name}</td>
+            <td>${dto.userid}</td>
+            <td>${dto.content}</td>
             <td>${dto.writeday}</td>
             <td>${dto.readcnt}</td>
         </tr>

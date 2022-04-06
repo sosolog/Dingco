@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("FAQDAO")
 public class FAQDAO {
@@ -44,6 +45,11 @@ public class FAQDAO {
     //글 생성
     public int insert(FAQDTO dto)throws Exception{
         return session.insert("com.config.FAQMapper.insert",dto);
+    }
+
+    // 카테고리 넘기기
+    public List<HashMap<String, String>> category()throws Exception{
+        return session.selectList("com.config.FAQMapper.category");
     }
 
     //글 자세히 보기

@@ -9,8 +9,7 @@ import lombok.*;
 
 public class FAQDTO {
     private int number_idx;
-    private int category_idx;
-    private int m_idx;
+    private String userid;
     private String title;
     private String content;
     private int readcnt;

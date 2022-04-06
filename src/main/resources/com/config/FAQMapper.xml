@@ -7,27 +7,42 @@
     <select id="selectAllPage" resultType="FAQDTO" parameterType="HashMap">
 	<![CDATA[
         select
-            number_idx,
-            category_idx,
-            m_idx,
-            title,
-            content,
-            date_format(writeday, '%Y-%m-%d') writeday,
-            readcnt
-        from FAQ
-        order by number_idx desc
+            f.number_idx,
+            m.userid,
+            f.title,
+            f.content,
+            date_format(f.writeday, '%Y-%m-%d')  writeday,
+            f.readcnt,
+            c.category_name
+        from FAQ f join CATEGORY c on f.category_idx = c.CATEGORY_IDX
+                   join MEMBER m on f.m_idx = m.m_idx
+        order by f.number_idx asc
             limit ${perPage} offset ${offset}
         ]]>
 	</select>
 
+<!--    select f.number_idx, m.userid, f.title, f.content, f.WRITEDAY, f.READCNT, c.category_name-->
+<!--    from FAQ f join CATEGORY c-->
+<!--    on f.category_idx = c.CATEGORY_IDX-->
+<!--    join MEMBER m-->
+<!--    on f.m_idx = m.m_idx-->
 
+
+    <!--    https://stage-diary.tistory.com/594 -->
     <insert id="insert" parameterType="FAQDTO">
-        insert into FAQ (f.number_idx, f.m_idx, f.title, f.content,
-                         f.readcnt, c.category_name)
-        from FAQ f join CATEGORY c
-            on f.category_idx = c.category_idx
-        value (#{f.m_idx}, #{f.title}, #{f.content}, #{c.category_name})
+        insert into FAQ (title, content, category_id)
+            value (#{title}, #{content}, #{category_id});
     </insert>
+
+    <resultMap id="aaa" type="hashmap">
+        <result property="category_idx" column="category_idx"/>
+        <result property="category_name" column="category_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+    </resultMap>
+    <select id="category" resultMap="aaa" >
+        select  category_idx, category_name
+        from CATEGORY
+    </select>
+
 
     <select id="retrieve" parameterType="int" resultType="FAQDTO">
         <![CDATA[
