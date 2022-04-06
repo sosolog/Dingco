@@ -7,8 +7,7 @@ import javax.validation.constraints.*;
 
 @AllArgsConstructor // 인자 있는 생성자
 @NoArgsConstructor // 인자 없는 생성자
-@Getter @Setter
-@ToString
+@Data
 public class MemberDTO {
 
 
@@ -39,9 +38,11 @@ public class MemberDTO {
     @Pattern(regexp = "^[0-9].{3}$", message = "연락처의 마지막 자리는 숫자 4자리여야 합니다.")
     String phone3;
 
-    String image;
-    String image_db;
+    String uploadFileName;
+    String storeFileName;
     String authorities;
 
     String joindate;
+
+
 }

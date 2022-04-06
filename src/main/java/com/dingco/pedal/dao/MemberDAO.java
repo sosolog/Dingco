@@ -19,9 +19,13 @@ public class MemberDAO {
         return session.selectList("com.config.MemberMapper.selectAllMember");
     }
 
-    // 회원 추가(DB접근)
+    // 회원 추가
     public int memberAdd(MemberDTO memberDTO) throws Exception{
         return session.insert("com.config.MemberMapper.memberAdd", memberDTO);
+    }
+    //
+    public int idDuplicateCheck(String userid) throws Exception {
+        return session.selectOne("com.config.MemberMapper.idDuplicateCheck", userid);
     }
 
     // 명지 : 마이페이지 정보 가져오기
