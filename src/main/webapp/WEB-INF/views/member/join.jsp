@@ -45,10 +45,10 @@
                     if(data != 0) { //cnt가 0일 경우 -> 사용 가능한 아이디
                         $('#userid').val("")
                         $("#idCheckResult").text("이미 사용중인 아이디입니다.");
-
+                        $("#idCheckHidden").val("false");
                     }else{
                         $("#idCheckResult").text("사용 가능한 아이디입니다.");
-                        $("idCheckHidden").val("true");
+                        $("#idCheckHidden").val("true");
                     }
                 }
                 ,
