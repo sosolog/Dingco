@@ -161,12 +161,6 @@ public class MemberController {
         return "find_ID_PW";
     }
 
-    @GetMapping("/sessionInvalidate")
-    public String sessionInvalidate(){
-
-        return "member/sessionInvalidate";
-    }
-
 ///////////////////////////////////주황///////////////////////////////////
 
 
