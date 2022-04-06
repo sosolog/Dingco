@@ -1,6 +1,6 @@
 package com.dingco.pedal.config;
 
-import com.dingco.pedal.interceptor.LoginHandler;
+import com.dingco.pedal.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,10 +8,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginHandler())
+        registry.addInterceptor(new LoginCheckInterceptor())
                 .order(1)
-                .addPathPatterns("/login/*");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/main","/login","/logout");
     }
 }

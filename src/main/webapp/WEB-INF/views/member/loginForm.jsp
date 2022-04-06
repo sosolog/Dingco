@@ -34,7 +34,7 @@
 
 <h2>로그인 페이지</h2>
 <form action="login" method="post">
-    * 아이디:<input type="text" name="userid" id="userid">
+    * 아이디:<input type="text" name="userid" id="userid" value="${loginDTO.userid}">
     * 비밀번호:<input type="password" name="passwd" id="passwd" >
     <button>로그인</button><br>
     <span id="result" style="color:red">

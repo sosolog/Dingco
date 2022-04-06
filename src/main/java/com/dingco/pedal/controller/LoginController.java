@@ -35,7 +35,10 @@ public class LoginController {
 
     //주황 - 로그인(아이디, 비밀번호에 입력된 값을 HashMap으로 가져와서 DB와 비교)
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginDTO") LoginDTO loginDTO, BindingResult bindingResult,HttpServletRequest request) throws Exception {
+    public String login(@Valid @ModelAttribute("loginDTO") LoginDTO loginDTO
+                        ,@RequestParam(defaultValue = "/main") String redirectURL
+                        , BindingResult bindingResult
+                        ,HttpServletRequest request) throws Exception {
         if(bindingResult.hasErrors()){
             return "loginForm";
         }
@@ -51,7 +54,7 @@ public class LoginController {
         //세션에 회원정보 보관
         session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
 
-        return "redirect:main";
+        return "redirect:"+redirectURL;
 
     }
 
