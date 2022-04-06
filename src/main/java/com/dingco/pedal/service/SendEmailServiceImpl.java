@@ -1,6 +1,7 @@
 package com.dingco.pedal.service;
 
 import com.dingco.pedal.dao.MemberDAO;
+import com.dingco.pedal.dao.SendEmailDAO;
 import com.dingco.pedal.dto.MailDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import java.util.Map;
 public class SendEmailServiceImpl implements SendEmailService {
 
     @Autowired
-    MemberDAO dao;
+    SendEmailDAO dao;
 
     @Autowired
     private JavaMailSender mailSender;

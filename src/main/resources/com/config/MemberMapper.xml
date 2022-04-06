@@ -43,10 +43,10 @@
             phone1=#{phone3}
             where m_idx=#{m_idx}
     </update>
-    <select id="login" resultType="MemberDTO" parameterType="map">
+    <select id="selectByLoginId" resultType="MemberDTO" parameterType="string">
         select *
         from MEMBER
-        where userid = #{userid} and passwd = #{passwd}
+        where userid = #{userid}
     </select>
 
     <update id="updateFakePassword" parameterType="map">

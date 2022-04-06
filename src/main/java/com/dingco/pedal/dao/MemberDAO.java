@@ -5,9 +5,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class MemberDAO {
@@ -38,16 +38,10 @@ public class MemberDAO {
         return session.update("com.config.MemberMapper.updateMypage", memberDTO);
     }
 
-    public MemberDTO login(Map<String,String> map) throws Exception{
-        return session.selectOne("com.config.MemberMapper.login",map);
+    // 주황 : 아이디로 로그인 찾기
+    public Optional<MemberDTO> selectByLoginId(String userid) throws Exception{
+
+        return Optional.ofNullable(session.selectOne("com.config.MemberMapper.selectByLoginId", userid));
     }
 
-    //이메일API 임시 비밀번호 설정 DAO
-    public int updateFakePassword(Map<String,String> map) throws Exception{
-        return session.update("com.config.MemberMapper.updateFakePassword",map);
-    }
-
-    public boolean userEmailCheck(Map<String,String> map) throws Exception{
-        return session.selectOne("com.config.MemberMapper.userEmailCheck",map);
-    };
 }

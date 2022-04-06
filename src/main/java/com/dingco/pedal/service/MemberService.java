@@ -15,6 +15,9 @@ public interface MemberService {
 
     public MemberDTO selectMypageInfo(int m_idx) throws Exception;
     public int updateMypage(MemberDTO memberDTO) throws Exception;
+
+    // 주황 : 아이디로 로그인 찾기
+    public MemberDTO selectByLoginId(String userid,String passwd) throws Exception;
     public MemberDTO login(Map<String,String> map) throws Exception;
 
 
