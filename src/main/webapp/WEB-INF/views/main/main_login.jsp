@@ -6,6 +6,8 @@
 <button onclick="location.href='/login/mypage'">
     마이페이지
 </button>
-<button onclick="location.href='/logout'">
+<form action="logout" method="post">
+<button>
     로그아웃
 </button>
+</form>
