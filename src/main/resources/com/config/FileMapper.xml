@@ -12,5 +12,12 @@
             (#{vo.tableDir}, last_insert_id(), #{vo.fileName}, #{vo.serverFileName})
         </foreach>
     </insert>
-
+    <select id="showImages" resultType="com.dingco.pedal.util.FileName" parameterType="hashmap">
+        select img_idx as fileIdx,
+               board_type as tableDir,
+               upload_name as fileName,
+               save_name as serverFileName
+        from IMAGES
+        where board_type = #{tableDir} and board_idx = #{idx}
+    </select>
 </mapper>

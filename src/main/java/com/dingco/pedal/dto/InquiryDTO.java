@@ -20,8 +20,6 @@ public class InquiryDTO {
     private String category_id; // 카테고리
     private String title;       // 제목
     private String content;     // 내용
-    private String image;       // 사용자 업로드파일명
-    private String image_db;    // 서버 저장파일명
     private String upload_date; // 업로드 날짜
     private String last_updated_date; // 마지막 수정 날짜
     private List<MultipartFile> files;

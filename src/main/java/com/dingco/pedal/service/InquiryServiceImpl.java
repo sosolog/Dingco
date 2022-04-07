@@ -5,9 +5,14 @@ import com.dingco.pedal.dao.InquiryDAO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
+import com.dingco.pedal.util.FileName;
+import com.dingco.pedal.util.TableDir;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Service("inquiryService")
 @RequiredArgsConstructor
@@ -28,7 +33,15 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public InquiryDTO showOneUserInquiry(int i_idx) throws Exception {
-        return inquiryDAO.showOneUserInquiry(i_idx);
+        InquiryDTO inquiryDTO = inquiryDAO.showOneUserInquiry(i_idx);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("tableDir", TableDir.INQUIRY);
+        map.put("idx", inquiryDTO.getI_idx());
+
+        List<FileName> fileNames = fileDAO.showImages(map);
+        inquiryDTO.setFileNames(fileNames);
+        return inquiryDTO;
     }
 
     @Override
