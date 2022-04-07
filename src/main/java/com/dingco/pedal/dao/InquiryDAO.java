@@ -1,5 +1,6 @@
 package com.dingco.pedal.dao;
 
+import com.dingco.pedal.util.FileName;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
@@ -52,4 +53,5 @@ public class InquiryDAO {
     public int deleteUserInquiry(int i_idx) throws Exception {
         return session.delete("com.config.InquiryMapper.deleteUserInquiry", i_idx);
     }
+
 }

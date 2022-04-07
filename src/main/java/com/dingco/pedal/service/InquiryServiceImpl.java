@@ -1,19 +1,20 @@
 package com.dingco.pedal.service;
 
+import com.dingco.pedal.dao.FileDAO;
 import com.dingco.pedal.dao.InquiryDAO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("inquiryService")
 @RequiredArgsConstructor
 public class InquiryServiceImpl implements InquiryService {
 
-    private final InquiryDAO dao;
+    private final InquiryDAO inquiryDAO;
+    private final FileDAO fileDAO;
 
 //    @Override
 //    public List<InquiryDTO> showUserInquiry(MemberDTO dto) throws Exception {
@@ -22,26 +23,29 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public PageDTO<InquiryDTO> showUserInquiry(MemberDTO dto, int curPage) throws Exception {
-        return dao.showUserInquiry(dto, curPage);
+        return inquiryDAO.showUserInquiry(dto, curPage);
     }
 
     @Override
     public InquiryDTO showOneUserInquiry(int i_idx) throws Exception {
-        return dao.showOneUserInquiry(i_idx);
+        return inquiryDAO.showOneUserInquiry(i_idx);
     }
 
     @Override
+    @Transactional
     public int writeUserInquiry(InquiryDTO dto) throws Exception {
-        return dao.writeUserInquiry(dto);
+        int result = inquiryDAO.writeUserInquiry(dto);
+        result = fileDAO.uploadImages(dto.getFileNames());
+        return result;
     }
 
     @Override
     public int updateUserInquiry(InquiryDTO dto) throws Exception {
-        return dao.updateUserInquiry(dto);
+        return inquiryDAO.updateUserInquiry(dto);
     }
 
     @Override
     public int deleteUserInquiry(int i_idx) throws Exception {
-        return dao.deleteUserInquiry(i_idx);
+        return inquiryDAO.deleteUserInquiry(i_idx);
     }
 }

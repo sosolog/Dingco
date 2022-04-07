@@ -51,19 +51,13 @@
         where inquiry_idx = #{i_idx}
     </select>
     <insert id="writeUserInquiry" parameterType="InquiryDTO">
-        insert into INQUIRY (m_idx, category_id, content
-                             <if test="image != null">
-                                 ,image, image_db
-                             </if>
+        insert into INQUIRY (m_idx, category_id, title, content
                              ,upload_date
                              <if test="i_idx2 != 0">
-                                 ,inquiry_idx2
+                             ,inquiry_idx
                              </if>
                              )
-        values(#{m_idx}, #{category_id}, #{content}
-            <if test="image != null">
-                ,#{image}, #{image_db}
-            </if>
+        values(#{m_idx}, #{category_id}, #{title}, #{content}
             ,now()
             <if test="i_idx2 != 0">
                 ,#{i_idx2}
@@ -86,4 +80,6 @@
         delete from INQUIRY
         where inquiry_idx = #{i_idx}
     </delete>
+
+
 </mapper>

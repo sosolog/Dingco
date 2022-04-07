@@ -1,4 +1,4 @@
-package com.dingco.pedal.dto;
+package com.dingco.pedal.util;
 
 public enum InquiryStatus {
     YET("답변 대기 중"), IN_PROCESS("답변 완료"), DONE("문의 종료"), RE_INQUIRY("재문의 진행");

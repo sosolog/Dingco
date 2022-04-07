@@ -4,16 +4,22 @@ import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
 import com.dingco.pedal.service.InquiryService;
+import com.dingco.pedal.util.FileName;
+import com.dingco.pedal.util.FileUploadUtils;
+import com.dingco.pedal.util.TableDir;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -21,8 +27,10 @@ import java.util.Optional;
 public class InquiryController {
 
     private static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
-
     private final InquiryService service;
+
+    @Value("${file.base}")
+    private String baseDir;
 
     @GetMapping("/inquiry")
     public ModelAndView showUserInquiry(
@@ -46,18 +54,24 @@ public class InquiryController {
         return mav;
     }
 
+    @GetMapping("/inquiry/write")
+    public String writeUserInquiryUI(@ModelAttribute("inquiryDTO") InquiryDTO dto){
+        return "board/InquiryWrite";
+    }
+
     @PostMapping("/inquiry")
-    public String writeUserInquiry(HttpSession session, @RequestBody InquiryDTO inquiryDTO) throws Exception {
+    public String writeUserInquiry(HttpSession session, @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO) throws Exception {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
-        logger.debug(login.toString());
-        logger.debug(Optional.ofNullable(inquiryDTO).toString());
-        if(memberDTO != null){
-            logger.debug("memberDTO is not null");
-            inquiryDTO.setM_idx(memberDTO.getM_idx());
-            int result = service.writeUserInquiry(inquiryDTO);
-            logger.debug("result = "+result);
-        }
+        inquiryDTO.setM_idx(memberDTO.getM_idx());
+
+        List<MultipartFile> files = inquiryDTO.getFiles();
+        List<FileName> fileNames = inquiryDTO.getFileNames();
+
+        FileUploadUtils uploadUtils = new FileUploadUtils(baseDir, TableDir.INQUIRY);
+        uploadUtils.uploadFiles(files, fileNames);
+        int result = service.writeUserInquiry(inquiryDTO);
+
+        logger.debug("result = "+result);
         return "redirect:inquiry";
     }
 

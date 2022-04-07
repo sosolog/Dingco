@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.config.FileMapper">
+
+    <insert id="imageUpload" parameterType="List">
+        insert into IMAGES
+        (board_type, board_idx, upload_name, save_name)
+        values
+        <foreach collection="list" item="vo" separator=",">
+            (#{vo.tableDir}, last_insert_id(), #{vo.fileName}, #{vo.serverFileName})
+        </foreach>
+    </insert>
+
+</mapper>

@@ -51,7 +51,7 @@
 <jsp:include page="../page.jsp"></jsp:include>
 <!-- 페이지 번호 출력 -->
 <br>
-<a href="/faq/write">문의하기</a>
+<a href="/inquiry/write">문의하기</a>
 </body>
 </html>
 
