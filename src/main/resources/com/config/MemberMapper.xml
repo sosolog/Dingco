@@ -24,7 +24,7 @@
 
     <!-- 명지 : 마이페이지 정보 가져오기 -->
     <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
-        select m_idx, username, userid, passwd, email1, email2, authorities, uploadfilename, storefilename, phone1, phone2, phone3, DATE_FORMAT(joindate, '%Y-%m-%d') joindate
+        select m_idx, username, userid, passwd, email1, email2, authorities, uploadfilename, storefilename, phone1, phone2, phone3, DATE_FORMAT(joindate, '%Y-%m-%d') joindate, authorities
         from MEMBER
         WHERE m_idx=#{m_idx}
     </select>
@@ -32,14 +32,12 @@
     <!-- 명지 : 마이페이지 정보 수정하기 -->
     <update id="updateMypage" parameterType="MemberDTO">
         update MEMBER
-        set username=#{username},
-            userid=#{userid},
+        set
             passwd=#{passwd},
             email1=#{email1},
             email2=#{email2},
-            authorities=#{authorities},
-            uploadfilename=#{uploadfilename},
-            storefilename=#{storefilename},
+            uploadFileName=#{uploadFileName},
+            storeFileName=#{storeFileName},
             phone1=#{phone1},
             phone1=#{phone2},
             phone1=#{phone3}

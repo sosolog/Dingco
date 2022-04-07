@@ -1,46 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
-<%------ Start : JavaScript ------%>
+<%------ Start : JSTL 변수 설정 ------%>
 
-<script type="text/javascript">
+<c:set var="m_idx" value="${memberDTO.m_idx}"/>
+<c:set var="userid" value="${memberDTO.userid}"/>
+<c:set var="passwd" value="${memberDTO.passwd}"/>
+<c:set var="username" value="${memberDTO.username}"/>
+<c:set var="phone1" value="${memberDTO.phone1}"/>
+<c:set var="phone2" value="${memberDTO.phone2}"/>
+<c:set var="phone3" value="${memberDTO.phone3}"/>
+<c:set var="email1" value="${memberDTO.email1}"/>
+<c:set var="email2" value="${memberDTO.email2}"/>
+<c:set var="authorities" value="${memberDTO.authorities}"/>
+<c:set var="joindate" value="${memberDTO.joindate}"/>
+<c:set var="uploadFileName" value="${memberDTO.uploadFileName}"/>
+<c:set var="storeFileName" value="${memberDTO.storeFileName}"/>
 
-
-</script>
-
-<%------ End : JavaScript ------%>
-
-
-<%------ Start : HTML ------%>
-
-<c:set var="m_idx" value="${userInfo.m_idx}"/>
-<c:set var="userid" value="${userInfo.userid}"/>
-<c:set var="passwd" value="${userInfo.passwd}"/>
-<c:set var="username" value="${userInfo.username}"/>
-<c:set var="phone1" value="${userInfo.phone1}"/>
-<c:set var="phone2" value="${userInfo.phone2}"/>
-<c:set var="phone3" value="${userInfo.phone3}"/>
-<c:set var="email1" value="${userInfo.email1}"/>
-<c:set var="email2" value="${userInfo.email2}"/>
-<c:set var="authorities" value="${userInfo.authorities}"/>
-<c:set var="joindate" value="${userInfo.joindate}"/>
+<%------ End : JSTL 변수 설정 ------%>
 
 <div id="wrap_editUser">
     <div id="main">
         <div class="title">
-			<span>
-				사용자 정보 수정
-			</span>
+			<h2> 사용자 정보 수정 </h2>
         </div>
-        <form action="/editMypage.action" id="editUser_form" name="editUserForm" method="post">
+        <form action="/editMypage.action" id="editUser_form" name="editUserForm" method="post" enctype="multipart/form-data">
             <table class="editUser_table">
                 <tr>
                     <td class="item_th">
-                        <div><span>IDX</span></div>
+                        <div><span>회원 번호</span></div>
                     </td>
                     <td class="item_box">
-                        <div><input readonly="readonly" id="m_idx" name="m_idx" value="${m_idx}"></div>
+                        <div><input readonly id="m_idx" name="m_idx" value="${m_idx}"></div>
                     </td>
                 </tr>
                 <tr>
@@ -48,7 +41,7 @@
                         <div><span>이름</span></div>
                     </td>
                     <td class="item_box">
-                        <div><input readonly="readonly" id="username" name="username" value="${username}"></div>
+                        <div><input readonly id="username" name="username" value="${username}"></div>
                     </td>
                 </tr>
                 <tr>
@@ -56,7 +49,7 @@
                         <div><span>아이디</span></div>
                     </td>
                     <td class="item_box">
-                        <div><input readonly="readonly" id="userid" name="userid" value="${userid}"></div>
+                        <div><input readonly id="userid" name="userid" value="${userid}"></div>
                     </td>
                 </tr>
                 <tr>
@@ -64,7 +57,7 @@
                         <div><span>비밀번호</span></div>
                     </td>
                     <td class="item_box">
-                        <div><input type="text" id="passwd" name="passwd" value="${passwd}" onkeyup="passwd_check('wrap_editUser')"
+                        <div><input type="password" id="passwd" name="passwd" value="${passwd}" onkeyup="passwd_check('wrap_editUser')"
                                     placeholder="비밀번호를 입력하세요" autocomplete="off"></div>
                     </td>
                 </tr>
@@ -73,14 +66,31 @@
                         <div><span>재확인</span></div>
                     </td>
                     <td class="item_box">
-                        <div><input type="text" id="passwd2" name="passwd2" onkeyup="passwd_check('wrap_editUser')"
+                        <div><input type="password" id="passwd2" name="passwd2" onkeyup="passwd_check('wrap_editUser')"
                                     placeholder="비밀번호를 다시 한번 입력하세요" autocomplete="off"></div>
+                        <div>
+                            <spring:bind path="memberDTO.passwd">
+                                ${status.errorMessage }
+                            </spring:bind>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <input type="hidden" id="chk_pw" name="chk_pw" value="false">
-                    <td><span class="pw_check">비밀번호를 입력해주세요</span></td>
+                    <td><span class="pw_check"></span></td>
+                </tr>
+                <tr>
+                    <td class="item_th"><div>프로필 사진 업로드</div></td>
+                    <td>
+                        <input type="hidden" name="oUploadFileName" value="${uploadFileName}">
+                        <input type="hidden" name="oStoreFileName" value="${storeFileName}">
+                        <input id="file" name="file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="checkFileSize()"/>
+                        <div>기존 사진 : ${uploadFileName} </div>
+                        <div><img src="/files/${storeFileName}" style="width:100px; height:100px; overflow: hidden; object-fit: cover;"></div>
+                        <div>프로필 사진 업로드(크기:2MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)</div>
+                        <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
+                    </td>
                 </tr>
                 <tr>
                     <td class="item_th"><div>전화번호</div></td>
@@ -94,6 +104,18 @@
                         <span class="link">-</span>
                         <input type="text" name="phone3" value="${phone3}" autocomplete="off">
                     </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><span class="phone_check">
+                        p
+                        <spring:bind path="memberDTO.phone2">
+                            ${status.errorMessage}
+                        </spring:bind>
+                        <spring:bind path="memberDTO.phone3">
+                            ${status.errorMessage}
+                        </spring:bind>
+                    </span></td>
                 </tr>
                 <tr>
                     <td class="item_th"><div>이메일</div></td>
@@ -110,16 +132,28 @@
                     </td>
                 </tr>
                 <tr>
+                    <td></td>
+                    <td><span class="email_check">
+                        d
+                        <spring:bind path="memberDTO.email1">
+                            ${status.errorMessage }
+                        </spring:bind>
+                        <spring:bind path="memberDTO.email2">
+                            ${status.errorMessage }
+                        </spring:bind>
+                    </span></td>
+                </tr>
+                <tr>
                     <td class="item_th">
                         <div><span>가입일</span></div>
                     </td>
                     <td class="item_box">
-                        <div><input readonly="readonly" id="joindate" name="joindate" value="${joindate}"></div>
+                        <div><input readonly id="joindate" name="joindate" value="${joindate}"></div>
                     </td>
                 </tr>
             </table>
-            <div class="wrap_btn">
-                <a class="submit_box" onclick="editUserForm_submit(editUserForm)">수정하기</a>
+            <div class="wrap_btn" style="width: 100px; height: 40px; background-color: #888; text-align: center; margin-top:10px;">
+                <a class="submit_box" onclick="editUserForm_submit(editUserForm)" style="display: inline-block; margin-top:10px; color:#fff;">수정하기</a>
             </div>
         </form>
     </div>

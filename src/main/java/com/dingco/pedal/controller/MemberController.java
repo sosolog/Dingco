@@ -51,24 +51,65 @@ public class MemberController {
 
     // -------------------------------- Start : 명지 -------------------------------- //
     @RequestMapping(value = "/login/mypage", method = RequestMethod.GET)
-    public String selectMypageInfo(Model model, HttpServletRequest request,@Login MemberDTO userInfo){
-
+    public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo){
         try {
-            userInfo = mService.selectMypageInfo(userInfo.getM_idx());
+            userinfo = mService.selectMypageInfo(userinfo.getM_idx());
+            memberDTO.setM_idx(userinfo.getM_idx());
+            memberDTO.setUserid(userinfo.getUserid());
+            memberDTO.setUsername(userinfo.getUsername());
+            memberDTO.setPasswd(userinfo.getPasswd());
+            memberDTO.setEmail1(userinfo.getEmail1());
+            memberDTO.setEmail2(userinfo.getEmail2());
+            memberDTO.setPhone1(userinfo.getPhone1());
+            memberDTO.setPhone2(userinfo.getPhone2());
+            memberDTO.setPhone3(userinfo.getPhone3());
+            memberDTO.setStoreFileName(userinfo.getStoreFileName());
+            memberDTO.setUploadFileName(userinfo.getUploadFileName());
+            memberDTO.setJoindate(userinfo.getJoindate());
+            memberDTO.setAuthorities(userinfo.getAuthorities());
+            System.out.println("TEST4: "+memberDTO);
         } catch (Exception e){
             e.printStackTrace();
         }
-        model.addAttribute("userInfo", userInfo);
         return "/mypage";
     }
   
-    @RequestMapping(value = "/editMypage.action", method = RequestMethod.GET)
-    public String editMypage (Model model, HttpServletRequest request, @RequestParam MemberDTO userinfo){
+    @RequestMapping(value = "/editMypage.action", method = RequestMethod.POST)
+    public String editMypage (@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
+                              @RequestParam(required=false) MultipartFile file, HttpServletRequest request) {
         String next = "";
+        // 1. 유효성 검사 (실패 시 입력 Form으로 Retrun)
+        if(bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "/mypage";
+        }
 
+        // 2. 유효성 검사 성공 시 update 로직 진행
         try {
-            mService.updateMypage(userinfo);
-            next = "redirect:/mypage";
+            // -------- Start : File upload -------- //
+            // 1) 업로드할 파일이 있을 때
+            if (file != null) {
+                // 사용자의 이미지 파일을 들고 옴 => img.png
+                String originalFilename = file.getOriginalFilename();
+
+                // 서버에 저장하는 파일명 세팅(같은 이름으로 저장하면 덮어쓰는 오류를 막기 위함)
+                String storeFileName = createStoreFileName(originalFilename);
+
+                // 전달받은 데이터(파라미터)를 저장소에 저장해준다.
+                file.transferTo(new File(getFullPath(storeFileName)));
+
+                // memberDTO에 이미지 파일명, 서버에 저장할 이미지 파일명 담아주기
+                memberDTO.setUploadFileName(originalFilename);
+                memberDTO.setStoreFileName(storeFileName);
+            } else {
+            // 2) 업로드할 파일이 없을 때
+                memberDTO.setUploadFileName(request.getParameter("oUploadFileName"));
+                memberDTO.setStoreFileName(request.getParameter("oStoreFileName"));
+            }
+            // -------- End : File upload -------- //
+            System.out.println("TEST-Controller: "+memberDTO);
+            mService.updateMypage(memberDTO);
+            next = "redirect:/login/mypage";
         } catch (Exception e) {
             e.printStackTrace();
             next = "/error";
