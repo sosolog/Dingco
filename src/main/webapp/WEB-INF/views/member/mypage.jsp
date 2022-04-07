@@ -1,6 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+
+<%------ Start : JavaScript ------%>
+
+<script type="text/javascript">
+
+
+</script>
+
+<%------ End : JavaScript ------%>
+
+
+<%------ Start : HTML ------%>
+
 <c:set var="m_idx" value="${userInfo.m_idx}"/>
 <c:set var="userid" value="${userInfo.userid}"/>
 <c:set var="passwd" value="${userInfo.passwd}"/>
@@ -12,7 +25,6 @@
 <c:set var="email2" value="${userInfo.email2}"/>
 <c:set var="authorities" value="${userInfo.authorities}"/>
 <c:set var="joindate" value="${userInfo.joindate}"/>
-
 
 <div id="wrap_editUser">
     <div id="main">
@@ -113,3 +125,4 @@
     </div>
 </div>
 
+<%------ End : HTML ------%>

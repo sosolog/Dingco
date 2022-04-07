@@ -62,7 +62,7 @@ public class MemberController {
         return "/mypage";
     }
   
-     @RequestMapping(value = "/editMypage.action", method = RequestMethod.GET)
+    @RequestMapping(value = "/editMypage.action", method = RequestMethod.GET)
     public String editMypage (Model model, HttpServletRequest request, @RequestParam MemberDTO userinfo){
         String next = "";
 
@@ -150,10 +150,10 @@ public class MemberController {
         return fileDir + filename;
     }
 
-///////////////////////////////////민욱///////////////////////////////////
+    // -------------------------------- End : 민욱 -------------------------------- //
 
 
-///////////////////////////////////주황///////////////////////////////////
+    // -------------------------------- Start : 주황 -------------------------------- //
     //주황 - 아이디/비밀번호 찾기
     @GetMapping("/find_ID_PW")
     public String find_ID_PW(){
@@ -161,7 +161,7 @@ public class MemberController {
         return "find_ID_PW";
     }
 
-///////////////////////////////////주황///////////////////////////////////
+    // -------------------------------- End : 주황 -------------------------------- //
 
 
  
