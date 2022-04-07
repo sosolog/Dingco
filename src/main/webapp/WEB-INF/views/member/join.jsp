@@ -60,15 +60,41 @@
     });
 </script>
 
-<!-- submit 제약조건(아이디 중복체크, 전화번호 인증_미정) -->
+<!-- 회원가입 비밀번호 일치 여부 확인 -->
+<script>
+    $(function () {
+        $("#passwd1").on("keyup", function () {
+            var passwd = $('#passwd').val();
+            var passwd1 = $('#passwd1').val();
+
+            if(passwd == passwd1) {
+                $("#pwCheckHidden").val("true");
+                $("#pwCheckResult").text("");
+            }else {
+                $("#pwCheckResult").text("비밀번호가 일치하지 않습니다.");
+                $("#pwCheckHidden").val("false");
+            }
+        });
+    });
+</script>
+
+<!-- submit 제약조건(아이디 중복 확인, 비밀번호 중복 확인) -->
 <script>
     $(function () {
         $("form").on("submit", function () {
-            if($("#idCheckHidden").val()=='true'){
+            if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true'){
                 return true
             }else{
-                alert("아이디 중복확인이 필요합니다.")
-                return false
+                if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
+                    alert("아이디와 비밀번호 중복 확인이 필요합니다.")
+                    return false
+                }else if($("#idCheckHidden").val()=='false') {
+                    alert("아이디와 중복 확인이 필요합니다.")
+                    return false
+                }else if($("#pwCheckHidden").val()=='false') {
+                    alert("비밀번호 중복 확인이 필요합니다.")
+                    return false
+                }
             }
         });
     });
@@ -78,6 +104,7 @@
 <br>
 <form action="memberAdd" id="memberAdd" method="post" enctype="multipart/form-data">
     <input type="hidden" value="false" id="idCheckHidden" name="idCheckHidden">
+    <input type="hidden" value="false" id="pwCheckHidden" name="pwCheckHidden">
     * 아이디:<input type="text" id="userid" name="userid" value="${memberDTO.userid}">
     <input type="button" id="idCheck" value="아이디 중복확인"><br>
     <span id = "idCheckResult">
@@ -88,7 +115,7 @@
     <br>
     * 비밀번호:<input type="password"  id="passwd" name="passwd" ><br><br>
     * 비밀번호 확인:<input type="password" id="passwd1" name="passwd1" onkeyup=""><br>
-    <span>
+    <span id="pwCheckResult">
         <spring:bind path="memberDTO.passwd">
             ${status.errorMessage }
         </spring:bind>
@@ -105,7 +132,6 @@
             </select>-
     <input type="text" name="phone2" value="${memberDTO.phone2}">-
     <input type="text" name="phone3" value="${memberDTO.phone3}">
-    <button>휴대전화 인증</button>
     <br>
     <spring:bind path="memberDTO.phone2">
         ${status.errorMessage}
@@ -116,7 +142,7 @@
     <br>
     <br>
     <input id="file" name = "file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic"/><br>
-    <br>프로필 사진 업로드(크기:2MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)<br>
+    <br>프로필 사진 업로드(크기:3MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)<br>
     <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
 
     <br>
