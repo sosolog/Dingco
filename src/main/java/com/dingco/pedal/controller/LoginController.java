@@ -39,6 +39,7 @@ public class LoginController {
                         ,@RequestParam(defaultValue = "/main") String redirectURL
                         , BindingResult bindingResult
                         ,HttpServletRequest request) throws Exception {
+
         if(bindingResult.hasErrors()){
             return "loginForm";
         }

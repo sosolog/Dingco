@@ -3,6 +3,7 @@ package com.dingco.pedal.service;
 import com.dingco.pedal.dao.MemberDAO;
 import com.dingco.pedal.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -14,9 +15,14 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     MemberDAO dao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // 민욱 : 회원 추가
     @Override
     public int memberAdd(MemberDTO memberDTO) throws Exception {
+        String encodedPassword = passwordEncoder.encode(memberDTO.getPasswd());
+        memberDTO.setPasswd(encodedPassword);
         return dao.memberAdd(memberDTO);
     }
     // 회원가입 아이디 유효성 체크

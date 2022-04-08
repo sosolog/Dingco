@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.dingco.pedal.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
@@ -47,6 +48,9 @@ public class MemberController {
     @Autowired
     SendEmailService sendEmailService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
 
     // -------------------------------- Start : 명지 -------------------------------- //
@@ -67,7 +71,6 @@ public class MemberController {
             memberDTO.setUploadFileName(userinfo.getUploadFileName());
             memberDTO.setJoindate(userinfo.getJoindate());
             memberDTO.setAuthorities(userinfo.getAuthorities());
-            System.out.println("TEST4: "+memberDTO);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -77,6 +80,7 @@ public class MemberController {
     @RequestMapping(value = "/editMypage.action", method = RequestMethod.POST)
     public String editMypage (@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
                               @RequestParam(required=false) MultipartFile file, HttpServletRequest request) {
+
         String next = "";
         // 1. 유효성 검사 (실패 시 입력 Form으로 Retrun)
         if(bindingResult.hasErrors()) {
@@ -107,7 +111,13 @@ public class MemberController {
                 memberDTO.setStoreFileName(request.getParameter("oStoreFileName"));
             }
             // -------- End : File upload -------- //
-            System.out.println("TEST-Controller: "+memberDTO);
+
+            // -------- Start : PasswordEncoder(Security) -------- //
+            // 암호화는 BCryptPasswordEncoder로 구현된 encoder()를 이용
+            // 파라미터에 평문 패스워드 주입 -> 암호화된 패스워드를 반환
+            System.out.println("비밀번호암호화: "+passwordEncoder.encode(memberDTO.getPasswd()));
+            // -------- End : PasswordEncoder(Security) -------- //
+
             mService.updateMypage(memberDTO);
             next = "redirect:/login/mypage";
         } catch (Exception e) {
