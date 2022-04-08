@@ -24,7 +24,7 @@
 
     <!-- 명지 : 마이페이지 정보 가져오기 -->
     <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
-        select m_idx, username, userid, passwd, email1, email2, authorities, uploadfilename, storefilename, phone1, phone2, phone3, DATE_FORMAT(joindate, '%Y-%m-%d') joindate, authorities
+        select m_idx, username, userid, passwd, email1, email2, uploadfilename, storefilename, phone1, phone2, phone3, DATE_FORMAT(joindate, '%Y-%m-%d') joindate, authorities
         from MEMBER
         WHERE m_idx=#{m_idx}
     </select>
@@ -45,6 +45,12 @@
     </update>
 
     <select id="selectByLoginId" resultType="MemberDTO" parameterType="string">
+        select *
+        from MEMBER
+        where userid = #{userid}
+    </select>
+
+    <select id="selectByLoginId2" resultType="MemberDTO" parameterType="loginDTO">
         select *
         from MEMBER
         where userid = #{userid}

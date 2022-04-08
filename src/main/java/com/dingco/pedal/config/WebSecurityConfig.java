@@ -44,11 +44,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // WebSecu
                 .antMatchers("/**").permitAll() // 누구나 접근 가능한 url 설정
                 //.antMatchers("/admin/**").hasRole("ADMIN") // "ADMIN"만 접근 가능한 url 설정
                 .and()
-            .formLogin() // 로그인에 대한 설정
-                .loginPage("/login")// 로그인 페이지 링크
-                // .loginProcessingUrl("/login.action") // 해당 URL로 요청이 오면 스프링 시큐리티가 가로채서 로그인처리를 한다
-                .defaultSuccessUrl("/main") // 로그인 성공시 연결되는 주소
-                .and()
+//            .formLogin() // 로그인에 대한 설정
+//                .loginPage("/login")// 로그인 페이지 링크
+//                // .loginProcessingUrl("/login.action") // 해당 URL로 요청이 오면 스프링 시큐리티가 가로채서 로그인처리를 한다
+//                .defaultSuccessUrl("/main") // 로그인 성공시 연결되는 주소
+//                .and()
             .logout()
                 .logoutSuccessUrl("/login") // 로그아웃 성공시 연결되는 주소
                 .invalidateHttpSession(true) // 로그아웃 시 저장해 둔 세션 날리기

@@ -1,5 +1,6 @@
 package com.dingco.pedal.service;
 
+import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
 
 public interface MemberService {
@@ -15,5 +16,8 @@ public interface MemberService {
 
     // 주황 : 아이디로 로그인 찾기
     public MemberDTO selectByLoginId(String userid,String passwd) throws Exception;
+
+    // 명지 : 로그인2 (암호화 비교)
+    public MemberDTO selectByLoginId2(LoginDTO loginDTO) throws Exception;
 
 }

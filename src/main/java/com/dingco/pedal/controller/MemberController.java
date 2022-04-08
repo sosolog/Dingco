@@ -111,12 +111,9 @@ public class MemberController {
                 memberDTO.setStoreFileName(request.getParameter("oStoreFileName"));
             }
             // -------- End : File upload -------- //
-
-            // -------- Start : PasswordEncoder(Security) -------- //
-            // 암호화는 BCryptPasswordEncoder로 구현된 encoder()를 이용
-            // 파라미터에 평문 패스워드 주입 -> 암호화된 패스워드를 반환
-            System.out.println("비밀번호암호화: "+passwordEncoder.encode(memberDTO.getPasswd()));
-            // -------- End : PasswordEncoder(Security) -------- //
+    
+            // 명지 : 패스워드 암호화
+            memberDTO.setPasswd(passwordEncoder.encode(memberDTO.getPasswd()));
 
             mService.updateMypage(memberDTO);
             next = "redirect:/login/mypage";
@@ -167,6 +164,10 @@ public class MemberController {
         memberDTO.setStoreFileName(storeFileName);
 
         ////////////////////회원 추가////////////////////
+
+        // 명지 : 패스워드 암호화
+        memberDTO.setPasswd(passwordEncoder.encode(memberDTO.getPasswd()));
+
         int num = mService.memberAdd(memberDTO);
 
         return "redirect:main";

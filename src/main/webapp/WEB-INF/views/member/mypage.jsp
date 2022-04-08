@@ -57,7 +57,7 @@
                         <div><span>비밀번호</span></div>
                     </td>
                     <td class="item_box">
-                        <div><input type="password" id="passwd" name="passwd" value="${passwd}" onkeyup="passwd_check('wrap_editUser')"
+                        <div><input type="password" id="passwd" name="passwd" value="" onkeyup="passwd_check('wrap_editUser')"
                                     placeholder="비밀번호를 입력하세요" autocomplete="off"></div>
                     </td>
                 </tr>
