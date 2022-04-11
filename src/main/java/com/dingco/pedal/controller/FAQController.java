@@ -33,7 +33,7 @@ public class FAQController {
     @GetMapping("/faq")
     public String faq(HttpSession session,
                       @RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx,
-                      @RequestParam(value = "curPage", required = false, defaultValue = "1") String curPage, Model model)throws Exception {
+                      @RequestParam(value = "curPage", required = false, defaultValue = "1") String curPage, Model model) throws Exception {
 
         MemberDTO dto = (MemberDTO) session.getAttribute("login");
 
@@ -42,7 +42,7 @@ public class FAQController {
         //페이징 처리
         PageDTO<FAQDTO> pageDTO = service.selectAllPage(Integer.parseInt(curPage));
 
-        model.addAttribute("pageDTO",pageDTO);
+        model.addAttribute("pageDTO", pageDTO);
 
         return "faq";
     }
@@ -50,21 +50,48 @@ public class FAQController {
 
 
     @GetMapping("/faq/write")
-    public String boardWriteUI(Model m)throws Exception{
+    public String boardWriteUI(HttpSession session, Model m) throws Exception {
+
+        MemberDTO dto = (MemberDTO) session.getAttribute("login");
 
         List<HashMap<String, String>> category = service.category();
-        m.addAttribute("category",category);
+        m.addAttribute("category", category);
+        m.addAttribute("dto", dto);
         return "write";
     }
 
 
-
     @PostMapping("/faq/write")
-    public String boardWrite(@RequestParam FAQDTO dto)throws Exception{
-        service.insert(dto);
-        return "redirect:faq";
+    public String boardWrite(FAQDTO dto) throws Exception {
+        System.out.println(dto);
+        service.boardWrite(dto);
+        return "redirect:/faq";
     }
 
+    @GetMapping("/faq/{number_idx}")
+    public String retrieve(@PathVariable("number_idx") int number_idx, HttpSession session, Model m) throws Exception {
+
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
+
+        FAQDTO faqDTO = service.retrieve(number_idx);
+        List<HashMap<String, String>> category = service.category();
+
+        m.addAttribute("faqDTO", faqDTO);
+        m.addAttribute("memberDTO", memberDTO);
+        m.addAttribute("category", category);
+        return "retrieve";
+    }
+
+    @PutMapping("/faq/{number_idx}")
+    public String update(@PathVariable("number_idx") int number_idx, FAQDTO dto)throws Exception{
+        service.update(dto);
+        return "redirect:/faq/{number_idx}";
+    }
+
+    @DeleteMapping("/faq/{number_idx}")
+    public void delete(@PathVariable("number_idx") int number_idx, Model m)throws Exception{
+        service.delete(number_idx);
+    }
 
 
 

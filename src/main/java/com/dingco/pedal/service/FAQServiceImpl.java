@@ -16,13 +16,7 @@ public class FAQServiceImpl implements FAQService {
     FAQDAO dao;
 
     @Override
-    public int insert(FAQDTO dto) throws Exception {
-        int num = dao.insert(dto);
-        return num;
-    }
-
-    @Override
-    public PageDTO selectAllPage(int curPage)throws Exception {
+    public PageDTO selectAllPage(int curPage) throws Exception {
         PageDTO pageDTO = dao.selectAllPage(curPage);
         return pageDTO;
     }
@@ -31,5 +25,30 @@ public class FAQServiceImpl implements FAQService {
     public List<HashMap<String, String>> category() throws Exception {
         List<HashMap<String, String>> list = dao.category();
         return list;
+    }
+
+    @Override
+    public int boardWrite(FAQDTO dto) throws Exception {
+        System.out.println(dto);
+        int num = dao.boardWrite(dto);
+        return num;
+    }
+
+    @Override
+    public FAQDTO retrieve(int number_idx) throws Exception {
+        FAQDTO faqDTO = dao.retrieve(number_idx);
+        return faqDTO;
+    }
+
+    @Override
+    public int update(FAQDTO dto) throws Exception {
+        int num = dao.update(dto);
+        return num;
+    }
+
+    @Override
+    public int delete(int number_idx) {
+        int num = dao.delete(number_idx);
+        return num;
     }
 }
