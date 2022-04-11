@@ -1,5 +1,6 @@
 package com.dingco.pedal.dao;
 
+import com.dingco.pedal.util.FileName;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
@@ -49,7 +50,12 @@ public class InquiryDAO {
         return session.update("com.config.InquiryMapper.updateUserInquiry", dto);
     }
 
+    public int updateUserInquiryStatus(InquiryDTO dto) throws Exception {
+        return session.update("com.config.InquiryMapper.updateUserInquiryStatus", dto);
+    }
+
     public int deleteUserInquiry(int i_idx) throws Exception {
         return session.delete("com.config.InquiryMapper.deleteUserInquiry", i_idx);
     }
+
 }
