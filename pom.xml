@@ -103,11 +103,27 @@
         <!-- End: validation 유효성검사 -->
 
         <!-- Start: Spring Security -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <!-- End: Spring Security -->
+
+        <!-- Start: Spring Boot Test -->
+        <!-- include(Junit5, SpringTest&SpringBootTest, AssertJ, HAmcrest, Mockito, JSONassert, JsonPath) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- End: Spring Boot Test -->
+
         <!-- Start: 이메일 API -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -136,6 +152,8 @@
             <version>1.16</version>
         </dependency>
         <!-- End: Logging -->
+
+
     </dependencies>
 
     <build>

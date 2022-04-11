@@ -1,5 +1,6 @@
 package com.dingco.pedal.dao;
 
+import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,12 @@ public class MemberDAO {
 
     // 주황 : 아이디로 로그인 찾기
     public Optional<MemberDTO> selectByLoginId(String userid) throws Exception{
-
         return Optional.ofNullable(session.selectOne("com.config.MemberMapper.selectByLoginId", userid));
+    }
+
+    public MemberDTO selectByLoginId2(LoginDTO loginDTO) throws Exception {
+        System.out.println("DAO-"+loginDTO.toString());
+        return session.selectOne("com.config.MemberMapper.selectByLoginId2", loginDTO);
     }
 
 }

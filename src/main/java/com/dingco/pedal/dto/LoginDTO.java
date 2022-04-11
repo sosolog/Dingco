@@ -2,16 +2,17 @@ package com.dingco.pedal.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Data
 public class LoginDTO {
 
-    @NotEmpty(message = "아이디를 입력하세요")
+    @NotBlank(message = "아이디 및 비밀번호를 확인해주세요")
     private String userid;
 
 
-    @NotEmpty
+    @NotBlank(message = "아이디 및 비밀번호를 확인해주세요")
     private String passwd;
 
 }
