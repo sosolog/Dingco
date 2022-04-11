@@ -20,14 +20,13 @@
         <th>조회수</th>
     </tr>
     <c:set var="pageDTO" value="${pageDTO}"></c:set>
-    ${pageDTO}
     <c:forEach var="dto" items="${pageDTO.dtoList}" varStatus="status">
         <tr>
             <td>${status.count}</td>
             <td>${dto.number_idx}</td>
-            <td><a href="retrieve?num=${dto.number_idx}">${dto.title}</a>a></td>
+            <td><a href="/faq/${dto.number_idx}">${dto.title}</a></td>
             <td>${dto.category_name}</td>
-            <td>${dto.userid}</td>
+            <td>${dto.username}</td>
             <td>${dto.content}</td>
             <td>${dto.writeday}</td>
             <td>${dto.readcnt}</td>
