@@ -46,8 +46,6 @@ public class FAQController {
 
         return "faq";
     }
-    // 단축키 : ctrl + alt + v
-
 
     @GetMapping("/faq/write")
     public String boardWriteUI(HttpSession session, Model m) throws Exception {
