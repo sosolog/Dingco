@@ -1,5 +1,6 @@
 package com.dingco.pedal.controller;
 
+import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.CommentDTO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
@@ -38,14 +39,11 @@ public class InquiryController {
 
     @GetMapping("/inquiry")
     public ModelAndView showUserInquiry(
+            @Login MemberDTO memberDTO,
             HttpServletRequest request,
             HttpSession session,
             @RequestParam(value = "curPage", required = false, defaultValue = "1") int curPage
     ) throws Exception {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-
-        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
-        logger.debug(login.toString());
         logger.debug(request.getServletPath());
 
         PageDTO<InquiryDTO> pageDTO = inquiryService.showUserInquiry(memberDTO, curPage);
@@ -64,9 +62,7 @@ public class InquiryController {
     }
 
     @PostMapping("/inquiry")
-    public String writeUserInquiry(HttpSession session, @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO) throws Exception {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-        inquiryDTO.setM_idx(memberDTO.getM_idx());
+    public String writeUserInquiry(@Login MemberDTO memberDTO, @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO) throws Exception {
 
         List<MultipartFile> files = inquiryDTO.getFiles();
         List<FileName> fileNames = inquiryDTO.getFileNames();
@@ -130,11 +126,7 @@ public class InquiryController {
         return result;
     }
     @GetMapping("/inquiry/{idx}")
-    public ModelAndView showOneUserInquiry(HttpSession session, @PathVariable("idx") int i_idx) throws Exception {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
-        logger.debug(login.toString());
-
+    public ModelAndView showOneUserInquiry(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx) throws Exception {
         InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");

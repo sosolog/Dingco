@@ -15,10 +15,6 @@ public class FileUploadUtils {
     private final String uploadBaseDir; // 서버 내 저장할 base 저장소 path
     private final TableDir tableDir; // 테이블별 저장할 하위 디렉토리 이름
 
-    public void deleteFile(FileName fileName) {
-//        File file = new File();
-    }
-
     public void uploadFiles(List<MultipartFile> fileList, List<FileName> fileNames) throws IOException {
         for (MultipartFile file : fileList) {
             // 사용자의 이미지 파일을 들고 옴 => img.png
@@ -36,7 +32,7 @@ public class FileUploadUtils {
     }
 
     // 서버에 저장하는 파일 : 서부 내부에서 관리하는 파일은 유일한 이름을 생성하는 UUID를 사용해서 충돌을 피함(+확장자)
-    private String createStoreFileName (String originalFilename){
+    public String createStoreFileName (String originalFilename){
         String uuid = UUID.randomUUID().toString(); // UUID
         String ext = extractExt(originalFilename); // 확장자
         return uuid + "." + ext; // 서버에 저장하는 파일명 : UUID + 확장자
@@ -44,13 +40,13 @@ public class FileUploadUtils {
     }
 
     // 사용자의 이미지 파일의 확장자 추출(.png/.jpg ...)
-    private String extractExt (String originalFilename){
+    public String extractExt (String originalFilename){
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
 
     // 서버의 저장소 위치
-    private String getFullPath (String filename){
+    public String getFullPath (String filename){
         return uploadBaseDir + tableDir.getDirectoryName() + "\\" + filename;
     }
 }

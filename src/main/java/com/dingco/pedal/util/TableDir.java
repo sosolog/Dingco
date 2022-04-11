@@ -3,7 +3,8 @@ package com.dingco.pedal.util;
 public enum TableDir {
     INQUIRY("inquiry"),
     FAQ("faq"),
-    PAY("pay");
+    PAY("pay"),
+    MEMBER("member");
 
     private String directoryName;
 

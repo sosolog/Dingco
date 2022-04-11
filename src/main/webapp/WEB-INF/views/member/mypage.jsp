@@ -87,7 +87,7 @@
                         <input type="hidden" name="oStoreFileName" value="${storeFileName}">
                         <input id="file" name="file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="checkFileSize()"/>
                         <div>기존 사진 : ${uploadFileName} </div>
-                        <div><img src="/files/${storeFileName}" style="width:100px; height:100px; overflow: hidden; object-fit: cover;"></div>
+                        <div><img src="/files/member/${storeFileName}" style="width:100px; height:100px; overflow: hidden; object-fit: cover;"></div>
                         <div>프로필 사진 업로드(크기:2MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)</div>
                         <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
                     </td>

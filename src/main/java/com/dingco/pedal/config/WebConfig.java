@@ -30,9 +30,10 @@ public class WebConfig implements WebMvcConfigurer {
     // 명지 - 외부 resources
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/files/**") // key
-                .addResourceLocations("file:/Users/Administrator/IdeaProjects/pedal/src/main/resources/static/upload/"); // value (임시.명지)
+//        registry
+//                .addResourceHandler("/files/**") // key
+//                .addResourceLocations("file:/Users/Administrator/IdeaProjects/pedal/src/main/resources/static/upload/"); // value (임시.명지)
+        registry.addResourceHandler("/files/**").addResourceLocations("file:C:\\upload\\");
     }
 }
 
