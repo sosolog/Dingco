@@ -3,13 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.config.FileMapper">
-
     <insert id="imageUpload" parameterType="List">
         insert into IMAGES
         (board_type, board_idx, upload_name, save_name)
         values
         <foreach collection="list" item="vo" separator=",">
             (#{vo.tableDir}, last_insert_id(), #{vo.fileName}, #{vo.serverFileName})
+        </foreach>
+    </insert>
+    <insert id="uploadMoreImages" parameterType="hashmap">
+        insert into IMAGES
+        (board_type, board_idx, upload_name, save_name)
+        values
+        <foreach collection="list" item="vo" separator=",">
+            (#{vo.tableDir}, #{idx}, #{vo.fileName}, #{vo.serverFileName})
         </foreach>
     </insert>
     <select id="showImages" resultType="com.dingco.pedal.util.FileName" parameterType="hashmap">
@@ -20,4 +27,12 @@
         from IMAGES
         where board_type = #{tableDir} and board_idx = #{idx}
     </select>
+    <delete id="deleteImage" parameterType="int">
+        delete from IMAGES
+        where img_idx = #{img_idx}
+    </delete>
+    <delete id="deleteAllImagesInPost" parameterType="hashmap">
+        delete from IMAGES
+        where board_idx = #{board_idx} and board_type = #{tableDir}
+    </delete>
 </mapper>

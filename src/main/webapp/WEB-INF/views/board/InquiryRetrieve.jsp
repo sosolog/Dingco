@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
+    <script src="/script/jquery-3.6.0.js"></script>
 </head>
 <body>
 <h2>게시판 세부사항 보기</h2>
@@ -49,8 +50,32 @@
 
 <br>
 <hr>
-<a href="#">글 수정</a>
-<a href="#">글 삭제</a>
+<c:if test="${dto.status == 'YET'}">
+    <a href="${dto.i_idx}/update">글 수정</a>
+    <button id="deletePost">글 삭제</button>
+<script type="text/javascript">
+    $("#deletePost").on("click", function (){
+        if(confirm("정말로 삭제하시겠습니까? 한번 삭제하면 다시 복원할 수 없습니다.")){
+
+            $.ajax({
+                type: 'DELETE',
+                url: `/inquiry/${dto.i_idx}`,
+                success: function (result) {
+                    console.log(result)
+                    if(result) {
+                        location.href="/inquiry";
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.status + ' ' + jqXHR.responseText);
+                }
+            });
+        }
+    });
+</script>
+
+</c:if>
+
 </body>
 </html>
 

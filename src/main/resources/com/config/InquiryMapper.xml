@@ -65,7 +65,9 @@
         update INQUIRY
         <set>
             category_id = #{category_id}
+            ,title = #{title}
             ,content = #{content}
+            ,last_updated_date = now()
         </set>
         where inquiry_idx = #{i_idx}
     </update>

@@ -48,17 +48,30 @@ public class InquiryServiceImpl implements InquiryService {
     @Transactional
     public int writeUserInquiry(InquiryDTO dto) throws Exception {
         int result = inquiryDAO.writeUserInquiry(dto);
-        result = fileDAO.uploadImages(dto.getFileNames());
+        if (dto.getFiles() != null){
+            result = fileDAO.uploadImages(dto.getFileNames());
+        }
         return result;
     }
 
     @Override
     public int updateUserInquiry(InquiryDTO dto) throws Exception {
-        return inquiryDAO.updateUserInquiry(dto);
+        int result = inquiryDAO.updateUserInquiry(dto);
+        if (dto.getFiles() != null){
+            result = fileDAO.uploadMoreImages(dto.getFileNames(), dto.getI_idx());
+        }
+        return result;
     }
 
     @Override
     public int deleteUserInquiry(int i_idx) throws Exception {
-        return inquiryDAO.deleteUserInquiry(i_idx);
+        int result = fileDAO.deleteAllImagesInPost(i_idx, TableDir.INQUIRY);
+        result = deleteUserInquiry(i_idx);
+        return result;
+    }
+
+    @Override
+    public int deleteImage(int img_idx) throws Exception {
+        return fileDAO.deleteImage(img_idx);
     }
 }

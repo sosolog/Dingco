@@ -15,6 +15,10 @@ public class FileUploadUtils {
     private final String uploadBaseDir; // 서버 내 저장할 base 저장소 path
     private final TableDir tableDir; // 테이블별 저장할 하위 디렉토리 이름
 
+    public void deleteFile(FileName fileName) {
+//        File file = new File();
+    }
+
     public void uploadFiles(List<MultipartFile> fileList, List<FileName> fileNames) throws IOException {
         for (MultipartFile file : fileList) {
             // 사용자의 이미지 파일을 들고 옴 => img.png
