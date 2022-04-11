@@ -10,9 +10,7 @@ import javax.validation.constraints.*;
 @Data
 public class MemberDTO {
 
-
     int m_idx;
-
 
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-z].{1,9}$", message = "2~10자의 영문, 한글 이름을 사용하세요.")
     @NotEmpty(message = "사용자 이름은 필수 입력 값입니다.")
@@ -43,6 +41,5 @@ public class MemberDTO {
     String authorities;
 
     String joindate;
-
 
 }

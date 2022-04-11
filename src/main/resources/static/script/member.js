@@ -12,7 +12,7 @@ function passwd_check(pagename){
     } else if (letterCheck.checkKor.test(passwd1)) {
         $('#'+pagename+' .pw_check').text("비밀번호에는 한글을 입력할 수 없습니다");
     } else {
-        $('#'+pagename+' .pw_check').text("비밀번호 일치 및 사용 가능합니다");
+        $('#'+pagename+' .pw_check').text("비밀번호가 일치합니다");
         $('#'+pagename+' input[name=chk_pw]').val(true);
     }
 }
@@ -55,7 +55,19 @@ function f_emailSelect(obj){
     $('[name=email2]').val(obj.value);
 }
 
+<!-- 파일 크기 제한(ajax_3MB)-->
+function checkFileSize(){
+    if (this.files && this.files[0]) {
+        var maxSize = 3 * 1024 * 1024;
+        var fileSize = this.files[0].size;
 
+        if(fileSize > maxSize){
+            alert("첨부파일 사이즈는 3MB 이내로 등록 가능합니다.");
+            $(this).val('');
+            return false;
+        }
+    }
+}
 
 $(function () {
 
