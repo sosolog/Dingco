@@ -8,6 +8,7 @@ public interface CommentService {
     public int writeComment(CommentDTO commentDTO) throws Exception;
     public int updateComment(CommentDTO commentDTO) throws Exception;
     public int deleteComment(int c_idx) throws Exception;
+    public int deleteAllComments(int i_idx) throws Exception;
     public List<CommentDTO> showAllComment(int i_idx) throws Exception;
     public List<CommentDTO> showSubComment(int c_idx) throws Exception;
 }

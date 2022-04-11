@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var="dto" value="${inquiryDTO}"></c:set>
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,7 +107,7 @@
         <th>상위 문의 고유번호</th>
         <th>문의 상태</th>
     </tr>
-    <c:set var="dto" value="${inquiryDTO}"></c:set>
+
 
     <tr>
         <td>${dto.i_idx}</td>
@@ -134,11 +136,28 @@
 <br>
 <hr>
 <c:if test="${dto.status == 'YET'}">
-    <a href="${dto.i_idx}/update">글 수정</a>
+    <c:if test="${memberDTO.authorities == 'USER'}">
+        <a href="${dto.i_idx}/update">글 수정</a>
+    </c:if>
     <button id="deletePost">글 삭제</button>
-
-
 </c:if>
+<c:if test="${memberDTO.authorities == 'ADMIN'}">
+    <form:form modelAttribute="inquiryDTO" action="">
+        <form:radiobutton path="status" value="YET" label="답변 대기 중"/>
+        <form:radiobutton path="status" value="IN_PROCESS" label="답변 완료"/>
+        <form:radiobutton path="status" value="DONE" label="문의 종료"/>
+        <button type="button" id="inq_status_update">문의상태 변경하기</button>
+    </form:form>
+</c:if>
+<c:if test="${memberDTO.authorities == 'USER'}">
+    <c:if test="${dto.status == 'IN_PROCESS'}">
+        <button type="button" id="inq_terminate">문의 종료하기</button>
+    </c:if>
+    <c:if test="${dto.status != 'YET'}">
+        <button type="button" id="re_inq">재문의하기</button>
+    </c:if>
+</c:if>
+
 <hr>
 <h3>댓글</h3>
 <div>
@@ -147,9 +166,40 @@
 </div>
 <div id="comment-list"></div>
 <script type="text/javascript">
+    $("#inq_terminate").on("click", function(){
+        if(confirm("정말로 문의를 종료하시겠습니까?")){
+            chageInqStatus('DONE');
+        }
+    });
+    $("#re_inq").on("click", function(){
+        if(confirm("문의를 종료하고, 재문의를 진행하시겠습니까?")){
+            chageInqStatus('RE_INQUIRY', function (result){
+                location.href = "/inquiry/write?idx="+${dto.i_idx};
+            });
+        }
+    });
+    $("#inq_status_update").on("click", function(){
+        var v_status = $("input[type='radio'][name='status']:checked").val();
+        chageInqStatus(v_status, );
+    });
+    function chageInqStatus(v_status, success_fn=function (result) {
+        console.log(result)
+        location.reload();
+    }){
+        $.ajax({
+            type: 'POST',
+            url: `/inquiry/${dto.i_idx}/status`,
+            data: {
+                status: v_status
+            },
+            success: success_fn,
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            }
+        })
+    }
     $("#new-comment").on("click", function (){
         var comment = $("#comment").val().trim();
-        console.log("aaa")
         if(comment.length >= 2){
             let comment_data = {
                 comment: comment

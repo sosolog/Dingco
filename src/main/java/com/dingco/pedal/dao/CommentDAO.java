@@ -33,6 +33,9 @@ public class CommentDAO {
         }
         return session.delete("com.config.CommentMapper.deleteComment", c_idx);
     }
+    public int deleteAllComments(int i_idx) {
+        return session.delete("com.config.CommentMapper.deleteAllComments", i_idx);
+    }
 
     public int countReComments(int c_idx){
         return session.selectOne("com.config.CommentMapper.countReComments", c_idx);

@@ -13,6 +13,7 @@ public interface InquiryService {
     public InquiryDTO showOneUserInquiry(int i_idx) throws Exception;
     public int writeUserInquiry(InquiryDTO dto) throws Exception;
     public int updateUserInquiry(InquiryDTO dto) throws Exception;
+    public int updateUserInquiryStatus(InquiryDTO dto) throws Exception;
     public int deleteUserInquiry(int i_idx) throws Exception;
     public int deleteImage(int img_idx) throws Exception;
 }

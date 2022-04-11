@@ -50,6 +50,10 @@
         delete from COMMENT
         where comment_idx = #{c_idx}
     </delete>
+    <delete id="deleteAllComments" parameterType="int">
+        delete from COMMENT
+        where i_idx = #{i_idx}
+    </delete>
     <update id="updateStatusDeleted">
         update COMMENT
         set comment = '(삭제된 댓글)',

@@ -25,6 +25,7 @@
     </script>
 </head>
 <body>
+
 <h1>1:1 문의사항 등록 화면</h1>
 <%--@elvariable id="inquiryDTO" type="com.dingco.pedal.dto.InquiryDTO"--%>
 <form:form commandName="inquiryDTO" action="/inquiry" enctype="multipart/form-data" id="inquiry-form" method="post">
@@ -41,7 +42,9 @@
     <!-- 이부분은 나중에 hidden 처리 될 예정입니다. -->
     <div id="file-input-list"></div>
     <!-- 이부분은 나중에 hidden 처리 될 예정입니다. -->
-
+    <c:if test="${param.idx != null}">
+        <input name="i_idx2" type="text" value="${param.idx}" readonly>
+    </c:if>
     <input type="button" value="작성 완료" id="formSubmit">
 </form:form>
 <h3>이미지 미리보기</h3>

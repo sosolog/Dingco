@@ -64,9 +64,14 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
+    public int updateUserInquiryStatus(InquiryDTO dto) throws Exception {
+        return inquiryDAO.updateUserInquiryStatus(dto);
+    }
+
+    @Override
     public int deleteUserInquiry(int i_idx) throws Exception {
         int result = fileDAO.deleteAllImagesInPost(i_idx, TableDir.INQUIRY);
-        result = deleteUserInquiry(i_idx);
+        result = inquiryDAO.deleteUserInquiry(i_idx);
         return result;
     }
 

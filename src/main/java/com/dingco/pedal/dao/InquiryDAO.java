@@ -50,6 +50,10 @@ public class InquiryDAO {
         return session.update("com.config.InquiryMapper.updateUserInquiry", dto);
     }
 
+    public int updateUserInquiryStatus(InquiryDTO dto) throws Exception {
+        return session.update("com.config.InquiryMapper.updateUserInquiryStatus", dto);
+    }
+
     public int deleteUserInquiry(int i_idx) throws Exception {
         return session.delete("com.config.InquiryMapper.deleteUserInquiry", i_idx);
     }

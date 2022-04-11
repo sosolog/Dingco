@@ -53,12 +53,13 @@ public class InquiryController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/InquiryList");
         mav.addObject("pageDTO", pageDTO);
+        mav.addObject("memberDTO", memberDTO);
         mav.addObject("requestMapping", request.getServletPath());
         return mav;
     }
 
     @GetMapping("/inquiry/write")
-    public String writeUserInquiryUI(@ModelAttribute("inquiryDTO") InquiryDTO dto){
+    public String writeUserInquiryUI(@ModelAttribute("inquiryDTO") InquiryDTO dto, @RequestParam(name = "idx", required = false) String i_idx2){
         return "board/InquiryWrite";
     }
 
@@ -116,6 +117,18 @@ public class InquiryController {
         logger.debug("result = "+result);
         return "redirect:/inquiry/"+i_idx;
     }
+
+    @ResponseBody
+    @PostMapping("/inquiry/{idx}/status")
+    public int updateUserInquiryStatus(HttpSession session, @PathVariable("idx") int i_idx, InquiryDTO inquiryDTO) throws Exception {
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
+        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
+        inquiryDTO.setI_idx(i_idx);
+        System.out.println("session = " + session + ", i_idx = " + i_idx + ", inquiryDTO = " + inquiryDTO);
+        int result = inquiryService.updateUserInquiryStatus(inquiryDTO);
+        logger.debug("result = "+result);
+        return result;
+    }
     @GetMapping("/inquiry/{idx}")
     public ModelAndView showOneUserInquiry(HttpSession session, @PathVariable("idx") int i_idx) throws Exception {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
@@ -146,6 +159,7 @@ public class InquiryController {
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
         }
+        result = commentService.deleteAllComments(i_idx);
         result = inquiryService.deleteUserInquiry(i_idx);
         logger.debug("result = "+result);
         return result;

@@ -29,6 +29,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public int deleteAllComments(int i_idx) throws Exception {
+        return dao.deleteAllComments(i_idx);
+    }
+
+    @Override
     public List<CommentDTO> showAllComment(int i_idx) throws Exception {
         return dao.showAllComment(i_idx);
     }

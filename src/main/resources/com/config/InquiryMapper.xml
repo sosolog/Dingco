@@ -50,7 +50,7 @@
         insert into INQUIRY (m_idx, category_id, title, content
                              ,upload_date
                              <if test="i_idx2 != 0">
-                             ,inquiry_idx
+                             ,inquiry_idx2
                              </if>
                              )
         values(#{m_idx}, #{category_id}, #{title}, #{content}
@@ -75,6 +75,12 @@
         delete from INQUIRY
         where inquiry_idx = #{i_idx}
     </delete>
-
+    <update id="updateUserInquiryStatus" parameterType="InquiryDTO">
+        update INQUIRY
+        <set>
+            i_status = #{status}
+        </set>
+        where inquiry_idx = #{i_idx}
+    </update>
 
 </mapper>
