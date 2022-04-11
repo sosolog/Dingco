@@ -4,6 +4,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
+        $("#userid").focus();
+<%--
 
         $("form").on("submit",function (){
             var userid = $("#userid").val()
@@ -15,7 +17,7 @@
                 event.preventDefault()
             }else if(passwd.length==0){
                 alert("비밀번호 입력 필수")
-                $("#userid").focus()
+                $("#passwd").focus()
                 event.preventDefault()
             }
         })
@@ -31,6 +33,7 @@
         $("#upload").on("click",function (){
             location.href="upload";
         })
+--%>
 
     })
 </script>
@@ -41,9 +44,17 @@
     * 비밀번호:<input type="password" name="passwd" id="passwd" >
     <button>로그인</button><br>
     <span id="result" style="color:red">
+        <spring:nestedPath path="loginDTO">
+
+        <spring:bind path="passwd">
+           ${status.errorMessage}
+        </spring:bind>
+
         <spring:bind path="loginDTO">
             ${status.errorMessage }
         </spring:bind>
+
+        </spring:nestedPath>
     </span>
 
 </form>
