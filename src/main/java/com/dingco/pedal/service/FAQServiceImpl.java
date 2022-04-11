@@ -6,6 +6,7 @@ import com.dingco.pedal.dto.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service("FAQService")
@@ -15,14 +16,39 @@ public class FAQServiceImpl implements FAQService {
     FAQDAO dao;
 
     @Override
-    public int insert(FAQDTO dto) throws Exception {
-        int num = dao.insert(dto);
+    public PageDTO selectAllPage(int curPage) throws Exception {
+        PageDTO pageDTO = dao.selectAllPage(curPage);
+        return pageDTO;
+    }
+
+    @Override
+    public List<HashMap<String, String>> category() throws Exception {
+        List<HashMap<String, String>> list = dao.category();
+        return list;
+    }
+
+    @Override
+    public int boardWrite(FAQDTO dto) throws Exception {
+        System.out.println(dto);
+        int num = dao.boardWrite(dto);
         return num;
     }
 
     @Override
-    public PageDTO selectAllPage(int curPage)throws Exception {
-        PageDTO pageDTO = dao.selectAllPage(curPage);
-        return pageDTO;
+    public FAQDTO retrieve(int number_idx) throws Exception {
+        FAQDTO faqDTO = dao.retrieve(number_idx);
+        return faqDTO;
+    }
+
+    @Override
+    public int update(FAQDTO dto) throws Exception {
+        int num = dao.update(dto);
+        return num;
+    }
+
+    @Override
+    public int delete(int number_idx) {
+        int num = dao.delete(number_idx);
+        return num;
     }
 }

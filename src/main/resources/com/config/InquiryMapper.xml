@@ -5,29 +5,30 @@
 <mapper namespace="com.config.InquiryMapper">
     <select id="countTotalInquiries" resultType="int" parameterType="MemberDTO">
         select count(*) from INQUIRY
-        <if test="authorities == '사용자'">
+        <if test="authorities == 'USER'">
             where m_idx = #{m_idx}
         </if>
     </select>
     <select id="showUserInquiry" resultType="InquiryDTO" parameterType="MemberDTO">
-        select t.i_idx, t.m_idx, t.category_id, t.content, t.image, t.image_db, t.upload_date, t.i_idx2
+        select t.i_idx, t.m_idx, t.category_id, t.title, t.content, t.upload_date, t.last_updated_date, t.i_idx2, t.status
         from (
             select
                 inquiry_idx as i_idx,
                 m_idx,
                 category_id,
+                title,
                 content,
-                image,
-                image_db,
-                upload_date,
+                date_format(upload_date, "%Y/%m/%d %H:%i:%s") as upload_date,
+                date_format(last_updated_date, "%Y/%m/%d %H:%i:%s") as last_updated_date,
                 inquiry_idx2 as i_idx2,
                 case
                     when inquiry_idx2 is null then inquiry_idx
                     else inquiry_idx2
-                end as inq_group
+                end as inq_group,
+                i_status as status
             from INQUIRY
         ) t
-        <if test="authorities == '사용자'">
+        <if test="authorities == 'USER'">
             where m_idx = #{m_idx}
         </if>
         order by inq_group desc, i_idx
@@ -36,28 +37,23 @@
         select inquiry_idx as i_idx,
                m_idx,
                category_id,
+               title,
                content,
-               image,
-               image_db,
-               upload_date,
-               inquiry_idx2 as i_idx2
+               date_format(upload_date, "%Y/%m/%d %H:%i:%s") as upload_date,
+               date_format(last_updated_date, "%Y/%m/%d %H:%i:%s") as last_updated_date,
+               inquiry_idx2 as i_idx2,
+               i_status as status
         from INQUIRY
         where inquiry_idx = #{i_idx}
     </select>
     <insert id="writeUserInquiry" parameterType="InquiryDTO">
-        insert into INQUIRY (m_idx, category_id, content
-                             <if test="image != null">
-                                 ,image, image_db
-                             </if>
+        insert into INQUIRY (m_idx, category_id, title, content
                              ,upload_date
                              <if test="i_idx2 != 0">
-                                 ,inquiry_idx2
+                             ,inquiry_idx2
                              </if>
                              )
-        values(#{m_idx}, #{category_id}, #{content}
-            <if test="image != null">
-                ,#{image}, #{image_db}
-            </if>
+        values(#{m_idx}, #{category_id}, #{title}, #{content}
             ,now()
             <if test="i_idx2 != 0">
                 ,#{i_idx2}
@@ -69,10 +65,9 @@
         update INQUIRY
         <set>
             category_id = #{category_id}
+            ,title = #{title}
             ,content = #{content}
-            <if test="image != null">
-                ,image = #{image}, image_db = #{image_db}
-            </if>
+            ,last_updated_date = now()
         </set>
         where inquiry_idx = #{i_idx}
     </update>
@@ -80,4 +75,12 @@
         delete from INQUIRY
         where inquiry_idx = #{i_idx}
     </delete>
+    <update id="updateUserInquiryStatus" parameterType="InquiryDTO">
+        update INQUIRY
+        <set>
+            i_status = #{status}
+        </set>
+        where inquiry_idx = #{i_idx}
+    </update>
+
 </mapper>
