@@ -129,7 +129,7 @@
 </div>
 <c:if test="${dto.i_idx2 != 0}">
     <h3>관련 문의 보기_기존</h3>
-    <a href="/inquiry/${dto.i_idx2}">하ㅏㅏㅏㅏ</a>
+    <a href="/inquiry/${dto.i_idx2}">상위문의 확인하기</a>
 </c:if>
 
 
