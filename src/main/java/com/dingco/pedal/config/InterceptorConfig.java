@@ -1,6 +1,6 @@
 package com.dingco.pedal.config;
 
-import com.dingco.pedal.interceptor.LoginHandler;
+import com.dingco.pedal.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -11,7 +11,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginHandler()).addPathPatterns("/login/*");
+        registry.addInterceptor(new LoginCheckInterceptor()).addPathPatterns("/login/*");
     }
 
     @Override
