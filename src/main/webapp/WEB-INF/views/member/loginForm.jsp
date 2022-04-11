@@ -5,6 +5,18 @@
 <script>
     $(document).ready(function(){
         $("#userid").focus();
+
+        $("#joinBtn").on("click",function (){
+            location.href="join";
+        })
+
+        $("#find_ID_PWBtn").on("click",function (){
+            location.href="find_ID_PW";
+        })
+
+        $("#upload").on("click",function (){
+            location.href="upload";
+        })
 <%--
 
         $("form").on("submit",function (){
@@ -22,17 +34,6 @@
             }
         })
 
-        $("#joinBtn").on("click",function (){
-            location.href="join";
-        })
-
-        $("#find_ID_PWBtn").on("click",function (){
-            location.href="find_ID_PW";
-        })
-
-        $("#upload").on("click",function (){
-            location.href="upload";
-        })
 --%>
 
     })
