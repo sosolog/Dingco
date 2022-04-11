@@ -17,8 +17,8 @@
     </script>
     <script type="text/html" id="img-preview-tmpl">
         <div>
-            <a class=img_id_\${index}>
-                <img src=\${result} data-file=\${f_name} width="60" height="60"/>
+            <a class="img_id_\${index}">
+                <img src="\${result}" data-file="\${f_name}" width="60" height="60"/>
             </a>
             <button class="minus">-</button>
         </div>

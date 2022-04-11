@@ -7,6 +7,89 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <script src="/script/jquery-3.6.0.js"></script>
+    <script src="/script/jquery.tmpl.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#deletePost").on("click", function (){
+                if(confirm("정말로 삭제하시겠습니까? 한번 삭제하면 다시 복원할 수 없습니다.")){
+
+                    $.ajax({
+                        type: 'DELETE',
+                        url: `/inquiry/${dto.i_idx}`,
+                        success: function (result) {
+                            console.log(result)
+                            if(result) {
+                                location.href="/inquiry";
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+                        }
+                    });
+                }
+            });
+
+            getComments();
+        });
+    </script>
+    <script type="text/html" id="comment-list-tmpl">
+        <div>
+            <table>
+                <tr>
+                    <td>작성자</td>
+                    <td>\${m_idx}</td>
+                    <td>작성일</td>
+                    <td>\${post_date}</td>
+                </tr>
+                <tr>
+                    <td>내용</td>
+                    <td colspan="3"><span id="comment_\${c_idx}">\${comment}</span></td>
+                </tr>
+            </table>
+            <div id="btn-\${c_idx}-default">
+                <button class="upd-comment" data-cidx="\${c_idx}" data-comment="\${comment}">수정</button>
+                <button class="del-comment" data-cidx="\${c_idx}">삭제</button>
+                <button class="re-comment" data-cidx="\${c_idx}">대댓글 작성</button>
+            </div>
+            <div id="btn-\${c_idx}-update" style="display: none">
+                <button class="confirm-upd" data-cidx="\${c_idx}">확인</button>
+            </div>
+            <div id="form-\${c_idx}-recomment" style="display:none;">
+                <input type="text" id="recomment_\${c_idx}">
+                <button class="confirm-recomment" data-cidx="\${c_idx}">확인</button>
+            </div>
+            {{if count_sub > 0}}
+            \${count_sub}개의 대댓글 존재
+            <button class="show-re-comment" data-cidx="\${c_idx}" data-status="0">대댓글 보기</button>
+            <div id="recomment-list-\${c_idx}"></div>
+            {{/if}}
+        </div>
+    </script>
+    <script type="text/html" id="comment-recomment-list-tmpl">
+        <div>
+            <table>
+                <tr>
+                    <td>L </td>
+                    <td>작성자</td>
+                    <td>\${m_idx}</td>
+                    <td>작성일</td>
+                    <td>\${post_date}</td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td>내용</td>
+                    <td colspan="3"><span id="comment_\${c_idx}">\${comment}</span></td>
+                </tr>
+            </table>
+            <div id="btn-\${c_idx}-default">
+                <button class="upd-comment" data-cidx="\${c_idx}" data-comment="\${comment}">수정</button>
+                <button class="del-comment" data-cidx="\${c_idx}">삭제</button>
+            </div>
+            <div id="btn-\${c_idx}-update" style="display: none">
+                <button class="confirm-upd" data-cidx="\${c_idx}">확인</button>
+            </div>
+        </div>
+    </script>
 </head>
 <body>
 <h2>게시판 세부사항 보기</h2>
@@ -53,29 +136,157 @@
 <c:if test="${dto.status == 'YET'}">
     <a href="${dto.i_idx}/update">글 수정</a>
     <button id="deletePost">글 삭제</button>
-<script type="text/javascript">
-    $("#deletePost").on("click", function (){
-        if(confirm("정말로 삭제하시겠습니까? 한번 삭제하면 다시 복원할 수 없습니다.")){
 
+
+</c:if>
+<hr>
+<h3>댓글</h3>
+<div>
+    <input type="text" id="comment">
+    <input type="button" value="댓글 입력" id="new-comment">
+</div>
+<div id="comment-list"></div>
+<script type="text/javascript">
+    $("#new-comment").on("click", function (){
+        var comment = $("#comment").val().trim();
+        console.log("aaa")
+        if(comment.length >= 2){
+            let comment_data = {
+                comment: comment
+            }
+            writeComments(comment_data);
+        } else {
+            alert("2자 이상 입력해주세요!")
+        }
+        $("#comment").val("")
+    })
+
+    $(document).on("click", ".re-comment", function (){
+        var c_idx = $(this).attr("data-cidx");
+        $(`#form-\${c_idx}-recomment`).show();
+    })
+    $(document).on("click", ".confirm-recomment", function (){
+        var c_idx = $(this).attr("data-cidx");
+        var comment = $(`#recomment_\${c_idx}`).val();
+        console.log(comment)
+        if(comment.length >= 2){
+            let comment_data = {
+                comment: comment,
+                c_idx2: c_idx
+            }
+            writeComments(comment_data);
+        } else {
+            alert("2자 이상 입력해주세요!")
+        }
+        $("#comment").val("")
+    })
+
+    function writeComments(comment_data){
+        $.ajax({
+            type: 'POST',
+            url: `/inquiry/${dto.i_idx}/comment/${memberDTO.m_idx}`,
+            data: comment_data,
+            success: function (result) {
+                console.log(result)
+                if(result) {
+                    getComments();
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            }
+        })
+    }
+    $(document).on("click", ".show-re-comment",function (){
+        var c_idx = $(this).attr("data-cidx");
+        var status = $(this).attr("data-status");
+        // $("[id^='recomment-list-']").each(function(){
+        //     $(this).empty();
+        // })
+        if(status == 0) {
+            $(this).attr("data-status", "1");
+            $(this).html("대댓글창 닫기")
             $.ajax({
-                type: 'DELETE',
-                url: `/inquiry/${dto.i_idx}`,
+                type: 'get',
+                url: `/inquiry/${dto.i_idx}/comment/\${c_idx}`,
                 success: function (result) {
-                    console.log(result)
-                    if(result) {
-                        location.href="/inquiry";
-                    }
+                    console.log(result);
+                    // $(`#recomment-list-\${c_idx}`).empty();
+                    $("#comment-recomment-list-tmpl").tmpl(result).appendTo( `#recomment-list-\${c_idx}` );
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR.status + ' ' + jqXHR.responseText);
                 }
-            });
+            })
+        } else {
+            $(this).html("대댓글 보기")
+            $(this).attr("data-status", "0");
+            $(`#recomment-list-\${c_idx}`).empty();
         }
-    });
+
+    })
+    $(document).on("click", ".upd-comment",function (){
+        console.log("upd-comment")
+        var c_idx = $(this).attr("data-cidx");
+        var comment = $(this).attr("data-comment");
+        $(`#btn-\${c_idx}-default`).hide();
+        $(`#btn-\${c_idx}-update`).show();
+        $("#comment_"+c_idx).html(`<input type='text' id='comment_input_\${c_idx}' value='\${comment}'>`)
+
+    })
+
+    $(document).on("click", ".confirm-upd",function (){
+        console.log("confirm-upd")
+        var c_idx_data = $(this).attr("data-cidx");
+        var comment_data = $(`#comment_input_\${c_idx_data}`).val();
+        $(`#btn-\${c_idx_data}-update`).hide();
+        $.ajax({
+            type: 'PUT',
+            url: `/inquiry/${dto.i_idx}/comment/${memberDTO.m_idx}`,
+            data: {
+                c_idx: c_idx_data,
+                comment: comment_data
+            },
+            success: function (result) {
+                console.log(result)
+                getComments();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            }
+        })
+    })
+
+    $(document).on("click", ".del-comment",function (){
+        console.log("confirm-upd")
+        var c_idx_data = $(this).attr("data-cidx");
+        $.ajax({
+            type: 'DELETE',
+            url: `/inquiry/${dto.i_idx}/comment/\${c_idx_data}`,
+            success: function (result) {
+                console.log(result)
+                getComments();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            }
+        })
+    })
+    function getComments(){
+        $.ajax({
+            type: 'get',
+            url: `/inquiry/${dto.i_idx}/comment`,
+            success: function (result) {
+                console.log(result);
+                $('#comment-list').empty();
+                $("#comment-list-tmpl").tmpl(result).appendTo( "#comment-list" );
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            }
+        })
+    }
 </script>
-
-</c:if>
-
 </body>
 </html>
 

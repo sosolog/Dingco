@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.config.CommentMapper">
+    <insert id="writeComment">
+        insert into COMMENT (i_idx, m_idx, comment, post_date
+            <if test="c_idx2 != 0">
+                , comment_idx2
+            </if>
+        )
+        values (
+                #{i_idx},
+                #{m_idx},
+                #{comment},
+                now()
+        <if test="c_idx2 != 0">
+            , #{c_idx2}
+        </if>
+               )
+    </insert>
+    <select id="showAllComment" parameterType="int" resultType="CommentDTO">
+        select c1.comment_idx as c_idx,
+               c1.i_idx,
+               c1.m_idx,
+               c1.comment,
+               date_format(c1.post_date, "%Y/%m/%d %H:%i:%s") as post_date,
+               c2.count_sub
+        from COMMENT c1 left outer join
+             (select comment_idx2, count(*) count_sub from COMMENT group by comment_idx2)  c2
+             on c1.comment_idx = c2.comment_idx2
+        where c1.i_idx = #{i_idx} and c1.comment_idx2 is NULL
+    </select>
+    <select id="showSubComment" parameterType="int" resultType="CommentDTO">
+        select comment_idx as c_idx,
+               i_idx,
+               m_idx,
+               comment,
+               date_format(post_date, "%Y/%m/%d %H:%i:%s") as post_date,
+               comment_idx2 as c_idx2
+        from COMMENT
+        where comment_idx2 = ${c_idx}
+    </select>
+    <update id="updateComment" parameterType="CommentDTO">
+        update COMMENT
+        set comment = #{comment}
+        where comment_idx = #{c_idx} and m_idx = #{m_idx}
+    </update>
+    <delete id="deleteComment" parameterType="int">
+        delete from COMMENT
+        where comment_idx = #{c_idx}
+    </delete>
+    <update id="updateStatusDeleted">
+        update COMMENT
+        set comment = '(삭제된 댓글)',
+            m_idx = '0'
+        where comment_idx = #{c_idx}
+    </update>
+    <select id="countReComments" parameterType="int" resultType="int">
+        select count(*)
+        from COMMENT
+        where comment_idx2 = #{c_idx}
+    </select>
+</mapper>

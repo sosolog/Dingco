@@ -1,8 +1,10 @@
 package com.dingco.pedal.controller;
 
+import com.dingco.pedal.dto.CommentDTO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
+import com.dingco.pedal.service.CommentService;
 import com.dingco.pedal.service.InquiryService;
 import com.dingco.pedal.util.FileName;
 import com.dingco.pedal.util.FileUploadUtils;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -29,7 +30,8 @@ import java.util.Optional;
 public class InquiryController {
 
     private static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
-    private final InquiryService service;
+    private final InquiryService inquiryService;
+    private final CommentService commentService;
 
     @Value("${file.base}")
     private String baseDir;
@@ -46,13 +48,12 @@ public class InquiryController {
         logger.debug(login.toString());
         logger.debug(request.getServletPath());
 
-        PageDTO<InquiryDTO> pageDTO = service.showUserInquiry(memberDTO, curPage);
+        PageDTO<InquiryDTO> pageDTO = inquiryService.showUserInquiry(memberDTO, curPage);
 
         ModelAndView mav = new ModelAndView();
         mav.setViewName("board/InquiryList");
         mav.addObject("pageDTO", pageDTO);
         mav.addObject("requestMapping", request.getServletPath());
-
         return mav;
     }
 
@@ -72,7 +73,7 @@ public class InquiryController {
             FileUploadUtils uploadUtils = new FileUploadUtils(baseDir, TableDir.INQUIRY);
             uploadUtils.uploadFiles(files, fileNames);
         }
-        int result = service.writeUserInquiry(inquiryDTO);
+        int result = inquiryService.writeUserInquiry(inquiryDTO);
 
         logger.debug("result = "+result);
         return "redirect:inquiry";
@@ -85,7 +86,7 @@ public class InquiryController {
         Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
         logger.debug(login.toString());
 
-        InquiryDTO inquiryDTO = service.showOneUserInquiry(i_idx);
+        InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
         }
@@ -111,7 +112,7 @@ public class InquiryController {
             FileUploadUtils uploadUtils = new FileUploadUtils(baseDir, TableDir.INQUIRY);
             uploadUtils.uploadFiles(files, fileNames);
         }
-        int result = service.updateUserInquiry(inquiryDTO);
+        int result = inquiryService.updateUserInquiry(inquiryDTO);
         logger.debug("result = "+result);
         return "redirect:/inquiry/"+i_idx;
     }
@@ -121,7 +122,7 @@ public class InquiryController {
         Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
         logger.debug(login.toString());
 
-        InquiryDTO inquiryDTO = service.showOneUserInquiry(i_idx);
+        InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
         }
@@ -130,6 +131,7 @@ public class InquiryController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("board/InquiryRetrieve");
         modelAndView.addObject("inquiryDTO", inquiryDTO);
+        modelAndView.addObject("memberDTO", memberDTO);
         return modelAndView;
     }
 
@@ -140,14 +142,73 @@ public class InquiryController {
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
         Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
         logger.debug(login.toString());
-        InquiryDTO inquiryDTO = service.showOneUserInquiry(i_idx);
+        InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
         }
-        result = service.deleteUserInquiry(i_idx);
+        result = inquiryService.deleteUserInquiry(i_idx);
         logger.debug("result = "+result);
         return result;
     }
+
+    @ResponseBody
+    @DeleteMapping("/image/{img_idx}")
+    public int deleteImage(@PathVariable int img_idx, @RequestBody String filePath) throws Exception {
+        System.out.println("img_idx = " + img_idx + ", filePath = " + filePath);
+        System.out.println(baseDir+filePath);
+        File file = new File(baseDir+filePath);
+        if (file.exists()){
+            int result = inquiryService.deleteImage(img_idx);
+            file.delete();
+            return 1;
+        }
+        return 0;
+    }
+
+    @ResponseBody
+    @PostMapping("/inquiry/{i_idx}/comment/{m_idx}")
+    public int writeComment(@PathVariable int i_idx,
+                           @PathVariable int m_idx,
+                           CommentDTO commentDTO) throws Exception {
+        System.out.println("i_idx = " + i_idx + ", m_idx = " + m_idx + ", commentDTO = " + commentDTO);
+        int result = commentService.writeComment(commentDTO);
+        System.out.println("result = " + result);
+
+        return result;
+    }
+
+    @ResponseBody
+    @GetMapping("/inquiry/{i_idx}/comment")
+    public List<CommentDTO> showAllComment(@PathVariable int i_idx) throws Exception{
+        return commentService.showAllComment(i_idx);
+    }
+
+    @ResponseBody
+    @GetMapping("/inquiry/{i_idx}/comment/{c_idx}")
+    public List<CommentDTO> showSubComment(@PathVariable int i_idx, @PathVariable int c_idx) throws Exception{
+        return commentService.showSubComment(c_idx);
+    }
+
+    @ResponseBody
+    @PutMapping("/inquiry/{i_idx}/comment/{m_idx}")
+    public int updateComment(@PathVariable int i_idx,
+                            @PathVariable int m_idx,
+                            CommentDTO commentDTO) throws Exception {
+        System.out.println("i_idx = " + i_idx + ", m_idx = " + m_idx + ", commentDTO = " + commentDTO);
+        int result = commentService.updateComment(commentDTO);
+        System.out.println("result = " + result);
+
+        return result;
+    }
+
+    @ResponseBody
+    @DeleteMapping("/inquiry/{i_idx}/comment/{c_idx}")
+    public int deleteComment(@PathVariable int i_idx, @PathVariable int c_idx) throws Exception {
+        int result = commentService.deleteComment(c_idx);
+        System.out.println("result = " + result);
+        return result;
+    }
+
 
     @ExceptionHandler({NotMatchedException.class})
     @ResponseBody
@@ -174,19 +235,4 @@ public class InquiryController {
             super(message);
         }
     }
-
-    @ResponseBody
-    @DeleteMapping("/image/{img_idx}")
-    public int deleteImage(@PathVariable int img_idx, @RequestBody String filePath) throws Exception {
-        System.out.println("img_idx = " + img_idx + ", filePath = " + filePath);
-        System.out.println(baseDir+filePath);
-        File file = new File(baseDir+filePath);
-        if (file.exists()){
-            int result = service.deleteImage(img_idx);
-            file.delete();
-            return 1;
-        }
-        return 0;
-    }
-
 }

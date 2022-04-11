@@ -25,8 +25,8 @@
 	</c:forEach>
 </c:if>
 <c:if test="${pageListInBlock != null}">
-	<c:if test="${firstPageInNextBlock != null}">
-		<a href="${path}?curPage=${firstPageInNextBlock}">&lt;</a>
+	<c:if test="${lastPageInPrevBlock != null}">
+		<a href="${path}?curPage=${lastPageInPrevBlock}">&lt;</a>
 	</c:if>
 	<c:forEach var="i" items="${pageListInBlock}">
 		<c:if test="${i==curPage}">
@@ -36,7 +36,7 @@
 			<a href="${path}?curPage=${i}">${i}</a>
 		</c:if>
 	</c:forEach>
-	<c:if test="${lastPageInPrevBlock != null}">
-		<a href="${path}?curPage=${lastPageInPrevBlock}">&gt;</a>
+	<c:if test="${firstPageInNextBlock != null}">
+		<a href="${path}?curPage=${firstPageInNextBlock}">&gt;</a>
 	</c:if>
 </c:if>
