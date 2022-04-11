@@ -35,3 +35,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:/Users/Administrator/IdeaProjects/pedal/src/main/resources/static/upload/"); // value (임시.명지)
     }
 }
+

@@ -4,21 +4,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
-
-        $("form").on("submit",function (){
-            var userid = $("#userid").val()
-            var passwd = $("#passwd").val()
-
-            if(userid.length==0){
-                alert("아이디 입력 필수")
-                $("#userid").focus()
-                event.preventDefault()
-            }else if(passwd.length==0){
-                alert("비밀번호 입력 필수")
-                $("#userid").focus()
-                event.preventDefault()
-            }
-        })
+        $("#userid").focus();
 
         $("#joinBtn").on("click",function (){
             location.href="join";
@@ -31,6 +17,24 @@
         $("#upload").on("click",function (){
             location.href="upload";
         })
+<%--
+
+        $("form").on("submit",function (){
+            var userid = $("#userid").val()
+            var passwd = $("#passwd").val()
+
+            if(userid.length==0){
+                alert("아이디 입력 필수")
+                $("#userid").focus()
+                event.preventDefault()
+            }else if(passwd.length==0){
+                alert("비밀번호 입력 필수")
+                $("#passwd").focus()
+                event.preventDefault()
+            }
+        })
+
+--%>
 
     })
 </script>
@@ -41,9 +45,17 @@
     * 비밀번호:<input type="password" name="passwd" id="passwd" >
     <button>로그인</button><br>
     <span id="result" style="color:red">
+        <spring:nestedPath path="loginDTO">
+
+        <spring:bind path="passwd">
+           ${status.errorMessage}
+        </spring:bind>
+
         <spring:bind path="loginDTO">
             ${status.errorMessage }
         </spring:bind>
+
+        </spring:nestedPath>
     </span>
 
 </form>

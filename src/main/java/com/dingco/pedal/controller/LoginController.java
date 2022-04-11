@@ -1,5 +1,6 @@
 package com.dingco.pedal.controller;
 
+import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.service.MemberService;
@@ -32,16 +33,21 @@ public class LoginController {
 
     //주황 - 로그인폼(로그인, 회원가입, 계정찾기, SNS API 로그인)
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute("loginDTO")LoginDTO loginDTO){
-        return "loginForm";
+    public String loginForm(@ModelAttribute("loginDTO") LoginDTO loginDTO,@Login MemberDTO memberDTO){
+
+        if (memberDTO==null){
+            return "loginForm";
+        }else{
+            return "redirect:main";
+        }
     }
 
 
     //주황 - 로그인(아이디, 비밀번호에 입력된 값을 HashMap으로 가져와서 DB와 비교)
     @PostMapping("/login.test")
     public String login(@Valid @ModelAttribute("loginDTO") LoginDTO loginDTO
-                        ,@RequestParam(defaultValue = "/main") String redirectURL
                         , BindingResult bindingResult
+                        ,@RequestParam(defaultValue = "/main") String redirectURL
                         ,HttpServletRequest request) throws Exception {
 
         if(bindingResult.hasErrors()){
