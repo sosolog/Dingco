@@ -18,8 +18,7 @@
                  join CATEGORY c on f.category_idx = c.CATEGORY_IDX
                  join MEMBER m on f.m_idx = m.m_idx
         order by f.number_idx asc
-            limit ${perPage}
-        offset ${offset}
+            limit ${perPage} offset ${offset}
         ]]>
 	</select>
 

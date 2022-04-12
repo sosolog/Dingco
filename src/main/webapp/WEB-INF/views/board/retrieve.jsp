@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+<script>
+
+
+</script>
 
 
 
@@ -16,5 +20,5 @@
     </select><br>
     작성자:<input type="text" name="username" id="username" value="${memberDTO.username}" readonly><br>
     내용:<textarea rows="10" cols="10" name="content" id="content">${faqDTO.content}</textarea><br>
-    <input type="submit" onclick="" value="수정">
+    <input type="submit" onclick="update()" value="수정">
 </form>
