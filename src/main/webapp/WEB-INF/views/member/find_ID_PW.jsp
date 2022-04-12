@@ -1,7 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
 
 <h4>비밀번호 찾기</h4>
 <div style="color: #ac2925">
@@ -15,12 +12,12 @@
     <label for="userid"><span class="glyphicon glyphicon-eye-open"></span>id</label>
     <input type="text" id="userid" placeholder="아이디를 입력하세요.">
 <br>
-    <button type="button" id="checkEmail">OK</button>
+    <button type="button" id="checkEmail" onclick="pw_CheckAndSendMail()">임시비밀번호 발송</button>
 </form>
 <hr>
 <div class="text-center small mt-2" id="checkMsg" style="color: red"></div>
 
-<button onclick="history.back()">Cancel</button>
+<button onclick="location.href='login'">취소</button>
 
 
 <script>

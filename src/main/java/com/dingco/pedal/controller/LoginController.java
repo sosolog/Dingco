@@ -24,9 +24,6 @@ public class LoginController {
     @Autowired
     MemberService mService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
 
     //주황 - 로그인폼(로그인, 회원가입, 계정찾기, SNS API 로그인)
     @GetMapping("/login")
