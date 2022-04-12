@@ -44,9 +44,4 @@ public class MemberDAO {
         return Optional.ofNullable(session.selectOne("com.config.MemberMapper.selectByLoginId", userid));
     }
 
-    public MemberDTO selectByLoginId2(LoginDTO loginDTO) throws Exception {
-        System.out.println("DAO-"+loginDTO.toString());
-        return session.selectOne("com.config.MemberMapper.selectByLoginId2", loginDTO);
-    }
-
 }

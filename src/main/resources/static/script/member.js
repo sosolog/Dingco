@@ -68,82 +68,130 @@ function checkFileSize(){
         }
     }
 }
-
-$(function () {
-
-    <!-- 이메일 선택-->
-    $("#url").on("change", function () {
+<!-- 이메일 선택-->
+function selectEmailList(){
         $("#email2").val($("#url option:selected").val());
-    });
+    }
 
-    <!-- 파일 크기 제한(ajax_3MB)-->
-    $("input[name=file]").off().on("change", function(){
-        if (this.files && this.files[0]) {
 
-            var maxSize = 3 * 1024 * 1024;
-            var fileSize = this.files[0].size;
 
-            if(fileSize > maxSize){
-                alert("첨부파일 사이즈는 3MB 이내로 등록 가능합니다.");
-                $(this).val('');
-                return false;
-            }
-        }
-    });
+<!-- 회원가입 아이디 유효성 체크 -->
+function memberIdCheck() {
+    var userid = $('#userid').val(); //id값이 "id"인 입력란의 값을 저장
+    var str_space = /\s/; // 공백체크
 
-    <!-- 회원가입 아이디 유효성 체크 -->
-    $("#userid").on("keyup", function () {
-        var userid = $('#userid').val(); //id값이 "id"인 입력란의 값을 저장
-        $.ajax({
-            url:'memberIdCheck', // Controller에서 인식할 주소나 메서드
-            type:'get', //GET 방식으로 전달
-            data:{userid:userid}, // Controller에서  @RequestParam으로 들고옴
-            datatype: 'text', // ex) text, html, json ...
-            success:function(data){
-                if(data != 0) { //data가 0일 경우 -> 사용 가능한 아이디
-                    $("#idCheckResult").text("이미 사용중인 아이디입니다.");
+    $.ajax({
+        url: 'memberIdCheck', // Controller에서 인식할 주소나 메서드
+        type: 'get', //GET 방식으로 전달
+        data: {userid: userid}, // Controller에서  @RequestParam으로 들고옴
+        datatype: 'text', // ex) text, html, json ...
+        success: function (data) {
+            if(data != 0) { //data가 0일 경우 -> 사용 가능한 아이디
+                $("#idCheckResult").text("이미 사용중인 아이디입니다.");
+                $("#idCheckHidden").val("false");
+
+            } else {
+                if (userid.length == 0) {
+                    $("#idCheckResult").text("아이디는 필수 입력 값입니다.");
                     $("#idCheckHidden").val("false");
-                }else{
+                } else if (str_space.exec(userid)) {
+                    $("#idCheckResult").text("아이디에는 띄어쓰기를 하실 수 없습니다.");
+                    $("#idCheckHidden").val("false");
+                }else {
                     $("#idCheckResult").text("사용 가능한 아이디입니다.");
                     $("#idCheckHidden").val("true");
                 }
             }
-            ,
-            error:function(){
-                alert("데이터베이스에 접근이 필요합니다!");
-            }
-        });
-    });
-
-    <!-- 회원가입 비밀번호 일치 여부 확인 -->
-    $("#passwd1").on("keyup", function () {
-        var passwd = $('#passwd').val();
-        var passwd1 = $('#passwd1').val();
-
-        if(passwd == passwd1) {
-            $("#pwCheckHidden").val("true");
-            $("#pwCheckResult").text("");
-        }else {
-            $("#pwCheckResult").text("비밀번호가 일치하지 않습니다.");
-            $("#pwCheckHidden").val("false");
+        }
+        ,
+        error: function () {
+            alert("데이터베이스에 접근이 필요합니다!");
         }
     });
+}
 
-    <!-- submit 제약조건(아이디 중복 확인, 비밀번호 중복 확인) -->
-    $("form").on("submit", function () {
-        if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true'){
-            return true
-        }else{
-            if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
-                alert("아이디와 비밀번호 중복 확인이 필요합니다.")
-                return false
-            }else if($("#idCheckHidden").val()=='false') {
-                alert("아이디 중복 확인이 필요합니다.")
-                return false
-            }else if($("#pwCheckHidden").val()=='false') {
-                alert("비밀번호 중복 확인이 필요합니다.")
-                return false
+<!-- 회원가입 비밀번호 일치 여부 확인 -->
+function memberPwCheck() {
+    var passwd = $('#passwd').val();
+    var passwd1 = $('#passwd1').val();
+
+    if(passwd == passwd1) {
+        $("#pwCheckHidden").val("true");
+        $("#pwCheckResult").text("");
+    }else {
+        $("#pwCheckResult").text("비밀번호가 일치하지 않습니다.");
+        $("#pwCheckHidden").val("false");
+    }
+}
+
+<!-- submit 제약조건(아이디 중복 확인, 비밀번호 중복 확인) -->
+function joinSubmitCheck(event) {
+    if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true'){
+        return true;
+    }else{
+        if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
+            alert("아이디와 비밀번호 중복 확인이 필요합니다.");
+            return false;
+        }else if($("#idCheckHidden").val()=='false') {
+            alert("아이디 중복 확인이 필요합니다.");
+            return false;
+        }else if($("#pwCheckHidden").val()=='false') {
+            alert("비밀번호 중복 확인이 필요합니다.");
+            return false;
+        }
+    }
+}
+
+<!-- 이메일, 아이디 DB에서 확인 -->
+function pw_CheckAndSendMail(){
+    var userEmail = $("#userEmail").val();
+    var userid = $("#userid").val();
+
+    $.ajax({
+        url: "/check/findPw",
+        type: "GET",
+        data: {
+            "userEmail": userEmail,
+            "userid": userid
+        },
+        success: function (res) {
+            if (res['check']) {
+
+                swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
+                        if (OK) {
+                            $.ajax({
+                                url: "/check/findPw/sendEmail",
+                                type: "PUT",
+                                data: {
+                                    "userEmail": userEmail,
+                                    "userid": userid
+                                }
+                            });
+                            window.location = "/login";
+                        }
+
+                    }
+                )
+                $('#checkMsg').html('<p style="color:darkblue"></p>');
+            } else {
+                $('#checkMsg').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
             }
         }
     });
-});
+}
+
+function loginValidCheck(){
+    var userid = $("#userid").val();
+    var passwd = $("#passwd").val();
+
+    if(userid.length==0){
+        $("#result").text("아이디 입력 필수");
+        $("#userid").focus();
+        event.preventDefault();
+    }else if(passwd.length==0){
+        $("#result").text("비밀번호 입력 필수");
+        $("#passwd").focus();
+        event.preventDefault();
+    }
+}
+

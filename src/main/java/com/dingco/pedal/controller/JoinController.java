@@ -4,6 +4,7 @@ import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.service.MemberService;
 import com.dingco.pedal.util.FileUploadUtils;
 import com.dingco.pedal.util.TableDir;
+import com.dingco.pedal.validation.ValidationSequence;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,11 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.File;
 
 @Slf4j
@@ -40,12 +41,12 @@ public class JoinController {
 
     // 회원 추가 + 검증(@validation) + 파일업로드
     @PostMapping("/memberAdd") // BindingResult 타입의 객체는 사용하는 데이터 뒤에 넣어야함(그래야 인식 가능)
-    public String memberAdd(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
-                            @RequestParam(required=false) MultipartFile file, HttpServletRequest request, Model model) throws Exception{
+    public String memberAdd(@Validated(value = ValidationSequence.class) @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
+                            @RequestParam(required=false) MultipartFile file,
+                            HttpServletRequest request, Model model) throws Exception{
 
         // 살패 로직(검증에 실패하면 다시 입력 폼으로)
         if(bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
             //model.addAttribute("errors", errors); //bindingResult는 모델에 따로 안 넣어줘도 된다. 자동적으로 넘어간다.
             String idCheckHidden = request.getParameter("idCheckHidden");
             String pwCheckHidden = request.getParameter("pwCheckHidden");
@@ -89,5 +90,4 @@ public class JoinController {
         int cnt = mService.idDuplicateCheck(userid);
         return cnt;
     }
-
 }
