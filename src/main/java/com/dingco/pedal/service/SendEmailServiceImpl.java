@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,9 @@ public class SendEmailServiceImpl implements SendEmailService {
     @Autowired
     Environment env;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private static final String FROM_ADDRESS = "juhong0196@gmail.com";
 
 
@@ -39,6 +43,7 @@ public class SendEmailServiceImpl implements SendEmailService {
         String userEmail = map.get("userEmail");
         String userid = map.get("userid");
         String str = getTempPassword();
+        String fakePw = passwordEncoder.encode(str);
 
         MailDTO dto = new MailDTO();
 
@@ -47,7 +52,7 @@ public class SendEmailServiceImpl implements SendEmailService {
         dto.setMessage("안녕하세요. PEDAL 임시비밀번호 안내 관련 이메일 입니다.\n" + "[" + userid + "]" + "님의 임시 비밀번호는 "
                 + str + " 입니다.");
 
-        map.put("str", str);
+        map.put("fakePw", fakePw);
 
         dao.updateFakePassword(map);
         mailSend(dto);
@@ -89,7 +94,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
 
 
-        ///////////////////////////////일반 버전(숫자, 대문자포함)///////////////////////////////////
+/*        ///////////////////////////////일반 버전(숫자, 대문자포함)///////////////////////////////////
         char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
                 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
@@ -100,7 +105,7 @@ public class SendEmailServiceImpl implements SendEmailService {
             idx = (int) (charSet.length * Math.random());
             str += charSet[idx];
         }
-        ///////////////////////////////일반 버전(숫자, 대문자포함)///////////////////////////////////
+        ///////////////////////////////일반 버전(숫자, 대문자포함)///////////////////////////////////*/
 
 
         return pswd;

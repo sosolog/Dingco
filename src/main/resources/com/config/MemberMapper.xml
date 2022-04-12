@@ -50,15 +50,9 @@
         where userid = #{userid}
     </select>
 
-    <select id="selectByLoginId2" resultType="MemberDTO" parameterType="loginDTO">
-        select *
-        from MEMBER
-        where userid = #{userid}
-    </select>
-
     <update id="updateFakePassword" parameterType="map">
       update MEMBER
-      set passwd = #{str}
+      set passwd = #{fakePw}
       where concat(EMAIL1,'@',EMAIL2)=#{userEmail} and userid = #{userid}
     </update>
 
