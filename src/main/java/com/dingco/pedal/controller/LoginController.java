@@ -44,10 +44,6 @@ public class LoginController {
                         ,@RequestParam(defaultValue = "/main") String redirectURL
                         ,HttpServletRequest request) throws Exception {
 
-        if(bindingResult.hasErrors()){
-            return "loginForm";
-        }
-
         MemberDTO loginMember = mService.selectByLoginId(loginDTO.getUserid(), loginDTO.getPasswd());
 
         if(loginMember==null){
