@@ -90,9 +90,4 @@ public class JoinController {
         return cnt;
     }
 
-    @ExceptionHandler(Exception.class)
-    public String exception(Exception e) {
-        log.error("[exceptionHandler] ex", e);
-        return "error/error";
-    }
 }

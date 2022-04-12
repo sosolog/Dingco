@@ -91,13 +91,4 @@ public class FAQController {
         service.delete(number_idx);
     }
 
-
-
-
-    // 에러처리
-    @ExceptionHandler({Exception.class})
-    public String errorPage() {
-        return "error/error";
-    }
-
 }

@@ -23,7 +23,6 @@
 </head>
 <body>
 <h2>게시판 목록보기</h2>
-<c:set var="path" value="${requestMapping}"></c:set>
 <c:set var="pageDTO" value="${pageDTO}"></c:set>
 <c:if test="${memberDTO.authorities=='ADMIN'}">
     <b>관리자 모드</b>

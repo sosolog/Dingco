@@ -1,6 +1,7 @@
 package com.dingco.pedal.controller;
 
 import com.dingco.pedal.annotation.Login;
+import com.dingco.pedal.aop.NotMatchedException;
 import com.dingco.pedal.dto.CommentDTO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
@@ -63,7 +64,8 @@ public class InquiryController {
 
     @PostMapping("/inquiry")
     public String writeUserInquiry(@Login MemberDTO memberDTO, @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO) throws Exception {
-
+        System.out.println("memberDTO = " + memberDTO + ", inquiryDTO = " + inquiryDTO);
+        inquiryDTO.setM_idx(memberDTO.getM_idx());
         List<MultipartFile> files = inquiryDTO.getFiles();
         List<FileName> fileNames = inquiryDTO.getFileNames();
         if (files != null){
@@ -72,17 +74,14 @@ public class InquiryController {
         }
         int result = inquiryService.writeUserInquiry(inquiryDTO);
 
+        System.out.println("memberDTO = " + memberDTO + ", inquiryDTO = " + inquiryDTO);
         logger.debug("result = "+result);
         return "redirect:inquiry";
     }
 
     @GetMapping("/inquiry/{idx}/update")
-    public ModelAndView updateUserInquiryUI(HttpSession session,
+    public ModelAndView updateUserInquiryUI(@Login MemberDTO memberDTO,
                                             @PathVariable("idx") int i_idx) throws Exception {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
-        logger.debug(login.toString());
-
         InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
@@ -96,10 +95,8 @@ public class InquiryController {
     }
 
     @PostMapping("/inquiry/{idx}")
-    public String updateUserInquiry(HttpSession session, @PathVariable("idx") int i_idx, InquiryDTO inquiryDTO) throws Exception {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
-        System.out.println("session = " + session + ", i_idx = " + i_idx + ", inquiryDTO = " + inquiryDTO);
+    public String updateUserInquiry(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx, InquiryDTO inquiryDTO) throws Exception {
+        System.out.println("i_idx = " + i_idx + ", inquiryDTO = " + inquiryDTO);
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx()){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
         }
@@ -116,11 +113,9 @@ public class InquiryController {
 
     @ResponseBody
     @PostMapping("/inquiry/{idx}/status")
-    public int updateUserInquiryStatus(HttpSession session, @PathVariable("idx") int i_idx, InquiryDTO inquiryDTO) throws Exception {
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
+    public int updateUserInquiryStatus(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx, InquiryDTO inquiryDTO) throws Exception {
         inquiryDTO.setI_idx(i_idx);
-        System.out.println("session = " + session + ", i_idx = " + i_idx + ", inquiryDTO = " + inquiryDTO);
+        System.out.println("i_idx = " + i_idx + ", inquiryDTO = " + inquiryDTO);
         int result = inquiryService.updateUserInquiryStatus(inquiryDTO);
         logger.debug("result = "+result);
         return result;
@@ -142,11 +137,8 @@ public class InquiryController {
 
     @ResponseBody
     @DeleteMapping("/inquiry/{idx}")
-    public int deleteUserInquiry(HttpSession session, @PathVariable("idx") int i_idx) throws Exception {
+    public int deleteUserInquiry(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx) throws Exception {
         int result = 0;
-        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login");
-        Optional<MemberDTO> login = Optional.ofNullable(memberDTO);
-        logger.debug(login.toString());
         InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
@@ -215,30 +207,4 @@ public class InquiryController {
         return result;
     }
 
-
-    @ExceptionHandler({NotMatchedException.class})
-    @ResponseBody
-    public String occurException(HttpServletRequest request, NotMatchedException e){
-        String context = request.getContextPath();
-        logger.debug("context = " + context);
-        logger.debug("exception = " + e);
-//        return "redirect:"+context+"/inquiry";
-        return e.getMessage();
-    }
-
-    @ExceptionHandler({SQLException.class})
-    @ResponseBody
-    public String occurException(HttpServletRequest request, SQLException e){
-        String context = request.getContextPath();
-        logger.debug("context = " + context);
-        logger.debug("exception = " + e);
-//        return "redirect:"+context+"/inquiry";
-        return "현재 서비스를 이용할 수 없습니다. 잠시 후 다시 시도해주세요.";
-    }
-
-    private class NotMatchedException extends RuntimeException {
-        public NotMatchedException(String message) {
-            super(message);
-        }
-    }
 }
