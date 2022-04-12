@@ -27,6 +27,7 @@
     <script type="text/javascript" src="/script/jquery-3.6.0.js"></script>
     <script type="text/javascript" src="/script/common.js"></script>
     <script type="text/javascript" src="/script/member.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </head>
 <body>

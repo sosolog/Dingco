@@ -47,18 +47,11 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO selectByLoginId(String userid, String passwd) throws Exception {
 
         return dao.selectByLoginId(userid)
-                .filter(m -> m.getPasswd().equals(passwd))
+                .filter(m -> passwordEncoder.matches(passwd, m.getPasswd()))
                 .orElse(null);
 
     }
 
-    // 명지 : 로그인2 (암호화 비교)
-    @Override
-    public MemberDTO selectByLoginId2(LoginDTO loginDTO) throws Exception {
-        MemberDTO memberDTO = dao.selectByLoginId2(loginDTO);
-        if (passwordEncoder.matches(loginDTO.getPasswd(), memberDTO.getPasswd())) return memberDTO;
-        else return null;
-    }
 
 
 }
