@@ -39,6 +39,11 @@ public class MemberDAO {
         return session.update("com.config.MemberMapper.updateMypage", memberDTO);
     }
 
+    // 명지 : 아이디 찾기
+    public String findUserId(Map<String,Object> map) throws Exception {
+        return session.selectOne("com.config.MemberMapper.findUserId", map);
+    }
+
     // 주황 : 아이디로 로그인 찾기
     public Optional<MemberDTO> selectByLoginId(String userid) throws Exception{
         return Optional.ofNullable(session.selectOne("com.config.MemberMapper.selectByLoginId", userid));

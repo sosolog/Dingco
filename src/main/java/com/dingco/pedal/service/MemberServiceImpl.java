@@ -41,7 +41,13 @@ public class MemberServiceImpl implements MemberService {
     public int updateMypage(MemberDTO memberDTO) throws Exception {
         return dao.updateMypage(memberDTO);
     }
-  
+
+    // 명지 : 아이디 찾기
+    @Override
+    public String findUserId(Map<String,Object> map) throws Exception {
+        return dao.findUserId(map);
+    }
+
     // 주황 : 아이디로 로그인 찾기
     @Override
     public MemberDTO selectByLoginId(String userid, String passwd) throws Exception {

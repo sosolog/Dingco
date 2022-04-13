@@ -142,6 +142,40 @@ function joinSubmitCheck(event) {
     }
 }
 
+// 명지 : 아이디찾기 유효성 검사
+function finduserid(f){
+    var check = true;
+    if (f.username.value==""){
+        check = false;
+        $('.infoname').text("이름을 입력해주세요");
+    } else { $('.infoname').text(""); }
+    if (f.phone1.value=="" || f.phone2.value=="" || f.phone3.value=="") {
+        check = false;
+        $('.infophone').text("휴대폰 번호를 입력해주세요");
+    } else { $('.infophone').text(""); }
+
+    if (check == true){
+        $.ajax({
+            url: "/check/findId",
+            type: "GET",
+            data: {
+                "username":f.username.value,
+                "phone1":f.phone1.value,
+                "phone2":f.phone2.value,
+                "phone3":f.phone3.value,
+            },
+            success: function (res) {
+                if (res==""){
+                    $('.findidresult').text("일치하는 값이 없습니다.");
+                } else {
+                    $('.findidresult').text("회원님의 아이디는 "+res+"입니다");
+                }
+            }
+        });
+    }
+}
+
+
 <!-- 이메일, 아이디 DB에서 확인 -->
 function pw_CheckAndSendMail(){
     var userEmail = $("#userEmail").val();
