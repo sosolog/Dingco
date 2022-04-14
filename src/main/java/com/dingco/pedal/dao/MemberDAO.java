@@ -24,7 +24,7 @@ public class MemberDAO {
     public int memberAdd(MemberDTO memberDTO) throws Exception{
         return session.insert("com.config.MemberMapper.memberAdd", memberDTO);
     }
-    //
+    // 아이디 체크
     public int idDuplicateCheck(String userid) throws Exception {
         return session.selectOne("com.config.MemberMapper.idDuplicateCheck", userid);
     }
