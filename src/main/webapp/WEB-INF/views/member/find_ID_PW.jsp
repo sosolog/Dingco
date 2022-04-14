@@ -27,19 +27,22 @@
 
 <h4>비밀번호 찾기</h4>
 <div style="color: #ac2925">
-    <center>입력된 정보로 임시 비밀번호가 전송됩니다.</center>
+    입력된 정보로 임시 비밀번호가 전송됩니다.
 </div>
-<hr>
-<form role="form">
-    <label for="userEmail"><span class="glyphicon glyphicon-user"></span>email</label>
-    <input type="text" id="userEmail" placeholder="가입시 이메일을 입력하세요.">
-<br>
-    <label for="userid"><span class="glyphicon glyphicon-eye-open"></span>id</label>
-    <input type="text" id="userid" placeholder="아이디를 입력하세요.">
-<br>
-    <button type="button" id="checkEmail" onclick="pw_CheckAndSendMail()">임시비밀번호 발송</button>
+<form name="findpw">
+    <div>
+        <span>id</span>
+        <input type="text" name="userid" placeholder="아이디를 입력하세요">
+        <span class="infoid"></span>
+    </div>
+    <div>
+        <span>email</span>
+        <input type="email" name="userEmail" placeholder="가입시 이메일을 입력하세요">
+        <span class="infoemail"></span>
+    </div>
+    <a onclick="findpasswd(findpw)" style="display:inline-block; margin-top:10px; width:100px; padding:5px 0px; border: 1px solid #555555; text-align: center; cursor:pointer;"><span>임시비밀번호 받기</span></a>
+    <span class="findpwresult"></span><br>
+    <input type="button" onclick="location.href='login'" value="취소">
 </form>
-<hr>
-<div class="text-center small mt-2" id="checkMsg" style="color: red"></div>
 
-<button onclick="location.href='login'">취소</button>
+
