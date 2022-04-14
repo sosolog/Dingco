@@ -24,7 +24,7 @@ public class MemberDAO {
     public int memberAdd(MemberDTO memberDTO) throws Exception{
         return session.insert("com.config.MemberMapper.memberAdd", memberDTO);
     }
-    //
+    // 아이디 체크
     public int idDuplicateCheck(String userid) throws Exception {
         return session.selectOne("com.config.MemberMapper.idDuplicateCheck", userid);
     }
@@ -37,6 +37,11 @@ public class MemberDAO {
     // 명지 : 마이페이지 정보 수정
     public int updateMypage(MemberDTO memberDTO) throws Exception {
         return session.update("com.config.MemberMapper.updateMypage", memberDTO);
+    }
+
+    // 명지 : 아이디 찾기
+    public String findUserId(Map<String,Object> map) throws Exception {
+        return session.selectOne("com.config.MemberMapper.findUserId", map);
     }
 
     // 주황 : 아이디로 로그인 찾기

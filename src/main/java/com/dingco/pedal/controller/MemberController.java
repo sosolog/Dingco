@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -107,17 +109,21 @@ public class MemberController {
         }
         return next;
     }
-
     // -------------------------------- End : 명지 -------------------------------- //
 
     // -------------------------------- Start : 주황 -------------------------------- //
     //주황 - 아이디/비밀번호 찾기
     @GetMapping("/find_ID_PW")
     public String find_ID_PW(){
-
         return "find_ID_PW";
     }
 
+    // 명지 - 아이디 찾기
+    @GetMapping("/check/findId")
+    public @ResponseBody String findId(@RequestParam Map<String,Object> map) throws Exception {
+        String json = mService.findUserId(map);
+        return json;
+    }
     // -------------------------------- End : 주황 -------------------------------- //
 
 

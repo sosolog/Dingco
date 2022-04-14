@@ -40,16 +40,14 @@ public class LoginController {
     //주황 - 로그인(아이디, 비밀번호에 입력된 값을 HashMap으로 가져와서 DB와 비교)
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute("loginDTO") LoginDTO loginDTO
-                        , BindingResult bindingResult
                         ,@RequestParam(defaultValue = "/main") String redirectURL
                         ,HttpServletRequest request) throws Exception {
 
         MemberDTO loginMember = mService.selectByLoginId(loginDTO.getUserid(), loginDTO.getPasswd());
-
-        if(loginMember==null){
+     /*   if(loginMember==null){
            bindingResult.reject("loginFail","아이디 또는 비밀번호가 일치하지 않습니다.");
             return "loginForm";
-        }
+        }*/
 
         HttpSession session = request.getSession();
         //세션에 회원정보 보관
@@ -59,6 +57,19 @@ public class LoginController {
 
     }
 
+    @PostMapping("/login/check")
+    public @ResponseBody boolean loginCheck(@RequestParam(value = "userid",required = false) String userid,
+                                            @RequestParam(value = "passwd",required = false) String passwd) throws Exception {
+
+        MemberDTO loginMember = mService.selectByLoginId(userid, passwd);
+
+        if(loginMember==null){
+            return false;
+        }
+
+        return true;
+
+    }
 
     //주황 - 로그아웃
     @PostMapping("/logout")
@@ -69,11 +80,4 @@ public class LoginController {
         }
         return "redirect:main";
     }
-
-    //에러처리
-    @ExceptionHandler({Exception.class})
-    public String errorPage() {
-        return "error/error";
-    }
-
 }

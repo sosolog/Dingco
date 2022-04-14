@@ -142,6 +142,40 @@ function joinSubmitCheck(event) {
     }
 }
 
+// 명지 : 아이디찾기 유효성 검사
+function finduserid(f){
+    var check = true;
+    if (f.username.value==""){
+        check = false;
+        $('.infoname').text("이름을 입력해주세요");
+    } else { $('.infoname').text(""); }
+    if (f.phone1.value=="" || f.phone2.value=="" || f.phone3.value=="") {
+        check = false;
+        $('.infophone').text("휴대폰 번호를 입력해주세요");
+    } else { $('.infophone').text(""); }
+
+    if (check == true){
+        $.ajax({
+            url: "/check/findId",
+            type: "GET",
+            data: {
+                "username":f.username.value,
+                "phone1":f.phone1.value,
+                "phone2":f.phone2.value,
+                "phone3":f.phone3.value,
+            },
+            success: function (res) {
+                if (res==""){
+                    $('.findidresult').text("일치하는 값이 없습니다.");
+                } else {
+                    $('.findidresult').text("회원님의 아이디는 "+res+"입니다");
+                }
+            }
+        });
+    }
+}
+
+
 <!-- 이메일, 아이디 DB에서 확인 -->
 function pw_CheckAndSendMail(){
     var userEmail = $("#userEmail").val();
@@ -167,7 +201,7 @@ function pw_CheckAndSendMail(){
                                     "userid": userid
                                 }
                             });
-                            window.location = "/login";
+                            location.href = "/login";
                         }
 
                     }
@@ -180,18 +214,43 @@ function pw_CheckAndSendMail(){
     });
 }
 
+//비동기 로그인 체크
 function loginValidCheck(){
     var userid = $("#userid").val();
     var passwd = $("#passwd").val();
+    const f = $("#loginForm");
 
     if(userid.length==0){
         $("#result").text("아이디 입력 필수");
         $("#userid").focus();
-        event.preventDefault();
+        return false;
     }else if(passwd.length==0){
         $("#result").text("비밀번호 입력 필수");
         $("#passwd").focus();
-        event.preventDefault();
+        return false;
     }
+    $.ajax({
+        url:"/login/check",
+        type:"post",
+        data:{
+            "userid":userid,
+            "passwd":passwd
+        },
+        success:function (res){
+            if(res){
+                f.attr("action","/login");
+                f.attr("method","POST");
+                f.submit();
+            }else{
+                $("#result").text("아이디 또는 비밀번호가 일치하지 않습니다.");
+            }
+        },
+        error:function (xhr,sta,e){
+            location.href="/error/error";
+        }
+
+    });
+    return false;
+
 }
 
