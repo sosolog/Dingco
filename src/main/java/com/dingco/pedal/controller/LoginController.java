@@ -44,10 +44,7 @@ public class LoginController {
                         ,HttpServletRequest request) throws Exception {
 
         MemberDTO loginMember = mService.selectByLoginId(loginDTO.getUserid(), loginDTO.getPasswd());
-     /*   if(loginMember==null){
-           bindingResult.reject("loginFail","아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "loginForm";
-        }*/
+
 
         HttpSession session = request.getSession();
         //세션에 회원정보 보관
