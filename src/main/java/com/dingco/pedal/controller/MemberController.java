@@ -78,7 +78,7 @@ public class MemberController {
             // -------- Start : File upload -------- //
             FileUploadUtils fileUploadUtils = new FileUploadUtils(baseDir, TableDir.MEMBER);
             // 1) 업로드할 파일이 있을 때
-            if (file != null) {
+            if (file != null && !file.isEmpty()) {
                 // 사용자의 이미지 파일을 들고 옴 => img.png
                 String originalFilename = file.getOriginalFilename();
 

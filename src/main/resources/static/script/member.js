@@ -177,9 +177,11 @@ function finduserid(f){
 
 
 <!-- 이메일, 아이디 DB에서 확인 -->
-function pw_CheckAndSendMail(){
-    var userEmail = $("#userEmail").val();
-    var userid = $("#userid").val();
+function findpasswd(f){
+    console.log(f)
+    var userid = f.userid.value;
+    var userEmail = f.userEmail.value;
+    console.log(userEmail,userid)
 
     $.ajax({
         url: "/check/findPw",
@@ -206,9 +208,9 @@ function pw_CheckAndSendMail(){
 
                     }
                 )
-                $('#checkMsg').html('<p style="color:darkblue"></p>');
+                $('.findpwresult').html('<p style="color:darkblue"></p>');
             } else {
-                $('#checkMsg').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
+                $('.findpwresult').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
             }
         }
     });
