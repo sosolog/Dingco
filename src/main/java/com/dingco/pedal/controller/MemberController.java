@@ -78,7 +78,8 @@ public class MemberController {
             // -------- Start : File upload -------- //
             FileUploadUtils fileUploadUtils = new FileUploadUtils(baseDir, TableDir.MEMBER);
             // 1) 업로드할 파일이 있을 때
-            if (file != null) {
+            if (file != null && !file.isEmpty()) {
+                System.out.println("CASE 1");
                 // 사용자의 이미지 파일을 들고 옴 => img.png
                 String originalFilename = file.getOriginalFilename();
 
@@ -92,6 +93,7 @@ public class MemberController {
                 memberDTO.setUploadFileName(originalFilename);
                 memberDTO.setStoreFileName(storeFileName);
             } else {
+                System.out.println("CASE 2");
             // 2) 업로드할 파일이 없을 때
                 memberDTO.setUploadFileName(request.getParameter("oUploadFileName"));
                 memberDTO.setStoreFileName(request.getParameter("oStoreFileName"));
