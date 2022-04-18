@@ -68,4 +68,16 @@
         from MEMBER
         where userid = #{userid} and concat(EMAIL1,'@',EMAIL2)= #{userEmail}
     </select>
+
+    <!-- 명지 : 카카오 로그인 -->
+    <insert id="memberKakaoAdd" parameterType="map">
+        INSERT INTO MEMBER (kakao_idx, username, email1, email2)
+        VALUES (#{kakao_idx}, #{username}, #{email1},#{email2})
+    </insert>
+
+    <select id="selectByKakaoId" parameterType="string" resultType="MemberDTO">
+        select m_idx, kakao_idx, username, email1, email2, joindate
+        from MEMBER
+        where kakao_idx = #{kakao_idx}
+    </select>
 </mapper>

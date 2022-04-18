@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,4 +50,12 @@ public class MemberDAO {
         return Optional.ofNullable(session.selectOne("com.config.MemberMapper.selectByLoginId", userid));
     }
 
+    // 명지 : 카카오 회원 추가
+    public int memberKakaoAdd(Map<String, Object> map) throws Exception{
+        return session.insert("com.config.MemberMapper.memberKakaoAdd", map);
+    }
+
+    public MemberDTO selectByKakaoId(String kakao_idx) throws Exception {
+        return session.selectOne("com.config.MemberMapper.selectByKakaoId", kakao_idx);
+    }
 }

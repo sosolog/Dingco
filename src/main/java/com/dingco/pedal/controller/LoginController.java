@@ -5,12 +5,9 @@ import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.service.MemberService;
 import com.dingco.pedal.session.SessionConst;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,5 +73,27 @@ public class LoginController {
             session.invalidate();
         }
         return "redirect:main";
+    }
+
+
+
+
+    // 명지 - 카카오 로그인
+    @RequestMapping(value="/kakaologin")
+    public String kakaologin(@RequestParam("code") String code, HttpServletRequest request) throws Exception {
+
+        String access_Token = mService.getKaKaoAccessToken(code);
+        MemberDTO memberDTO = mService.createKakaoUser(access_Token);
+
+        if (memberDTO == null) {
+            // 카카오 로그인 처음일 경우
+            return "redirect:login";
+        } else {
+            // 카카오 로그인 처음 아닐 경우
+            HttpSession session = request.getSession();
+            //세션에 회원정보 보관
+            session.setAttribute(SessionConst.LOGIN_MEMBER,memberDTO);
+            return "redirect:main";
+        }
     }
 }
