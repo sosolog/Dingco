@@ -17,6 +17,7 @@ public class OauthController {
 
     /**
      * 사용자로부터 SNS 로그인 요청을 Social Login Type 을 받아 처리
+     * @param socialLoginType (GOOGLE, FACEBOOK, NAVER, KAKAO)
      */
     @GetMapping(value = "/{socialLoginType}")
     @ResponseBody
@@ -26,8 +27,6 @@ public class OauthController {
         oauthService.request(socialLoginType);
     }
 
-
-
     @GetMapping(value = "/{socialLoginType}/callback")
     public String callback(
             @RequestParam(name = "code") String code, Model model) {
@@ -35,10 +34,15 @@ public class OauthController {
         // Access Token 발급
         JsonNode jsonToken = GoogleLogin.getAccessToken(code);
         String accessToken = jsonToken.get("access_token").toString();
+        String refreshToken = "";
+        if(jsonToken.has("refresh_token")) {
+            refreshToken = jsonToken.get("refresh_token").toString();
+        }
+        String expiresTime = jsonToken.get("expires_in").toString();
 
         // Access Token으로 사용자 정보 반환
         JsonNode userInfo = GoogleLogin.getGoogleUserInfo(accessToken);
-        System.out.println(userInfo.toString());
+
         String name = userInfo.get("names").get(0).get("displayName").asText();
         String email = userInfo.get("emailAddresses").get(0).get("value").asText();
         // 사용자 정보 출력

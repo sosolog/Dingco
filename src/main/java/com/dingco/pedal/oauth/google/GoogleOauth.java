@@ -70,4 +70,45 @@ public class GoogleOauth implements SocialOauth {
         return "구글 로그인 요청 처리 실패";
     }
 
+    public String requestAccessTokenUsingURL(String code) {
+        try {
+            URL url = new URL(GOOGLE_SNS_TOKEN_BASE_URL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setDoOutput(true);
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("code", code);
+            params.put("client_id", GOOGLE_SNS_CLIENT_ID);
+            params.put("client_secret", GOOGLE_SNS_CLIENT_SECRET);
+            params.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
+            params.put("grant_type", "authorization_code");
+
+            String parameterString = params.entrySet().stream()
+                    .map(x -> x.getKey() + "=" + x.getValue())
+                    .collect(Collectors.joining("&"));
+
+            BufferedOutputStream bous = new BufferedOutputStream(conn.getOutputStream());
+            bous.write(parameterString.getBytes());
+            bous.flush();
+            bous.close();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            StringBuilder sb = new StringBuilder();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            if (conn.getResponseCode() == 200) {
+                return sb.toString();
+            }
+            return "구글 로그인 요청 처리 실패";
+        } catch (IOException e) {
+            throw new IllegalArgumentException("알 수 없는 구글 로그인 Access Token 요청 URL 입니다 :: " + GOOGLE_SNS_TOKEN_BASE_URL);
+        }
+    }
 }
