@@ -153,6 +153,12 @@
         </dependency>
         <!-- End: Logging -->
 
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-people</artifactId>
+            <version>v1-rev20210903-1.32.1</version>
+        </dependency>
+
 
     </dependencies>
 

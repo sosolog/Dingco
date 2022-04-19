@@ -15,5 +15,14 @@
     <button id="joinBtn" onclick="location.href='join'">회원가입</button><br>
     <button id="find_ID_PWBtn" onclick="location.href='find_ID_PW'">아이디/비밀번호 찾기</button><br>
     <button id="kakaoLoginBtn">카카오톡으로 로그인</button><br>
-    <button id="googleLoginBtn">구글로 로그인</button><br>
+<div id="gSignInWrapper">
+        <a href="http://localhost:9090/auth/GOOGLE">
+    <div id="customBtn" class="customGPlusSignIn">
+        <span class="icon"></span>
+        <span class="buttonText">Google</span>
+    </div>
+        </a>
+</div>
+<div id="name"></div>
+<script>startApp();</script>
     <button id="naverLoginBtn">네이버로 로그인</button><br>
