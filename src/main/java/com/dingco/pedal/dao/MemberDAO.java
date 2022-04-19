@@ -67,7 +67,7 @@ public class MemberDAO {
 
     public int socialMemberAdd(MemberDTO memberDTO) {
         return session.insert("com.config.MemberMapper.socialMemberAdd", memberDTO);
-
+    }
     // 명지 : 카카오 회원 추가
     public int memberKakaoAdd(Map<String, Object> map) throws Exception{
         return session.insert("com.config.MemberMapper.memberKakaoAdd", map);
@@ -75,6 +75,5 @@ public class MemberDAO {
 
     public MemberDTO selectByKakaoId(String kakao_idx) throws Exception {
         return session.selectOne("com.config.MemberMapper.selectByKakaoId", kakao_idx);
-
     }
 }

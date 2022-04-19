@@ -38,7 +38,6 @@ public class MemberDTO {
     private String uploadFileName;
     private String storeFileName;
     private String authorities;
-    private String kakao_idx;
 
     private String joindate;
 
