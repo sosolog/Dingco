@@ -9,9 +9,6 @@
 <c:set var="userid" value="${memberDTO.userid}"/>
 <c:set var="passwd" value="${memberDTO.passwd}"/>
 <c:set var="username" value="${memberDTO.username}"/>
-<c:set var="phone1" value="${memberDTO.phone1}"/>
-<c:set var="phone2" value="${memberDTO.phone2}"/>
-<c:set var="phone3" value="${memberDTO.phone3}"/>
 <c:set var="email1" value="${memberDTO.email1}"/>
 <c:set var="email2" value="${memberDTO.email2}"/>
 <c:set var="authorities" value="${memberDTO.authorities}"/>
@@ -27,6 +24,7 @@
 			<h2> 사용자 정보 수정 </h2>
         </div>
         <form action="/editMypage.action" id="editUser_form" name="editUserForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="snslogin" value="${passwd}"/>
             <table class="editUser_table">
                 <tr>
                     <td class="item_th">
@@ -52,6 +50,7 @@
                         <div><input readonly id="userid" name="userid" value="${userid}"></div>
                     </td>
                 </tr>
+                <c:if test="${passwd}!=''">
                 <tr>
                     <td class="item_th">
                         <div><span>비밀번호</span></div>
@@ -80,6 +79,7 @@
                     <input type="hidden" id="chk_pw" name="chk_pw" value="false">
                     <td><span class="pw_check"></span></td>
                 </tr>
+                </c:if>
                 <tr>
                     <td class="item_th"><div>프로필 사진 업로드</div></td>
                     <td>
@@ -91,31 +91,6 @@
                         <div>프로필 사진 업로드(크기:2MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)</div>
                         <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
                     </td>
-                </tr>
-                <tr>
-                    <td class="item_th"><div>전화번호</div></td>
-                    <td class="td_phone">
-                        <select name="phone1">
-                            <option value="010">010</option>
-                            <option value="011">011</option>
-                        </select>
-                        <span class="link">-</span>
-                        <input type="text" name="phone2" value="${phone2}" autocomplete="off">
-                        <span class="link">-</span>
-                        <input type="text" name="phone3" value="${phone3}" autocomplete="off">
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><span class="phone_check">
-                        p
-                        <spring:bind path="memberDTO.phone2">
-                            ${status.errorMessage}
-                        </spring:bind>
-                        <spring:bind path="memberDTO.phone3">
-                            ${status.errorMessage}
-                        </spring:bind>
-                    </span></td>
                 </tr>
                 <tr>
                     <td class="item_th"><div>이메일</div></td>
@@ -134,7 +109,6 @@
                 <tr>
                     <td></td>
                     <td><span class="email_check">
-                        d
                         <spring:bind path="memberDTO.email1">
                             ${status.errorMessage }
                         </spring:bind>
@@ -153,7 +127,7 @@
                 </tr>
             </table>
             <div class="wrap_btn" style="width: 100px; height: 40px; background-color: #888; text-align: center; margin-top:10px;">
-                <a class="submit_box" onclick="editUserForm_submit(editUserForm)" style="display: inline-block; margin-top:10px; color:#fff;">수정하기</a>
+                <a class="submit_box" onclick="editUserForm_submit(editUserForm)" style="cursor:pointer; display: inline-block; margin-top:10px; color:#fff;">수정하기</a>
             </div>
         </form>
     </div>
