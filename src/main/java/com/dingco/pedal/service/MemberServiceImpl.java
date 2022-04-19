@@ -1,7 +1,6 @@
 package com.dingco.pedal.service;
 
 import com.dingco.pedal.dao.MemberDAO;
-import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -15,7 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService {
@@ -26,6 +24,13 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    // 민욱 : 회원 조회
+    @Override
+    public MemberDTO selectByNaverId(String naver_idx) throws Exception {
+        return dao.selectByNaverId(naver_idx);
+    }
+
     // 민욱 : 회원 추가
     @Override
     public int memberAdd(MemberDTO memberDTO) throws Exception {
@@ -35,6 +40,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public int idDuplicateCheck(String userid) throws Exception{
         return dao.idDuplicateCheck(userid);
+    }
+
+    // 민욱: 소셜 아이디 중복 체크
+    @Override
+    public int socialMemberIdCheck(String userid) throws Exception{
+        return dao.socialMemberIdCheck(userid);
+    }
+
+    // 민욱: 소셜 인덱스 중복 체크
+    @Override
+    public int socialMemberNaverIdxCheck(String naver_idx) throws Exception{
+        return dao.socialMemberNaverIdxCheck(naver_idx);
     }
 
     // 명지 : 마이페이지 정보 가져오기
@@ -64,6 +81,11 @@ public class MemberServiceImpl implements MemberService {
                 .orElse(null);
 
     }
+
+
+    @Override
+    public int socialMemberAdd(MemberDTO memberDTO) throws Exception {
+        return dao.socialMemberAdd(memberDTO);
 
     // 명지 : 카카오 로그인
     @Override

@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -122,6 +124,16 @@ public class MemberController {
         return json;
     }
     // -------------------------------- End : 주황 -------------------------------- //
+    // -------------------------------- Start : 민욱 -------------------------------- //
+    // 네이버 콜백
+    @GetMapping("/callback")
+    public String naverCallback(){
+
+        return "naverLoginForm";
+    }
+
+
+    // -------------------------------- End : 민욱 -------------------------------- //
 
 
 }

@@ -1,6 +1,5 @@
 package com.dingco.pedal.dao;
 
-import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,12 @@ public class MemberDAO {
         return session.selectList("com.config.MemberMapper.selectAllMember");
     }
 
+
+    // 회원 조
+    public MemberDTO selectByNaverId(String naver_idx) throws Exception{
+        return session.selectOne("com.config.MemberMapper.selectByNaverId", naver_idx);
+    }
+
     // 회원 추가
     public int memberAdd(MemberDTO memberDTO) throws Exception{
         return session.insert("com.config.MemberMapper.memberAdd", memberDTO);
@@ -28,6 +33,16 @@ public class MemberDAO {
     // 아이디 체크
     public int idDuplicateCheck(String userid) throws Exception {
         return session.selectOne("com.config.MemberMapper.idDuplicateCheck", userid);
+    }
+
+    // 민욱: 소셜 아이디 중복 체크
+    public int socialMemberIdCheck(String userid) throws Exception {
+        return session.selectOne("com.config.MemberMapper.socialMemberIdCheck", userid);
+    }
+
+    // 민욱: 소셜 인덱스 중복 체크
+    public int socialMemberNaverIdxCheck(String naver_idx) throws Exception {
+        return session.selectOne("com.config.MemberMapper.socialMemberNaverIdxCheck", naver_idx);
     }
 
     // 명지 : 마이페이지 정보 가져오기
@@ -50,6 +65,9 @@ public class MemberDAO {
         return Optional.ofNullable(session.selectOne("com.config.MemberMapper.selectByLoginId", userid));
     }
 
+    public int socialMemberAdd(MemberDTO memberDTO) {
+        return session.insert("com.config.MemberMapper.socialMemberAdd", memberDTO);
+
     // 명지 : 카카오 회원 추가
     public int memberKakaoAdd(Map<String, Object> map) throws Exception{
         return session.insert("com.config.MemberMapper.memberKakaoAdd", map);
@@ -57,5 +75,6 @@ public class MemberDAO {
 
     public MemberDTO selectByKakaoId(String kakao_idx) throws Exception {
         return session.selectOne("com.config.MemberMapper.selectByKakaoId", kakao_idx);
+
     }
 }

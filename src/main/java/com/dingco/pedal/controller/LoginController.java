@@ -51,6 +51,7 @@ public class LoginController {
 
     }
 
+
     @PostMapping("/login/check")
     public @ResponseBody boolean loginCheck(@RequestParam(value = "userid",required = false) String userid,
                                             @RequestParam(value = "passwd",required = false) String passwd) throws Exception {
