@@ -2,6 +2,7 @@ package com.dingco.pedal.controller;
 
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.service.MemberService;
+import com.dingco.pedal.session.SessionConst;
 import com.dingco.pedal.util.FileUploadUtils;
 import com.dingco.pedal.util.TableDir;
 import com.dingco.pedal.validation.ValidationSequence;
@@ -17,8 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -84,6 +89,15 @@ public class JoinController {
         return "redirect:main";
     }
 
+    // 소셜 회원 추가 + 검증(@validation)
+    @PostMapping("/socialMemberAdd")
+    public String socialMemberAdd(@ModelAttribute MemberDTO memberDTO) throws Exception{
+
+        int num = mService.socialMemberAdd(memberDTO);
+
+        return "redirect:main";
+    }
+
     // 회원가입 아이디 유효성 체크
     @ResponseBody
     @GetMapping ("/memberIdCheck" )
@@ -91,4 +105,36 @@ public class JoinController {
         int cnt = mService.idDuplicateCheck(userid);
         return cnt;
     }
+
+    // 소셜 회원가입 아이디 유효성 체크
+    @ResponseBody
+    @GetMapping ("/socialMemberIdCheck" )
+    public int  socialMemberIdCheck(HttpServletRequest request,
+                                    @RequestParam("userid") String userid) throws Exception{
+
+        int cnt = mService.socialMemberIdCheck(userid);
+
+        return cnt;
+    }
+
+    // 소셜 회원가입 인덱스 유효성 체크
+    @ResponseBody
+    @PostMapping("/socialMemberNaverIdxCheck" )
+    public int socialMemberNaverIdxCheck(HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          @RequestParam("naver_idx") String naver_idx) throws Exception{
+
+        int cnt = mService.socialMemberNaverIdxCheck(naver_idx);
+
+        HttpSession session = request.getSession();
+
+        //세션에 회원정보 보관
+        MemberDTO loginMember = mService.selectByNaverId(naver_idx);
+        session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
+
+        return cnt;
+
+    }
+
+
 }

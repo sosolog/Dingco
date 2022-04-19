@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,9 +51,6 @@ public class MemberController {
             memberDTO.setPasswd(userinfo.getPasswd());
             memberDTO.setEmail1(userinfo.getEmail1());
             memberDTO.setEmail2(userinfo.getEmail2());
-            memberDTO.setPhone1(userinfo.getPhone1());
-            memberDTO.setPhone2(userinfo.getPhone2());
-            memberDTO.setPhone3(userinfo.getPhone3());
             memberDTO.setStoreFileName(userinfo.getStoreFileName());
             memberDTO.setUploadFileName(userinfo.getUploadFileName());
             memberDTO.setJoindate(userinfo.getJoindate());
@@ -125,6 +124,16 @@ public class MemberController {
         return json;
     }
     // -------------------------------- End : 주황 -------------------------------- //
+    // -------------------------------- Start : 민욱 -------------------------------- //
+    // 네이버 콜백
+    @GetMapping("/callback")
+    public String naverCallback(){
+
+        return "naverLoginForm";
+    }
+
+
+    // -------------------------------- End : 민욱 -------------------------------- //
 
 
 }

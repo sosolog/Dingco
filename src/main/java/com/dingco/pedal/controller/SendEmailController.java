@@ -34,8 +34,6 @@ public class SendEmailController {
     SendEmailService sendEmailService;
 
 
-
-
     //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
     //Email과 userid의 일치여부를 check하는 컨트롤러
     @GetMapping("/check/findPw")
@@ -56,7 +54,18 @@ public class SendEmailController {
     }
     //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
 
+    // 등록된 이메일로 이메일 인증번호를 발송하고 발송된 이메일 인증번호를 세션에 저장하는 컨트롤러
+    @GetMapping("emailValidationSend")
+    public @ResponseBody void emailValidationSend(HttpServletRequest request, @RequestParam Map<String,String> map) throws Exception {
+        sendEmailService.emailValidationCreate(request, map);
+    }
 
+
+    // 등록된 이메일로 이메일 인증번호를 확인해서 세션에 저장 되어있는 인증번호를 비교하는 컨트롤러
+    @GetMapping("emailValidationCheck")
+    public @ResponseBody void emailValidationCheck(@RequestParam("emailValidationCheckNumber")String emailValidationCheckNumber) throws Exception {
+
+    }
 
 
  

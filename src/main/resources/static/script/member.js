@@ -1,4 +1,5 @@
 
+
 // 마이페이지 비밀번호 재확인
 function passwd_check(pagename){
     var passwd1 = $('#'+pagename+' input[name=passwd]').val();
@@ -68,11 +69,6 @@ function checkFileSize(){
         }
     }
 }
-<!-- 이메일 선택-->
-function selectEmailList(){
-        $("#email2").val($("#url option:selected").val());
-    }
-
 
 
 <!-- 회원가입 아이디 유효성 체크 -->
@@ -113,7 +109,7 @@ function memberIdCheck() {
 <!-- 회원가입 비밀번호 일치 여부 확인 -->
 function memberPwCheck() {
     var passwd = $('#passwd').val();
-    var passwd1 = $('#passwd1').val();
+    var passwd1 = $('#passwd1').val();4
 
     if(passwd == passwd1) {
         $("#pwCheckHidden").val("true");
@@ -255,4 +251,42 @@ function loginValidCheck(){
     return false;
 
 }
+
+
+<!-- 이메일 인중 -->
+function emailValidationSend(){
+    var email1 = $("#email1").val();
+    var email2 = $("#email2").val();
+
+
+    $.ajax({
+        url: "emailValidationSend",
+        type: "GET",
+        data: {
+            "email1": email1,
+            "email2": email2
+        },
+        success: function (res) {
+            alert("발송 완료!")
+        }
+    });
+}
+
+<!-- 이메일 인증 확인 -->
+function emailValidationSend(){
+    var emailValidationCheckNumber = $("#emailValidationCheckNumber").val();
+
+
+    $.ajax({
+        url: "emailValidationCheck",
+        type: "GET",
+        data: {
+            "emailValidationCheckNumber": emailValidationCheckNumber
+        },
+        success: function (res) {
+            alert("발송 완료!")
+        }
+    });
+}
+
 
