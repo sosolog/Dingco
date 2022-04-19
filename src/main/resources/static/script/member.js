@@ -1,4 +1,5 @@
 
+
 // 마이페이지 비밀번호 재확인
 function passwd_check(pagename){
     var passwd1 = $('#'+pagename+' input[name=passwd]').val();
@@ -21,23 +22,15 @@ function passwd_check(pagename){
 function editUserForm_submit(f){
     var mesg = "";
     var chk_pw = f.chk_pw.value;
-    var phone2 = f.phone2.value;
-    var phone3 = f.phone3.value;
     var email1 = f.email1.value;
     var email2 = f.email2.value;
+    var snslogin = f.snslogin.value;
 
     // 이메일
     if (email1=="" || email2=="") { mesg = "이메일, "+mesg; }
 
-    // 전화번호
-    if ((phone2.length+phone3.length > 8) || (phone2=="" || phone3=="")
-        || letterCheck.checkEngAll.test(phone2+phone3) || letterCheck.checkSpc.test(phone2+phone3)
-        || letterCheck.checkKor.test(phone2+phone3)) {
-        mesg = "전화번호, "+mesg;
-    }
-
     // 비밀번호
-    if (chk_pw=="false"){ mesg = "비밀번호, "+mesg; }
+    if (chk_pw=="false" && snslogin!=""){ mesg = "비밀번호, "+mesg; }
 
     // 최종 결과
     if (mesg==""){
@@ -68,11 +61,6 @@ function checkFileSize(){
         }
     }
 }
-<!-- 이메일 선택-->
-function selectEmailList(){
-        $("#email2").val($("#url option:selected").val());
-    }
-
 
 
 <!-- 회원가입 아이디 유효성 체크 -->
@@ -113,7 +101,7 @@ function memberIdCheck() {
 <!-- 회원가입 비밀번호 일치 여부 확인 -->
 function memberPwCheck() {
     var passwd = $('#passwd').val();
-    var passwd1 = $('#passwd1').val();
+    var passwd1 = $('#passwd1').val();4
 
     if(passwd == passwd1) {
         $("#pwCheckHidden").val("true");
@@ -149,10 +137,10 @@ function finduserid(f){
         check = false;
         $('.infoname').text("이름을 입력해주세요");
     } else { $('.infoname').text(""); }
-    if (f.phone1.value=="" || f.phone2.value=="" || f.phone3.value=="") {
+    if (f.email1.value=="" || f.email2.value=="") {
         check = false;
-        $('.infophone').text("휴대폰 번호를 입력해주세요");
-    } else { $('.infophone').text(""); }
+        $('.infoemail').text("이메일을 입력해주세요");
+    } else { $('.infoemail').text(""); }
 
     if (check == true){
         $.ajax({
@@ -160,9 +148,8 @@ function finduserid(f){
             type: "GET",
             data: {
                 "username":f.username.value,
-                "phone1":f.phone1.value,
-                "phone2":f.phone2.value,
-                "phone3":f.phone3.value,
+                "email1":f.email1.value,
+                "email2":f.email2.value
             },
             success: function (res) {
                 if (res==""){
@@ -255,4 +242,42 @@ function loginValidCheck(){
     return false;
 
 }
+
+
+<!-- 이메일 인중 -->
+function emailValidationSend(){
+    var email1 = $("#email1").val();
+    var email2 = $("#email2").val();
+
+
+    $.ajax({
+        url: "emailValidationSend",
+        type: "GET",
+        data: {
+            "email1": email1,
+            "email2": email2
+        },
+        success: function (res) {
+            alert("발송 완료!")
+        }
+    });
+}
+
+<!-- 이메일 인증 확인 -->
+function emailValidationSend(){
+    var emailValidationCheckNumber = $("#emailValidationCheckNumber").val();
+
+
+    $.ajax({
+        url: "emailValidationCheck",
+        type: "GET",
+        data: {
+            "emailValidationCheckNumber": emailValidationCheckNumber
+        },
+        success: function (res) {
+            alert("발송 완료!")
+        }
+    });
+}
+
 

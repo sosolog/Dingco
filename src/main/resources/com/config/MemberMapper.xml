@@ -9,10 +9,24 @@
         from MEMBER
     </select>
 
+    <!-- 소셜 회원 찾기 -->
+    <select id="selectByNaverId" resultType="MemberDTO" parameterType="String">
+        select *
+        from MEMBER
+        where naver_idx=#{naver_idx}
+    </select>
+
+
     <!-- 회원 추가 -->
     <insert id="memberAdd" parameterType="MemberDTO">
-        INSERT	INTO MEMBER (userid, passwd, username, phone1, phone2, phone3, email1, email2, uploadfilename, storefilename)
-        VALUES (#{userid},#{passwd},#{username},#{phone1},#{phone2},#{phone3},#{email1},#{email2},#{uploadFileName},#{storeFileName})
+        INSERT	INTO MEMBER (userid, passwd, username, email1, email2, uploadfilename, storefilename)
+        VALUES (#{userid},#{passwd},#{username}, #{email1},#{email2},#{uploadFileName},#{storeFileName})
+    </insert>
+
+    <!-- 소셜 회원 추가 -->
+    <insert id="socialMemberAdd" parameterType="MemberDTO">
+        INSERT	INTO MEMBER (naver_idx, userid, username, email1, email2)
+        VALUES (#{naver_idx}, #{userid},#{username},#{email1},#{email2})
     </insert>
 
     <!-- 회원가입 아이디 유효성 체크 -->
@@ -22,9 +36,23 @@
         where userid=#{userid}
     </select>
 
+    <!-- 소셜 아이디 중복 체크 -->
+    <select id="socialMemberIdCheck" resultType="int" parameterType="String">
+        select count(*)
+        from MEMBER
+        where userid=#{userid}
+    </select>
+
+    <!-- 소셜 인덱스 중복 체크 -->
+    <select id="socialMemberNaverIdxCheck" resultType="int" parameterType="String">
+        select count(*)
+        from MEMBER
+        where naver_idx=#{naver_idx}
+    </select>
+
     <!-- 명지 : 마이페이지 정보 가져오기 -->
     <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
-        select m_idx, username, userid, passwd, email1, email2, uploadfilename, storefilename, phone1, phone2, phone3, DATE_FORMAT(joindate, '%Y-%m-%d') joindate, authorities
+        select m_idx, username, userid, passwd, email1, email2, uploadfilename, storefilename, DATE_FORMAT(joindate, '%Y-%m-%d') joindate, authorities
         from MEMBER
         WHERE m_idx=#{m_idx}
     </select>
@@ -37,10 +65,7 @@
             email1=#{email1},
             email2=#{email2},
             uploadFileName=#{uploadFileName},
-            storeFileName=#{storeFileName},
-            phone1=#{phone1},
-            phone2=#{phone2},
-            phone3=#{phone3}
+            storeFileName=#{storeFileName}
             where m_idx=#{m_idx}
     </update>
 
@@ -48,7 +73,7 @@
     <select id="findUserId" parameterType="map" resultType="string">
         select userid
         from MEMBER
-        where username=#{username} and phone1=#{phone1} and phone2=#{phone2} and phone3=#{phone3}
+        where username=#{username} and email1=#{email1} and email2=#{email2}
     </select>
 
     <select id="selectByLoginId" resultType="MemberDTO" parameterType="string">
@@ -67,5 +92,17 @@
         select count(*)
         from MEMBER
         where userid = #{userid} and concat(EMAIL1,'@',EMAIL2)= #{userEmail}
+    </select>
+
+    <!-- 명지 : 카카오 로그인 -->
+    <insert id="memberKakaoAdd" parameterType="map">
+        INSERT INTO MEMBER (kakao_idx, username, email1, email2)
+        VALUES (#{kakao_idx}, #{username}, #{email1},#{email2})
+    </insert>
+
+    <select id="selectByKakaoId" parameterType="string" resultType="MemberDTO">
+        select m_idx, kakao_idx, username, email1, email2, joindate
+        from MEMBER
+        where kakao_idx = #{kakao_idx}
     </select>
 </mapper>

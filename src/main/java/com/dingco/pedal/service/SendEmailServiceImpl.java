@@ -4,6 +4,7 @@ import com.dingco.pedal.dao.MemberDAO;
 import com.dingco.pedal.dao.SendEmailDAO;
 import com.dingco.pedal.dto.MailDTO;
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.session.SessionConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +58,27 @@ public class SendEmailServiceImpl implements SendEmailService {
         map.put("fakePw", fakePw);
 
         dao.updateFakePassword(map);
+        mailSend(dto);
+    }
+
+    @Override
+    public void emailValidationCreate(HttpServletRequest request, Map<String, String> map) throws Exception {
+        String email1 = map.get("email1");
+        String email2 = map.get("email2");
+        String userEmail = email1 + "@" + email2;
+        String str = getTempPassword();
+        String  emailValidation = passwordEncoder.encode(str);
+
+        MailDTO dto = new MailDTO();
+
+        dto.setAddress(userEmail);
+        dto.setTitle("PEDAL 이메일 인증 번호 안내 이메일 입니다.");
+        dto.setMessage("안녕하세요. PEDAL 이메일 인증 번호 안내 관련 이메일 입니다.\n" + "이메일 인증 번호는 "
+                + str + " 입니다.");
+
+        HttpSession session = request.getSession();
+        session.setAttribute("emailValidation", emailValidation);
+
         mailSend(dto);
     }
 
