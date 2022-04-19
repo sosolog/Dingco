@@ -1,10 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-
-<script type="text/javascript">
-
-</script>
-
 <h4>아이디 찾기</h4>
 <form name="findid">
     <div>
@@ -13,11 +8,10 @@
         <span class="infoname"></span>
     </div>
     <div>
-        <span>phone</span>
-        <input name="phone1" placeholder="010">-
-        <input name="phone2">-
-        <input name="phone3">
-        <span class="infophone"></span>
+        <span>email</span>
+        <input name="email1">@
+        <input name="email2">
+        <span class="infoemail"></span>
     </div>
     <a onclick="finduserid(findid)" style="display:inline-block; margin-top:10px; width:100px; padding:5px 0px; border: 1px solid #555555; text-align: center; cursor:pointer;"><span>아이디 찾기</span></a>
     <span class="findidresult"></span>

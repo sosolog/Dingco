@@ -49,9 +49,6 @@ public class MemberController {
             memberDTO.setPasswd(userinfo.getPasswd());
             memberDTO.setEmail1(userinfo.getEmail1());
             memberDTO.setEmail2(userinfo.getEmail2());
-            memberDTO.setPhone1(userinfo.getPhone1());
-            memberDTO.setPhone2(userinfo.getPhone2());
-            memberDTO.setPhone3(userinfo.getPhone3());
             memberDTO.setStoreFileName(userinfo.getStoreFileName());
             memberDTO.setUploadFileName(userinfo.getUploadFileName());
             memberDTO.setJoindate(userinfo.getJoindate());
