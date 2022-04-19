@@ -24,6 +24,7 @@
 			<h2> 사용자 정보 수정 </h2>
         </div>
         <form action="/editMypage.action" id="editUser_form" name="editUserForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="snslogin" value="${passwd}"/>
             <table class="editUser_table">
                 <tr>
                     <td class="item_th">
@@ -49,6 +50,7 @@
                         <div><input readonly id="userid" name="userid" value="${userid}"></div>
                     </td>
                 </tr>
+                <c:if test="${passwd}!=''">
                 <tr>
                     <td class="item_th">
                         <div><span>비밀번호</span></div>
@@ -77,6 +79,7 @@
                     <input type="hidden" id="chk_pw" name="chk_pw" value="false">
                     <td><span class="pw_check"></span></td>
                 </tr>
+                </c:if>
                 <tr>
                     <td class="item_th"><div>프로필 사진 업로드</div></td>
                     <td>
@@ -106,7 +109,6 @@
                 <tr>
                     <td></td>
                     <td><span class="email_check">
-                        d
                         <spring:bind path="memberDTO.email1">
                             ${status.errorMessage }
                         </spring:bind>
@@ -125,7 +127,7 @@
                 </tr>
             </table>
             <div class="wrap_btn" style="width: 100px; height: 40px; background-color: #888; text-align: center; margin-top:10px;">
-                <a class="submit_box" onclick="editUserForm_submit(editUserForm)" style="display: inline-block; margin-top:10px; color:#fff;">수정하기</a>
+                <a class="submit_box" onclick="editUserForm_submit(editUserForm)" style="cursor:pointer; display: inline-block; margin-top:10px; color:#fff;">수정하기</a>
             </div>
         </form>
     </div>

@@ -22,23 +22,15 @@ function passwd_check(pagename){
 function editUserForm_submit(f){
     var mesg = "";
     var chk_pw = f.chk_pw.value;
-    var phone2 = f.phone2.value;
-    var phone3 = f.phone3.value;
     var email1 = f.email1.value;
     var email2 = f.email2.value;
+    var snslogin = f.snslogin.value;
 
     // 이메일
     if (email1=="" || email2=="") { mesg = "이메일, "+mesg; }
 
-    // 전화번호
-    if ((phone2.length+phone3.length > 8) || (phone2=="" || phone3=="")
-        || letterCheck.checkEngAll.test(phone2+phone3) || letterCheck.checkSpc.test(phone2+phone3)
-        || letterCheck.checkKor.test(phone2+phone3)) {
-        mesg = "전화번호, "+mesg;
-    }
-
     // 비밀번호
-    if (chk_pw=="false"){ mesg = "비밀번호, "+mesg; }
+    if (chk_pw=="false" && snslogin!=""){ mesg = "비밀번호, "+mesg; }
 
     // 최종 결과
     if (mesg==""){
@@ -145,10 +137,10 @@ function finduserid(f){
         check = false;
         $('.infoname').text("이름을 입력해주세요");
     } else { $('.infoname').text(""); }
-    if (f.phone1.value=="" || f.phone2.value=="" || f.phone3.value=="") {
+    if (f.email1.value=="" || f.email2.value=="") {
         check = false;
-        $('.infophone').text("휴대폰 번호를 입력해주세요");
-    } else { $('.infophone').text(""); }
+        $('.infoemail').text("이메일을 입력해주세요");
+    } else { $('.infoemail').text(""); }
 
     if (check == true){
         $.ajax({
@@ -156,9 +148,8 @@ function finduserid(f){
             type: "GET",
             data: {
                 "username":f.username.value,
-                "phone1":f.phone1.value,
-                "phone2":f.phone2.value,
-                "phone3":f.phone3.value,
+                "email1":f.email1.value,
+                "email2":f.email2.value
             },
             success: function (res) {
                 if (res==""){

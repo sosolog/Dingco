@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
 @Data
 public class MemberDTO {
 
-    private  int m_idx;
+    private int m_idx;
 
     private String kakao_idx;
     private String naver_idx;
@@ -38,6 +38,7 @@ public class MemberDTO {
     private String uploadFileName;
     private String storeFileName;
     private String authorities;
+    private String kakao_idx;
 
     private String joindate;
 

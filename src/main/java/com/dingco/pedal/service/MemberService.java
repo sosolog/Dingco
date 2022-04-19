@@ -35,5 +35,7 @@ public interface MemberService {
     // 주황: 아이디로 로그인 찾기
     public MemberDTO selectByLoginId(String userid,String passwd) throws Exception;
 
-
+    // 명지 : 카카오 로그인
+    public String getKaKaoAccessToken(String code);
+    public MemberDTO createKakaoUser(String token) throws Exception;
 }
