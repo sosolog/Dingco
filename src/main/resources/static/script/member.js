@@ -99,8 +99,8 @@ function f_emailSelect(obj){
     $('[name=email2]').val(obj.value);
 }
 
-<!-- 파일 크기 제한(ajax_3MB)-->
-function checkFileSize(){
+<!-- 민욱: 업로드 이미지 파일 크기 제한(3MB)-->
+function imageFileSizeCheck(){
     if (this.files && this.files[0]) {
         var maxSize = 3 * 1024 * 1024;
         var fileSize = this.files[0].size;
@@ -114,13 +114,13 @@ function checkFileSize(){
 }
 
 
-<!-- 회원가입 아이디 유효성 체크 -->
-function memberIdCheck() {
+<!-- 민욱: 회원가입_아이디 유효성 검증 -->
+function memberIdDuplicateCheck() {
     var userid = $('#userid').val(); //id값이 "id"인 입력란의 값을 저장
     var str_space = /\s/; // 공백체크
 
     $.ajax({
-        url: 'memberIdCheck', // Controller에서 인식할 주소나 메서드
+        url: 'memberIdDuplicateCheck', // Controller에서 인식할 주소나 메서드
         type: 'get', //GET 방식으로 전달
         data: {userid: userid}, // Controller에서  @RequestParam으로 들고옴
         datatype: 'text', // ex) text, html, json ...
@@ -149,12 +149,17 @@ function memberIdCheck() {
     });
 }
 
-<!-- 회원가입 비밀번호 일치 여부 확인 -->
-function memberPwCheck() {
+<!-- 민욱: 회원가입_비밀번호 일치 여부 확인 -->
+function memberPwDuplicateCheck() {
     var passwd = $('#passwd').val();
-    var passwd1 = $('#passwd1').val();4
+    var passwd1 = $('#passwd1').val();
 
-    if(passwd == passwd1) {
+    if(passwd.length == 0 || passwd1.length == 0){
+        $("#pwCheckResult").text("비밀번호는 필수 입력값입니다.");
+        $("#pwCheckHidden").val("false");
+    }
+
+    if(passwd === passwd1) {
         $("#pwCheckHidden").val("true");
         $("#pwCheckResult").text("");
     }else {
@@ -163,19 +168,31 @@ function memberPwCheck() {
     }
 }
 
-<!-- submit 제약조건(아이디 중복 확인, 비밀번호 중복 확인) -->
-function joinSubmitCheck(event) {
-    if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true'){
+<!-- 민욱: 회원가입_submit 제약조건(아이디 중복 확인, 비밀번호 중복, 이메일 인증번호 확인) -->
+function joinSubmitCheck() {
+    if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true' && $("#emailCheckHidden").val()=='true'){
         return true;
     }else{
-        if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
-            alert("아이디와 비밀번호 중복 확인이 필요합니다.");
+        if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
+            alert("아이디, 비밀번호 체크와 이메일 인증이 필요합니다.");
+            return false;
+        }else if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
+            alert("아이디와 비밀번호 확인이 필요합니다.");
+            return false;
+        }else if($("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
+            alert("비밀번호 체크와 이메일 인증이 필요합니다.");
+            return false;
+        }else if($("#idCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
+            alert("아이디 체크와 이메일 인증이 필요합니다.");
             return false;
         }else if($("#idCheckHidden").val()=='false') {
             alert("아이디 중복 확인이 필요합니다.");
             return false;
         }else if($("#pwCheckHidden").val()=='false') {
             alert("비밀번호 중복 확인이 필요합니다.");
+            return false;
+        }else if($("#emailCheckHidden").val()=='false') {
+            alert("이메일 인증이 필요합니다.");
             return false;
         }
     }
@@ -320,29 +337,48 @@ function renderButton() {
 
 
 
-<!-- 이메일 인중 -->
-function emailValidationSend(){
+<!-- 민욱: 이메일 인증번호 보내기 -->
+function emailValidateSend(){
     var email1 = $("#email1").val();
     var email2 = $("#email2").val();
-
-
     $.ajax({
-        url: "emailValidationSend",
+        url: "emailDuplicateCheck",
         type: "GET",
         data: {
             "email1": email1,
             "email2": email2
         },
-        success: function (res) {
-            alert("발송 완료!")
+        success: function (data) {
+            if(data != 0) {
+                $("#emailCheckResult").text("이미 있는 이메일입니다. 다른 이메일로 인증하세요.")
+                $("#email1").val("")
+                $("#email2").val("");
+                $("#email1").focus();
+            }
+            else {
+                $.ajax({
+                    url: "emailValidationSend",
+                    type: "GET",
+                    data: {
+                        "email1": email1,
+                        "email2": email2
+                    },
+                    success: function () {
+                        alert("발송 완료!")
+                        $("#email1").attr("readonly", true)
+                        $("#email2").attr("readonly", true)
+                        $("#emailCheckResult").text("")
+                    }
+                });
+            }
         }
     });
+
 }
 
-<!-- 이메일 인증 확인 -->
-function emailValidationSend(){
+<!-- 민욱: 이메일 인증번호 확인 -->
+function emailValidateCheck(){
     var emailValidationCheckNumber = $("#emailValidationCheckNumber").val();
-
 
     $.ajax({
         url: "emailValidationCheck",
@@ -350,8 +386,19 @@ function emailValidationSend(){
         data: {
             "emailValidationCheckNumber": emailValidationCheckNumber
         },
-        success: function (res) {
-            alert("발송 완료!")
+        success: function (data) {
+            if (data == "true") {
+                $("#emailCheckHidden").val("true");
+                $("#emailCheckResult").text("이메일 인증 완료");
+                $("#emailValidationCheckNumber").attr("readonly", true);
+
+            }else {
+                $("#emailCheckResult").text("인증번호가 맞지 않습니다.");
+                $("#emailValidationCheckNumber").val("");
+                $("#emailValidationCheckNumber").focus();
+            }
+        },
+        error: function (){
         }
     });
 }

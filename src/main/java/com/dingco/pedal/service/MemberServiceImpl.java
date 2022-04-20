@@ -24,35 +24,48 @@ public class MemberServiceImpl implements MemberService {
     private PasswordEncoder passwordEncoder;
 
 
-    // 민욱 : 회원 조회
-    @Override
-    public MemberDTO selectByNaverId(String naver_idx) throws Exception {
-        return dao.selectByNaverId(naver_idx);
-    }
-
-    // 민욱 : 회원 추가
+    // 민욱: 회원가입_회원 추가
     @Override
     public int memberAdd(MemberDTO memberDTO) throws Exception {
         return dao.memberAdd(memberDTO);
     }
 
-    // 회원가입 아이디 유효성 체크
+    // 민욱: 소셜 회원가입_회원 추가
     @Override
-    public int idDuplicateCheck(String userid) throws Exception {
-        return dao.idDuplicateCheck(userid);
+    public int socialMemberAdd(MemberDTO memberDTO) throws Exception {
+        return dao.socialMemberAdd(memberDTO);
     }
 
-    // 민욱: 소셜 아이디 중복 체크
+    // 민욱: 회원가입_아이디 유효성 검증
     @Override
-    public int socialMemberIdCheck(String userid) throws Exception {
-        return dao.socialMemberIdCheck(userid);
+    public int memberIdDuplicateCheck(String userid) throws Exception {
+        return dao.memberIdDuplicateCheck(userid);
     }
 
-    // 민욱: 소셜 인덱스 중복 체크
+    // 민욱: 소셜 회원가입_아이디 유효성 검증
+    @Override
+    public int socialMemberIdDuplicateCheck(String userid) throws Exception {
+        return dao.socialMemberIdDuplicateCheck(userid);
+    }
+
+    // 민욱: 소셜 로그인_네이버 고유 id 확인
     @Override
     public int socialMemberNaverIdxCheck(String naver_idx) throws Exception {
         return dao.socialMemberNaverIdxCheck(naver_idx);
     }
+
+    // 민욱: 소셜 로그인_네이버 고유 id 회원정보 들고 오기
+    @Override
+    public MemberDTO selectByNaverIdx(String naver_idx) throws Exception {
+        return dao.selectByNaverIdx(naver_idx);
+    }
+
+    // 민욱: 회원가입_이메일 유효성 검증
+    @Override
+    public int emailDuplicateCheck(Map<String, String> map) throws Exception {
+        return dao.emailDuplicateCheck(map);
+    }
+
 
     // 명지 : 마이페이지 정보 가져오기
     @Override
@@ -83,10 +96,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-    @Override
-    public int socialMemberAdd(MemberDTO memberDTO) throws Exception {
-        return dao.socialMemberAdd(memberDTO);
-    }
 
     // 명지 : 카카오 로그인
     @Override
@@ -145,6 +154,7 @@ public class MemberServiceImpl implements MemberService {
         return access_Token;
     }
 
+  
     @Override
     public MemberDTO selectByKakaoId(String token){
         String reqURL = "https://kapi.kakao.com/v2/user/me";
