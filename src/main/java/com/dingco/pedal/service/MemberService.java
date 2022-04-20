@@ -7,23 +7,26 @@ import java.util.Map;
 public interface MemberService {
 
 
-    // 민욱: 회원 조회
-    MemberDTO selectByNaverId(String naver_idx) throws Exception;
-
-    // 민욱: 회원 추가
+    // 민욱: 회원가입_회원 추가
     int memberAdd(MemberDTO memberDTO) throws Exception;
 
-    // 민욱: 회원가입 아이디 유효성 체크
-    int idDuplicateCheck(String userid) throws Exception;
-
-    // 민욱: 소셜 회원 추가
+    // 민욱: 소셜 회원가입_회원 추가
     public int socialMemberAdd(MemberDTO memberDTO) throws Exception;
 
-    // 민욱: 소셜 아이디 중복 체크
-    int socialMemberIdCheck(String naver_idx) throws Exception;
+    // 민욱: 회원가입_아이디 유효성 검증
+    int memberIdDuplicateCheck(String userid) throws Exception;
 
-    // 민욱: 소셜 인덱스 중복 체크
+    // 민욱: 소셜 회원가입_아이디 유효성 검증
+    int socialMemberIdDuplicateCheck(String naver_idx) throws Exception;
+
+    // 민욱: 소셜 로그인_네이버 고유 id 확인
     int socialMemberNaverIdxCheck(String naver_idx) throws Exception;
+
+    // 민욱: 소셜 로그인_네이버 고유 id 회원정보 들고 오기
+    MemberDTO selectByNaverIdx(String naver_idx) throws Exception;
+
+    // 민욱: 회원가입_이메일 유효성 검증
+    int emailDuplicateCheck(Map<String,String> map) throws Exception;
 
     // 명지: 마이페이지 select & update
     public MemberDTO selectMypageInfo(int m_idx) throws Exception;

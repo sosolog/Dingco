@@ -21,29 +21,40 @@ public class MemberDAO {
     }
 
 
-    // 회원 조
-    public MemberDTO selectByNaverId(String naver_idx) throws Exception{
-        return session.selectOne("com.config.MemberMapper.selectByNaverId", naver_idx);
-    }
-
-    // 회원 추가
+    // 민욱: 회원가입_회원 추가
     public int memberAdd(MemberDTO memberDTO) throws Exception{
         return session.insert("com.config.MemberMapper.memberAdd", memberDTO);
     }
-    // 아이디 체크
-    public int idDuplicateCheck(String userid) throws Exception {
-        return session.selectOne("com.config.MemberMapper.idDuplicateCheck", userid);
+
+    // 민욱: 소셜 회원가입_회원 추가
+    public int socialMemberAdd(MemberDTO memberDTO) {
+        return session.insert("com.config.MemberMapper.socialMemberAdd", memberDTO);
+    }
+    // 민욱: 회원가입_아이디 유효성 검증
+    public int memberIdDuplicateCheck(String userid) throws Exception {
+        return session.selectOne("com.config.MemberMapper.memberIdDuplicateCheck", userid);
     }
 
-    // 민욱: 소셜 아이디 중복 체크
-    public int socialMemberIdCheck(String userid) throws Exception {
-        return session.selectOne("com.config.MemberMapper.socialMemberIdCheck", userid);
+    // 민욱: 소셜 회원가입_아이디 유효성 검증
+    public int socialMemberIdDuplicateCheck(String userid) throws Exception {
+        return session.selectOne("com.config.MemberMapper.socialMemberIdDuplicateCheck", userid);
     }
 
-    // 민욱: 소셜 인덱스 중복 체크
+    // 민욱: 소셜 로그인_네이버 고유 id 확인
     public int socialMemberNaverIdxCheck(String naver_idx) throws Exception {
         return session.selectOne("com.config.MemberMapper.socialMemberNaverIdxCheck", naver_idx);
     }
+
+    // 민욱: 소셜 로그인_네이버 고유 id 회원정보 들고 오기
+    public MemberDTO selectByNaverIdx(String naver_idx) throws Exception{
+        return session.selectOne("com.config.MemberMapper.selectByNaverIdx", naver_idx);
+    }
+
+    // 민욱: 회원가입_이메일 유효성 검증
+    public int emailDuplicateCheck(Map<String, String> map) throws Exception{
+        return session.selectOne("com.config.MemberMapper.emailDuplicateCheck", map);
+    }
+
 
     // 명지 : 마이페이지 정보 가져오기
     public MemberDTO selectMypageInfo(int m_idx) throws Exception {
@@ -65,9 +76,7 @@ public class MemberDAO {
         return Optional.ofNullable(session.selectOne("com.config.MemberMapper.selectByLoginId", userid));
     }
 
-    public int socialMemberAdd(MemberDTO memberDTO) {
-        return session.insert("com.config.MemberMapper.socialMemberAdd", memberDTO);
-    }
+
     // 명지 : 카카오 회원 추가
     public int memberKakaoAdd(Map<String, Object> map) throws Exception{
         return session.insert("com.config.MemberMapper.memberKakaoAdd", map);

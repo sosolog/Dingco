@@ -41,7 +41,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     private static final String FROM_ADDRESS = "juhong0196@gmail.com";
 
-
+    @Override
     public void fakePasswordCreate(Map<String,String> map) throws Exception {
         String userEmail = map.get("userEmail");
         String userid = map.get("userid");
@@ -61,25 +61,28 @@ public class SendEmailServiceImpl implements SendEmailService {
         mailSend(dto);
     }
 
+    // 민욱: 이메인 인증_등록된 이메일로 이메일 인증번호를 발송하고 발송된 이메일 인증번호를 세션에 저장
     @Override
     public void emailValidationCreate(HttpServletRequest request, Map<String, String> map) throws Exception {
         String email1 = map.get("email1");
         String email2 = map.get("email2");
         String userEmail = email1 + "@" + email2;
-        String str = getTempPassword();
-        String  emailValidation = passwordEncoder.encode(str);
+        String emailValidation = getTempPassword();
 
+        // 이메일 발송
         MailDTO dto = new MailDTO();
 
         dto.setAddress(userEmail);
         dto.setTitle("PEDAL 이메일 인증 번호 안내 이메일 입니다.");
-        dto.setMessage("안녕하세요. PEDAL 이메일 인증 번호 안내 관련 이메일 입니다.\n" + "이메일 인증 번호는 "
-                + str + " 입니다.");
+        dto.setMessage("안녕하세요. PEDAL 이메일 인증 번호 안내 관련 이메일 입니다.\n" + "이메일 인증 번호는 " + emailValidation + " 입니다.");
 
+        mailSend(dto);
+
+        // 인증번호 세션 저장
         HttpSession session = request.getSession();
         session.setAttribute("emailValidation", emailValidation);
 
-        mailSend(dto);
+
     }
 
     //임시비밀번호 생성장치

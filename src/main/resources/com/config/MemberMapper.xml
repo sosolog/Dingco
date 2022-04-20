@@ -9,46 +9,54 @@
         from MEMBER
     </select>
 
-    <!-- 소셜 회원 찾기 -->
-    <select id="selectByNaverId" resultType="MemberDTO" parameterType="String">
-        select *
-        from MEMBER
-        where naver_idx=#{naver_idx}
-    </select>
 
-
-    <!-- 회원 추가 -->
+    <!-- 민욱: 회원가입_회원 추가 -->
     <insert id="memberAdd" parameterType="MemberDTO">
         INSERT	INTO MEMBER (userid, passwd, username, email1, email2, uploadfilename, storefilename)
         VALUES (#{userid},#{passwd},#{username}, #{email1},#{email2},#{uploadFileName},#{storeFileName})
     </insert>
 
-    <!-- 소셜 회원 추가 -->
+    <!-- 민욱: 소셜 회원가입_회원 추가 -->
     <insert id="socialMemberAdd" parameterType="MemberDTO">
         INSERT	INTO MEMBER (naver_idx, userid, username, email1, email2)
         VALUES (#{naver_idx}, #{userid},#{username},#{email1},#{email2})
     </insert>
 
-    <!-- 회원가입 아이디 유효성 체크 -->
-    <select id="idDuplicateCheck" resultType="int" parameterType="String">
+    <!-- 민욱: 회원가입_아이디 유효성 검증 -->
+    <select id="memberIdDuplicateCheck" resultType="int" parameterType="String">
         select count(*)
         from MEMBER
         where userid=#{userid}
     </select>
 
-    <!-- 소셜 아이디 중복 체크 -->
-    <select id="socialMemberIdCheck" resultType="int" parameterType="String">
+    <!-- 민욱: 소셜 회원가입_아이디 유효성 검증 -->
+    <select id="socialMemberIdDuplicateCheck" resultType="int" parameterType="String">
         select count(*)
         from MEMBER
         where userid=#{userid}
     </select>
 
-    <!-- 소셜 인덱스 중복 체크 -->
+    <!-- 민욱: 소셜 로그인_네이버 고유 id 확인 -->
     <select id="socialMemberNaverIdxCheck" resultType="int" parameterType="String">
         select count(*)
         from MEMBER
         where naver_idx=#{naver_idx}
     </select>
+
+    <!-- 민욱: 소셜 로그인_네이버 고유 id 회원정보 들고 오기 -->
+    <select id="selectByNaverIdx" resultType="MemberDTO" parameterType="String">
+        select *
+        from MEMBER
+        where naver_idx=#{naver_idx}
+    </select>
+
+    <!-- 민욱: 회원가입_이메일 유효성 검증 -->
+    <select id="emailDuplicateCheck" resultType="int" parameterType="map">
+        select count(*)
+        from MEMBER
+        where email1=#{email1} and email2=#{email2}
+    </select>
+
 
     <!-- 명지 : 마이페이지 정보 가져오기 -->
     <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
