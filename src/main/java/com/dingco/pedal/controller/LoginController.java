@@ -3,16 +3,26 @@ package com.dingco.pedal.controller;
 import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.oauth.google.GoogleLogin;
 import com.dingco.pedal.service.MemberService;
 import com.dingco.pedal.session.SessionConst;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -21,6 +31,10 @@ public class LoginController {
     @Autowired
     MemberService mService;
 
+    @Value("${sns.google.client.id}")
+    private String GOOGLE_SNS_CLIENT_ID;
+    @Value("${sns.google.callback.url}")
+    private String GOOGLE_SNS_CALLBACK_URL;
 
     //주황 - 로그인폼(로그인, 회원가입, 계정찾기, SNS API 로그인)
     @GetMapping("/login")
@@ -76,25 +90,33 @@ public class LoginController {
         return "redirect:main";
     }
 
-
-
-
-    // 명지 - 카카오 로그인
-    @RequestMapping(value="/kakaologin")
-    public String kakaologin(@RequestParam("code") String code, HttpServletRequest request) throws Exception {
+    // 명지 - 카카오 로그인 페이지
+    @RequestMapping(value="/kakaologin", method = RequestMethod.GET)
+    public String kakaologin(@RequestParam("code") String code, HttpServletRequest request, Model model) throws Exception {
 
         String access_Token = mService.getKaKaoAccessToken(code);
-        MemberDTO memberDTO = mService.createKakaoUser(access_Token);
+        MemberDTO memberDTO = mService.selectByKakaoId(access_Token);
 
         if (memberDTO == null) {
+            System.out.println("CASE1");
             // 카카오 로그인 처음일 경우
-            return "redirect:login";
+            Map<String, Object> userinfo = mService.createKakaoUser(access_Token);
+            model.addAttribute("snsLoginDTO", userinfo);
+            return "kakaoLoginForm";
         } else {
+            System.out.println("CASE2");
             // 카카오 로그인 처음 아닐 경우
             HttpSession session = request.getSession();
             //세션에 회원정보 보관
-            session.setAttribute(SessionConst.LOGIN_MEMBER,memberDTO);
+            session.setAttribute(SessionConst.LOGIN_MEMBER, memberDTO);
             return "redirect:main";
         }
+    }
+
+    // 명지 - 카카오 로그인 action
+    @RequestMapping(value="/kakaologin.action", method = RequestMethod.POST)
+    public String kakaologinaction(@RequestParam Map<String, Object> memberDTO) throws Exception {
+        mService.memberKakaoAdd(memberDTO);
+        return "redirect:login";
     }
 }

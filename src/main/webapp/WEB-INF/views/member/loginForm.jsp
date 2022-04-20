@@ -20,10 +20,20 @@
 
     <button id="joinBtn" onclick="location.href='join'">회원가입</button><br>
     <button id="find_ID_PWBtn" onclick="location.href='find_ID_PW'">아이디/비밀번호 찾기</button><br>
+    <button id="kakaoLoginBtn">카카오톡으로 로그인</button><br>
+<div id="gSignInWrapper">
+        <a href="http://localhost:9090/auth/GOOGLE">
+    <div id="customBtn" class="customGPlusSignIn">
+        <span class="icon"></span>
+        <span class="buttonText">Google</span>
+    </div>
+        </a>
+</div>
+
+<div id="name"></div>
+<script>startApp();</script>
     <a href="https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code"><img src="${pageContext.request.contextPath}/images/kakao_login_medium_wide.png"></a>
     <br>
-    <button id="googleLoginBtn">구글로 로그인</button><br>
-
 <!-- 네이버 로그인 버튼 노출 영역 -->
 <div id="naver_id_login"></div>
 <!-- //네이버 로그인 버튼 노출 영역 -->

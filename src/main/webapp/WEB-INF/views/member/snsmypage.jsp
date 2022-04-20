@@ -39,7 +39,7 @@
                         <div><span>이름</span></div>
                     </td>
                     <td class="item_box">
-                        <div><input type="text" id="username" name="username" value="${username}"></div>
+                        <div><input readonly="readonly" id="username" name="username" value="${username}"></div>
                     </td>
                 </tr>
                 <tr>
@@ -51,31 +51,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="item_th">
-                        <div><span>비밀번호</span></div>
-                    </td>
                     <td class="item_box">
-                        <div><input type="password" id="passwd" name="passwd" value="" onkeyup="passwd_check('wrap_editUser')"
+                        <div><input type="hidden" id="passwd" name="passwd" value="pedal1234" onkeyup="passwd_check('wrap_editUser')"
                                     placeholder="비밀번호를 입력하세요" autocomplete="off"></div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="item_th">
-                        <div><span>재확인</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input type="password" id="passwd2" name="passwd2" onkeyup="passwd_check('wrap_editUser')"
-                                    placeholder="비밀번호를 다시 한번 입력하세요" autocomplete="off"></div>
-                        <div>
-                            <spring:bind path="memberDTO.passwd">
-                                ${status.errorMessage }
-                            </spring:bind>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
                     <td></td>
-                    <input type="hidden" id="chk_pw" name="chk_pw" value="false">
+                    <input type="hidden" id="chk_pw" name="chk_pw" value="true">
                     <td><span class="pw_check"></span></td>
                 </tr>
                 <tr>
@@ -90,30 +73,12 @@
                         <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
                     </td>
                 </tr>
+
                 <tr>
-                    <td class="item_th"><div>이메일</div></td>
                     <td class="td_email">
-                        <input type="text" name="email1" id="email1" value="${email1}" autocomplete="off">
-                        <span class="link">@</span>
-                        <input type="text" name="email2" id="email2" value="${email2}" autocomplete="off">
-                        <select id="emailSelect" onchange="f_emailSelect(this)">
-                            <option value="">직접입력</option>
-                            <option value="daum.net">daum.net</option>
-                            <option value="naver.com">naver.com</option>
-                            <option value="gmail.com">gmail.com</option>
-                        </select>
+                        <input type="hidden" name="email1" id="email1" value="pedalemail" autocomplete="off">
+                        <input type="hidden" name="email2" id="email2" value="pedalemail" autocomplete="off">
                     </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><span class="email_check">
-                        <spring:bind path="memberDTO.email1">
-                            ${status.errorMessage }
-                        </spring:bind>
-                        <spring:bind path="memberDTO.email2">
-                            ${status.errorMessage }
-                        </spring:bind>
-                    </span></td>
                 </tr>
                 <tr>
                     <td class="item_th">
