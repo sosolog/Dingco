@@ -232,9 +232,25 @@ public class MemberServiceImpl implements MemberService {
         }
         return map;
     }
-
+    
+    // 명지 : 카카오 로그인 회원 추가 (최종)
+    @Override
     public int memberKakaoAdd(Map<String, Object> memberDTO) throws Exception {
         return dao.memberKakaoAdd(memberDTO);
+    }
+
+  
+    @Override
+    public void memberGoogleAdd(Map<String, Object> map) throws Exception {
+        map.get("google_idx");
+        dao.memberGoogleAdd(map);
+    }
+
+    @Override
+    public MemberDTO selectByGoogleIdx(String google_idx) throws Exception {
+        return dao.selectByGoogleIdx(google_idx);
+
+
     }
 
 }

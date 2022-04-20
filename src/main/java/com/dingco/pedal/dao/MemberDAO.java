@@ -78,4 +78,15 @@ public class MemberDAO {
     public MemberDTO selectByKakaoId(String kakao_idx) throws Exception {
         return session.selectOne("com.config.MemberMapper.selectByKakaoId", kakao_idx);
     }
+
+    // 주황 : 구글 회원 추가
+    public int memberGoogleAdd(Map<String, Object> map) throws Exception{
+        return session.insert("com.config.MemberMapper.memberGoogleAdd", map);
+    }
+
+    // 주황 : 구글 회원 탐색
+    public MemberDTO selectByGoogleIdx(String google_idx) throws Exception{
+        return session.selectOne("com.config.MemberMapper.selectByGoogleIdx", google_idx);
+    }
+
 }
