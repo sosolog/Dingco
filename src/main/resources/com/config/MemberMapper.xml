@@ -105,4 +105,18 @@
         from MEMBER
         where kakao_idx = #{kakao_idx}
     </select>
+
+    <!-- 주황 : 구글 로그인 -->
+    <insert id="memberGoogleAdd" parameterType="map">
+        INSERT INTO MEMBER (google_idx, username,userid)
+        VALUES (#{google_idx}, #{username},#{userid})
+    </insert>
+
+    <select id="selectByGoogleIdx" parameterType="string" resultType="MemberDTO">
+        select m_idx, google_idx,userid, username,joindate
+        from MEMBER
+        where google_idx = #{google_idx}
+    </select>
+    <!-- 주황 : 구글 로그인 -->
+
 </mapper>

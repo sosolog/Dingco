@@ -206,4 +206,17 @@ public class MemberServiceImpl implements MemberService {
 
         }
 
+    @Override
+    public void memberGoogleAdd(Map<String, Object> map) throws Exception {
+        map.get("google_idx");
+        dao.memberGoogleAdd(map);
     }
+
+    @Override
+    public MemberDTO selectByGoogleIdx(String google_idx) throws Exception {
+        return dao.selectByGoogleIdx(google_idx);
+
+
+    }
+
+}

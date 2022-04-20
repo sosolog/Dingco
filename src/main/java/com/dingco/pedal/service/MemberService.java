@@ -38,4 +38,9 @@ public interface MemberService {
     // 명지 : 카카오 로그인
     public String getKaKaoAccessToken(String code);
     public MemberDTO createKakaoUser(String token) throws Exception;
+
+    //주황 : 구글 로그인
+    public void memberGoogleAdd(Map<String, Object> map) throws Exception;
+    public MemberDTO selectByGoogleIdx(String google_idx) throws Exception;
+
 }
