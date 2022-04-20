@@ -134,20 +134,6 @@ public class JoinController {
         return cnt;
     }
 
-    /**
-     * 민욱_소셜 회원가입_아이디 유효성 검증
-     * @param userid
-     * @return : 유효성 검증 성공시 cnt = 1 / 유효성 검사 실패시 cnt = 0
-     */
-    @ResponseBody
-    @GetMapping ("/socialMemberIdCheck" )
-    public int  socialMemberIdCheck(@RequestParam("userid") String userid) throws Exception{
-
-        int cnt = mService.socialMemberIdDuplicateCheck(userid);
-
-        return cnt;
-    }
-
 
     /**
      * 민욱_소셜 로그인_네이버 고유 id 확인 및 회원정보 들고 오기

@@ -16,9 +16,6 @@ public interface MemberService {
     // 민욱: 회원가입_아이디 유효성 검증
     int memberIdDuplicateCheck(String userid) throws Exception;
 
-    // 민욱: 소셜 회원가입_아이디 유효성 검증
-    int socialMemberIdDuplicateCheck(String naver_idx) throws Exception;
-
     // 민욱: 소셜 로그인_네이버 고유 id 확인
     int socialMemberNaverIdxCheck(String naver_idx) throws Exception;
 

@@ -42,12 +42,6 @@ public class MemberServiceImpl implements MemberService {
         return dao.memberIdDuplicateCheck(userid);
     }
 
-    // 민욱: 소셜 회원가입_아이디 유효성 검증
-    @Override
-    public int socialMemberIdDuplicateCheck(String userid) throws Exception {
-        return dao.socialMemberIdDuplicateCheck(userid);
-    }
-
     // 민욱: 소셜 로그인_네이버 고유 id 확인
     @Override
     public int socialMemberNaverIdxCheck(String naver_idx) throws Exception {

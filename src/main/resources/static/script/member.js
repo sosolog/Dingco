@@ -7,7 +7,7 @@ function socialLoginValidCheck(f){
     const regex = /[^a-zA-Z0-9]/g // 영문 대 소문자, 숫자
 
     $.ajax({
-        url:"memberIdCheck",
+        url:"memberIdDuplicateCheck",
         type:"get",
         data:{ "userid":userid },
         success:function(data){

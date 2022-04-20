@@ -35,11 +35,6 @@ public class MemberDAO {
         return session.selectOne("com.config.MemberMapper.memberIdDuplicateCheck", userid);
     }
 
-    // 민욱: 소셜 회원가입_아이디 유효성 검증
-    public int socialMemberIdDuplicateCheck(String userid) throws Exception {
-        return session.selectOne("com.config.MemberMapper.socialMemberIdDuplicateCheck", userid);
-    }
-
     // 민욱: 소셜 로그인_네이버 고유 id 확인
     public int socialMemberNaverIdxCheck(String naver_idx) throws Exception {
         return session.selectOne("com.config.MemberMapper.socialMemberNaverIdxCheck", naver_idx);
