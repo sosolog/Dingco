@@ -18,9 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -43,8 +40,11 @@ public class MemberController {
     // -------------------------------- Start : 명지 -------------------------------- //
     @RequestMapping(value = "/login/mypage", method = RequestMethod.GET)
     public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo){
+        String next = "";
+
         try {
             userinfo = mService.selectMypageInfo(userinfo.getM_idx());
+
             memberDTO.setM_idx(userinfo.getM_idx());
             memberDTO.setUserid(userinfo.getUserid());
             memberDTO.setUsername(userinfo.getUsername());
@@ -55,10 +55,17 @@ public class MemberController {
             memberDTO.setUploadFileName(userinfo.getUploadFileName());
             memberDTO.setJoindate(userinfo.getJoindate());
             memberDTO.setAuthorities(userinfo.getAuthorities());
+
+            if (userinfo.getKakao_idx()==null && userinfo.getNaver_idx()==null && userinfo.getGoogle_idx()==null) {
+                next = "mypage";
+            } else {
+                next = "snsmypage";
+            }
+
         } catch (Exception e){
             e.printStackTrace();
         }
-        return "/mypage";
+        return next;
     }
   
     @RequestMapping(value = "/editMypage.action", method = RequestMethod.POST)

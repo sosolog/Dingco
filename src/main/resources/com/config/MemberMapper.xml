@@ -52,7 +52,7 @@
 
     <!-- 명지 : 마이페이지 정보 가져오기 -->
     <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
-        select m_idx, username, userid, passwd, email1, email2, uploadfilename, storefilename, DATE_FORMAT(joindate, '%Y-%m-%d') joindate, authorities
+        select m_idx, kakao_idx, naver_idx, google_idx, username, userid, passwd, email1, email2, uploadfilename, storefilename, DATE_FORMAT(joindate, '%Y-%m-%d') joindate, authorities
         from MEMBER
         WHERE m_idx=#{m_idx}
     </select>
@@ -61,6 +61,7 @@
     <update id="updateMypage" parameterType="MemberDTO">
         update MEMBER
         set
+            username=#{username},
             passwd=#{passwd},
             email1=#{email1},
             email2=#{email2},
@@ -96,12 +97,12 @@
 
     <!-- 명지 : 카카오 로그인 -->
     <insert id="memberKakaoAdd" parameterType="map">
-        INSERT INTO MEMBER (kakao_idx, username, email1, email2)
-        VALUES (#{kakao_idx}, #{username}, #{email1},#{email2})
+        INSERT INTO MEMBER (kakao_idx, userid, username)
+        VALUES (#{kakao_idx}, #{userid}, #{username})
     </insert>
 
     <select id="selectByKakaoId" parameterType="string" resultType="MemberDTO">
-        select m_idx, kakao_idx, username, email1, email2, joindate
+        select m_idx, kakao_idx, username, joindate
         from MEMBER
         where kakao_idx = #{kakao_idx}
     </select>
