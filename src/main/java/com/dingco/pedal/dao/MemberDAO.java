@@ -5,7 +5,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -82,8 +81,8 @@ public class MemberDAO {
     }
 
     // 주황 : 구글 회원 추가
-    public int memberGoogleAdd(Map<String, Object> map) throws Exception{
-        return session.insert("com.config.MemberMapper.memberGoogleAdd", map);
+    public int memberGoogleAdd(MemberDTO memberDTO) throws Exception{
+        return session.insert("com.config.MemberMapper.memberGoogleAdd", memberDTO);
     }
 
     // 주황 : 구글 회원 탐색

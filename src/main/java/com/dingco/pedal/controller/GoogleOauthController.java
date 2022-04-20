@@ -97,18 +97,11 @@ public class GoogleOauthController {
 //    주황 - 구글 로그인 로그인확인
 
     @PostMapping(value = "/auth/google/loginCheck")
-    public String loginCheck(@RequestParam Map<String,Object> map,HttpServletRequest request) throws Exception {
-
-        mService.memberGoogleAdd(map);
+    public String loginCheck(MemberDTO memberDTO,HttpServletRequest request) throws Exception {
+        mService.memberGoogleAdd(memberDTO);
         HttpSession session = request.getSession();
 
-        MemberDTO mDTO = new MemberDTO();
-
-        mDTO.setGoogle_idx((String) map.get("google_idx"));
-        mDTO.setUsername((String) map.get("username"));
-        mDTO.setUserid((String) map.get("userid"));
-
-        session.setAttribute(SessionConst.LOGIN_MEMBER,mDTO);
+        session.setAttribute(SessionConst.LOGIN_MEMBER,memberDTO);
         return "redirect:/main";
 
     }
