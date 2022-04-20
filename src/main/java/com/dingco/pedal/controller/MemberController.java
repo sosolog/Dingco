@@ -2,6 +2,7 @@ package com.dingco.pedal.controller;
 
 import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.dto.SnsLoginDTO;
 import com.dingco.pedal.service.MemberService;
 import com.dingco.pedal.service.SendEmailService;
 import com.dingco.pedal.util.FileUploadUtils;
@@ -59,6 +60,25 @@ public class MemberController {
             e.printStackTrace();
         }
         return "/mypage";
+    }
+
+    @RequestMapping(value = "/login/snsmypage", method = RequestMethod.GET)
+    public String selectMypageInfo(@Valid @ModelAttribute("snsLoginDTO") SnsLoginDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo){
+        try {
+            userinfo = mService.selectMypageInfo(userinfo.getM_idx());
+            memberDTO.setM_idx(userinfo.getM_idx());
+            memberDTO.setUserid(userinfo.getUserid());
+            memberDTO.setUsername(userinfo.getUsername());
+            memberDTO.setEmail1(userinfo.getEmail1());
+            memberDTO.setEmail2(userinfo.getEmail2());
+            memberDTO.setStoreFileName(userinfo.getStoreFileName());
+            memberDTO.setUploadFileName(userinfo.getUploadFileName());
+            memberDTO.setJoindate(userinfo.getJoindate());
+            memberDTO.setAuthorities(userinfo.getAuthorities());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return "/snsmypage";
     }
   
     @RequestMapping(value = "/editMypage.action", method = RequestMethod.POST)

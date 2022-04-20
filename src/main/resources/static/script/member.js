@@ -1,4 +1,55 @@
 
+// SNS 로그인 유효성 검사 및 제출
+function socialLoginValidCheck(f){
+
+    var userid = f.userid.value; // id값이 "id"인 입력란의 값을 저장
+    var str_space = /\s/; // 공백체크
+    const regex = /[^a-zA-Z0-9]/g // 영문 대 소문자, 숫자
+
+    $.ajax({
+        url:"memberIdCheck",
+        type:"get",
+        data:{ "userid":userid },
+        success:function(data){
+            if(data){
+                $("#idCheckResult").text("중복된 아이디가 존재합니다.");
+                $("#userid").val("");
+                $("#userid").focus();
+                return false;
+            }else {
+                if (userid.length == 0) {
+                    $("#idCheckResult").text("필수 입력 값입니다.");
+                    $("#userid").val("");
+                    $("#userid").focus();
+                    return false;
+                }else if(userid.length >= 20 || userid.length <= 5){
+                    $("#idCheckResult").text("5~20자리 안으로 입력해주세요.");
+                    $("#userid").val("");
+                    $("#userid").focus();
+                    return false;
+                }else if (str_space.exec(userid)) {
+                    $("#idCheckResult").text("띄어쓰기를 하실 수 없습니다.");
+                    $("#userid").val("");
+                    $("#userid").focus();
+                    return false;
+                }else if (regex.exec(userid)) {
+                    $("#idCheckResult").text("영문 대 소문자와 숫자만 가능합니다.");
+                    $("#userid").val("");
+                    $("#userid").focus();
+                    return false;
+                }else {
+                    f.submit();
+                }
+            }
+        },
+        error:function (xhr,sta,e){
+            location.href="/error/error";
+        }
+    });
+}
+
+
+
 
 // 마이페이지 비밀번호 재확인
 function passwd_check(pagename){

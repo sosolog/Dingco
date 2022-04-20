@@ -1,6 +1,7 @@
 package com.dingco.pedal.dao;
 
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.dto.SnsLoginDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -73,7 +74,7 @@ public class MemberDAO {
         return session.insert("com.config.MemberMapper.memberKakaoAdd", map);
     }
 
-    public MemberDTO selectByKakaoId(String kakao_idx) throws Exception {
+    public SnsLoginDTO selectByKakaoId(String kakao_idx) throws Exception {
         return session.selectOne("com.config.MemberMapper.selectByKakaoId", kakao_idx);
     }
 }

@@ -106,16 +106,15 @@ public class JoinController {
         return cnt;
     }
 
-    // 소셜 회원가입 아이디 유효성 체크
-    @ResponseBody
-    @GetMapping ("/socialMemberIdCheck" )
-    public int  socialMemberIdCheck(HttpServletRequest request,
-                                    @RequestParam("userid") String userid) throws Exception{
-
-        int cnt = mService.socialMemberIdCheck(userid);
-
-        return cnt;
-    }
+    // 소셜 회원가입 아이디 유효성 체크 (명지 memo : 위에 메서드랑 동일해서 필요 없음)
+//    @ResponseBody
+//    @GetMapping ("/socialMemberIdCheck" )
+//    public int  socialMemberIdCheck(HttpServletRequest request,
+//                                    @RequestParam String userid) throws Exception{
+//        int cnt  = mService.socialMemberIdCheck(userid);
+//
+//        return cnt;
+//    }
 
     // 소셜 회원가입 인덱스 유효성 체크
     @ResponseBody

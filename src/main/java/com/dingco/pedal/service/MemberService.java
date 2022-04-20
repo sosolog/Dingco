@@ -1,6 +1,7 @@
 package com.dingco.pedal.service;
 
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.dto.SnsLoginDTO;
 
 import java.util.Map;
 
@@ -37,5 +38,5 @@ public interface MemberService {
 
     // 명지 : 카카오 로그인
     public String getKaKaoAccessToken(String code);
-    public MemberDTO createKakaoUser(String token) throws Exception;
+    public Map<String, Object> createKakaoUser(String token) throws Exception;
 }
