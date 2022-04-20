@@ -48,7 +48,6 @@
 <h2>소셜 회원가입 페이지</h2>
 <br>
 <form id="socialMemberNaverLogin" name="socialMemberNaverLogin" action="socialMemberAdd" method="post">
-    <input type="hidden" name="snsType" value="naver">
     <input type="hidden" id="naver_idx" name="naver_idx">
     <%--<input type="hidden" id="socialIdCheckResult" value="false">--%>
     * 아이디:<input type="text" id="userid" name="userid">

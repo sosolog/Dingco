@@ -6,7 +6,6 @@
 <button onclick="location.href='/login/mypage'">
     마이페이지
 </button>
-<a href="/login/snsmypage">sns마이페이지</a>
 <form action="logout" method="post">
 <button>
     로그아웃

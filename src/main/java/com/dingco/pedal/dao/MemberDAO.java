@@ -1,7 +1,6 @@
 package com.dingco.pedal.dao;
 
 import com.dingco.pedal.dto.MemberDTO;
-import com.dingco.pedal.dto.SnsLoginDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -69,12 +68,14 @@ public class MemberDAO {
     public int socialMemberAdd(MemberDTO memberDTO) {
         return session.insert("com.config.MemberMapper.socialMemberAdd", memberDTO);
     }
+
     // 명지 : 카카오 회원 추가
-    public int memberKakaoAdd(Map<String, Object> map) throws Exception{
-        return session.insert("com.config.MemberMapper.memberKakaoAdd", map);
+    public int memberKakaoAdd(Map<String, Object> memberDTO) throws Exception{
+        return session.insert("com.config.MemberMapper.memberKakaoAdd", memberDTO);
     }
 
-    public SnsLoginDTO selectByKakaoId(String kakao_idx) throws Exception {
+    // 명지 : 카카오 회원가입 여부 체크
+    public MemberDTO selectByKakaoId(String kakao_idx) throws Exception {
         return session.selectOne("com.config.MemberMapper.selectByKakaoId", kakao_idx);
     }
 }

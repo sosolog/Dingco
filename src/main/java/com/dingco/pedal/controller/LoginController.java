@@ -3,7 +3,6 @@ package com.dingco.pedal.controller;
 import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
-import com.dingco.pedal.dto.SnsLoginDTO;
 import com.dingco.pedal.service.MemberService;
 import com.dingco.pedal.session.SessionConst;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -79,29 +79,33 @@ public class LoginController {
         return "redirect:main";
     }
 
-
-
-
-    // 명지 - 카카오 로그인
+    // 명지 - 카카오 로그인 페이지
     @RequestMapping(value="/kakaologin", method = RequestMethod.GET)
     public String kakaologin(@RequestParam("code") String code, HttpServletRequest request, Model model) throws Exception {
 
         String access_Token = mService.getKaKaoAccessToken(code);
-        Map<String, Object> snsLoginDTO = mService.createKakaoUser(access_Token);
-//        SnsLoginDTO snsLoginDTO = mService.createKakaoUser(access_Token);
+        MemberDTO memberDTO = mService.selectByKakaoId(access_Token);
 
-        if (snsLoginDTO == null) {
+        if (memberDTO == null) {
             System.out.println("CASE1");
             // 카카오 로그인 처음일 경우
-            model.addAttribute("snsLoginDTO", snsLoginDTO);
+            Map<String, Object> userinfo = mService.createKakaoUser(access_Token);
+            model.addAttribute("snsLoginDTO", userinfo);
             return "kakaoLoginForm";
         } else {
             System.out.println("CASE2");
             // 카카오 로그인 처음 아닐 경우
             HttpSession session = request.getSession();
             //세션에 회원정보 보관
-            // session.setAttribute(SessionConst.LOGIN_MEMBER,snsLoginDTO);
+            session.setAttribute(SessionConst.LOGIN_MEMBER, memberDTO);
             return "redirect:main";
         }
+    }
+
+    // 명지 - 카카오 로그인 action
+    @RequestMapping(value="/kakaologin.action", method = RequestMethod.POST)
+    public String kakaologinaction(@RequestParam Map<String, Object> memberDTO) throws Exception {
+        mService.memberKakaoAdd(memberDTO);
+        return "redirect:login";
     }
 }

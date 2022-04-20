@@ -2,7 +2,6 @@ package com.dingco.pedal.service;
 
 import com.dingco.pedal.dao.MemberDAO;
 import com.dingco.pedal.dto.MemberDTO;
-import com.dingco.pedal.dto.SnsLoginDTO;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.lang.reflect.Member;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -148,13 +146,53 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Map<String, Object> createKakaoUser (String token){
+    public MemberDTO selectByKakaoId(String token){
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
-        Map<String, Object> map = new HashMap<String, Object>();
-
         //access_token을 이용하여 사용자 정보 조회
-        SnsLoginDTO snsLoginDTO = null;
+        MemberDTO memberDTO = null;
+
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+
+            //결과 코드가 200이라면 성공
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+
+            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            System.out.println("response body : " + result);
+
+            //Gson 라이브러리로 JSON파싱
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+            String id = element.getAsJsonObject().get("id").getAsString();
+
+            memberDTO = dao.selectByKakaoId(id);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return memberDTO;
+    }
+
+    @Override
+    public Map<String, Object> createKakaoUser (String token){
+        String reqURL = "https://kapi.kakao.com/v2/user/me";
+        //access_token을 이용하여 사용자 정보 조회
+        Map<String, Object> map = new HashMap<String, Object>();
 
         try {
             URL url = new URL(reqURL);
@@ -184,34 +222,19 @@ public class MemberServiceImpl implements MemberService {
 
             String id = element.getAsJsonObject().get("id").getAsString();
             String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
-            boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
-            String email = "";
-            if (hasEmail) {
-                email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
-            }
 
-            String[] splitEmail = email.split("@");
-            snsLoginDTO = dao.selectByKakaoId(id);
-
-            if (snsLoginDTO == null) {
-                map.put("kakao_idx", id);
-                map.put("username", nickname);
-                map.put("email1", splitEmail[0]);
-                map.put("email2", splitEmail[1]);
-            } else {
-                map.put("m_idx", snsLoginDTO.getM_idx());
-                map.put("kakao_idx", snsLoginDTO.getKakao_idx());
-                map.put("username", snsLoginDTO.getUsername());
-                map.put("email1", snsLoginDTO.getEmail1());
-                map.put("email2", snsLoginDTO.getEmail2());
-                map.put("joindate", snsLoginDTO.getJoindate());
-            }
+            map.put("kakao_idx", id);
+            map.put("username", nickname);
             br.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return map;
+    }
+
+    public int memberKakaoAdd(Map<String, Object> memberDTO) throws Exception {
+        return dao.memberKakaoAdd(memberDTO);
     }
 
 }
