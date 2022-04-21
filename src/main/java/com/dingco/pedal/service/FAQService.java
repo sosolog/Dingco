@@ -12,7 +12,7 @@ public interface FAQService {
    public int boardWrite(FAQDTO dto) throws Exception;
 
    // 태아블 select 생성 (페이징)
-   public PageDTO selectAllPage( int curPage )throws Exception;
+   public PageDTO selectAllPage( int curPage, int category_idx )throws Exception;
 
    // 카테고리 넘기기
    public List<HashMap<String, String>> category()throws Exception;
