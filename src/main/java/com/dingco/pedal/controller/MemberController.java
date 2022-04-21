@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -39,25 +40,32 @@ public class MemberController {
     // -------------------------------- Start : 명지 -------------------------------- //
     @RequestMapping(value = "/login/mypage", method = RequestMethod.GET)
     public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo){
+        String next = "";
+
         try {
             userinfo = mService.selectMypageInfo(userinfo.getM_idx());
+
             memberDTO.setM_idx(userinfo.getM_idx());
             memberDTO.setUserid(userinfo.getUserid());
             memberDTO.setUsername(userinfo.getUsername());
             memberDTO.setPasswd(userinfo.getPasswd());
             memberDTO.setEmail1(userinfo.getEmail1());
             memberDTO.setEmail2(userinfo.getEmail2());
-            memberDTO.setPhone1(userinfo.getPhone1());
-            memberDTO.setPhone2(userinfo.getPhone2());
-            memberDTO.setPhone3(userinfo.getPhone3());
             memberDTO.setStoreFileName(userinfo.getStoreFileName());
             memberDTO.setUploadFileName(userinfo.getUploadFileName());
             memberDTO.setJoindate(userinfo.getJoindate());
             memberDTO.setAuthorities(userinfo.getAuthorities());
+
+            if (userinfo.getKakao_idx()==null && userinfo.getNaver_idx()==null && userinfo.getGoogle_idx()==null) {
+                next = "mypage";
+            } else {
+                next = "snsmypage";
+            }
+
         } catch (Exception e){
             e.printStackTrace();
         }
-        return "/mypage";
+        return next;
     }
   
     @RequestMapping(value = "/editMypage.action", method = RequestMethod.POST)
@@ -76,7 +84,7 @@ public class MemberController {
             // -------- Start : File upload -------- //
             FileUploadUtils fileUploadUtils = new FileUploadUtils(baseDir, TableDir.MEMBER);
             // 1) 업로드할 파일이 있을 때
-            if (file != null) {
+            if (file != null && !file.isEmpty()) {
                 // 사용자의 이미지 파일을 들고 옴 => img.png
                 String originalFilename = file.getOriginalFilename();
 
@@ -107,18 +115,32 @@ public class MemberController {
         }
         return next;
     }
-
     // -------------------------------- End : 명지 -------------------------------- //
 
     // -------------------------------- Start : 주황 -------------------------------- //
     //주황 - 아이디/비밀번호 찾기
     @GetMapping("/find_ID_PW")
     public String find_ID_PW(){
-
         return "find_ID_PW";
     }
 
+    // 명지 - 아이디 찾기
+    @GetMapping("/check/findId")
+    public @ResponseBody String findId(@RequestParam Map<String,Object> map) throws Exception {
+        String json = mService.findUserId(map);
+        return json;
+    }
     // -------------------------------- End : 주황 -------------------------------- //
+    // -------------------------------- Start : 민욱 -------------------------------- //
+    // 네이버 콜백
+    @GetMapping("/callback")
+    public String naverCallback(){
+
+        return "naverLoginForm";
+    }
+
+
+    // -------------------------------- End : 민욱 -------------------------------- //
 
 
 }

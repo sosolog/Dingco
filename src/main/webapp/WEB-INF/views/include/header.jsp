@@ -9,6 +9,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=1260">
+    <meta name="google-signin-client_id" content="165389155458-06oihucqpb37gsgqbvsuupqjjg47kjik.apps.googleusercontent.com">
 
    <%-- <meta name="google-site-verification" content="EBWVlt9UKAo5kb3JFlCqSdRF14f0cLXgws_kOjLW6gE" />
     <meta name="naver-site-verification" content="a954ae14ef5b21504685d492f4e3142a8c84efde" />
@@ -28,6 +29,10 @@
     <script type="text/javascript" src="/script/common.js"></script>
     <script type="text/javascript" src="/script/member.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+
 
 </head>
 <body>

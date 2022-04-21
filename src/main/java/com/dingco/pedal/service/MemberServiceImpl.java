@@ -1,14 +1,18 @@
 package com.dingco.pedal.service;
 
 import com.dingco.pedal.dao.MemberDAO;
-import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService {
@@ -19,16 +23,43 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // 민욱 : 회원 추가
+
+    // 민욱: 회원가입_회원 추가
     @Override
     public int memberAdd(MemberDTO memberDTO) throws Exception {
         return dao.memberAdd(memberDTO);
     }
-    // 회원가입 아이디 유효성 체크
+
+    // 민욱: 소셜 회원가입_회원 추가
     @Override
-    public int idDuplicateCheck(String userid) throws Exception{
-        return dao.idDuplicateCheck(userid);
+    public int socialMemberAdd(MemberDTO memberDTO) throws Exception {
+        return dao.socialMemberAdd(memberDTO);
     }
+
+    // 민욱: 회원가입_아이디 유효성 검증
+    @Override
+    public int memberIdDuplicateCheck(String userid) throws Exception {
+        return dao.memberIdDuplicateCheck(userid);
+    }
+
+    // 민욱: 소셜 로그인_네이버 고유 id 확인
+    @Override
+    public int socialMemberNaverIdxCheck(String naver_idx) throws Exception {
+        return dao.socialMemberNaverIdxCheck(naver_idx);
+    }
+
+    // 민욱: 소셜 로그인_네이버 고유 id 회원정보 들고 오기
+    @Override
+    public MemberDTO selectByNaverIdx(String naver_idx) throws Exception {
+        return dao.selectByNaverIdx(naver_idx);
+    }
+
+    // 민욱: 회원가입_이메일 유효성 검증
+    @Override
+    public int emailDuplicateCheck(Map<String, String> map) throws Exception {
+        return dao.emailDuplicateCheck(map);
+    }
+
 
     // 명지 : 마이페이지 정보 가져오기
     @Override
@@ -41,7 +72,13 @@ public class MemberServiceImpl implements MemberService {
     public int updateMypage(MemberDTO memberDTO) throws Exception {
         return dao.updateMypage(memberDTO);
     }
-  
+
+    // 명지 : 아이디 찾기
+    @Override
+    public String findUserId(Map<String, Object> map) throws Exception {
+        return dao.findUserId(map);
+    }
+
     // 주황 : 아이디로 로그인 찾기
     @Override
     public MemberDTO selectByLoginId(String userid, String passwd) throws Exception {
@@ -54,5 +91,169 @@ public class MemberServiceImpl implements MemberService {
 
 
 
-}
+    // 명지 : 카카오 로그인
+    @Override
+    public String getKaKaoAccessToken (String code){
+        String access_Token = "";
+        String refresh_Token = "";
+        String reqURL = "https://kauth.kakao.com/oauth/token";
 
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            //POST 요청을 위해 기본값이 false인 setDoOutput을 true로
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            //POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            StringBuilder sb = new StringBuilder();
+            sb.append("grant_type=authorization_code");
+            sb.append("&client_id=ee5887b0e2e8cce297b9421bb915bc70"); // TODO REST_API_KEY 입력
+            sb.append("&redirect_uri=http://localhost:9090/kakaologin"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&code=" + code);
+            bw.write(sb.toString());
+            bw.flush();
+
+            //결과 코드가 200이라면 성공
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            System.out.println("response body : " + result);
+
+            //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+            access_Token = element.getAsJsonObject().get("access_token").getAsString();
+            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+
+            System.out.println("access_token : " + access_Token);
+            System.out.println("refresh_token : " + refresh_Token);
+
+            br.close();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return access_Token;
+    }
+
+  
+    @Override
+    public MemberDTO selectByKakaoId(String token){
+        String reqURL = "https://kapi.kakao.com/v2/user/me";
+
+        //access_token을 이용하여 사용자 정보 조회
+        MemberDTO memberDTO = null;
+
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+
+            //결과 코드가 200이라면 성공
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+
+            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            System.out.println("response body : " + result);
+
+            //Gson 라이브러리로 JSON파싱
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+            String id = element.getAsJsonObject().get("id").getAsString();
+
+            memberDTO = dao.selectByKakaoId(id);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return memberDTO;
+    }
+
+    @Override
+    public Map<String, Object> createKakaoUser (String token){
+        String reqURL = "https://kapi.kakao.com/v2/user/me";
+        //access_token을 이용하여 사용자 정보 조회
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+
+            //결과 코드가 200이라면 성공
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+
+            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            System.out.println("response body : " + result);
+
+            //Gson 라이브러리로 JSON파싱
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+            String id = element.getAsJsonObject().get("id").getAsString();
+            String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
+
+            map.put("kakao_idx", id);
+            map.put("username", nickname);
+            br.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+    
+    // 명지 : 카카오 로그인 회원 추가 (최종)
+    @Override
+    public int memberKakaoAdd(Map<String, Object> memberDTO) throws Exception {
+        return dao.memberKakaoAdd(memberDTO);
+    }
+
+  
+    @Override
+    public void memberGoogleAdd(MemberDTO memberDTO) throws Exception {
+        dao.memberGoogleAdd(memberDTO);
+    }
+
+    @Override
+    public MemberDTO selectByGoogleIdx(String google_idx) throws Exception {
+        return dao.selectByGoogleIdx(google_idx);
+
+
+    }
+
+}

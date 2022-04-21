@@ -1,4 +1,56 @@
 
+// SNS 로그인 유효성 검사 및 제출
+function socialLoginValidCheck(f){
+
+    var userid = $("#userid").val(); // id값이 "id"인 입력란의 값을 저장
+    var str_space = /\s/; // 공백체크
+    const regex = /[^a-zA-Z0-9]/g // 영문 대 소문자, 숫자
+
+    $.ajax({
+        url:"/memberIdDuplicateCheck",
+        type:"get",
+        data:{ "userid":userid },
+        success:function(data){
+            if(data){
+                $("#idCheckResult").text("중복된 아이디가 존재합니다.");
+                $("#userid").val("");
+                $("#userid").focus();
+                return false;
+            }else {
+                if (userid.length == 0) {
+                    $("#idCheckResult").text("필수 입력 값입니다.");
+                    $("#userid").val("");
+                    $("#userid").focus();
+                    return false;
+                }else if(userid.length >= 20 || userid.length <= 5){
+                    $("#idCheckResult").text("5~20자리 안으로 입력해주세요.");
+                    $("#userid").val("");
+                    $("#userid").focus();
+                    return false;
+                }else if (str_space.exec(userid)) {
+                    $("#idCheckResult").text("띄어쓰기를 하실 수 없습니다.");
+                    $("#userid").val("");
+                    $("#userid").focus();
+                    return false;
+                }else if (regex.exec(userid)) {
+                    $("#idCheckResult").text("영문 대 소문자와 숫자만 가능합니다.");
+                    $("#userid").val("");
+                    $("#userid").focus();
+                    return false;
+                }else {
+                    f.submit();
+                }
+            }
+        },
+        error:function (xhr,sta,e){
+            location.href="/error/error";
+        }
+    });
+}
+
+
+
+
 // 마이페이지 비밀번호 재확인
 function passwd_check(pagename){
     var passwd1 = $('#'+pagename+' input[name=passwd]').val();
@@ -21,23 +73,15 @@ function passwd_check(pagename){
 function editUserForm_submit(f){
     var mesg = "";
     var chk_pw = f.chk_pw.value;
-    var phone2 = f.phone2.value;
-    var phone3 = f.phone3.value;
     var email1 = f.email1.value;
     var email2 = f.email2.value;
+    var snslogin = f.snslogin.value;
 
     // 이메일
     if (email1=="" || email2=="") { mesg = "이메일, "+mesg; }
 
-    // 전화번호
-    if ((phone2.length+phone3.length > 8) || (phone2=="" || phone3=="")
-        || letterCheck.checkEngAll.test(phone2+phone3) || letterCheck.checkSpc.test(phone2+phone3)
-        || letterCheck.checkKor.test(phone2+phone3)) {
-        mesg = "전화번호, "+mesg;
-    }
-
     // 비밀번호
-    if (chk_pw=="false"){ mesg = "비밀번호, "+mesg; }
+    if (chk_pw=="false" && snslogin!=""){ mesg = "비밀번호, "+mesg; }
 
     // 최종 결과
     if (mesg==""){
@@ -55,8 +99,8 @@ function f_emailSelect(obj){
     $('[name=email2]').val(obj.value);
 }
 
-<!-- 파일 크기 제한(ajax_3MB)-->
-function checkFileSize(){
+<!-- 민욱: 업로드 이미지 파일 크기 제한(3MB)-->
+function imageFileSizeCheck(){
     if (this.files && this.files[0]) {
         var maxSize = 3 * 1024 * 1024;
         var fileSize = this.files[0].size;
@@ -68,20 +112,15 @@ function checkFileSize(){
         }
     }
 }
-<!-- 이메일 선택-->
-function selectEmailList(){
-        $("#email2").val($("#url option:selected").val());
-    }
 
 
-
-<!-- 회원가입 아이디 유효성 체크 -->
-function memberIdCheck() {
+<!-- 민욱: 회원가입_아이디 유효성 검증 -->
+function memberIdDuplicateCheck() {
     var userid = $('#userid').val(); //id값이 "id"인 입력란의 값을 저장
     var str_space = /\s/; // 공백체크
 
     $.ajax({
-        url: 'memberIdCheck', // Controller에서 인식할 주소나 메서드
+        url: 'memberIdDuplicateCheck', // Controller에서 인식할 주소나 메서드
         type: 'get', //GET 방식으로 전달
         data: {userid: userid}, // Controller에서  @RequestParam으로 들고옴
         datatype: 'text', // ex) text, html, json ...
@@ -110,12 +149,17 @@ function memberIdCheck() {
     });
 }
 
-<!-- 회원가입 비밀번호 일치 여부 확인 -->
-function memberPwCheck() {
+<!-- 민욱: 회원가입_비밀번호 일치 여부 확인 -->
+function memberPwDuplicateCheck() {
     var passwd = $('#passwd').val();
     var passwd1 = $('#passwd1').val();
 
-    if(passwd == passwd1) {
+    if(passwd.length == 0 || passwd1.length == 0){
+        $("#pwCheckResult").text("비밀번호는 필수 입력값입니다.");
+        $("#pwCheckHidden").val("false");
+    }
+
+    if(passwd === passwd1) {
         $("#pwCheckHidden").val("true");
         $("#pwCheckResult").text("");
     }else {
@@ -124,13 +168,22 @@ function memberPwCheck() {
     }
 }
 
-<!-- submit 제약조건(아이디 중복 확인, 비밀번호 중복 확인) -->
-function joinSubmitCheck(event) {
-    if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true'){
+<!-- 민욱: 회원가입_submit 제약조건(아이디 중복 확인, 비밀번호 중복, 이메일 인증번호 확인) -->
+function joinSubmitCheck() {
+    if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true' && $("#emailCheckHidden").val()=='true'){
         return true;
     }else{
-        if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
-            alert("아이디와 비밀번호 중복 확인이 필요합니다.");
+        if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
+            alert("아이디, 비밀번호 체크와 이메일 인증이 필요합니다.");
+            return false;
+        }else if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
+            alert("아이디와 비밀번호 확인이 필요합니다.");
+            return false;
+        }else if($("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
+            alert("비밀번호 체크와 이메일 인증이 필요합니다.");
+            return false;
+        }else if($("#idCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
+            alert("아이디 체크와 이메일 인증이 필요합니다.");
             return false;
         }else if($("#idCheckHidden").val()=='false') {
             alert("아이디 중복 확인이 필요합니다.");
@@ -138,14 +191,52 @@ function joinSubmitCheck(event) {
         }else if($("#pwCheckHidden").val()=='false') {
             alert("비밀번호 중복 확인이 필요합니다.");
             return false;
+        }else if($("#emailCheckHidden").val()=='false') {
+            alert("이메일 인증이 필요합니다.");
+            return false;
         }
     }
 }
 
+// 명지 : 아이디찾기 유효성 검사
+function finduserid(f){
+    var check = true;
+    if (f.username.value==""){
+        check = false;
+        $('.infoname').text("이름을 입력해주세요");
+    } else { $('.infoname').text(""); }
+    if (f.email1.value=="" || f.email2.value=="") {
+        check = false;
+        $('.infoemail').text("이메일을 입력해주세요");
+    } else { $('.infoemail').text(""); }
+
+    if (check == true){
+        $.ajax({
+            url: "/check/findId",
+            type: "GET",
+            data: {
+                "username":f.username.value,
+                "email1":f.email1.value,
+                "email2":f.email2.value
+            },
+            success: function (res) {
+                if (res==""){
+                    $('.findidresult').text("일치하는 값이 없습니다.");
+                } else {
+                    $('.findidresult').text("회원님의 아이디는 "+res+"입니다");
+                }
+            }
+        });
+    }
+}
+
+
 <!-- 이메일, 아이디 DB에서 확인 -->
-function pw_CheckAndSendMail(){
-    var userEmail = $("#userEmail").val();
-    var userid = $("#userid").val();
+function findpasswd(f){
+    console.log(f)
+    var userid = f.userid.value;
+    var userEmail = f.userEmail.value;
+    console.log(userEmail,userid)
 
     $.ajax({
         url: "/check/findPw",
@@ -167,31 +258,142 @@ function pw_CheckAndSendMail(){
                                     "userid": userid
                                 }
                             });
-                            window.location = "/login";
+                            location.href = "/login";
                         }
 
                     }
                 )
-                $('#checkMsg').html('<p style="color:darkblue"></p>');
+                $('.findpwresult').html('<p style="color:darkblue"></p>');
             } else {
-                $('#checkMsg').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
+                $('.findpwresult').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
             }
         }
     });
 }
 
+//비동기 로그인 체크
 function loginValidCheck(){
     var userid = $("#userid").val();
     var passwd = $("#passwd").val();
+    const f = $("#loginForm");
 
     if(userid.length==0){
         $("#result").text("아이디 입력 필수");
         $("#userid").focus();
-        event.preventDefault();
+        return false;
     }else if(passwd.length==0){
         $("#result").text("비밀번호 입력 필수");
         $("#passwd").focus();
-        event.preventDefault();
+        return false;
     }
+    $.ajax({
+        url:"/login/check",
+        type:"post",
+        data:{
+            "userid":userid,
+            "passwd":passwd
+        },
+        success:function (res){
+            if(res){
+                f.attr("action","/login");
+                f.attr("method","POST");
+                f.submit();
+            }else{
+                $("#result").text("아이디 또는 비밀번호가 일치하지 않습니다.");
+            }
+        },
+        error:function (xhr,sta,e){
+            location.href="/error/error";
+        }
+
+    });
+    return false;
+
 }
+
+function onSuccess(googleUser) {
+    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+}
+function onFailure(error) {
+    console.log(error);
+}
+function renderButton() {
+    gapi.signin2.render('my-signin2', {
+        'scope': 'profile https://www.googleapis.com/auth/profile.emails.read',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+    });
+
+}
+
+<!-- 민욱: 이메일 인증번호 보내기 -->
+function emailValidateSend(){
+    var email1 = $("#email1").val();
+    var email2 = $("#email2").val();
+    $.ajax({
+        url: "emailDuplicateCheck",
+        type: "GET",
+        data: {
+            "email1": email1,
+            "email2": email2
+        },
+        success: function (data) {
+            if(data != 0) {
+                $("#emailCheckResult").text("이미 있는 이메일입니다. 다른 이메일로 인증하세요.")
+                $("#email1").val("")
+                $("#email2").val("");
+                $("#email1").focus();
+            }
+            else {
+                $.ajax({
+                    url: "emailValidationSend",
+                    type: "GET",
+                    data: {
+                        "email1": email1,
+                        "email2": email2
+                    },
+                    success: function () {
+                        alert("발송 완료!")
+                        $("#email1").attr("readonly", true)
+                        $("#email2").attr("readonly", true)
+                        $("#emailCheckResult").text("")
+                    }
+                });
+            }
+        }
+    });
+
+}
+
+<!-- 민욱: 이메일 인증번호 확인 -->
+function emailValidateCheck(){
+    var emailValidationCheckNumber = $("#emailValidationCheckNumber").val();
+
+    $.ajax({
+        url: "emailValidationCheck",
+        type: "GET",
+        data: {
+            "emailValidationCheckNumber": emailValidationCheckNumber
+        },
+        success: function (data) {
+            if (data == "true") {
+                $("#emailCheckHidden").val("true");
+                $("#emailCheckResult").text("이메일 인증 완료");
+                $("#emailValidationCheckNumber").attr("readonly", true);
+
+            }else {
+                $("#emailCheckResult").text("인증번호가 맞지 않습니다.");
+                $("#emailValidationCheckNumber").val("");
+                $("#emailValidationCheckNumber").focus();
+            }
+        },
+        error: function (){
+        }
+    });
+}
+
 
