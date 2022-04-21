@@ -8,6 +8,7 @@
 <html>
 <body>
 <h2>게시판 목록보기</h2>
+<jsp:include page="../common/menu.jsp" flush="true" />
 <table border="1">
     <tr>
         <th>번호</th>
