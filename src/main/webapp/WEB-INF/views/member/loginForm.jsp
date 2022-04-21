@@ -8,11 +8,11 @@
 
 <h2>로그인 페이지</h2>
 <form id="loginForm">
+    <span id="result" style="color:red">
+    </span><br>
     * 아이디:<input type="text" name="userid" id="userid" autofocus>
     * 비밀번호:<input type="password" name="passwd" id="passwd">
     <input type="button" onclick="return loginValidCheck()" value="로그인"><br>
-    <span id="result" style="color:red">
-    </span>
 
 </form>
     <c:set var="REST_API_KEY" value="ee5887b0e2e8cce297b9421bb915bc70"/>
@@ -20,7 +20,6 @@
 
     <button id="joinBtn" onclick="location.href='join'">회원가입</button><br>
     <button id="find_ID_PWBtn" onclick="location.href='find_ID_PW'">아이디/비밀번호 찾기</button><br>
-    <button id="kakaoLoginBtn">카카오톡으로 로그인</button><br>
 <div id="gSignInWrapper">
         <a href="http://localhost:9090/auth/GOOGLE">
     <div id="customBtn" class="customGPlusSignIn">

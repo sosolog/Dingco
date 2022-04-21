@@ -2,12 +2,12 @@
 // SNS 로그인 유효성 검사 및 제출
 function socialLoginValidCheck(f){
 
-    var userid = f.userid.value; // id값이 "id"인 입력란의 값을 저장
+    var userid = $("#userid").val(); // id값이 "id"인 입력란의 값을 저장
     var str_space = /\s/; // 공백체크
     const regex = /[^a-zA-Z0-9]/g // 영문 대 소문자, 숫자
 
     $.ajax({
-        url:"memberIdDuplicateCheck",
+        url:"/memberIdDuplicateCheck",
         type:"get",
         data:{ "userid":userid },
         success:function(data){

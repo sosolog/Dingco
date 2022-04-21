@@ -42,6 +42,6 @@ public interface MemberService {
     public int memberKakaoAdd(Map<String, Object> memberDTO) throws Exception;
 
     //주황 : 구글 로그인
-    public void memberGoogleAdd(Map<String, Object> map) throws Exception;
+    public void memberGoogleAdd(MemberDTO memberDTO) throws Exception;
     public MemberDTO selectByGoogleIdx(String google_idx) throws Exception;
 }

@@ -109,7 +109,7 @@
     </select>
 
     <!-- 주황 : 구글 로그인 -->
-    <insert id="memberGoogleAdd" parameterType="map">
+    <insert id="memberGoogleAdd" parameterType="MemberDTO">
         INSERT INTO MEMBER (google_idx, username,userid)
         VALUES (#{google_idx}, #{username},#{userid})
     </insert>
