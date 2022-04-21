@@ -20,13 +20,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         HttpSession session = request.getSession();
-
         MemberDTO memberDTO = (MemberDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        String requestURI = request.getRequestURI();
-
         if(memberDTO==null) {
             log.info("미인증 사용자 요청");
-            response.sendRedirect("/login"+requestURI);
+            response.sendRedirect("/login");
             return false;
         }
         return true;
