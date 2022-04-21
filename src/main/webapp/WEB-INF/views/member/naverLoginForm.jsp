@@ -3,13 +3,10 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <script>
-
     // 네이버 로그인
     var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "http://localhost:9090/callback");
-
     // 네이버 사용자 프로필 조회
     naver_id_login.get_naver_userprofile("naverLoginCallback()");
-
     function naverLoginCallback() {
         var naver_idx = naver_id_login.getProfileData('id')
         $.ajax({
