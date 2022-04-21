@@ -15,21 +15,22 @@ import java.util.Map;
 @Repository("FAQDAO")
 public class FAQDAO {
 
-    private final int perPage = 3; // 페이지당 보여줄 레코드
-    private final int pagesPerBlock = 2;
+    private final int perPage = 5; // 페이지당 보여줄 레코드
+    private final int pagesPerBlock = 3;
 
     @Autowired
     SqlSession session;
     //SqlSessionTemplate session;
 
     //페이징
-    public PageDTO<FAQDTO> selectAllPage(int curPage) throws Exception {
+    public PageDTO<FAQDTO> selectAllPage(int curPage, int category_idx) throws Exception {
         int totalRecord = totalRecord();    //전체 레코드 갯수
 //        int perPage = pageDTO.getPerPage();
         int offset = (curPage - 1) * perPage;      // select시 시작점
         HashMap<String, Integer> map = new HashMap<>();
         map.put("perPage", perPage);
         map.put("offset", offset);
+        map.put("category_idx", category_idx);
         List<FAQDTO> list = session.selectList("com.config.FAQMapper.selectAllPage", map);
         PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(list, totalRecord, curPage, perPage); // pageDTO 저장
         pageDTO.setPageBlock(pagesPerBlock);
