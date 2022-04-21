@@ -17,11 +17,16 @@
         from FAQ f
                  join CATEGORY c on f.category_idx = c.CATEGORY_IDX
                  join MEMBER m on f.m_idx = m.m_idx
-        where f.category_idx = #{category_idx}
         order by f.number_idx asc
             limit ${perPage} offset ${offset}
         ]]>
 	</select>
+
+    <!--    select f.number_idx, m.userid, f.title, f.content, f.WRITEDAY, f.READCNT, c.category_name-->
+    <!--    from FAQ f join CATEGORY c-->
+    <!--    on f.category_idx = c.CATEGORY_IDX-->
+    <!--    join MEMBER m-->
+    <!--    on f.m_idx = m.m_idx-->
 
 
     <resultMap id="category" type="hashmap">
@@ -54,13 +59,11 @@
                  join MEMBER m on f.m_idx = m.m_idx
         where f.number_idx = #{number_idx}
         ]]>
-
     </select>
 
     <update id="update" parameterType="FAQDTO">
         update FAQ
-        set title = #{title},content = #{content},category_idx = #{category_idx}
-        where number_idx = #{number_idx}
+        set title = #{title}, #{content}, #{category_idx}
     </update>
 
     <delete id="delete" parameterType="int">
