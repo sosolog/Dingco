@@ -88,8 +88,8 @@
                 <button class="del-comment" data-cidx="\${c_idx}">삭제</button>
             </div>
             <div id="btn-\${c_idx}-update" style="display: none">
-            <button class="confirm-upd" data-cidx="\${c_idx}">확인</button>
-        </div>
+                <button class="confirm-upd" data-cidx="\${c_idx}">확인</button>
+            </div>
         </div>
     </script>
 </head>
