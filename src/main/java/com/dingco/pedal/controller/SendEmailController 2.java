@@ -46,10 +46,6 @@ public class SendEmailController {
     }
 
 
-
-
-
-
     // 민욱: 이메인 인증_등록된 이메일로 이메일 인증번호를 확인해서 세션에 저장 되어있는 인증번호를 비교
     @GetMapping("emailValidationCheck")
     public @ResponseBody

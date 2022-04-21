@@ -148,10 +148,9 @@ public class JoinController {
         // 네이버 고유 id 확인(DB)
         int cnt = mService.socialMemberNaverIdxCheck(naver_idx);
 
-
-        //세션에 회원 정보 저장
         HttpSession session = request.getSession();
 
+        //세션에 회원 정보 저장
         MemberDTO loginMember = mService.selectByNaverIdx(naver_idx);
         session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
 

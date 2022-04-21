@@ -330,6 +330,13 @@ function renderButton() {
 
 }
 
+
+
+
+
+
+
+
 <!-- 민욱: 이메일 인증번호 보내기 -->
 function emailValidateSend(){
     var email1 = $("#email1").val();
