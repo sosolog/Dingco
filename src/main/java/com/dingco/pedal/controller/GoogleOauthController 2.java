@@ -56,13 +56,11 @@ public class GoogleOauthController {
         // Access Token 발급
         JsonNode jsonToken = GoogleLogin.getAccessToken(code);
         String accessToken = jsonToken.get("access_token").toString();
-
-
-        /* String refreshToken = "";
+        String refreshToken = "";
         if(jsonToken.has("refresh_token")) {
             refreshToken = jsonToken.get("refresh_token").toString();
         }
-        String expiresTime = jsonToken.get("expires_in").toString();*/
+        String expiresTime = jsonToken.get("expires_in").toString();
 
         // Access Token으로 사용자 정보 반환
         JsonNode userInfo = GoogleLogin.getGoogleUserInfo(accessToken);
@@ -99,11 +97,18 @@ public class GoogleOauthController {
 //    주황 - 구글 로그인 로그인확인
 
     @PostMapping(value = "/auth/google/loginCheck")
-    public String loginCheck(MemberDTO memberDTO,HttpServletRequest request) throws Exception {
-        mService.memberGoogleAdd(memberDTO);
+    public String loginCheck(@RequestParam Map<String,Object> map,HttpServletRequest request) throws Exception {
+
+        mService.memberGoogleAdd(map);
         HttpSession session = request.getSession();
 
-        session.setAttribute(SessionConst.LOGIN_MEMBER,memberDTO);
+        MemberDTO mDTO = new MemberDTO();
+
+        mDTO.setGoogle_idx((String) map.get("google_idx"));
+        mDTO.setUsername((String) map.get("username"));
+        mDTO.setUserid((String) map.get("userid"));
+
+        session.setAttribute(SessionConst.LOGIN_MEMBER,mDTO);
         return "redirect:/main";
 
     }
