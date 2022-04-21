@@ -56,11 +56,13 @@ public class GoogleOauthController {
         // Access Token 발급
         JsonNode jsonToken = GoogleLogin.getAccessToken(code);
         String accessToken = jsonToken.get("access_token").toString();
-        String refreshToken = "";
+
+
+        /* String refreshToken = "";
         if(jsonToken.has("refresh_token")) {
             refreshToken = jsonToken.get("refresh_token").toString();
         }
-        String expiresTime = jsonToken.get("expires_in").toString();
+        String expiresTime = jsonToken.get("expires_in").toString();*/
 
         // Access Token으로 사용자 정보 반환
         JsonNode userInfo = GoogleLogin.getGoogleUserInfo(accessToken);
