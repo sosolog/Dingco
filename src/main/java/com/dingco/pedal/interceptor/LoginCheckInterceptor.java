@@ -1,6 +1,7 @@
 package com.dingco.pedal.interceptor;
 
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.session.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
