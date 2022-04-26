@@ -278,11 +278,11 @@ function loginValidCheck(){
     const f = $("#loginForm");
 
     if(userid.length==0){
-        $("#result").text("아이디 입력 필수");
+        $("#result").text("아이디를 입력해 주세요");
         $("#userid").focus();
         return false;
     }else if(passwd.length==0){
-        $("#result").text("비밀번호 입력 필수");
+        $("#result").text("비밀번호를 입력해 주세요");
         $("#passwd").focus();
         return false;
     }
@@ -396,4 +396,11 @@ function emailValidateCheck(){
     });
 }
 
+
+<!-- 네이버 로그인 -->
+function naverlogin(){
+    // $("#naver_id_login").trigger("click");
+    var btnNaverLogin = document.getElementById("naver_id_login").firstChild;
+    btnNaverLogin.click();
+}
 

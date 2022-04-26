@@ -38,25 +38,14 @@ public class MemberController {
 
 
     // -------------------------------- Start : 명지 -------------------------------- //
-    @RequestMapping(value = "/login/mypage", method = RequestMethod.GET)
+    @RequestMapping(value = "/mypage", method = RequestMethod.GET)
     public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo){
         String next = "";
 
         try {
-            userinfo = mService.selectMypageInfo(userinfo.getM_idx());
+            memberDTO = mService.selectMypageInfo(userinfo.getM_idx());
 
-            memberDTO.setM_idx(userinfo.getM_idx());
-            memberDTO.setUserid(userinfo.getUserid());
-            memberDTO.setUsername(userinfo.getUsername());
-            memberDTO.setPasswd(userinfo.getPasswd());
-            memberDTO.setEmail1(userinfo.getEmail1());
-            memberDTO.setEmail2(userinfo.getEmail2());
-            memberDTO.setStoreFileName(userinfo.getStoreFileName());
-            memberDTO.setUploadFileName(userinfo.getUploadFileName());
-            memberDTO.setJoindate(userinfo.getJoindate());
-            memberDTO.setAuthorities(userinfo.getAuthorities());
-
-            if (userinfo.getKakao_idx()==null && userinfo.getNaver_idx()==null && userinfo.getGoogle_idx()==null) {
+            if (memberDTO.getKakao_idx()==null && memberDTO.getNaver_idx()==null && memberDTO.getGoogle_idx()==null) {
                 next = "mypage";
             } else {
                 next = "snsmypage";
