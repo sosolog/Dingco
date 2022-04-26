@@ -3,5 +3,6 @@
 
 
 <%@ include file="./include/header.jsp" %>
+<%@ include file="./include/backtop.jsp" %>
 <%@ include file="./member/snsmypage.jsp" %>
 <%@ include file="./include/footer.jsp" %>

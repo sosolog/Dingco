@@ -46,9 +46,9 @@ public class MemberController {
             memberDTO = mService.selectMypageInfo(userinfo.getM_idx());
 
             if (memberDTO.getKakao_idx()==null && memberDTO.getNaver_idx()==null && memberDTO.getGoogle_idx()==null) {
-                next = "mypage";
+                next = "/mypage";
             } else {
-                next = "snsmypage";
+                next = "/snsmypage";
             }
 
         } catch (Exception e){
@@ -57,7 +57,7 @@ public class MemberController {
         return next;
     }
   
-    @RequestMapping(value = "/editMypage.action", method = RequestMethod.POST)
+    @RequestMapping(value = "/mypage.action", method = RequestMethod.POST)
     public String editMypage (@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
                               @RequestParam(required=false) MultipartFile file, HttpServletRequest request) {
 
@@ -114,7 +114,7 @@ public class MemberController {
     }
 
     // 명지 - 아이디 찾기
-    @GetMapping("/check/findId")
+    @GetMapping("/find/passwd")
     public @ResponseBody String findId(@RequestParam Map<String,Object> map) throws Exception {
         String json = mService.findUserId(map);
         return json;

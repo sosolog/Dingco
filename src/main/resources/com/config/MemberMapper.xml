@@ -103,7 +103,7 @@
     </insert>
 
     <select id="selectByKakaoId" parameterType="string" resultType="MemberDTO">
-        select m_idx, kakao_idx, username, joindate
+        select m_idx, kakao_idx, userid, username, joindate
         from MEMBER
         where kakao_idx = #{kakao_idx}
     </select>

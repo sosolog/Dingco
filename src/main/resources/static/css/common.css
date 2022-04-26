@@ -51,14 +51,25 @@ header .ico_rt { right: 30px; }
 
 header .title { text-align: center; }
 
-header .headerLogo { display: inline-block; }
+header .title .headerLogo { display: inline-block; }
 
-header .headerLogo span {
+header .title .headerLogo span {
     font-family: TmoneyRoundWind;
     font-weight: 900;
     font-size: 50px;
     color: #4677DE;
 }
+
+header .title .headerText { display: inline-block; }
+
+header .title .headerText span {
+    display: block;
+    font-weight: 900;
+    font-size: 34px;
+    color: #4677DE;
+    padding: 15px 0px;
+}
+
 
 /* main */
 #main {
@@ -300,6 +311,7 @@ header .headerLogo span {
     padding-top: 25px;
 }
 
+/* mypage */
 
 
 

@@ -18,12 +18,19 @@
 
 <%------ End : JSTL 변수 설정 ------%>
 
+<div id="mypage">
+    <div class="profile">
+        <a>
+            <c:if test="${stroeFileName == null}"><img src="/images/join/no_image.png"></c:if>
+            <c:if test="${stroeFileName != null}"><img src="/files/member/${storeFileName}"></c:if>
+        </a>
+    </div>
+
+</div>
+
 <div id="wrap_editUser">
     <div id="main">
-        <div class="title">
-			<h2> 사용자 정보 수정 </h2>
-        </div>
-        <form action="/editMypage.action" id="editUser_form" name="editUserForm" method="post" enctype="multipart/form-data">
+        <form action="/mypage.action" id="editUser_form" name="editUserForm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="snslogin" value="${passwd}"/>
             <table class="editUser_table">
                 <tr>

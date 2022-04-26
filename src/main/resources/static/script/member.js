@@ -212,7 +212,7 @@ function finduserid(f){
 
     if (check == true){
         $.ajax({
-            url: "/check/findId",
+            url: "/find/passwd",
             type: "GET",
             data: {
                 "username":f.username.value,

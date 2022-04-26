@@ -91,20 +91,18 @@ public class LoginController {
     }
 
     // 명지 - 카카오 로그인 페이지
-    @RequestMapping(value="/kakaologin", method = RequestMethod.GET)
+    @RequestMapping(value="/login/kakao", method = RequestMethod.GET)
     public String kakaologin(@RequestParam("code") String code, HttpServletRequest request, Model model) throws Exception {
 
         String access_Token = mService.getKaKaoAccessToken(code);
         MemberDTO memberDTO = mService.selectByKakaoId(access_Token);
 
         if (memberDTO == null) {
-            System.out.println("CASE1");
             // 카카오 로그인 처음일 경우
             Map<String, Object> userinfo = mService.createKakaoUser(access_Token);
             model.addAttribute("snsLoginDTO", userinfo);
             return "kakaoLoginForm";
         } else {
-            System.out.println("CASE2");
             // 카카오 로그인 처음 아닐 경우
             HttpSession session = request.getSession();
             //세션에 회원정보 보관
@@ -114,7 +112,7 @@ public class LoginController {
     }
 
     // 명지 - 카카오 로그인 action
-    @RequestMapping(value="/kakaologin.action", method = RequestMethod.POST)
+    @RequestMapping(value="/login/kakao.action", method = RequestMethod.POST)
     public String kakaologinaction(@RequestParam Map<String, Object> memberDTO) throws Exception {
         mService.memberKakaoAdd(memberDTO);
         return "redirect:login";
