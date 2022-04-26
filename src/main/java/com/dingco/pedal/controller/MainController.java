@@ -14,13 +14,13 @@ public class MainController {
     // 명지 : model.addAttribute 지워도 됨
     @GetMapping("/main")
     public String main(@Login MemberDTO memberDTO) {
-        return "main";
+        return "/main";
     }
 
 
     @GetMapping("/upload")
     public String upload(){
-        return "upload";
+        return "/upload";
     }
 }
 

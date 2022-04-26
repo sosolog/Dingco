@@ -7,10 +7,13 @@
         <div class="ico_lt">
             <a onclick="javascript:history.back()"><img src="/images/ico_back_01.png"></a>
         </div>
-        <c:if test="${not fn:contains(url, '/login')}">
         <div class="title">
+        <c:if test="${not fn:contains(url, 'login') && not fn:contains(url, 'mypage')}">
             <a class="headerLogo" href="/main"><span>Pedal</span></a>
-        </div>
         </c:if>
+        <c:if test="${fn:contains(url, 'mypage')}">
+            <a class="headerText"><span>마이페이지</span></a>
+        </c:if>
+        </div>
     </header>
 </div>

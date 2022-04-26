@@ -7,12 +7,9 @@
 <br>
 <c:set var="kakao_idx" value="${snsLoginDTO.kakao_idx}"/>
 <c:set var="username" value="${snsLoginDTO.username}"/>
-<c:set var="email1" value="${snsLoginDTO.email1}"/>
-<c:set var="email2" value="${snsLoginDTO.email2}"/>
 
-<form id="socialMemberKakaoLogin" name="socialMemberKakaoLogin" method="post" action="/kakaologin.action">
+<form id="socialMemberKakaoLogin" name="socialMemberKakaoLogin" method="post" action="/login/kakao.action">
     <input type="hidden" id="kakao_idx" name="kakao_idx" value="${kakao_idx}">
-    <%--<input type="hidden" id="socialIdCheckResult" value="false">--%>
     * 아이디:<input type="text" id="userid" name="userid">
     <span id="idCheckResult"></span><br>
     * 이름:<input id= "username" name="username" readonly="readonly" value="${username}"><br>

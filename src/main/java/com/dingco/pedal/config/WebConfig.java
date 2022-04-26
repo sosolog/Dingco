@@ -2,6 +2,7 @@ package com.dingco.pedal.config;
 
 import com.dingco.pedal.annotation.LoginMemberArgumentResolver;
 import com.dingco.pedal.interceptor.LoginCheckInterceptor;
+import com.dingco.pedal.interceptor.SessionCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -20,7 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/inquiry", "/inquiry/**", "/mypage/**");
 //                .excludePathPatterns("/main","/login","/logout","/script/**", "/images/**", "/css/**", "/fonts/**", "/auth/**");
-
+        registry.addInterceptor(new SessionCheckInterceptor())
+                .order(2)
+                .addPathPatterns("/login/**");
     }
 
 

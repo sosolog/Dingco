@@ -6,7 +6,7 @@
     <h2>소셜 회원가입 페이지</h2>
     <br>
 
-<form id="socialMemberGoogleLogin" name="socialMemberGoogleLogin" action="/auth/google/loginCheck" method="post">
+<form id="socialMemberGoogleLogin" name="socialMemberGoogleLogin" action="/auth/google.action" method="post">
     <input type="hidden" id="google_idx" name="google_idx" value="${google_idx}">
     * 아이디:<input type="text" id="userid" name="userid" >
     <span id="idCheckResult"></span><br>

@@ -224,7 +224,7 @@ function finduserid(f){
 
     if (check == true){
         $.ajax({
-            url: "/check/findId",
+            url: "/find/passwd",
             type: "GET",
             data: {
                 "username":f.username.value,
@@ -251,7 +251,7 @@ function findpasswd(f){
     console.log(userEmail,userid)
 
     $.ajax({
-        url: "/check/findPw",
+        url: "/find/passwd/check",
         type: "GET",
         data: {
             "userEmail": userEmail,
@@ -263,7 +263,7 @@ function findpasswd(f){
                 swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
                         if (OK) {
                             $.ajax({
-                                url: "/check/findPw/sendEmail",
+                                url: "/find/passwd.action",
                                 type: "PUT",
                                 data: {
                                     "userEmail": userEmail,
@@ -284,10 +284,9 @@ function findpasswd(f){
 }
 
 //비동기 로그인 체크
-function loginValidCheck(){
+function loginValidCheck(f){
     var userid = $("#userid").val();
     var passwd = $("#passwd").val();
-    const f = $("#loginForm");
 
     if(userid.length==0){
         $("#result").text("아이디를 입력해 주세요");
@@ -300,15 +299,13 @@ function loginValidCheck(){
     }
     $.ajax({
         url:"/login/check",
-        type:"post",
+        type:"get",
         data:{
             "userid":userid,
             "passwd":passwd
         },
         success:function (res){
             if(res){
-                f.attr("action","/login");
-                f.attr("method","POST");
                 f.submit();
             }else{
                 $("#result").text("아이디 또는 비밀번호가 일치하지 않습니다.");

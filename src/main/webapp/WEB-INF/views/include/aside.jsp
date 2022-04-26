@@ -23,7 +23,10 @@
     </c:if>
     <c:if test="${loginMember != null}">
         <div class="pro_box">
-            <div class="img_wrap"><img src="/files/member/${loginMember.storeFileName}"></div>
+            <div class="img_wrap">
+                <c:if test="${loginMember.storeFileName == null}"><img src="/images/aside/profile_no_image.png"></c:if>
+                <c:if test="${loginMember.storeFileName != null}"><img src="/files/member/${loginMember.storeFileName}"></c:if>
+            </div>
             <div class="text_box">
                 <div class="top">
                     <span>${loginMember.username}</span>
@@ -46,6 +49,7 @@
                     <a href="/logout"><span class="logout">로그아웃</span></a>
                 </div>
             </div>
+            <div class="box_line"></div>
         </c:if>
         <div class="box_wrap">
             <span class="tit">고객센터</span>
