@@ -27,7 +27,11 @@
     </c:if>
 
 
-
+    <img id="preview"><br>
+    <input id="file" name = "file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="imageFileSizeCheck('file')"/><br>
+    <br>프로필 사진 업로드(크기:3MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)<br>
+    <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
+    <br><br>
 
     * 아이디:<input type="text" id="userid" name="userid" value="${memberDTO.userid}" onkeyup="memberIdDuplicateCheck()"><br>
     <span id = "idCheckResult">
@@ -50,11 +54,7 @@
         </spring:bind><br>
     </span><br>
     <br>
-    <input id="file" name = "file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="imageFileSizeCheck()"/><br>
-    <br>프로필 사진 업로드(크기:3MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)<br>
-    <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
 
-    <br><br>
     * 이메일:<input type="text" name="email1" id="email1" value="${memberDTO.email1}">@
     <input type="text" name="email2" id="email2" value="${memberDTO.email2}">
     <input type="button" id="emailValidate" value="이메일 인증" onclick="emailValidateSend()"/><br>

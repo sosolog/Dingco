@@ -100,18 +100,30 @@ function f_emailSelect(obj){
 }
 
 <!-- 민욱: 업로드 이미지 파일 크기 제한(3MB)-->
-function imageFileSizeCheck(){
-    if (this.files && this.files[0]) {
-        var maxSize = 3 * 1024 * 1024;
-        var fileSize = this.files[0].size;
+function imageFileSizeCheck(file){
 
-        if(fileSize > maxSize){
-            alert("첨부파일 사이즈는 3MB 이내로 등록 가능합니다.");
-            $(this).val('');
-            return false;
+    var maxSize = 3 * 1024 * 1024;
+    var fileSize = $("#"+file)[0].files[0].size;
+
+    if(fileSize > maxSize){
+        alert("첨부파일 사이즈는 3MB 이내로 등록 가능합니다.");
+        $("#"+file).val('');
+        return false;
+    }else {
+        var file = event.target.files[0];
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+
+            $("#preview").attr("src", e.target.result);
+            $("#preview").attr("width", "150");
+            $("#preview").attr("height", "250");
         }
+
+        reader.readAsDataURL(file);
     }
 }
+
 
 
 <!-- 민욱: 회원가입_아이디 유효성 검증 -->
