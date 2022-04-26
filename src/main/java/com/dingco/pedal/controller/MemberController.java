@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,11 +40,12 @@ public class MemberController {
 
     // -------------------------------- Start : 명지 -------------------------------- //
     @RequestMapping(value = "/mypage", method = RequestMethod.GET)
-    public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo){
+    public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo, Model model){
         String next = "";
 
         try {
             memberDTO = mService.selectMypageInfo(userinfo.getM_idx());
+            model.addAttribute("memberDTO", memberDTO);
 
             if (memberDTO.getKakao_idx()==null && memberDTO.getNaver_idx()==null && memberDTO.getGoogle_idx()==null) {
                 next = "/mypage";
@@ -114,7 +116,7 @@ public class MemberController {
     }
 
     // 명지 - 아이디 찾기
-    @GetMapping("/find/passwd")
+    @GetMapping("/find/userid")
     public @ResponseBody String findId(@RequestParam Map<String,Object> map) throws Exception {
         String json = mService.findUserId(map);
         return json;

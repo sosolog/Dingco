@@ -116,8 +116,8 @@ function imageFileSizeCheck(file){
         reader.onload = function (e) {
 
             $("#preview").attr("src", e.target.result);
-            $("#preview").attr("width", "150");
-            $("#preview").attr("height", "250");
+            // $("#preview").attr("width", "150");
+            // $("#preview").attr("height", "250");
         }
 
         reader.readAsDataURL(file);

@@ -19,123 +19,77 @@
 <%------ End : JSTL 변수 설정 ------%>
 
 <div id="mypage">
-    <div class="profile">
-        <a>
-            <c:if test="${stroeFileName == null}"><img src="/images/join/no_image.png"></c:if>
-            <c:if test="${stroeFileName != null}"><img src="/files/member/${storeFileName}"></c:if>
-        </a>
-    </div>
+
+    <form action="/mypage.action" id="editMypage" name="editMypage" method="post" enctype="multipart/form-data">
+        <div class="profile">
+            <!-- Original -->
+            <input type="hidden" name="oUploadFileName" value="${uploadFileName}">
+            <input type="hidden" name="oStoreFileName" value="${storeFileName}">
+            <!-- New -->
+            <label class="image" for="file">
+                <c:if test="${storeFileName == null}"><img id="preview" src="/images/join/profile_no_image.png"></c:if>
+                <c:if test="${storeFileName != null}"><img id="preview" src="/files/member/${storeFileName}"></c:if>
+            </label>
+            <input id="file" name="file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="imageFileSizeCheck('file')"/>
+            <span class="tit">프로필 사진 업로드</span>
+            <span class="info">3MB 이내 (gif,jpg,png,bmp,jpeg,heic)</span>
+        </div>
+        <input type="hidden" name="snslogin" value="${passwd}"/>
+        <input type="hidden" name="m_idx" value="${m_idx}">
+        <table class="join_table">
+            <tr>
+                <td class="item_th"><span>이름</span></td>
+                <td class="item_box">
+                    <div><input readonly="readonly" id="username" name="username" value="${username}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="item_th"><span>아이디</span></td>
+                <td class="item_box">
+                    <div><input readonly="readonly" id="userid" name="userid" value="${userid}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="item_th"><span>비밀번호</span></td>
+                <td class="item_box">
+                    <div><input type="password" id="passwd" name="passwd" onkeyup="passwd_check('editMypage')" placeholder="비밀번호를 입력하세요" autocomplete="off" maxlength="15"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="item_th"><span>재확인</span></td>
+                <td class="item_box">
+                    <div><input type="password" data-role="none" id="passwd2" name="passwd2" onkeyup="passwd_check('editMypage')" placeholder="비밀번호를 다시 한번 입력하세요" autocomplete="off" maxlength="15"></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <div>
+                    <spring:bind path="memberDTO.passwd">
+                        ${status.errorMessage }
+                    </spring:bind>
+                </div>
+                <input type="hidden" id="chk_pw" name="chk_pw" value="false" data-role="none">
+                <td><span class="pw_check">비밀번호를 입력해주세요</span></td>
+            </tr>
+            <tr>
+                <td class="item_th"><span>이메일</span></td>
+                <td class="td_email">
+                    <input readonly="readonly" name="email1" id="email1" value="${email1}">
+                    <span class="link">@</span>
+                    <input readonly="readonly" name="email2" id="email2" value="${email2}">
+                </td>
+            </tr>
+            <tr>
+                <td class="item_th">
+                    <div><span>가입일</span></div>
+                </td>
+                <td class="item_box">
+                    <div><input readonly="readonly" id="joindate" name="joindate" value="${joindate}"></div>
+                </td>
+            </tr>
+        </table>
+        <a class="btn_login" onclick="editUserForm_submit(editMypage)"><span>수정하기</span></a>
+    </form>
 
 </div>
-
-<div id="wrap_editUser">
-    <div id="main">
-        <form action="/mypage.action" id="editUser_form" name="editUserForm" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="snslogin" value="${passwd}"/>
-            <table class="editUser_table">
-                <tr>
-                    <td class="item_th">
-                        <div><span>회원 번호</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input readonly id="m_idx" name="m_idx" value="${m_idx}"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_th">
-                        <div><span>이름</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input type="text" id="username" name="username" value="${username}"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_th">
-                        <div><span>아이디</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input readonly id="userid" name="userid" value="${userid}"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_th">
-                        <div><span>비밀번호</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input type="password" id="passwd" name="passwd" value="" onkeyup="passwd_check('wrap_editUser')"
-                                    placeholder="비밀번호를 입력하세요" autocomplete="off"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_th">
-                        <div><span>재확인</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input type="password" id="passwd2" name="passwd2" onkeyup="passwd_check('wrap_editUser')"
-                                    placeholder="비밀번호를 다시 한번 입력하세요" autocomplete="off"></div>
-                        <div>
-                            <spring:bind path="memberDTO.passwd">
-                                ${status.errorMessage }
-                            </spring:bind>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <input type="hidden" id="chk_pw" name="chk_pw" value="false">
-                    <td><span class="pw_check"></span></td>
-                </tr>
-                <tr>
-                    <td class="item_th"><div>프로필 사진 업로드</div></td>
-                    <td>
-                        <input type="hidden" name="oUploadFileName" value="${uploadFileName}">
-                        <input type="hidden" name="oStoreFileName" value="${storeFileName}">
-                        <input id="file" name="file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="checkFileSize()"/>
-                        <div>기존 사진 : ${uploadFileName} </div>
-                        <div><img src="/files/member/${storeFileName}" style="width:100px; height:100px; overflow: hidden; object-fit: cover;"></div>
-                        <div>프로필 사진 업로드(크기:2MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)</div>
-                        <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_th"><div>이메일</div></td>
-                    <td class="td_email">
-                        <input type="text" name="email1" id="email1" value="${email1}" autocomplete="off">
-                        <span class="link">@</span>
-                        <input type="text" name="email2" id="email2" value="${email2}" autocomplete="off">
-                        <select id="emailSelect" onchange="f_emailSelect(this)">
-                            <option value="">직접입력</option>
-                            <option value="daum.net">daum.net</option>
-                            <option value="naver.com">naver.com</option>
-                            <option value="gmail.com">gmail.com</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><span class="email_check">
-                        <spring:bind path="memberDTO.email1">
-                            ${status.errorMessage }
-                        </spring:bind>
-                        <spring:bind path="memberDTO.email2">
-                            ${status.errorMessage }
-                        </spring:bind>
-                    </span></td>
-                </tr>
-                <tr>
-                    <td class="item_th">
-                        <div><span>가입일</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input readonly id="joindate" name="joindate" value="${joindate}"></div>
-                    </td>
-                </tr>
-            </table>
-            <div class="wrap_btn" style="width: 100px; height: 40px; background-color: #888; text-align: center; margin-top:10px;">
-                <a class="submit_box" onclick="editUserForm_submit(editUserForm)" style="cursor:pointer; display: inline-block; margin-top:10px; color:#fff;">수정하기</a>
-            </div>
-        </form>
-    </div>
-</div>
-
 <%------ End : HTML ------%>
