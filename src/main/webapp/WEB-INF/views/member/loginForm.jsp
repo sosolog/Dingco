@@ -7,19 +7,19 @@
 
 <div id="login">
     <span class="logo">Pedal</span>
-    <form id="loginForm" class="loginForm">
+    <form name="loginForm" class="loginForm" action="/login.action" method="post">
         <div class="input_wrap">
             <input type="text" name="userid" id="userid" placeholder="아이디" autofocus>
             <input type="password" name="passwd" id="passwd" placeholder="패스워드" autofocus>
         </div>
         <span class="result" id="result"></span>
-        <a class="btn_login" onclick="loginValidCheck()"><span>로그인</span></a>
+        <a class="btn_login" onclick="loginValidCheck(loginForm)"><span>로그인</span></a>
     </form>
     <div class="options">
         <div class="box">
             <a href="/find_ID_PW"><span>아이디 찾기</span></a>
             <div class="wall"></div>
-            <a href="/find_ID_PW"><span>비밀번호 찾기</span></a>
+            <a href="/find/passwd"><span>비밀번호 찾기</span></a>
             <div class="wall"></div>
             <a href="/join"><span>회원가입</span></a>
             <div class="reset"></div>

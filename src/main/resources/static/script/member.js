@@ -272,10 +272,9 @@ function findpasswd(f){
 }
 
 //비동기 로그인 체크
-function loginValidCheck(){
+function loginValidCheck(f){
     var userid = $("#userid").val();
     var passwd = $("#passwd").val();
-    const f = $("#loginForm");
 
     if(userid.length==0){
         $("#result").text("아이디를 입력해 주세요");
@@ -295,8 +294,6 @@ function loginValidCheck(){
         },
         success:function (res){
             if(res){
-                f.attr("action","/login.action");
-                f.attr("method","POST");
                 f.submit();
             }else{
                 $("#result").text("아이디 또는 비밀번호가 일치하지 않습니다.");
