@@ -2,35 +2,41 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<h2>로그인 페이지</h2>
-<form id="loginForm">
-    <span id="result" style="color:red">
-    </span><br>
-    * 아이디:<input type="text" name="userid" id="userid" autofocus>
-    * 비밀번호:<input type="password" name="passwd" id="passwd">
-    <input type="button" onclick="return loginValidCheck()" value="로그인"><br>
+<c:set var="REST_API_KEY" value="ee5887b0e2e8cce297b9421bb915bc70"/>
+<c:set var="REDIRECT_URI" value="http://localhost:9090/kakaologin"/>
 
-</form>
-    <c:set var="REST_API_KEY" value="ee5887b0e2e8cce297b9421bb915bc70"/>
-    <c:set var="REDIRECT_URI" value="http://localhost:9090/kakaologin"/>
-
-    <button id="joinBtn" onclick="location.href='join'">회원가입</button><br>
-    <button id="find_ID_PWBtn" onclick="location.href='find_ID_PW'">아이디/비밀번호 찾기</button><br>
-<div id="gSignInWrapper">
-        <a href="http://localhost:9090/auth/GOOGLE">
-    <div id="customBtn" class="customGPlusSignIn">
-        <span class="icon"></span>
-        <span class="buttonText">Google</span>
+<div id="login">
+    <span class="logo">Pedal</span>
+    <form id="loginForm" class="loginForm">
+        <div class="input_wrap">
+            <input type="text" name="userid" id="userid" placeholder="아이디" autofocus>
+            <input type="password" name="passwd" id="passwd" placeholder="패스워드" autofocus>
+        </div>
+        <span class="result" id="result"></span>
+        <a class="btn_login" onclick="loginValidCheck()"><span>로그인</span></a>
+    </form>
+    <div class="options">
+        <div class="box">
+            <a href="/find_ID_PW"><span>아이디 찾기</span></a>
+            <div class="wall"></div>
+            <a href="/find_ID_PW"><span>비밀번호 찾기</span></a>
+            <div class="wall"></div>
+            <a href="/join"><span>회원가입</span></a>
+            <div class="reset"></div>
+        </div>
     </div>
-        </a>
+
+    <div class="snslogin">
+        <div id="naver_id_login" style="display: none"></div>
+        <div class="loginimg" onclick="naverlogin()"><img src="/images/snslogin/naver_login_01.png"></div>
+        <div class="loginimg"><a href="http://localhost:9090/auth/GOOGLE"><img src="/images/snslogin/google_login_01.png"></a></div>
+        <div class="loginimg"><a href="https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code"><img src="/images/snslogin/kakao_login_01.png"></a></div>
+    </div>
+
+    <div id="name"></div>
+    <br>
 </div>
 
-<div id="name"></div>
-<a href="https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code"><img src="${pageContext.request.contextPath}/images/kakao_login_medium_wide.png"></a>
-<br>
-<!-- 네이버 로그인 버튼 노출 영역 -->
-<div id="naver_id_login"></div>
-<!-- //네이버 로그인 버튼 노출 영역 -->
 <script type="text/javascript">
     var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "http://localhost:9090/callback");
     var state = naver_id_login.getUniqState();

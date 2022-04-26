@@ -8,7 +8,7 @@
     <title>Pedal</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=1260">
+    <meta name="viewport" content="width=800, user-scalable=no">
     <meta name="google-signin-client_id" content="165389155458-06oihucqpb37gsgqbvsuupqjjg47kjik.apps.googleusercontent.com">
 
    <%-- <meta name="google-site-verification" content="EBWVlt9UKAo5kb3JFlCqSdRF14f0cLXgws_kOjLW6gE" />

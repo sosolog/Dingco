@@ -11,14 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller("mainController")
 public class MainController {
 
+    // 명지 : model.addAttribute 지워도 됨
     @GetMapping("/main")
-    public String main(@Login MemberDTO memberDTO, Model model) {
-
-        if(memberDTO==null){
-            return "main";
-        }
-        model.addAttribute("member",memberDTO);
-        return "loginMain";
+    public String main(@Login MemberDTO memberDTO) {
+        return "main";
     }
 
 

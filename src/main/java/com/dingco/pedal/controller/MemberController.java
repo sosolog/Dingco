@@ -38,7 +38,7 @@ public class MemberController {
 
 
     // -------------------------------- Start : 명지 -------------------------------- //
-    @RequestMapping(value = "/login/mypage", method = RequestMethod.GET)
+    @RequestMapping(value = "/mypage", method = RequestMethod.GET)
     public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo){
         String next = "";
 
