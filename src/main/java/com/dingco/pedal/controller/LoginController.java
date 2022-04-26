@@ -49,8 +49,8 @@ public class LoginController {
 
 
     //주황 - 로그인(아이디, 비밀번호에 입력된 값을 HashMap으로 가져와서 DB와 비교)
-    @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginDTO") LoginDTO loginDTO
+    @PostMapping("/login.action")
+    public String login(@ModelAttribute("loginDTO") LoginDTO loginDTO
                         ,@RequestParam(defaultValue = "/main") String redirectURL
                         ,HttpServletRequest request) throws Exception {
 
@@ -66,7 +66,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/login/check")
+    @GetMapping("/login/check")
     public @ResponseBody boolean loginCheck(@RequestParam(value = "userid",required = false) String userid,
                                             @RequestParam(value = "passwd",required = false) String passwd) throws Exception {
 

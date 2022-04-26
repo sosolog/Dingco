@@ -29,7 +29,7 @@
     <div class="snslogin">
         <div id="naver_id_login" style="display: none"></div>
         <div class="loginimg" onclick="naverlogin()"><img src="/images/snslogin/naver_login_01.png"></div>
-        <div class="loginimg"><a href="http://localhost:9090/auth/GOOGLE"><img src="/images/snslogin/google_login_01.png"></a></div>
+        <div class="loginimg"><a href="http://localhost:9090/auth/google"><img src="/images/snslogin/google_login_01.png"></a></div>
         <div class="loginimg"><a href="https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code"><img src="/images/snslogin/kakao_login_01.png"></a></div>
     </div>
 

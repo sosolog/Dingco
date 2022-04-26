@@ -32,7 +32,7 @@ public class GoogleOauthController {
     private String GOOGLE_SNS_CALLBACK_URL;
 
     //    주황 - 구글 로그인 인증코드
-    @GetMapping("/auth/GOOGLE")
+    @GetMapping("/auth/google")
     @ResponseBody
     public void loginPage(Model model, HttpServletResponse response) throws IOException {
         String googleUrl = "https://accounts.google.com/o/oauth2/v2/auth?"
@@ -77,7 +77,7 @@ public class GoogleOauthController {
 
             redirectAttributes.addFlashAttribute("google_idx",google_idx);
             redirectAttributes.addFlashAttribute("username",name);
-            next = "redirect:/auth/google/loginForm";
+            next = "redirect:/auth/google.form";
         }else {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_MEMBER,googleMemberDTO);
@@ -89,7 +89,7 @@ public class GoogleOauthController {
     }
 
     //    주황 - 구글 로그인 로그인폼
-    @GetMapping(value = "/auth/google/loginForm")
+    @GetMapping(value = "/auth/google.form")
     public String googleLoginForm() throws Exception {
 
         return "googleLoginForm";
@@ -98,7 +98,7 @@ public class GoogleOauthController {
 
 //    주황 - 구글 로그인 로그인확인
 
-    @PostMapping(value = "/auth/google/loginCheck")
+    @PostMapping(value = "/auth/google.action")
     public String loginCheck(MemberDTO memberDTO,HttpServletRequest request) throws Exception {
         mService.memberGoogleAdd(memberDTO);
         HttpSession session = request.getSession();

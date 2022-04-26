@@ -239,7 +239,7 @@ function findpasswd(f){
     console.log(userEmail,userid)
 
     $.ajax({
-        url: "/check/findPw",
+        url: "/find/passwd/check",
         type: "GET",
         data: {
             "userEmail": userEmail,
@@ -251,7 +251,7 @@ function findpasswd(f){
                 swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
                         if (OK) {
                             $.ajax({
-                                url: "/check/findPw/sendEmail",
+                                url: "/find/passwd.action",
                                 type: "PUT",
                                 data: {
                                     "userEmail": userEmail,
@@ -288,14 +288,14 @@ function loginValidCheck(){
     }
     $.ajax({
         url:"/login/check",
-        type:"post",
+        type:"get",
         data:{
             "userid":userid,
             "passwd":passwd
         },
         success:function (res){
             if(res){
-                f.attr("action","/login");
+                f.attr("action","/login.action");
                 f.attr("method","POST");
                 f.submit();
             }else{
