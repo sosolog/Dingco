@@ -108,7 +108,7 @@ public class MemberController {
 
     // -------------------------------- Start : 주황 -------------------------------- //
     //주황 - 아이디/비밀번호 찾기
-    @GetMapping("/find_ID_PW")
+    @GetMapping("/find/passwd")
     public String find_ID_PW(){
         return "find_ID_PW";
     }

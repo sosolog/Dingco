@@ -21,8 +21,8 @@ public class SendEmailController {
 
     //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
     //Email과 userid의 일치여부를 check하는 컨트롤러
-    @GetMapping("/check/findPw")
-    public @ResponseBody Map<String, Boolean> pw_find(@RequestParam Map<String,String> map) throws Exception {
+    @GetMapping("/find/passwd/check")
+    public @ResponseBody Map<String, Boolean> findPw(@RequestParam Map<String,String> map) throws Exception {
         Map<String,Boolean> json = new HashMap<>();
 
         //이메일과 회원정보가 맞는지 체크하는 서비스
@@ -33,7 +33,7 @@ public class SendEmailController {
     }
 
     //등록된 이메일로 임시비밀번호를 발송하고 발송된 임시비밀번호로 사용자의 pw를 변경하는 컨트롤러
-    @PutMapping("/check/findPw/sendEmail")
+    @PutMapping("/find/passwd.action")
     public @ResponseBody void sendEmail(@RequestParam Map<String,String> map) throws Exception {
         sendEmailService.fakePasswordCreate(map);
     }
