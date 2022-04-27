@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.config.PayRoomMapper">
+
+    <select id="selectPayRoom" parameterType="int" resultType="PayRoomDTO">
+        select * from PAYROOM where m_idx = #{m_idx}
+    </select>
+
+<!--    <insert id="insertPayRoom" parameterType="PayRoomDTO">
+        insert into PAYROOM (m_idx,title) values (#{m_idx},#{room_name});
+        SET @last_insert_idx = LAST_INSERT_ID();
+<foreach collection=""
+        insert into PAYGROUPMEMBER (PR_IDX,name) values (#{m_idx},#{room_name})
+    </insert>-->
+
+
+</mapper>
