@@ -100,7 +100,6 @@
 <button id="btn-open-modal">
 방생성
 </button>
-<span id="result_payRoom"></span>
 <div class="modal">
     <div class="modal_body">
         <button id="btn-close-modal">X</button>
@@ -108,6 +107,7 @@
         방이름 : <input type="text" name="room_name" id="room_name"><br>
         방멤버 : <input type="text" name="groupMember" id="groupMember"><button onclick="memberList()">추가</button><br>
         <div id="memberList"></div>
+        <span id="result_payRoom" style="color: red"></span><br>
         <button onclick="payRoomInfo()">방생성</button>
     </div>
 </div>
