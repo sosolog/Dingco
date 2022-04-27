@@ -419,7 +419,7 @@ header .title .headerText span {
     color: #888888;
 }
 
-.join_table .td_email input[readonly=readonly]{
+#mypage .join_table .td_email input[readonly=readonly]{
     height: 69px;
     margin: 20px 0px;
     font-size: 26px;
@@ -461,6 +461,173 @@ header .title .headerText span {
     color: #333;
     cursor: pointer;
 }
+
+/* join */
+#join {
+    padding: 95px 54px;
+}
+
+#join #editMypage {
+    padding: 0px 54px 80px;
+}
+
+#join .profile {
+    padding: 60px 0px 30px;
+    text-align: center;
+}
+
+#join .profile .image {
+    width:210px;
+    height:210px;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 100px;
+}
+
+#join .profile .image img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+#join .profile input[type=file] { display: none; }
+
+#join .profile label { display: block; }
+
+#join .profile .tit {
+    display: block;
+    margin-top: 26px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #787878;
+}
+
+#join .profile .info {
+    display: block;
+    margin-top: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #787878;
+}
+
+#join .join_table {
+    width: 100%;
+    margin: 0px 0px 50px;
+    padding: 0;
+    font-size: 20px;
+}
+
+#join .join_table .item_th {
+    padding: 15px 0px;
+    width: 100px;
+}
+
+#join .join_table .item_th span {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 26px;
+    color: #646464;
+    font-weight: 700;
+}
+
+#join .join_table .item_box div {
+    width: 100%;
+    height: 70px;
+    margin-left: 10px;
+    line-height: 47px;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: #F0F0F0;
+
+}
+
+#join .join_table .item_box input[type=text] {
+    display: block;
+    overflow: hidden;
+    width: 90%;
+    height: 69px;
+    padding: 0 3%;
+    margin: 20px 0px;
+    font-size: 26px;
+    font-weight: 500;
+    color: #646464;
+    border-bottom: none;
+}
+
+#join .join_table .item_box input[type=password] {
+    display: block;
+    overflow: hidden;
+    width: 90%;
+    height: 69px;
+    padding: 0 3%;
+    margin: 20px 0px;
+    font-size: 26px;
+    font-weight: 500;
+    color: #646464;
+    border-bottom: none;
+}
+
+#join .join_table .id_check, .pw_check {
+    display: inline-block;
+    padding: 15px 30px 0px;
+    color: #4677DE;
+    font-size: 24px !important;
+}
+
+#join .join_table .btn_sendemail {
+    float: right;
+    padding: 10px 20px;
+    border: 1px solid #507FE2;
+    border-radius: 6px;
+}
+
+#join .join_table .btn_sendemail span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #507FE2;
+}
+
+#join .join_table .btn_sendemail2 {
+    position: absolute;
+    top: 30px;
+    right: 0px;
+    padding: 10px 20px;
+    border: 1px solid #507FE2;
+    border-radius: 6px;
+}
+
+#join .join_table .btn_sendemail2 span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #507FE2;
+}
+
+#join .join_table .td_email input[type=text]{
+    height: 69px;
+    margin: 20px 0px;
+    font-size: 26px;
+    font-weight: 500;
+    color: #646464;
+    display: inline-block;
+    width: 39% !important;
+    overflow: hidden !important;
+    padding: 15px 4% 0px !important;
+    border-bottom: 1px solid rgba(177, 177, 177, 0.5);
+    color: #646464;
+}
+
+#join .join_table .wrap_btn .submit_box {
+    display: block;
+    margin: 35px 0px 20px;
+    padding: 15px 0px;
+    background-color: #fee500;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 4px;
+    color: #333;
+    cursor: pointer;
+}
+
 
 
 /* common */

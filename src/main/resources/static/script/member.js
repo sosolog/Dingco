@@ -181,32 +181,26 @@ function memberPwDuplicateCheck() {
 }
 
 <!-- 민욱: 회원가입_submit 제약조건(아이디 중복 확인, 비밀번호 중복, 이메일 인증번호 확인) -->
-function joinSubmitCheck() {
+function joinSubmitCheck(f) {
     if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true' && $("#emailCheckHidden").val()=='true'){
-        return true;
+        f.submit();
     }else{
         if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
             alert("아이디, 비밀번호 체크와 이메일 인증이 필요합니다.");
-            return false;
         }else if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
             alert("아이디와 비밀번호 확인이 필요합니다.");
-            return false;
         }else if($("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
             alert("비밀번호 체크와 이메일 인증이 필요합니다.");
-            return false;
         }else if($("#idCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
             alert("아이디 체크와 이메일 인증이 필요합니다.");
-            return false;
         }else if($("#idCheckHidden").val()=='false') {
             alert("아이디 중복 확인이 필요합니다.");
-            return false;
         }else if($("#pwCheckHidden").val()=='false') {
             alert("비밀번호 중복 확인이 필요합니다.");
-            return false;
         }else if($("#emailCheckHidden").val()=='false') {
             alert("이메일 인증이 필요합니다.");
-            return false;
         }
+        return false;
     }
 }
 
@@ -259,7 +253,6 @@ function findpasswd(f){
         },
         success: function (res) {
             if (res['check']) {
-
                 swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
                         if (OK) {
                             $.ajax({
@@ -352,7 +345,7 @@ function emailValidateSend(){
         },
         success: function (data) {
             if(data != 0) {
-                $("#emailCheckResult").text("이미 있는 이메일입니다. 다른 이메일로 인증하세요.")
+                $("#emailCheckResult").text("이미 가입한 이메일입니다.")
                 $("#email1").val("")
                 $("#email2").val("");
                 $("#email1").focus();
@@ -369,7 +362,7 @@ function emailValidateSend(){
                         alert("발송 완료!")
                         $("#email1").attr("readonly", true)
                         $("#email2").attr("readonly", true)
-                        $("#emailCheckResult").text("")
+                        $("#id_check").text("")
                     }
                 });
             }

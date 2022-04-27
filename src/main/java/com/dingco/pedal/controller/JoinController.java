@@ -55,11 +55,12 @@ public class JoinController {
      * @param model : VIEW에서 이미 처리 완료한 유효성 검증(보내기)
      * @return : 성공 -> 메인 페이지 / 실패 -> 성공한 파라미터와 실패한 에러 내용을 가지고 다시 회원가입 폼 이동
      */
-    @PostMapping("/memberAdd") // BindingResult 타입의 객체는 사용하는 데이터 뒤에 넣어야함(그래야 인식 가능)
+    @RequestMapping("/memberAdd") // BindingResult 타입의 객체는 사용하는 데이터 뒤에 넣어야함(그래야 인식 가능)
     public String memberAdd(@Validated(value = ValidationSequence.class) @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
                             @RequestParam(required=false) MultipartFile file,
                             HttpServletRequest request, Model model) throws Exception{
 
+        System.out.println("111111111");
         // 살패 로직(성공한 파라미터와 실패한 에러 내용을 가지고 다시 회원가입 폼 이동/이미 처리 완료한 유효성 검사 처리)
         if(bindingResult.hasErrors()) {
             //model.addAttribute("errors", errors); bindingResult는 모델에 따로 안 넣어주더라도 자동적으로 넘어간다.
@@ -73,12 +74,13 @@ public class JoinController {
             model.addAttribute("idCheckHidden", idCheckHidden);
             model.addAttribute("emailCheckHidden", emailCheckHidden);
             model.addAttribute("emailValidationCheckNumber", emailValidationCheckNumber);
-
+            System.out.println("222222222222");
             return "join";
         }
 
         // 성공 로직(파일 업로드 및 회원 추가)
         else {
+            System.out.println("333333333333");
             // 파일 업로드
             FileUploadUtils fileUploadUtils = new FileUploadUtils(baseDir, TableDir.MEMBER);
 
