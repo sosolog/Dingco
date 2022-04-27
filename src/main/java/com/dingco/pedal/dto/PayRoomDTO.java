@@ -2,6 +2,8 @@ package com.dingco.pedal.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class PayRoomDTO {
 
@@ -11,7 +13,7 @@ public class PayRoomDTO {
     private String create_date; // 방 생성일
 //    private List<PayDTO> payList;
 //    private List<DutchPayDTO> DutchPayList;
-//    private List<GroupMember> groupMemberList;
+    private List<PayGroupMemberDTO> groupMemberList;
 //    GroupMember --> 이름, 계좌번호?? gm_idx
 //    Pay내역 --> 결제자(GroupMember) gm_idx, 결자한인원(List<GroupMember>) gm_idx, gm_idx,....
 
