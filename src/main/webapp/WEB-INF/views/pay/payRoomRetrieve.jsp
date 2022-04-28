@@ -48,8 +48,9 @@
 <body>
 <button>취소</button><h2>Pedal</h2>
 <button>등록</button><br>
-방이름<input type="text" name="room_name" id="room_name"><br>
-방멤버<input type="text" name="groupMember" id="groupMember"><button onclick="">추가</button><br>
+${payRoom}
+방이름<input type="text" name="room_name" id="room_name" value="${payRoom.room_name}" readonly><br>
+방멤버<input type="text" name="groupMember" id="groupMember" value="${payRoom.groupMemberList}"><button onclick="">추가</button><br>
 <button>1개만</button><button>여러개</button><br>
 <span>결제 목록</span><button onclick="createNewDutch()">추가</button><br>
 <table id="dutchList">

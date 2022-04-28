@@ -5,20 +5,17 @@
 <mapper namespace="com.config.PayRoomMapper">
 
     <select id="selectPayRoom" parameterType="int" resultType="PayRoomDTO">
-        select room_name, date_format(create_date,'%Y-%m-%d') as create_date
+        select pr_idx, room_name, date_format(create_date,'%Y-%m-%d') as create_date
         from PAYROOM
         where m_idx = #{m_idx}
         order by create_date desc
     </select>
 
-    <insert id="insertPayRoom" parameterType="PayRoomDTO">
+    <insert id="insertPayRoom" parameterType="PayRoomDTO" useGeneratedKeys="true" keyProperty="pr_idx">
         insert into PAYROOM (m_idx,room_name) values (#{m_idx},#{room_name});
     </insert>
 
     <insert id="insertMemberList" parameterType="PayRoomDTO">
-<selectKey keyProperty="pr_idx" resultType="int" order="BEFORE">
-        select LAST_INSERT_ID();
-</selectKey>
         INSERT INTO PAYGROUPMEMBER (PR_IDX,paymember_name,paymember_account)
         values
 <foreach collection="groupMemberList" index="index" item="item" separator=",">
@@ -26,5 +23,25 @@
 </foreach>
     </insert>
 
+
+    <resultMap id="payRoom" type="PayRoomDTO">
+        <id property="pr_idx" column="pr_idx"></id>
+        <result property="m_idx" column="m_idx"></result>
+        <result property="room_name" column="room_name"></result>
+        <result property="create_date" column="create_date"></result>
+        <collection property="groupMemberList" column="pr_idx" javaType="java.util.ArrayList" ofType="PayGroupMemberDTO" select="selectPayRoomGroupMember">
+        </collection>
+    </resultMap>
+
+    <select id="selectPayRoomGroupMember" resultType="PayGroupMemberDTO">
+        select pr_idx, prgm_idx, PAYMEMBER_NAME, PAYMEMBER_ACCOUNT
+        from PAYGROUPMEMBER
+        where PR_IDX = #{pr_idx}
+    </select>
+    <select id="selectPayRoomRetrieve" resultMap="payRoom" parameterType="hashmap">
+        select pr_idx, m_idx, room_name, date_format(create_date,'%Y-%m-%d') as create_date
+        from PAYROOM
+        where PR_IDX = #{pr_idx} and m_idx = #{m_idx}
+    </select>
 
 </mapper>

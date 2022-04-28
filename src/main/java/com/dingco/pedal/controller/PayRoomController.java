@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +24,23 @@ public class PayRoomController {
     @Autowired
     PayRoomService payRoomService;
 
-    @GetMapping("/pay/write")
-    public String payRoomWrite(){
-        return "pay/payRoomRetrieve";
+    @GetMapping("/pay/{pr_idx}")
+    public String payRoomRetrieve(@PathVariable("pr_idx") int pr_idx,@Login MemberDTO memberDTO, Model model) throws Exception {
+
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("pr_idx", pr_idx);
+        map.put("m_idx", memberDTO.getM_idx());
+        PayRoomDTO payRoomDTO = payRoomService.selectPayRoomRetrieve(map);
+        System.out.println(payRoomDTO);
+
+        String next = "";
+        if(payRoomDTO == null){
+            next = "redirect:/main";
+        }else{
+            model.addAttribute("payRoom",payRoomDTO);
+            next = "pay/payRoomRetrieve";
+        }
+        return next;
     }
 
     @GetMapping("/pay/list")
@@ -64,11 +75,11 @@ public class PayRoomController {
         payRoomDTO.setM_idx(m_idx);
         payRoomDTO.setGroupMemberList(payGroupMemberDTOList);
 
-        int num = payRoomService.roomInfo(payRoomDTO);
+        int pr_idx = payRoomService.roomInfo(payRoomDTO);
 
 
 
-        return num;
+        return pr_idx;
     }
 
     @PostMapping("/pay/new")

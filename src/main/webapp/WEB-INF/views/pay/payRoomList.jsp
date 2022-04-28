@@ -85,24 +85,10 @@
                     "memberList":memberArr
                 },
                 success:function(data){
-                    //data = 참여인원수
+                    //data = pr_idx
                     console.log(data);
 
-                    //저장한 날짜 구하기
-                    var room_name = $("#room_name").val();
-                    var create_date = moment().format("YYYY-MM-DD");
-                    // modal 안보이도록 css 변경
-                    $(".modal").removeClass("show");
-
-                    //modal 닫히면 생성된 방 바로 보이기기
-                   payRoomArr.push({"room_name":room_name,"create_date":create_date});
-                    $("#payRoomList").html($("#payRoom-list-tmpl").tmpl({pList:payRoomArr}));
-
-                    // 현재까지 저장되어있던 정보 삭제
-                    memberArr = [];
-                    $("#room_name").val("");
-
-
+                    location.href = "/pay/"+data;
                 },
                 error:function (xhr,sta,error){
                     console.log(error);
@@ -123,7 +109,7 @@
 <script type="text/html" id="payRoom-list-tmpl">
     {{each(index, p) pList}}
    <div>
-    <a id="pList_\${index}">
+    <a id="pList_\${index}" href="\${p.pr_idx}">
         \${p.room_name}
    </a>
     <span>
