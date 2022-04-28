@@ -78,10 +78,18 @@
                     "memberList":memberArr
                 },
                 success:function(data){
+                    //data = 참여인원수
                     console.log(data);
+
+                    // modal 안보이도록 css 변경
+                    $(".modal").removeClass("show");
+                    // 현재까지 저장되어있던 정보 삭제
+                    memberArr = [];
+                    $("#room_name").val("");
+
                 },
                 error:function (xhr,sta,error){
-                    console.log(error)
+                    console.log(error);
                 }
             });
         }
