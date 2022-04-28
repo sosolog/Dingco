@@ -16,9 +16,9 @@ public class PayRoomServiceImpl implements PayRoomService{
 
     @Override
     @Transactional
-    public int roomInfo(PayRoomDTO payRoomDTO, List<String> memberList) throws Exception{
+    public int roomInfo(PayRoomDTO payRoomDTO) throws Exception{
         int num = dao.insertPayRoom(payRoomDTO);
-//        num = dao.insertMemberList(memberList);
+        num = dao.insertMemberList(payRoomDTO);
         return num;
     };
 }

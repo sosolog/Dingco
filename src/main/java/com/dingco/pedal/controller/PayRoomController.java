@@ -35,9 +35,10 @@ public class PayRoomController {
 
     @PostMapping("/pay/room")
     @ResponseBody
-    public String payRoom(@RequestParam("roomName") String roomName,
+    public int payRoom(@RequestParam("roomName") String roomName,
                           @RequestParam("memberList[]") List<String> memberList,
                           @Login MemberDTO memberDTO) throws Exception{
+
         int m_idx = memberDTO.getM_idx();
 
         List<PayGroupMemberDTO> payGroupMemberDTOList = new ArrayList<>();
@@ -52,9 +53,10 @@ public class PayRoomController {
         payRoomDTO.setRoom_name(roomName);
         payRoomDTO.setM_idx(m_idx);
         payRoomDTO.setGroupMemberList(payGroupMemberDTOList);
-        int num = payRoomService.roomInfo(payRoomDTO,memberList);
 
-        return roomName+" "+memberList;
+        int num = payRoomService.roomInfo(payRoomDTO);
+
+        return num;
     }
 
     @PostMapping("/pay/new")

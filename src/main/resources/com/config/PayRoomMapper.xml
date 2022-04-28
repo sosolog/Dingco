@@ -8,14 +8,18 @@
         select * from PAYROOM where m_idx = #{m_idx}
     </select>
 
-    <insert id="insertPayRoom" parameterType="PayRoomDTO" useGeneratedKeys="false">
+    <insert id="insertPayRoom" parameterType="PayRoomDTO">
         insert into PAYROOM (m_idx,title) values (#{m_idx},#{room_name});
-<selectKey keyProperty="pr_idx" resultType="int" order="AFTER">
+    </insert>
+
+    <insert id="insertMemberList" parameterType="PayRoomDTO">
+<selectKey keyProperty="pr_idx" resultType="int" order="BEFORE">
         select LAST_INSERT_ID();
 </selectKey>
         INSERT INTO PAYGROUPMEMBER (PR_IDX,paymember_name,paymember_account)
-<foreach collection="groupMemberList" index="index" item="item" separator=";" close=";">
-        values (#{pr_idx},#{item.payMember_name},#{item.payMember_account})
+        values
+<foreach collection="groupMemberList" index="index" item="item" separator=",">
+         (#{pr_idx},#{item.payMember_name},#{item.payMember_account})
 </foreach>
     </insert>
 

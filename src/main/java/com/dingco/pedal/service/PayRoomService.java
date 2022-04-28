@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PayRoomService {
 
-    public int roomInfo(PayRoomDTO payRoomDTO, List<String> memberList) throws Exception;
+    public int roomInfo(PayRoomDTO payRoomDTO) throws Exception;
 }

@@ -17,7 +17,7 @@ public class PayRoomDAO {
         return session.insert("com.config.PayRoomMapper.insertPayRoom",payRoomDTO);
     }
 
-/*    public int insertMemberList(List<String> memberList) throws Exception{
-
-    }*/
+    public int insertMemberList(PayRoomDTO payRoomDTO) throws Exception{
+        return session.insert("com.config.PayRoomMapper.insertMemberList",payRoomDTO);
+    }
 }
