@@ -579,6 +579,7 @@ header .title .headerText span {
     padding: 10px 20px;
     border: 1px solid #507FE2;
     border-radius: 6px;
+    margin-top: 9px;
 }
 
 #join .join_table .btn_sendemail span {
@@ -604,7 +605,7 @@ header .title .headerText span {
 
 #join .join_table .td_email input[type=text]{
     height: 69px;
-    margin: 20px 0px;
+    margin: 20px 0px 0px;
     font-size: 26px;
     font-weight: 500;
     color: #646464;

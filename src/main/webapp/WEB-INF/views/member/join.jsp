@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div id="join">
-    <form action="memberAdd" id="joinForm" name="joinForm" method="post" enctype="multipart/form-data">
+    <form action="/memberAdd" id="joinForm" name="joinForm" method="post" enctype="multipart/form-data">
         <!-- ID/PW Check -->
         <c:if test="${idCheckHidden == true}"><input type="hidden" value="true" id="idCheckHidden" name="idCheckHidden"></c:if>
         <c:if test="${idCheckHidden == false || idCheckHidden == null}"><input type="hidden" value="false" id="idCheckHidden" name="idCheckHidden"></c:if>
@@ -19,13 +19,11 @@
             <span class="tit">프로필 사진 업로드</span>
             <span class="info">3MB 이내 (gif,jpg,png,bmp,jpeg,heic)</span>
         </div>
-        <input type="hidden" name="snslogin" value="${passwd}"/>
-        <input type="hidden" name="m_idx" value="${m_idx}">
         <table class="join_table">
             <tr>
                 <td class="item_th"><span>이름</span></td>
                 <td class="item_box">
-                    <div><input type="text" id="username" name="username" value="${memberDTO.username}"></div>
+                    <div><input type="text" id="username" name="username" value="${memberDTO.username}" placeholder="이름을 입력해주세요"></div>
                 </td>
             </tr>
             <tr>
@@ -35,7 +33,7 @@
             <tr>
                 <td class="item_th"><span>아이디</span></td>
                 <td class="item_box">
-                    <div><input type="text" id="userid" name="userid" value="${memberDTO.userid}" onkeyup="memberIdDuplicateCheck()"></div>
+                    <div><input type="text" id="userid" name="userid" value="${memberDTO.userid}" placeholder="아이디를 입력해주세요" onkeyup="memberIdDuplicateCheck()"></div>
                 </td>
             </tr>
             <tr>
@@ -65,9 +63,16 @@
             <tr>
                 <td class="item_th"><span>이메일</span></td>
                 <td class="td_email">
-                    <input type="text" name="email1" id="email1" value="${email1}">
+                    <input type="text" name="email1" id="email1" value="${memberDTO.email1}" placeholder="앞자리 입력">
                     <span class="link">@</span>
-                    <input type="text" name="email2" id="email2" value="${email2}">
+                    <input type="text" name="email2" id="email2" value="${memberDTO.email2}" placeholder="직접 입력">
+                </td>
+            </tr>
+            <tr>
+                <td class="item_th"></td>
+                <td class="item_box" style="position: relative">
+                    <div><input type="text" id="emailValidationCheckNumber" name="emailValidationCheckNumber" value="${emailValidationCheckNumber}" placeholder="이메일 인증번호를 입력하세요" autocomplete="off"></div>
+                    <a class="btn_sendemail2" onclick="emailValidateSend()"><span>인증번호 전송</span></a>
                 </td>
             </tr>
             <tr>
@@ -77,30 +82,15 @@
                         <spring:bind path="memberDTO.email1">${status.errorMessage}</spring:bind>
                         <spring:bind path="memberDTO.email2">${status.errorMessage}</spring:bind>
                     </span>
-                    <a class="btn_sendemail" onclick="emailValidateSend()"><span>이메일 인증</span></a>
+                    <a class="btn_sendemail" onclick="emailValidateCheck()"><span>인증 확인</span></a>
                 </td>
             </tr>
-            <tr>
-                <td class="item_th"></td>
-                <td class="item_box" style="position: relative">
-                    <div><input type="text" id="emailValidationCheckNumber" name="emailValidationCheckNumber" value="${emailValidationCheckNumber}" placeholder="이메일 인증번호를 입력하세요" autocomplete="off"></div>
-                    <a class="btn_sendemail2" onclick="emailValidateCheck()"><span>인증 확인</span></a>
-                </td>
-            </tr>
+
             <tr>
                 <td></td>
                 <td>
                     <c:if test="${emailCheckHidden == true}"><input type="hidden" value="true" id="emailCheckHidden" name="emailCheckHidden"></c:if>
                     <c:if test="${emailCheckHidden == false || emailCheckHidden == null}"><input type="hidden" value="false" id="emailCheckHidden" name="emailCheckHidden"></c:if>
-
-                    <c:if test="${emailCheckHidden == true}">
-                        <%--<input type="button" id="emailValidationCheck" value="인증 확인" onclick="emailValidateCheck()"/>--%>
-                       <%-- <span id="emailCheckResult">이메일 인증 완료</span>--%>
-                    </c:if>
-                    <c:if test="${emailCheckHidden == false || emailCheckHidden == null}">
-                        <%--<input type="button" id="emailValidationCheck" value="인증 확인" onclick="emailValidateCheck()"/>--%>
-                        <%--<span id="emailCheckResult"></span>--%>
-                    </c:if>
                 </td>
             </tr>
         </table>

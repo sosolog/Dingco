@@ -183,6 +183,7 @@ function memberPwDuplicateCheck() {
 <!-- 민욱: 회원가입_submit 제약조건(아이디 중복 확인, 비밀번호 중복, 이메일 인증번호 확인) -->
 function joinSubmitCheck(f) {
     if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true' && $("#emailCheckHidden").val()=='true'){
+        f.method = "post";
         f.submit();
     }else{
         if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
