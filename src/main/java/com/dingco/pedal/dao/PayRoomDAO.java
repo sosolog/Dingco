@@ -20,4 +20,8 @@ public class PayRoomDAO {
     public int insertMemberList(PayRoomDTO payRoomDTO) throws Exception{
         return session.insert("com.config.PayRoomMapper.insertMemberList",payRoomDTO);
     }
+
+    public List<PayRoomDTO> selectPayRoom(int m_idx) throws Exception{
+        return session.selectList("com.config.PayRoomMapper.selectPayRoom",m_idx);
+    }
 }

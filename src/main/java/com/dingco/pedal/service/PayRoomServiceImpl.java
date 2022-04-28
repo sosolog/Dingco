@@ -19,6 +19,13 @@ public class PayRoomServiceImpl implements PayRoomService{
     public int roomInfo(PayRoomDTO payRoomDTO) throws Exception{
         int num = dao.insertPayRoom(payRoomDTO);
         num = dao.insertMemberList(payRoomDTO);
+        int m_idx = payRoomDTO.getM_idx();
         return num;
     };
+
+    @Override
+    public List<PayRoomDTO> selectPayRoom(int m_idx) throws Exception {
+        return dao.selectPayRoom(m_idx);
+
+    }
 }

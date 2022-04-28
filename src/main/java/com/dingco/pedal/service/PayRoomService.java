@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface PayRoomService {
 
-    public int roomInfo(PayRoomDTO payRoomDTO) throws Exception;
+    int roomInfo(PayRoomDTO payRoomDTO) throws Exception;
+    List<PayRoomDTO> selectPayRoom(int m_idx) throws Exception;
 }
