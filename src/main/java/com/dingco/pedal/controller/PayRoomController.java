@@ -5,6 +5,8 @@ import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PayGroupMemberDTO;
 import com.dingco.pedal.dto.PayRoomDTO;
 import com.dingco.pedal.service.PayRoomService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @Slf4j
@@ -37,7 +38,9 @@ public class PayRoomController {
         if(payRoomDTO == null){
             next = "redirect:/main";
         }else{
-            model.addAttribute("payRoom",payRoomDTO);
+            ObjectMapper mapper = new ObjectMapper();
+            String payRoomJson = mapper.writeValueAsString(payRoomDTO);
+            model.addAttribute("payRoom",payRoomJson);
             next = "pay/payRoomRetrieve";
         }
         return next;
@@ -87,4 +90,35 @@ public class PayRoomController {
     public String makeDutchpay() {
         return "pay";
     }
+
+    @GetMapping("/pay/newtest/{name}")
+    public String dutchPay(@PathVariable String name,Model model) {
+
+        model.addAttribute("name",name);
+        return "pay/pay";
+    }
+
+    @PostMapping("/pay/payInfo")
+    @ResponseBody
+    public JsonNode payInfo(@RequestParam Map<String,String> map,
+                                 @RequestParam("gm_idxList[]") List<Integer> gm_idxList) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode obj = mapper.readTree(map.get("payArr"));
+
+        System.out.println(map);
+        System.out.println(map.get("allPrice").replace(",",""));
+
+
+        return obj;
+    }
+
+    @PutMapping("/pay/accountInfo")
+    @ResponseBody
+    public void accountInfo(@RequestParam HashMap<String,String> map) throws Exception {
+        System.out.println(map);
+
+       int num = payRoomService.updateAccount(map);
+        System.out.println(num);
+    }
+
 }

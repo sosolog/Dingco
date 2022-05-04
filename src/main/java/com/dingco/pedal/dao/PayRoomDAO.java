@@ -31,4 +31,8 @@ public class PayRoomDAO {
     public PayRoomDTO selectPayRoomRetrieve(HashMap<String, Integer> map) {
         return session.selectOne("com.config.PayRoomMapper.selectPayRoomRetrieve",map);
     }
+    public int updateAccount(HashMap<String, String> map) {
+        System.out.println("dao"+map);
+        return session.update("com.config.PayRoomMapper.updateAccount",map);
+    }
 }

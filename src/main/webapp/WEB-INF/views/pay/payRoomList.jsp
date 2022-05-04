@@ -65,7 +65,7 @@
         memberArr.push(member);
         console.log($("#member-list-tmpl").tmpl({mList:memberArr}));
         $("#memberList").html($("#member-list-tmpl").tmpl({mList:memberArr}));
-        console.log(memberArr)
+        console.log(memberArr);
         $("#groupMember").val("");
     }
 

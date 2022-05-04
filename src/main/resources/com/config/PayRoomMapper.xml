@@ -16,12 +16,20 @@
     </insert>
 
     <insert id="insertMemberList" parameterType="PayRoomDTO">
-        INSERT INTO PAYGROUPMEMBER (PR_IDX,paymember_name,paymember_account)
+        INSERT INTO PAYGROUPMEMBER (PR_IDX,paymember_name)
         values
 <foreach collection="groupMemberList" index="index" item="item" separator=",">
-         (#{pr_idx},#{item.payMember_name},#{item.payMember_account})
+         (#{pr_idx},#{item.payMember_name})
 </foreach>
     </insert>
+
+    <update id="updateAccount" parameterType="map">
+        UPDATE PAYGROUPMEMBER
+        SET
+            paymember_account = #{payMember_account},
+            paymember_bank = #{payMember_bank}
+        where prgm_idx = #{prgm_idx}
+    </update>
 
 
     <resultMap id="payRoom" type="PayRoomDTO">

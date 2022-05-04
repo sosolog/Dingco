@@ -30,6 +30,12 @@ public class PayRoomServiceImpl implements PayRoomService{
     }
 
     @Override
+    public int updateAccount(HashMap<String, String> map) throws Exception {
+
+        return dao.updateAccount(map);
+    }
+
+    @Override
     public List<PayRoomDTO> selectPayRoom(int m_idx) throws Exception {
         return dao.selectPayRoom(m_idx);
 
