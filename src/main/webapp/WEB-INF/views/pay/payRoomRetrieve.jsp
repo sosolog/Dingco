@@ -36,11 +36,15 @@
 
         for (let x of groupMemberArr) {
             memberNameArr.push(x.payMember_name);
+            if(x.payMember_account != null || x.payMember_bank != null){
+                accountArr.push({"prgm":x.prgm_idx,"sb":x.payMember_bank,"sn":x.payMember_account,"so":x.payMember_name});
+            }
         }
 
         $(document).ready(function(){
             $("#room_name").val(room_name);
             $("#groupMember").val(memberNameArr.join(" "));
+            $("#accountList").html($("#save-account-tmpl").tmpl({pSave:accountArr}));
 
             $("#btn-close-modal").on("click", function(){
                 // modal 안보이도록 css 변경
@@ -157,7 +161,7 @@
             var saveNumber = $("#new-account-number").val();
             var saveOwner = $(".new-account-selector:selected").text();
             var gm_idx = $("#new-account-owner").val();
-            accountArr.push({"sb":savebank,"sn":saveNumber,"so":saveOwner});
+            accountArr.push({"prgm":gm_idx,"sb":savebank,"sn":saveNumber,"so":saveOwner});
 
             console.log(accountArr);
             $("#new-account-form").remove();
@@ -201,6 +205,23 @@
             accountArr.splice(index,1);
             console.log(accountArr);
             $(tr).parent().parent().remove();
+
+            let prgm_idx = $(tr).parent().find("#prgm_idx").val();
+            console.log(prgm_idx);
+
+            $.ajax({
+                url:"/pay/accountNull",
+                type:"PUT",
+                data:{
+                    "prgm_idx":prgm_idx
+                },
+                success:function (data){
+                    console.log(data);
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
 
         }
 
@@ -287,7 +308,9 @@
             <td id="save-price">\${p.spp}</td>
             <td id="save-payer">\${p.spp2}</td>
             <td id="save-participants">\${p.spp3}</td>
-            <td><button id="btn-delete-pay" class="btn-delete-pay" data-idx="\${index}" onclick="deleteSavePay($(this))">삭제</button></td>
+            <td>
+                <button id="btn-delete-pay" class="btn-delete-pay" data-idx="\${index}" onclick="deleteSavePay($(this))">삭제</button>
+            </td>
         </tr>
         {{/each}}
     </script>
@@ -319,11 +342,14 @@
             <th></th>
         </tr>
             {{each(index, p) pSave}}
-        <tr style="color: #888888" class="save-pay-form\${index}">
+        <tr style="color: #888888" class="save-account-form\${index}">
             <td id="save-bank">\${p.sb}</td>
             <td id="save-number">\${p.sn}</td>
             <td id="save-owner">\${p.so}</td>
-            <td><button id="btn-delete-account" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button></td>
+            <td>
+                <input type="hidden" id="prgm_idx" value="\${p.prgm}">
+                <button id="btn-delete-account" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
+            </td>
         </tr>
             {{/each}}
     </script>

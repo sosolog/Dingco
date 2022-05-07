@@ -36,6 +36,11 @@ public class PayRoomServiceImpl implements PayRoomService{
     }
 
     @Override
+    public int accountNull(int prgm_idx) throws Exception {
+        return dao.accountNull(prgm_idx);
+    }
+
+    @Override
     public List<PayRoomDTO> selectPayRoom(int m_idx) throws Exception {
         return dao.selectPayRoom(m_idx);
 

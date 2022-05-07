@@ -12,4 +12,5 @@ public interface PayRoomService {
     List<PayRoomDTO> selectPayRoom(int m_idx) throws Exception;
     PayRoomDTO selectPayRoomRetrieve(HashMap<String, Integer> map) throws Exception;
     int updateAccount(HashMap<String, String> map) throws Exception;
+    int accountNull(int prgm_idx) throws Exception;
 }

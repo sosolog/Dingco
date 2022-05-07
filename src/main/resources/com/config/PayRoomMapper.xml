@@ -23,15 +23,6 @@
 </foreach>
     </insert>
 
-    <update id="updateAccount" parameterType="map">
-        UPDATE PAYGROUPMEMBER
-        SET
-            paymember_account = #{payMember_account},
-            paymember_bank = #{payMember_bank}
-        where prgm_idx = #{prgm_idx}
-    </update>
-
-
     <resultMap id="payRoom" type="PayRoomDTO">
         <id property="pr_idx" column="pr_idx"></id>
         <result property="m_idx" column="m_idx"></result>
@@ -42,7 +33,7 @@
     </resultMap>
 
     <select id="selectPayRoomGroupMember" resultType="PayGroupMemberDTO">
-        select pr_idx, prgm_idx, PAYMEMBER_NAME, PAYMEMBER_ACCOUNT
+        select pr_idx, prgm_idx, PAYMEMBER_NAME, PAYMEMBER_ACCOUNT, PAYMEMBER_BANK
         from PAYGROUPMEMBER
         where PR_IDX = #{pr_idx}
     </select>
@@ -51,5 +42,21 @@
         from PAYROOM
         where PR_IDX = #{pr_idx} and m_idx = #{m_idx}
     </select>
+
+    <update id="updateAccount" parameterType="map">
+        UPDATE PAYGROUPMEMBER
+        SET
+            paymember_account = #{payMember_account},
+            paymember_bank = #{payMember_bank}
+        where prgm_idx = #{prgm_idx}
+    </update>
+
+    <delete id="accountNull" parameterType="int">
+        UPDATE PAYGROUPMEMBER
+        SET
+            paymember_account = NULL,
+            paymember_bank = NULL
+        where prgm_idx = #{prgm_idx}
+    </delete>
 
 </mapper>

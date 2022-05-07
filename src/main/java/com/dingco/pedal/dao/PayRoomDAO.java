@@ -28,11 +28,15 @@ public class PayRoomDAO {
         return session.selectList("com.config.PayRoomMapper.selectPayRoom",m_idx);
     }
 
-    public PayRoomDTO selectPayRoomRetrieve(HashMap<String, Integer> map) {
+    public PayRoomDTO selectPayRoomRetrieve(HashMap<String, Integer> map) throws Exception{
         return session.selectOne("com.config.PayRoomMapper.selectPayRoomRetrieve",map);
     }
-    public int updateAccount(HashMap<String, String> map) {
-        System.out.println("dao"+map);
+
+    public int updateAccount(HashMap<String, String> map) throws Exception{
         return session.update("com.config.PayRoomMapper.updateAccount",map);
+    }
+
+    public int accountNull(int prgm_idx) throws Exception{
+        return session.update("com.config.PayRoomMapper.accountNull",prgm_idx);
     }
 }

@@ -105,7 +105,6 @@ public class PayRoomController {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode obj = mapper.readTree(map.get("payArr"));
 
-        System.out.println(map);
         System.out.println(map.get("allPrice").replace(",",""));
 
 
@@ -114,11 +113,16 @@ public class PayRoomController {
 
     @PutMapping("/pay/accountInfo")
     @ResponseBody
-    public void accountInfo(@RequestParam HashMap<String,String> map) throws Exception {
-        System.out.println(map);
+    public void PutaccountInfo(@RequestParam HashMap<String,String> map) throws Exception {
 
        int num = payRoomService.updateAccount(map);
-        System.out.println(num);
+    }
+
+    @PutMapping("/pay/accountNull")
+    @ResponseBody
+    public void accountNull(@RequestParam int prgm_idx) throws Exception {
+
+       int num = payRoomService.accountNull(prgm_idx);
     }
 
 }
