@@ -1,11 +1,17 @@
 package com.dingco.pedal.dto;
 
+import lombok.Data;
+import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
 
+@Data
 public class DutchPayDTO {
+    private int pr_idx;
+    private int dp_idx;
+    private String dutchPayName;
     private List<PayDTO> payList;
     private int totalPay; // 총 결제금액
     // 더치페이 계산해주는 로직을 거친후 결과 저장

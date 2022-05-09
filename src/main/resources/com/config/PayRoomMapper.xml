@@ -58,5 +58,31 @@
             paymember_bank = NULL
         where prgm_idx = #{prgm_idx}
     </delete>
-
+    <insert id="insertDutchPay" parameterType="DutchPayDTO" useGeneratedKeys="true" keyProperty="dp_idx">
+        insert into DUTCHPAYLIST (pr_idx,dp_name, cut_option
+            <if test="createDate != null">
+            , create_date
+            </if>
+            <if test="dueDate != null">
+                , due_date
+            </if>
+        )
+        values (#{pr_idx},#{dutchPayName}, #{option}
+            <if test="createDate != null">
+                , #{createDate}
+            </if>
+            <if test="dueDate != null">
+                , #{dueDate}
+            </if>
+        );
+    </insert>
+    <insert id="insertPayList" parameterType="DutchPayDTO" >
+        <foreach collection="">
+            insert into PAYLIST(p_idx, dp_idx, p_name)
+            values();
+            <foreach collection="">
+                insert into PAYPARTICIPANTSLIST(p_idx, prgm_idx);
+            </foreach>
+        </foreach>
+    </insert>
 </mapper>

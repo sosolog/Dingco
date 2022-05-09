@@ -61,11 +61,13 @@
 
     // 2. memberList에 member 추가
     function memberList(){
-        var member = $("#groupMember").val();
-        memberArr.push(member);
-        console.log($("#member-list-tmpl").tmpl({mList:memberArr}));
-        $("#memberList").html($("#member-list-tmpl").tmpl({mList:memberArr}));
-        console.log(memberArr);
+        var member = $("#groupMember").val().trim();
+        if (member.length > 0){
+            memberArr.push(member);
+            console.log($("#member-list-tmpl").tmpl({mList:memberArr}));
+            $("#memberList").html($("#member-list-tmpl").tmpl({mList:memberArr}));
+            console.log(memberArr);
+        }
         $("#groupMember").val("");
     }
 

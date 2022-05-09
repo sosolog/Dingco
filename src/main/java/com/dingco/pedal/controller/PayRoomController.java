@@ -1,6 +1,7 @@
 package com.dingco.pedal.controller;
 
 import com.dingco.pedal.annotation.Login;
+import com.dingco.pedal.dto.DutchPayDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PayGroupMemberDTO;
 import com.dingco.pedal.dto.PayRoomDTO;
@@ -87,8 +88,10 @@ public class PayRoomController {
 
     @PostMapping("/pay/new")
     @ResponseBody
-    public String makeDutchpay() {
-        return "pay";
+    public String makeDutchpay(DutchPayDTO dutchPayDTO) throws Exception {
+        System.out.println("dutchPayDTO = " + dutchPayDTO);
+        int dp_idx = payRoomService.dutchPayInfo(dutchPayDTO);
+        return dutchPayDTO.toString();
     }
 
     @GetMapping("/pay/newtest/{name}")

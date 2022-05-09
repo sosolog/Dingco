@@ -1,6 +1,7 @@
 package com.dingco.pedal.service;
 
 import com.dingco.pedal.dao.PayRoomDAO;
+import com.dingco.pedal.dto.DutchPayDTO;
 import com.dingco.pedal.dto.PayRoomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,4 +46,13 @@ public class PayRoomServiceImpl implements PayRoomService{
         return dao.selectPayRoom(m_idx);
 
     }
+
+    @Transactional
+    @Override
+    public int dutchPayInfo(DutchPayDTO dutchPayDTO) throws Exception{
+        int dp_idx = dao.insertDutchPay(dutchPayDTO);
+        dutchPayDTO.setDp_idx(dp_idx);
+//        int num = dao.insertPayList(dutchPayDTO);
+        return dp_idx;
+    };
 }

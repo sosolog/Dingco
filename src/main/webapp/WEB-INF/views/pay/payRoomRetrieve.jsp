@@ -42,28 +42,84 @@
         }
 
         $(document).ready(function(){
+            console.log(groupMemberArr)
             $("#room_name").val(room_name);
             $("#groupMember").val(memberNameArr.join(" "));
-            $("#accountList").html($("#save-account-tmpl").tmpl({pSave:accountArr}));
+            $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr}));
 
             $("#btn-close-modal").on("click", function(){
-                // modal 안보이도록 css 변경
-                $(".modal").removeClass("show");
-                // 현재까지 저장되어있던 정보 삭제
-                payArr = [];
-                $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
 
-                $("#pay_name").val("");
-                $("#allPrice").val(0);
-                $("#cutPrice").val("0");
-                $("#pay-date").val("");
-                $("#due-date").val("");
-                $("#bill").val("");
+                if( payArr.length > 0){
+                    // 더치페이 내용 저장
+                    if($("#pay_name").val().trim().length <= 0){
+                        let today = new Date();
+
+                        let month = (today.getMonth() + 1).toString().padStart(2, "0");  // 월
+                        let date = (today.getDate()).toString().padStart(2, "0");  // 날짜
+                        let hours = today.getHours(); // 시
+                        let minutes = today.getMinutes();  // 분
+                        let seconds = today.getSeconds();  // 초
+
+                        $("#pay_name").val(month + date + "_"+ hours + ':' + minutes + ':' + seconds);
+                    }
+                    console.log(payArr, $("#pay_name").val(), $("#allPrice").val(), $("#cutPrice").val(), $("#pay-date").val(), $("#due-date").val())
+                    var pr_idx = ${payRoom}.pr_idx;
+                    var ducthPayObj = {
+                        "pr_idx": pr_idx,
+                        "dutchPayName": $("#pay_name").val(),
+                        "totalPay":$("#allPrice").val().replaceAll(",", ""),
+                        "option":$("#cutPrice").val()
+                    }
+                    var pay_date = $("#pay-date").val().trim();
+                    var due_date = $("#due-date").val().trim();
+                    if (pay_date.length > 0){
+                        ducthPayObj.createDate = pay_date;
+                    }
+                    if (due_date.length > 0){
+                        ducthPayObj.dueDate = due_date;
+                    }
+                    payArr.forEach((v, index) => {
+                        ducthPayObj['payList['+index+'].p_name'] = v.sn;
+                        ducthPayObj['payList['+index+'].price'] = v.spp.replaceAll(",", "");
+                        ducthPayObj['payList['+index+'].payMember.payMember_name'] = v.spp2;
+                        v.spp3.forEach((v2, index2) => {
+                            ducthPayObj['payList['+index+'].participants['+index2+'].prgm_idx'] = v2.prgm_idx
+                            ducthPayObj['payList['+index+'].participants['+index2+'].payMember_name'] = v2.payMember_name
+                        })
+                    });
+                    // ducthPayObj.payList = payListObj;
+                    console.log(ducthPayObj)
+
+                    // modal 안보이도록 css 변경
+                    $(".modal").removeClass("show");
+                    // 현재까지 저장되어있던 정보 삭제
+                    payArr = [];
+
+                    $("#pay_name").val("");
+                    $("#allPrice").val(0);
+                    $("#cutPrice").val("0");
+                    $("#pay-date").val("");
+                    $("#due-date").val("");
+                    $("#bill").val("");
+
+                    $.ajax({
+                        url:"/pay/new",
+                        type:"POST",
+                        data: ducthPayObj,
+                        success:function (data){
+                            console.log(data);
+                        },
+                        error:function (x,i,e){
+                            console.log(e);
+                        }
+                    })
+                }
 
             });
             $("#btn-open-modal").on("click", function(){
                 $(".modal").addClass("show");
             });
+
         });
 
         // 새로운 더치페이 폼 생성
@@ -109,6 +165,7 @@
 
         //새로운 결제 템플릿 테이블에 넣는 함수
         function createNewPay(){
+            console.log($("#btn-update-pay").length, $("#btn-update-pay"))
             if($("#btn-update-pay").length==0){
                 // console.log($("#new-pay-tmpl").tmpl());
                 $("#btn-pay-plus").text("-");
@@ -139,49 +196,61 @@
             var savePayName = $("#new-pay-name").val();
             var savePayPrice = $("#new-pay-price").val();
             var savePayPayer = $(".new-pay-selector:selected").text();
-            var savePayParticipants = $("#new-pay-participants").text();
+            var savePayParticipants = [];
+            $(".new-pay-participants-check:checked").each((idx, chked) => savePayParticipants.push({"prgm_idx": chked.value, "payMember_name":$(chked).attr("data-prgm-name")}));
+            // console.log(savePayParticipants)
 
-            payArr.push({"sn":savePayName,"spp":savePayPrice,"spp2":savePayPayer,"spp3":savePayParticipants});
+            if ( savePayName.length > 0 && savePayPrice.length > 0 ){
+                payArr.push({"sn":savePayName,"spp":savePayPrice,"spp2":savePayPayer,"spp3":savePayParticipants});
+                console.log(payArr);
+                $("#new-pay-form").remove();
+                $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
 
-            console.log(payArr);
-            $("#new-pay-form").remove();
-            $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
+                var allprice = uncomma($("#allPrice").val())*1;
+                var addprice = uncomma(savePayPrice)*1;
+                $("#allPrice").val(comma(allprice+addprice));
 
-            var allprice = uncomma($("#allPrice").val())*1;
-            var addprice = uncomma(savePayPrice)*1;
-            $("#allPrice").val(comma(allprice+addprice));
+                return false;
+            }
 
-            return false;
         }
 
         //적은 계좌 텍스트로 저장해주고 PayGroupMember DB에 update 해주는 함수
         function saveNewAccount(){
-            $("#btn-account-plus").text("+");
             var savebank = $("#new-account-bank").val();
             var saveNumber = $("#new-account-number").val();
-            var saveOwner = $(".new-account-selector:selected").text();
-            var gm_idx = $("#new-account-owner").val();
-            accountArr.push({"prgm":gm_idx,"sb":savebank,"sn":saveNumber,"so":saveOwner});
+            if (savebank.length > 0 && saveNumber.length > 0){
+                $("#btn-account-plus").text("+");
 
-            console.log(accountArr);
-            $("#new-account-form").remove();
-            $("#accountList").html($("#save-account-tmpl").tmpl({pSave:accountArr}));
+                var saveOwner = $(".new-account-selector:selected").text();
+                var gm_idx = $("#new-account-owner").val();
+                accountArr.push({"prgm":gm_idx,"sb":savebank,"sn":saveNumber,"so":saveOwner});
+                var findMember = groupMemberArr.filter(gm => gm.prgm_idx == gm_idx);
+                findMember[0].payMember_bank = savebank;
+                findMember[0].payMember_account = saveNumber;
+                console.log(findMember, ">>", groupMemberArr);
 
-               $.ajax({
-              url:"/pay/accountInfo",
-              type:"PUT",
-              data:{
-                    "payMember_account":saveNumber,
-                  "payMember_bank":savebank,
-                  "prgm_idx":gm_idx
-              },
-              success:function (data){
-                  console.log(data);
-              },
-              error:function (x,i,e){
-                  console.log(e);
-              }
-          })
+                // console.log(accountArr);
+                $("#new-account-form").remove();
+                $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr}));
+
+                $.ajax({
+                    url:"/pay/accountInfo",
+                    type:"PUT",
+                    data:{
+                        "payMember_account":saveNumber,
+                        "payMember_bank":savebank,
+                        "prgm_idx":gm_idx
+                    },
+                    success:function (data){
+                        console.log(data);
+                    },
+                    error:function (x,i,e){
+                        console.log(e);
+                    }
+                })
+            }
+
             return false;
         }
 
@@ -193,21 +262,25 @@
 
             let index = $(tr).attr("data-idx");
             payArr.splice(index,1);
-            console.log(payArr);
-            $(tr).parent().parent().remove();
+            // console.log(payArr);
+            $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
 
         }
 
         //저장된 계좌 삭제하는 함수
         function deleteSaveAccount(tr){
 
-            let index = $(tr).attr("data-idx");
-            accountArr.splice(index,1);
-            console.log(accountArr);
-            $(tr).parent().parent().remove();
+            // let index = $(tr).attr("data-idx");
+            // accountArr.splice(index,1);
+            // console.log(accountArr);
+
 
             let prgm_idx = $(tr).parent().find("#prgm_idx").val();
             console.log(prgm_idx);
+            var findMember = groupMemberArr.filter(gm => gm.prgm_idx == prgm_idx);
+            findMember[0].payMember_bank = null;
+            findMember[0].payMember_account = null;
+            $(tr).parent().parent().remove();
 
             $.ajax({
                 url:"/pay/accountNull",
@@ -264,6 +337,25 @@
 
         }
 
+        function changeParticipants() {
+            $("#new-pay-participants-form").css("display", "block");
+            $("#new-pay-participants").css("display", "none");
+        }
+
+        function changeParticipantsNumber() {
+            // console.log($(".new-pay-participants-check:checked").length);
+            var participants_num = $(".new-pay-participants-check:checked").length;
+            if (participants_num > 0) {
+                var number_display = $("#new-pay-participants").children()[0];
+                $(number_display).html(participants_num);
+
+                $("#new-pay-participants-form").css("display", "none");
+                $("#new-pay-participants").css("display", "block");
+            } else {
+                alert("참여인원은 1명 이상이어야 합니다.");
+            }
+
+        }
 
     </script>
     <!-- 새 더치페이 생성 template-->
@@ -288,8 +380,15 @@
                     {{/each}}
                 </select>
             </td>
-            <td><button id="new-pay-participants" style="width: 50px"  onclick="return submitCancle()"> \${pr.length}명</button></td>
-            <td><button id="btn-update-pay" onclick=" return saveNewPay()">저장</button></td>
+            <td><button type="button" id="new-pay-participants" style="width: 50px"  onclick="changeParticipants()"> <span>\${pr.length}</span>명</button>
+                <div id="new-pay-participants-form" style="display: none">
+                    {{each(index, p) pr}}
+                    <input type="checkbox" class="new-pay-participants-check" value="\${p.prgm_idx}" data-prgm-name="\${p.payMember_name}" checked>\${p.payMember_name}
+                    {{/each}}
+                    <button type="button" onclick="changeParticipantsNumber()">OK</button>
+                </div>
+            </td>
+            <td><button id="btn-update-pay" type="button" onclick="return saveNewPay()">저장</button></td>
         </tr>
     </script>
 
@@ -307,7 +406,10 @@
             <td id="save-name">\${p.sn}</td>
             <td id="save-price">\${p.spp}</td>
             <td id="save-payer">\${p.spp2}</td>
-            <td id="save-participants">\${p.spp3}</td>
+            <td id="save-participants">{{each(index, prgm) p.spp3}}
+                \${prgm.payMember_name}
+            {{/each}}
+            </td>
             <td>
                 <button id="btn-delete-pay" class="btn-delete-pay" data-idx="\${index}" onclick="deleteSavePay($(this))">삭제</button>
             </td>
@@ -325,7 +427,9 @@
             <td>
                 <select id="new-account-owner">
                     {{each(index,p) pr}}
+                    {{if p.payMember_account == null}}
                     <option class="new-account-selector" value="\${p.prgm_idx}">\${p.payMember_name}</option>
+                    {{/if}}
                     {{/each}}
                 </select>
             </td>
@@ -342,15 +446,18 @@
             <th></th>
         </tr>
             {{each(index, p) pSave}}
+                {{if p.payMember_account != null}}
         <tr style="color: #888888" class="save-account-form\${index}">
-            <td id="save-bank">\${p.sb}</td>
-            <td id="save-number">\${p.sn}</td>
-            <td id="save-owner">\${p.so}</td>
+
+            <td id="save-bank">\${p.payMember_bank}</td>
+            <td id="save-number">\${p.payMember_account}</td>
+            <td id="save-owner">\${p.payMember_name}</td>
             <td>
-                <input type="hidden" id="prgm_idx" value="\${p.prgm}">
+                <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
                 <button id="btn-delete-account" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
             </td>
         </tr>
+                {{/if}}
             {{/each}}
     </script>
 
@@ -419,12 +526,13 @@
             </table>
 
             총금액<input name="allPrice" id="allPrice" value="0" readonly><br>
-            절사옵션<select name="cutPrice" id="cutPrice">
-            <option value="0" id="noCut" selected=true>없음</option>
-            <option value="10" >10원</option>
-            <option value="100">100원</option>
-            <option value="1000">1000원</option>
-        </select><br>
+            절사옵션
+            <select name="cutPrice" id="cutPrice">
+                <option value="0" id="noCut" selected=true>없음</option>
+                <option value="10" >10원</option>
+                <option value="100">100원</option>
+                <option value="1000">1000원</option>
+            </select><br>
             결제일<input type="date" name="pay-date" id="pay-date"><br>
             마감일<input type="date" name="due-date" id="due-date"><br>
             영수증<input type="text" name="bill" id="bill"><br>

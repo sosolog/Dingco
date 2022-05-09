@@ -1,5 +1,6 @@
 package com.dingco.pedal.dao;
 
+import com.dingco.pedal.dto.DutchPayDTO;
 import com.dingco.pedal.dto.PayRoomDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,16 @@ public class PayRoomDAO {
 
     public int accountNull(int prgm_idx) throws Exception{
         return session.update("com.config.PayRoomMapper.accountNull",prgm_idx);
+    }
+
+    public int insertDutchPay(DutchPayDTO dutchPayDTO) throws Exception{
+        session.insert("com.config.PayRoomMapper.insertDutchPay",dutchPayDTO);
+        int dp_idx = dutchPayDTO.getDp_idx();
+        return dp_idx;
+    }
+
+    public int insertPayList(DutchPayDTO dutchPayDTO) throws Exception{
+        int result = session.insert("com.config.PayRoomMapper.insertPayList",dutchPayDTO);
+        return result;
     }
 }
