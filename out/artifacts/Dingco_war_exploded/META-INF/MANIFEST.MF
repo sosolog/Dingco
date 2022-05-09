@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: john_park
+Build-Jdk: Oracle OpenJDK version 11.0.13
+Implementation-Title: pedal
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.dingco
+Main-Class: ${start-class}
+
