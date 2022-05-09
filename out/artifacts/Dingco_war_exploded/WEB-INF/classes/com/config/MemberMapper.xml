@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.config.MemberMapper">
+
+    <select id="selectAllMember" resultType="MemberDTO">
+        select *
+        from MEMBER
+    </select>
+
+
+    <!-- 민욱: 회원가입_회원 추가 -->
+    <insert id="memberAdd" parameterType="MemberDTO">
+        INSERT	INTO MEMBER (userid, passwd, username, email1, email2, uploadfilename, storefilename)
+        VALUES (#{userid},#{passwd},#{username}, #{email1},#{email2},#{uploadFileName},#{storeFileName})
+    </insert>
+
+    <!-- 민욱: 소셜 회원가입_회원 추가 -->
+    <insert id="socialMemberAdd" parameterType="MemberDTO">
+        INSERT	INTO MEMBER (naver_idx, userid, username, email1, email2)
+        VALUES (#{naver_idx}, #{userid},#{username},#{email1},#{email2})
+    </insert>
+
+    <!-- 민욱: 회원가입_아이디 유효성 검증 -->
+    <select id="memberIdDuplicateCheck" resultType="int" parameterType="String">
+        select count(*)
+        from MEMBER
+        where userid=#{userid}
+    </select>
+
+    <!-- 민욱: 소셜 로그인_네이버 고유 id 확인 -->
+    <select id="socialMemberNaverIdxCheck" resultType="int" parameterType="String">
+        select count(*)
+        from MEMBER
+        where naver_idx=#{naver_idx}
+    </select>
+
+    <!-- 민욱: 소셜 로그인_네이버 고유 id 회원정보 들고 오기 -->
+    <select id="selectByNaverIdx" resultType="MemberDTO" parameterType="String">
+        select *
+        from MEMBER
+        where naver_idx=#{naver_idx}
+    </select>
+
+    <!-- 민욱: 회원가입_이메일 유효성 검증 -->
+    <select id="emailDuplicateCheck" resultType="int" parameterType="map">
+        select count(*)
+        from MEMBER
+        where email1=#{email1} and email2=#{email2}
+    </select>
+
+
+    <!-- 명지 : 마이페이지 정보 가져오기 -->
+    <select id="selectMypageInfo" parameterType="int" resultType="MemberDTO">
+        select m_idx, kakao_idx, naver_idx, google_idx, username, userid, passwd, email1, email2, uploadfilename, storefilename, DATE_FORMAT(joindate, '%Y-%m-%d') joindate, authorities
+        from MEMBER
+        WHERE m_idx=#{m_idx}
+    </select>
+
+    <!-- 명지 : 마이페이지 정보 수정하기 -->
+    <update id="updateMypage" parameterType="MemberDTO">
+        update MEMBER
+        set
+            username=#{username},
+            passwd=#{passwd},
+            email1=#{email1},
+            email2=#{email2},
+            uploadFileName=#{uploadFileName},
+            storeFileName=#{storeFileName}
+            where m_idx=#{m_idx}
+    </update>
+
+    <!-- 명지 : 아이디 찾기 -->
+    <select id="findUserId" parameterType="map" resultType="string">
+        select userid
+        from MEMBER
+        where username=#{username} and email1=#{email1} and email2=#{email2}
+    </select>
+
+    <select id="selectByLoginId" resultType="MemberDTO" parameterType="string">
+        select *
+        from MEMBER
+        where userid = #{userid}
+    </select>
+
+    <update id="updateFakePassword" parameterType="map">
+      update MEMBER
+      set passwd = #{fakePw}
+      where concat(EMAIL1,'@',EMAIL2)=#{userEmail} and userid = #{userid}
+    </update>
+
+    <select id="userEmailCheck" parameterType="map" resultType="boolean">
+        select count(*)
+        from MEMBER
+        where userid = #{userid} and concat(EMAIL1,'@',EMAIL2)= #{userEmail}
+    </select>
+
+    <!-- 명지 : 카카오 로그인 -->
+    <insert id="memberKakaoAdd" parameterType="map">
+        INSERT INTO MEMBER (kakao_idx, userid, username)
+        VALUES (#{kakao_idx}, #{userid}, #{username})
+    </insert>
+
+    <select id="selectByKakaoId" parameterType="string" resultType="MemberDTO">
+        select m_idx, kakao_idx, userid, username, joindate
+        from MEMBER
+        where kakao_idx = #{kakao_idx}
+    </select>
+
+    <!-- 주황 : 구글 로그인 -->
+    <insert id="memberGoogleAdd" parameterType="MemberDTO">
+        INSERT INTO MEMBER (google_idx, username,userid)
+        VALUES (#{google_idx}, #{username},#{userid})
+    </insert>
+
+    <select id="selectByGoogleIdx" parameterType="string" resultType="MemberDTO">
+        select m_idx, google_idx,userid, username,joindate
+        from MEMBER
+        where google_idx = #{google_idx}
+    </select>
+    <!-- 주황 : 구글 로그인 -->
+
+</mapper>
