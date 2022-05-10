@@ -35,7 +35,7 @@
         }
 
         $(document).ready(function(){
-            showDutchPayList()
+            showDutchPayList(pr_idx)
             console.log(groupMemberArr)
             $("#room_name").val(room_name);
             $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr}));
@@ -90,7 +90,7 @@
                         data: ducthPayObj,
                         success:function (data){
                             console.log(data);
-                            showDutchPayList();
+                            showDutchPayList(pr_idx);
                         },
                         error:function (x,i,e){
                             console.log(e);

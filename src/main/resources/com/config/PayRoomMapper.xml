@@ -125,4 +125,13 @@
                  join PAYGROUPMEMBER pg2 on p.payer = pg2.prgm_idx
         where dp.pr_idx = #{pr_idx} and dp.dp_idx = #{dp_idx};
     </select>
+
+<!--    select count(*) from (-->
+<!--    select DISTINCT prgm_idx-->
+<!--    from-->
+<!--    (select payer as prgm_idx, p_idx from PAYLIST-->
+<!--    union-->
+<!--    select prgm_idx, p_idx from PAYPARTICIPANTS) A-->
+<!--    where p_idx in (select p_idx from PAYLIST where dp_idx in (select dp_idx from DUTCHPAYLIST where pr_idx = #{pr_idx}))) B-->
+<!--    where prgm_idx = #{prgm_idx};-->
 </mapper>

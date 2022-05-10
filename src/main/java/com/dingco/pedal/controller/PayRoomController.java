@@ -39,7 +39,7 @@ public class PayRoomController {
             ObjectMapper mapper = new ObjectMapper();
             String payRoomJson = mapper.writeValueAsString(payRoomDTO);
             model.addAttribute("payRoom",payRoomJson);
-            next = "pay/payRoomRetrieve";
+            next = "payRoomRetrieve";
         }
         return next;
     }
@@ -52,7 +52,7 @@ public class PayRoomController {
         String payRoomJson = mapper.writeValueAsString(list);
         model.addAttribute("payRoomList",payRoomJson);
 
-        return "pay/payRoomList";
+        return "payRoomList";
     }
 
     @PostMapping("/pay/room")
@@ -108,13 +108,6 @@ public class PayRoomController {
     public String addPayIntoDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, PayDTO payDTO) throws Exception {
         payRoomService.insertPayIntoDutch(payDTO);
         return payDTO.toString();
-    }
-
-    @GetMapping("/pay/newtest/{name}")
-    public String dutchPay(@PathVariable String name,Model model) {
-
-        model.addAttribute("name",name);
-        return "pay/pay";
     }
 
     @PostMapping("/pay/payInfo")

@@ -94,5 +94,3 @@
         <button onclick="payRoomInfo()">방생성</button>
     </div>
 </div>
-</body>
-</html>
