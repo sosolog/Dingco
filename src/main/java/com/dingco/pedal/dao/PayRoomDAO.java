@@ -1,7 +1,6 @@
 package com.dingco.pedal.dao;
 
-import com.dingco.pedal.dto.DutchPayDTO;
-import com.dingco.pedal.dto.PayRoomDTO;
+import com.dingco.pedal.dto.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -47,8 +46,36 @@ public class PayRoomDAO {
         return dp_idx;
     }
 
-    public int insertPayList(DutchPayDTO dutchPayDTO) throws Exception{
-        int result = session.insert("com.config.PayRoomMapper.insertPayList",dutchPayDTO);
-        return result;
+    public void insertPayList(DutchPayDTO dutchPayDTO) throws Exception{
+        List<PayDTO> payList = dutchPayDTO.getPayList();
+        for (PayDTO payDTO : payList) {
+            payDTO.setDp_idx(dutchPayDTO.getDp_idx());
+            session.insert("com.config.PayRoomMapper.insertPayList", payDTO);
+
+            PayAndParticipants payAndParticipants = new PayAndParticipants();
+            payAndParticipants.setP_idx(payDTO.getP_idx());
+            payAndParticipants.setParticipants(payDTO.getParticipants());
+            session.insert("com.config.PayRoomMapper.insertPayParticipants", payAndParticipants);
+        }
+    }
+
+    public void insertPayIntoDutch(PayDTO payDTO) throws Exception{
+        session.insert("com.config.PayRoomMapper.insertPayList", payDTO);
+
+        PayAndParticipants payAndParticipants = new PayAndParticipants();
+        payAndParticipants.setP_idx(payDTO.getP_idx());
+        payAndParticipants.setParticipants(payDTO.getParticipants());
+        session.insert("com.config.PayRoomMapper.insertPayParticipants", payAndParticipants);
+    }
+
+    public List<DutchPayDTO> dutchpayListInfo(int pr_idx) {
+        return session.selectList("com.config.PayRoomMapper.dutchpayListInfo", pr_idx);
+    }
+
+    public DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("pr_idx", pr_idx);
+        map.put("dp_idx", dp_idx);
+        return session.selectOne("com.config.PayRoomMapper.dutchpayInfo", map);
     }
 }

@@ -1,10 +1,7 @@
 package com.dingco.pedal.controller;
 
 import com.dingco.pedal.annotation.Login;
-import com.dingco.pedal.dto.DutchPayDTO;
-import com.dingco.pedal.dto.MemberDTO;
-import com.dingco.pedal.dto.PayGroupMemberDTO;
-import com.dingco.pedal.dto.PayRoomDTO;
+import com.dingco.pedal.dto.*;
 import com.dingco.pedal.service.PayRoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -90,8 +87,27 @@ public class PayRoomController {
     @ResponseBody
     public String makeDutchpay(DutchPayDTO dutchPayDTO) throws Exception {
         System.out.println("dutchPayDTO = " + dutchPayDTO);
-        int dp_idx = payRoomService.dutchPayInfo(dutchPayDTO);
+        int dp_idx = payRoomService.insertDutchPay(dutchPayDTO);
         return dutchPayDTO.toString();
+    }
+
+    @GetMapping("/pay/{pr_idx}/dutch/list")
+    @ResponseBody
+    public List<DutchPayDTO> showDutchpayList(@PathVariable int pr_idx) throws Exception {
+        return payRoomService.dutchPayListInfo(pr_idx);
+    }
+
+    @GetMapping("/pay/{pr_idx}/dutch/{dp_idx}")
+    @ResponseBody
+    public DutchPayDTO showDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx) throws Exception {
+        return payRoomService.dutchPayInfo(pr_idx, dp_idx);
+    }
+
+    @PostMapping("/pay/{pr_idx}/dutch/{dp_idx}")
+    @ResponseBody
+    public String addPayIntoDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, PayDTO payDTO) throws Exception {
+        payRoomService.insertPayIntoDutch(payDTO);
+        return payDTO.toString();
     }
 
     @GetMapping("/pay/newtest/{name}")
