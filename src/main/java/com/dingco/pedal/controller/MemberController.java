@@ -114,7 +114,7 @@ public class MemberController {
     }
 
     // 명지 - 아이디 찾기
-    @GetMapping("/find/id")
+    @GetMapping("/find/userid")
     public @ResponseBody String findId(@RequestParam Map<String,Object> map) throws Exception {
         String json = mService.findUserId(map);
         return json;
