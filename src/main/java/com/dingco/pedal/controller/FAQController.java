@@ -26,20 +26,6 @@ public class FAQController {
     // select f.number_idx, f.m_idx, f.title, f.content, c.category_name
     //  from FAQ f join CATEGORY c on f.category_idx = c.CATEGORY_IDX;
     //localhost:9090/faq
-    @GetMapping("/notice")
-    public String notice(@Login MemberDTO memberDTO,
-                         @RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx,
-                         @RequestParam(value = "pg", required = false, defaultValue = "1") String curPage, Model model) throws Exception {
-
-        logger.info("로그");
-
-        //페이징 처리
-        PageDTO<FAQDTO> pageDTO = service.selectNoticePage(Integer.parseInt(curPage), category_idx);
-        System.out.println(pageDTO);
-        model.addAttribute("pageDTO", pageDTO);
-        return "notice";
-    }
-
     @GetMapping("/faq")
     public String faq(@Login MemberDTO memberDTO,
                       @RequestParam(value = "c_id", required = false, defaultValue = "2") int category_idx,
@@ -48,7 +34,7 @@ public class FAQController {
         logger.info("로그");
 
         //페이징 처리
-        PageDTO<FAQDTO> pageDTO = service.selectFAQPage(Integer.parseInt(curPage), category_idx);
+        PageDTO<FAQDTO> pageDTO = service.selectNoticePage(Integer.parseInt(curPage), category_idx);
         System.out.println(pageDTO);
         model.addAttribute("pageDTO", pageDTO);
         return "FaqList";

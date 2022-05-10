@@ -34,7 +34,7 @@ public class NoticeController {
         logger.info("로그");
 
         //페이징 처리
-        PageDTO<FAQDTO> pageDTO = service.selectAllPage(Integer.parseInt(curPage), category_idx);
+        PageDTO<FAQDTO> pageDTO = service.selectNoticePage(Integer.parseInt(curPage), category_idx);
 
         model.addAttribute("pageDTO", pageDTO);
         return "NoticeList";
