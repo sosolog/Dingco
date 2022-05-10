@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.config.FAQMapper">
+
+    <select id="selectAllPage" resultType="FAQDTO" parameterType="HashMap">
+	<![CDATA[
+        select f.number_idx,
+               m.userid,
+               m.username,
+               f.title,
+               f.content,
+               date_format(f.writeday, '%Y-%m-%d') writeday,
+               f.readcnt,
+               c.category_name
+        from FAQ f
+                 join CATEGORY c on f.category_idx = c.CATEGORY_IDX
+                 join MEMBER m on f.m_idx = m.m_idx
+        where f.category_idx = #{category_idx}
+        order by f.number_idx asc
+            limit ${perPage} offset ${offset}
+        ]]>
+	</select>
+
+
+    <resultMap id="category" type="hashmap">
+        <result property="category_idx" column="category_idx"/>
+        <result property="category_name" column="category_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+    </resultMap>
+    <select id="category" resultMap="category">
+        select category_idx, category_name
+        from CATEGORY
+    </select>
+
+    <!--    https://stage-diary.tistory.com/594 -->
+    <insert id="boardWrite" parameterType="FAQDTO">
+        insert into FAQ (title, content,m_idx ,category_idx)
+            value (#{title}, #{content}, #{m_idx},#{category_idx});
+    </insert>
+
+
+    <select id="retrieve" parameterType="int" resultType="FAQDTO">
+        <![CDATA[
+        select f.number_idx,
+               m.userid,
+               f.title,
+               f.content,
+               date_format(f.writeday, '%Y-%m-%d') writeday,
+               f.readcnt,
+               c.category_name
+        from FAQ f
+                 join CATEGORY c on f.category_idx = c.CATEGORY_IDX
+                 join MEMBER m on f.m_idx = m.m_idx
+        where f.number_idx = #{number_idx}
+        ]]>
+
+    </select>
+
+    <update id="update" parameterType="FAQDTO">
+        update FAQ
+        set title = #{title},content = #{content},category_idx = #{category_idx}
+        where number_idx = #{number_idx}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from FAQ
+        where number_idx = #{number_idx}
+    </delete>
+
+
+    <update id="readcnt" parameterType="int">
+        update FAQ
+        set readcnt = readcnt + 1
+        where number_idx = #{number_idx}
+    </update>
+
+
+    <select id="totalRecord" resultType="int">
+        select count(*)
+        from FAQ
+    </select>
+
+</mapper>
