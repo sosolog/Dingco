@@ -16,8 +16,14 @@ public class FAQServiceImpl implements FAQService {
     FAQDAO dao;
 
     @Override
-    public PageDTO selectAllPage(int curPage, int category_idx) throws Exception {
-        PageDTO pageDTO = dao.selectAllPage(curPage, category_idx);
+    public PageDTO selectNoticePage(int curPage, int category_idx) throws Exception {
+        PageDTO pageDTO = dao.selectNoticePage(curPage, category_idx);
+        return pageDTO;
+    }
+
+    @Override
+    public PageDTO selectFAQPage(int curPage, int category_idx) throws Exception {
+        PageDTO pageDTO = dao.selectFAQPage(curPage, category_idx);
         return pageDTO;
     }
 

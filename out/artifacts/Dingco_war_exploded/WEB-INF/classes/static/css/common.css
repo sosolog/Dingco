@@ -1,0 +1,324 @@
+@charset "UTF-8";
+@import url('NanumSquare.css');
+@import url('NanumSquareRound.css');
+@import url('TmoneyRoundWind.css');
+
+* {font-family: NanumSquare;}
+
+a { text-decoration: none; cursor: pointer; }
+
+body { margin: 0; padding: 0; }
+
+ul { list-style:none; margin: 0px auto; padding-inline-start: 0px; }
+
+li { display: inline-block; }
+
+input { font-style: normal; border: none; }
+
+input:focus { outline: none; }
+
+input[type=password] { font-family: NanumSquareRound; }
+
+.reset { padding:0px; margin:0px; clear: both; }
+
+/* header */
+#header_box {
+    position: fixed;
+    width: 100%;
+    z-index: 8;
+    background-color: white;
+}
+
+header {
+    z-index: 100;
+    width: 100%;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    border: none;
+    position: fixed;
+    background-color: #FFF;
+}
+
+header .ico_lt, .ico_rt {
+    position: absolute;
+    top: 20px;
+}
+
+header .ico_lt { left: 30px; }
+
+header .ico_rt { right: 30px; }
+
+header .title { text-align: center; }
+
+header .title .headerLogo { display: inline-block; }
+
+header .title .headerLogo span {
+    font-family: TmoneyRoundWind;
+    font-weight: 900;
+    font-size: 50px;
+    color: #4677DE;
+}
+
+header .title .headerText { display: inline-block; }
+
+header .title .headerText span {
+    display: block;
+    font-weight: 900;
+    font-size: 34px;
+    color: #4677DE;
+    padding: 15px 0px;
+}
+
+
+/* main */
+#main {
+    padding: 600px 0px;
+    text-align: center;
+}
+
+#main .unlogin .info {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: #507FE2;
+}
+
+#main .unlogin a {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    background-color: #4677DE;
+}
+
+#main .unlogin a span {
+    display:inline-block;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.2px;
+}
+
+
+/* #black */
+#aside-black {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background: rgba(18, 18, 18, 1);
+}
+
+#aside {
+    position:fixed;
+    left: -1000px;
+    width: 80%;
+    height: 1920px;
+    z-index: 15;
+    background-color: white;
+}
+
+/* #aside */
+#aside .close_wrap {
+    width: 100%;
+}
+
+#aside .close_wrap a {
+    float: right;
+    padding: 15px 20px;
+}
+
+#aside .pro_box {
+    display: block;
+    padding: 10px 40px 70px;
+}
+
+#aside .pro_box .img_wrap {
+    width: 110px;
+    height: 110px;
+    display: inline-block;
+    float: left;
+    overflow: hidden;
+    border-radius: 100px;
+}
+
+#aside .pro_box .img_wrap img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+#aside .pro_box .text_box {
+    padding-left: 140px;
+}
+
+#aside .pro_box .text_box .top {
+    padding-top:12px;
+}
+
+#aside .pro_box .text_box .top span {
+    float: left;
+    font-weight: 900;
+    font-size: 34px;
+    color: #414142;
+    padding-right: 15px;
+}
+
+#aside .pro_box .text_box .userid1 {
+    display: block;
+    font-weight: 500;
+    font-size: 26px;
+    color: #8D8D8D;
+    padding-top: 55px;
+}
+
+#aside .pro_box .text_box .userid2 {
+    display: block;
+    font-weight: 500;
+    font-size: 26px;
+    color: #8D8D8D;
+    padding-top: 5px;
+}
+
+
+#aside .menu {
+    width: 100%;
+}
+
+#aside .box_line {
+    width: 100%;
+    height: 1px;
+    background-color: #D2D2D2;
+    opacity: 50%;
+}
+
+#aside .menu .box_wrap {
+    padding: 45px 45px 20px;
+}
+
+#aside .menu .box_wrap .tit {
+    display: block;
+    font-weight: 700;
+    font-size: 34px;
+    color: #414142;
+}
+
+#aside .menu .box_wrap .menu_detail {
+    padding: 45px 20px 0px;
+}
+
+#aside .menu .box_wrap .menu_detail a {
+    display: block;
+    padding-bottom: 42px;
+}
+
+#aside .menu .box_wrap .menu_detail span {
+    font-weight: 500;
+    font-size: 30px;
+    color: #414142;
+}
+
+/* login */
+#login { padding-top:95px; }
+
+#login .logo {
+    font-family: TmoneyRoundWind;
+    display: block;
+    text-align: center;
+    font-size: 110px;
+    font-weight: 900;
+    letter-spacing: -5px;
+    color: #4677DE;
+    padding: 100px 0px 40px;
+}
+
+#login .loginForm {
+    padding: 30px 60px;
+}
+
+#login .loginForm .input_wrap input[type=text], input[type=password]{
+    display: block;
+    width: 90%;
+    margin: 0px auto 30px;
+    height: 110px;
+    border-bottom: 1px solid rgba(177, 177, 177, 0.5);
+    font-size: 34px;
+    padding: 0px 30px;
+    color: #414142;
+}
+
+#login .loginForm .result {
+    display: block;
+    font-size: 24px;
+    color: #E74133;
+    text-align: right;
+    padding-bottom: 30px;
+}
+
+#login .loginForm .btn_login {
+    display: block;
+    width: 98%;
+    border: 1px solid #4677DE;
+    text-align: center;
+    padding: 34px 0px;
+    margin: auto;
+    border-radius: 2px;
+}
+
+#login .loginForm .btn_login span {
+    font-size: 32px;
+    color: #4677DE;
+    font-weight: 700;
+}
+
+#login .options {
+    text-align: center;
+    margin: 35px auto;
+}
+
+#login .options .box {
+    display: inline-block;
+}
+
+#login .options a {
+    float: left;
+    padding: 0px 20px;
+}
+
+#login .options a span {
+    display: inline-block;
+    font-size: 30px;
+    color: #414142;
+}
+
+#login .options .wall {
+    float: left;
+    width: 1px;
+    height: 34px;
+    background-color: #A6A6A6;
+}
+
+#login .snslogin {
+    margin: 80px auto;
+    text-align: center;
+}
+
+#login .snslogin .loginimg {
+    padding-top: 25px;
+}
+
+/* mypage */
+
+
+
+
+
+
+
+
+
+

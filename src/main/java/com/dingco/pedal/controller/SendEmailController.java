@@ -40,18 +40,14 @@ public class SendEmailController {
     //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
 
     // 민욱: 이메인 인증_등록된 이메일로 이메일 인증번호를 발송하고 발송된 이메일 인증번호를 세션에 저장
-    @GetMapping("emailValidationSend")
+    @GetMapping("/join/email/send")
     public @ResponseBody void emailValidationSend(HttpServletRequest request, @RequestParam Map<String,String> map) throws Exception {
         sendEmailService.emailValidationCreate(request, map);
     }
 
 
-
-
-
-
     // 민욱: 이메인 인증_등록된 이메일로 이메일 인증번호를 확인해서 세션에 저장 되어있는 인증번호를 비교
-    @GetMapping("emailValidationCheck")
+    @GetMapping("/join/email/check")
     public @ResponseBody
     String emailValidationCheck(HttpServletRequest request,
                                 @RequestParam("emailValidationCheckNumber")String emailValidationCheckNumber) throws Exception {

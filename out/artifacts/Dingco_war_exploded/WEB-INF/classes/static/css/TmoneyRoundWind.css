@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'TmoneyRoundWind';
+  font-weight: 500;
+  font-style: normal;
+  src: url('../fonts/TmoneyRoundWindRegular.ttf') format('truetype');
+  src: url('../fonts/TmoneyRoundWindRegular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'TmoneyRoundWind';
+  font-weight: 900;
+  font-style: normal;
+  src: url('../fonts/TmoneyRoundWindExtraBold.ttf') format('truetype');
+  src: url('../fonts/TmoneyRoundWindExtraBold.otf') format('opentype');
+}
