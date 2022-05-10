@@ -42,7 +42,7 @@ public class FAQController {
 
     @GetMapping("/faq")
     public String faq(@Login MemberDTO memberDTO,
-                      @RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx,
+                      @RequestParam(value = "c_id", required = false, defaultValue = "2") int category_idx,
                       @RequestParam(value = "pg", required = false, defaultValue = "1") String curPage, Model model) throws Exception {
 
         logger.info("로그");
@@ -51,7 +51,7 @@ public class FAQController {
         PageDTO<FAQDTO> pageDTO = service.selectFAQPage(Integer.parseInt(curPage), category_idx);
         System.out.println(pageDTO);
         model.addAttribute("pageDTO", pageDTO);
-        return "faq";
+        return "FaqList";
     }
 
 

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,11 +40,12 @@ public class MemberController {
 
     // -------------------------------- Start : 명지 -------------------------------- //
     @RequestMapping(value = "/mypage", method = RequestMethod.GET)
-    public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo){
+    public String selectMypageInfo(@Valid @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult, @Login MemberDTO userinfo, Model model){
         String next = "";
 
         try {
             memberDTO = mService.selectMypageInfo(userinfo.getM_idx());
+            model.addAttribute("memberDTO", memberDTO);
 
             if (memberDTO.getKakao_idx()==null && memberDTO.getNaver_idx()==null && memberDTO.getGoogle_idx()==null) {
                 next = "/mypage";
@@ -107,18 +109,25 @@ public class MemberController {
     // -------------------------------- End : 명지 -------------------------------- //
 
     // -------------------------------- Start : 주황 -------------------------------- //
-    //주황 - 아이디/비밀번호 찾기
-    @GetMapping("/find/passwd")
-    public String find_ID_PW(){
-        return "find_ID_PW";
-    }
-
     // 명지 - 아이디 찾기
     @GetMapping("/find/userid")
-    public @ResponseBody String findId(@RequestParam Map<String,Object> map) throws Exception {
+    public String find_ID(){
+        return "findUserid";
+    }
+
+    @GetMapping("/find/userid.action")
+    public @ResponseBody String findIdAction(@RequestParam Map<String,Object> map) throws Exception {
         String json = mService.findUserId(map);
         return json;
     }
+
+    //주황 - 아이디/비밀번호 찾기
+    @GetMapping("/find/passwd")
+    public String find_PW(){
+        return "findPasswd";
+    }
+
+
     // -------------------------------- End : 주황 -------------------------------- //
     // -------------------------------- Start : 민욱 -------------------------------- //
     // 네이버 콜백

@@ -1,170 +1,165 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:set var="dto" value="${inquiryDTO}"></c:set>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
-    <script src="/script/jquery-3.6.0.js"></script>
-    <script src="/script/jquery.tmpl.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("#deletePost").on("click", function (){
-                if(confirm("정말로 삭제하시겠습니까? 한번 삭제하면 다시 복원할 수 없습니다.")){
 
-                    $.ajax({
-                        type: 'DELETE',
-                        url: `/inquiry/${dto.i_idx}`,
-                        success: function (result) {
-                            console.log(result)
-                            if(result) {
-                                location.href="/inquiry";
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+<script src="/script/jquery.tmpl.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#deletePost").on("click", function (){
+            if(confirm("정말로 삭제하시겠습니까? 한번 삭제하면 다시 복원할 수 없습니다.")){
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: `/inquiry/${dto.i_idx}`,
+                    success: function (result) {
+                        console.log(result)
+                        if(result) {
+                            location.href="/inquiry";
                         }
-                    });
-                }
-            });
-
-            getComments();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR.status + ' ' + jqXHR.responseText);
+                    }
+                });
+            }
         });
-    </script>
-    <script type="text/html" id="comment-list-tmpl">
-        <div>
-            <table>
-                <tr>
-                    <td>작성자</td>
-                    <td>\${m_idx}</td>
-                    <td>작성일</td>
-                    <td>\${post_date}</td>
-                </tr>
-                <tr>
-                    <td>내용</td>
-                    <td colspan="3"><span id="comment_\${c_idx}">\${comment}</span></td>
-                </tr>
-            </table>
-            <div id="btn-\${c_idx}-default">
-                <button class="upd-comment" data-cidx="\${c_idx}" data-comment="\${comment}">수정</button>
-                <button class="del-comment" data-cidx="\${c_idx}">삭제</button>
-                <button class="re-comment" data-cidx="\${c_idx}">대댓글 작성</button>
-            </div>
-            <div id="btn-\${c_idx}-update" style="display: none">
-                <button class="confirm-upd" data-cidx="\${c_idx}">확인</button>
-            </div>
-            <div id="form-\${c_idx}-recomment" style="display:none;">
-                <input type="text" id="recomment_\${c_idx}">
-                <button class="confirm-recomment" data-cidx="\${c_idx}">확인</button>
-            </div>
-            {{if count_sub > 0}}
-            \${count_sub}개의 대댓글 존재
-            <button class="show-re-comment" data-cidx="\${c_idx}" data-status="0">대댓글 보기</button>
+
+        getComments();
+    });
+</script>
+<%-- Start : 댓글 --%>
+<script type="text/html" id="comment-list-tmpl">
+    <div id="commentOne\${c_idx}" class="commentOne">
+        <div class="top">
+            <span>관리자 \${m_idx}</span>
+            <span>(\${post_date})</span>
+            <a onclick="openCommentOption(\${c_idx})"><img src="/images/commentOption.png"></a>
+        </div>
+        <div class="commentContent">
+            <span id="comment_\${c_idx}">\${comment}</span>
+        </div>
+
+        <div id="btn-\${c_idx}-default">
+            <button class="upd-comment" data-cidx="\${c_idx}" data-comment="\${comment}">수정</button>
+            <button class="del-comment" data-cidx="\${c_idx}">삭제</button>
+            <button class="re-comment" data-cidx="\${c_idx}">대댓글 작성</button>
+        </div>
+        <div id="btn-\${c_idx}-update" class="writeComment" style="display: none">
+            <a class="confirm-upd" data-cidx="\${c_idx}"><span>수정</span></a>
+            <div class="reset"></div>
+        </div>
+        {{if count_sub > 0}}
+        <a class="show-re-comment" data-cidx="\${c_idx}" data-status="0"><span>답글 \${count_sub}개</span></a>
+            <%--<button class="show-re-comment" data-cidx="\${c_idx}" data-status="0">대댓글 보기</button>--%>
             <div id="recomment-list-\${c_idx}"></div>
-            {{/if}}
+        {{/if}}
+        <div id="form-\${c_idx}-recomment" class="writeComment" style="display:none;">
+            <textarea id="recomment_\${c_idx}"></textarea>
+            <a class="confirm-recomment" data-cidx="\${c_idx}"><span>등록</span></a>
+            <div class="reset"></div>
         </div>
-    </script>
-    <script type="text/html" id="comment-recomment-list-tmpl">
-        <div>
-            <table>
-                <tr>
-                    <td>L </td>
-                    <td>작성자</td>
-                    <td>\${m_idx}</td>
-                    <td>작성일</td>
-                    <td>\${post_date}</td>
-                </tr>
-                <tr>
-                    <td> </td>
-                    <td>내용</td>
-                    <td colspan="3"><span id="comment_\${c_idx}">\${comment}</span></td>
-                </tr>
-            </table>
-            <div id="btn-\${c_idx}-default">
-                <button class="upd-comment" data-cidx="\${c_idx}" data-comment="\${comment}">수정</button>
-                <button class="del-comment" data-cidx="\${c_idx}">삭제</button>
-            </div>
-            <div id="btn-\${c_idx}-update" style="display: none">
-            <button class="confirm-upd" data-cidx="\${c_idx}">확인</button>
+    </div>
+</script>
+<%-- End : 댓글 --%>
+<%-- Start : 대댓글 --%>
+<script type="text/html" id="comment-recomment-list-tmpl">
+    <div>
+        <table>
+            <tr>
+                <td>L </td>
+                <td>작성자</td>
+                <td>\${m_idx}</td>
+                <td>작성일</td>
+                <td>\${post_date}</td>
+            </tr>
+            <tr>
+                <td> </td>
+                <td>내용</td>
+                <td colspan="3"><span id="comment_\${c_idx}">\${comment}</span></td>
+            </tr>
+        </table>
+        <div id="btn-\${c_idx}-default">
+            <button class="upd-comment" data-cidx="\${c_idx}" data-comment="\${comment}">수정</button>
+            <button class="del-comment" data-cidx="\${c_idx}">삭제</button>
         </div>
+        <div id="btn-\${c_idx}-update" style="display: none">
+        <button class="confirm-upd" data-cidx="\${c_idx}">확인</button>
+    </div>
+    </div>
+</script>
+<%-- End : 대댓글 --%>
+
+<%----------------------- HTML -----------------------%>
+<header>
+    <c:set var="dto" value="${inquiryDTO}"></c:set>
+    <c:if test="${fn:contains(url, '/inquiry/')}">
+        <div class="ico_lt">
+            <a onclick="javascript:history.back()"><img src="/images/ico_back_01.png"></a>
         </div>
-    </script>
-</head>
-<body>
-<h2>게시판 세부사항 보기</h2>
-<table border="1">
-    <tr>
-        <th>문의번호</th>
-        <th>작성자번호</th>
-        <th>카테고리</th>
-        <th>제목</th>
-        <th>내용</th>
-        <th>업로드 날짜</th>
-        <th>수정 날짜</th>
-        <th>상위 문의 고유번호</th>
-        <th>문의 상태</th>
-    </tr>
+        <div class="title">
+            <a class="headerLogo"><span>1:1문의</span></a>
+        </div>
+        <div class="ico_rt">
+            <c:if test="${dto.status == 'YET'}"><a class="rewrite" href="${dto.i_idx}/update"><span>수정</span></a></c:if>
+        </div>
+    </c:if>
+</header>
+<div id="inquiryRetrieve">
+    <div class="title"><span>${dto.title}</span></div>
+    <div class="info">
+        <span>
+            ${dto.upload_date},
+            <c:if test="${dto.i_idx2 != 0}">재문의</c:if>
+            <c:if test="${dto.i_idx2 == 0}">최초문의</c:if>
+        </span>
+        <c:if test="${dto.i_idx2 != 0}"><a href="/inquiry/${dto.i_idx2}"><span>>> 최초 문의 보러가기</span></a></c:if>
+    </div>
+    <div class="content">
+        <span>${dto.content}</span>
+    </div>
+    <div class="imgPreview">
+        <ul>
+            <c:forEach var="files" items="${dto.fileNames}">
+                <li><div><img src="/files/${files.tableDir.directoryName}/${files.serverFileName}"></div></li>
+            </c:forEach>
+        </ul>
+    </div>
+    <c:if test="${dto.status == 'YET'}">
+        <a class="deletePost" id="deletePost"><span>글 삭제</span></a>
+    </c:if>
+    <div class="blueLine"></div>
+    <c:if test="${memberDTO.authorities == 'ADMIN'}">
+        <form:form modelAttribute="inquiryDTO" action="">
+            <form:radiobutton path="status" value="YET" label="답변 대기 중"/>
+            <form:radiobutton path="status" value="IN_PROCESS" label="답변 완료"/>
+            <form:radiobutton path="status" value="DONE" label="문의 종료"/>
+            <button type="button" id="inq_status_update">문의상태 변경하기</button>
+        </form:form>
+        <div class="whitegrayLine"></div>
+    </c:if>
 
-
-    <tr>
-        <td>${dto.i_idx}</td>
-        <td>${dto.m_idx}</td>
-        <td>${dto.category_id}</td>
-        <td>${dto.title}</td>
-        <td>${dto.content}</td>
-        <td>${dto.upload_date}</td>
-        <td>${dto.last_updated_date}</td>
-        <td>${dto.i_idx2}</td>
-        <td>${dto.status.message}, ${dto.status == 'YET'}</td>
-    </tr>
-</table>
-<div>
-<c:forEach var="files" items="${dto.fileNames}">
-    <img src="/files/${files.tableDir.directoryName}/${files.serverFileName}" style="max-width: 10%" height="auto">
-
-</c:forEach>
-</div>
-<c:if test="${dto.i_idx2 != 0}">
-    <h3>관련 문의 보기_기존</h3>
-    <a href="/inquiry/${dto.i_idx2}">상위문의 확인하기</a>
-</c:if>
-
-
-<br>
-<hr>
-<c:if test="${dto.status == 'YET'}">
     <c:if test="${memberDTO.authorities == 'USER'}">
-        <a href="${dto.i_idx}/update">글 수정</a>
+        <c:if test="${dto.status == 'IN_PROCESS'}">
+            <button type="button" id="inq_terminate">문의 종료하기</button>
+        </c:if>
+        <c:if test="${dto.status != 'YET'}">
+            <button type="button" id="re_inq">재문의하기</button>
+        </c:if>
+        <div class="grayLine"></div>
     </c:if>
-    <button id="deletePost">글 삭제</button>
-</c:if>
-<c:if test="${memberDTO.authorities == 'ADMIN'}">
-    <form:form modelAttribute="inquiryDTO" action="">
-        <form:radiobutton path="status" value="YET" label="답변 대기 중"/>
-        <form:radiobutton path="status" value="IN_PROCESS" label="답변 완료"/>
-        <form:radiobutton path="status" value="DONE" label="문의 종료"/>
-        <button type="button" id="inq_status_update">문의상태 변경하기</button>
-    </form:form>
-</c:if>
-<c:if test="${memberDTO.authorities == 'USER'}">
-    <c:if test="${dto.status == 'IN_PROCESS'}">
-        <button type="button" id="inq_terminate">문의 종료하기</button>
-    </c:if>
-    <c:if test="${dto.status != 'YET'}">
-        <button type="button" id="re_inq">재문의하기</button>
-    </c:if>
-</c:if>
 
-<hr>
-<h3>댓글</h3>
-<div>
-    <input type="text" id="comment">
-    <input type="button" value="댓글 입력" id="new-comment">
+    <div class="commentBox">
+        <div id="comment-list"></div>
+    </div>
+    <div class="grayLine"></div>
+    <div class="writeComment">
+        <textarea id="comment" placeholder="댓글을 입력해주세요"></textarea>
+        <a id="new-comment"><span>등록</span></a>
+    </div>
+
 </div>
-<div id="comment-list"></div>
+
+
 <script type="text/javascript">
     $("#inq_terminate").on("click", function(){
         if(confirm("정말로 문의를 종료하시겠습니까?")){
@@ -281,7 +276,7 @@
         var comment = $(this).attr("data-comment");
         $(`#btn-\${c_idx}-default`).hide();
         $(`#btn-\${c_idx}-update`).show();
-        $("#comment_"+c_idx).html(`<input type='text' id='comment_input_\${c_idx}' value='\${comment}'>`)
+        $("#comment_"+c_idx).html(`<div class="writeComment"><textarea type='text' id='comment_input_\${c_idx}' class='comment_input_update' placeholder='내용을 입력해주세요'>\${comment}</textarea></div>`)
 
     })
 
@@ -337,8 +332,7 @@
         })
     }
 </script>
-</body>
-</html>
+
 
 
 

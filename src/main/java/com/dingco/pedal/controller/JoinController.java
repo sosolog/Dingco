@@ -73,7 +73,6 @@ public class JoinController {
             model.addAttribute("idCheckHidden", idCheckHidden);
             model.addAttribute("emailCheckHidden", emailCheckHidden);
             model.addAttribute("emailValidationCheckNumber", emailValidationCheckNumber);
-
             return "/join";
         }
 

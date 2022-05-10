@@ -116,8 +116,8 @@ function imageFileSizeCheck(file){
         reader.onload = function (e) {
 
             $("#preview").attr("src", e.target.result);
-            $("#preview").attr("width", "150");
-            $("#preview").attr("height", "250");
+            // $("#preview").attr("width", "150");
+            // $("#preview").attr("height", "250");
         }
 
         reader.readAsDataURL(file);
@@ -179,32 +179,27 @@ function memberPwDuplicateCheck() {
 }
 
 <!-- 민욱: 회원가입_submit 제약조건(아이디 중복 확인, 비밀번호 중복, 이메일 인증번호 확인) -->
-function joinSubmitCheck() {
+function joinSubmitCheck(f) {
     if($("#idCheckHidden").val()=='true' && $("#pwCheckHidden").val()=='true' && $("#emailCheckHidden").val()=='true'){
-        return true;
+        f.method = "post";
+        f.submit();
     }else{
         if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
             alert("아이디, 비밀번호 체크와 이메일 인증이 필요합니다.");
-            return false;
         }else if($("#idCheckHidden").val()=='false' && $("#pwCheckHidden").val()=='false') {
             alert("아이디와 비밀번호 확인이 필요합니다.");
-            return false;
         }else if($("#pwCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
             alert("비밀번호 체크와 이메일 인증이 필요합니다.");
-            return false;
         }else if($("#idCheckHidden").val()=='false' && $("#emailCheckHidden").val()=='false') {
             alert("아이디 체크와 이메일 인증이 필요합니다.");
-            return false;
         }else if($("#idCheckHidden").val()=='false') {
             alert("아이디 중복 확인이 필요합니다.");
-            return false;
         }else if($("#pwCheckHidden").val()=='false') {
             alert("비밀번호 중복 확인이 필요합니다.");
-            return false;
         }else if($("#emailCheckHidden").val()=='false') {
             alert("이메일 인증이 필요합니다.");
-            return false;
         }
+        return false;
     }
 }
 
@@ -222,7 +217,7 @@ function finduserid(f){
 
     if (check == true){
         $.ajax({
-            url: "/find/passwd",
+            url: "/find/userid.action",
             type: "GET",
             data: {
                 "username":f.username.value,
@@ -231,9 +226,9 @@ function finduserid(f){
             },
             success: function (res) {
                 if (res==""){
-                    $('.findidresult').text("일치하는 값이 없습니다.");
+                    $('.result').text("일치하는 정보가 없습니다.");
                 } else {
-                    $('.findidresult').text("회원님의 아이디는 "+res+"입니다");
+                    $('.result').text("회원님의 아이디는 "+res+"입니다");
                 }
             }
         });
@@ -257,7 +252,6 @@ function findpasswd(f){
         },
         success: function (res) {
             if (res['check']) {
-
                 swal("발송 완료!", "입력하신 이메일로 임시비밀번호가 발송되었습니다.", "success").then((OK) => {
                         if (OK) {
                             $.ajax({
@@ -273,9 +267,9 @@ function findpasswd(f){
 
                     }
                 )
-                $('.findpwresult').html('<p style="color:darkblue"></p>');
+                $('.result').text('이메일을 확인해주세요');
             } else {
-                $('.findpwresult').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
+                $('.result').text('일치하는 정보가 없습니다.');
             }
         }
     });
@@ -350,7 +344,7 @@ function emailValidateSend(){
         },
         success: function (data) {
             if(data != 0) {
-                $("#emailCheckResult").text("이미 있는 이메일입니다. 다른 이메일로 인증하세요.")
+                $("#emailCheckResult").text("이미 가입한 이메일입니다.")
                 $("#email1").val("")
                 $("#email2").val("");
                 $("#email1").focus();
@@ -367,7 +361,7 @@ function emailValidateSend(){
                         alert("발송 완료!")
                         $("#email1").attr("readonly", true)
                         $("#email2").attr("readonly", true)
-                        $("#emailCheckResult").text("")
+                        $("#id_check").text("")
                     }
                 });
             }

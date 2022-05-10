@@ -50,7 +50,7 @@ public class InquiryController {
         PageDTO<InquiryDTO> pageDTO = inquiryService.showUserInquiry(memberDTO, curPage);
 
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("board/InquiryList");
+        mav.setViewName("InquiryList");
         mav.addObject("pageDTO", pageDTO);
         mav.addObject("memberDTO", memberDTO);
         mav.addObject("requestMapping", request.getServletPath());
@@ -59,7 +59,7 @@ public class InquiryController {
 
     @GetMapping("/inquiry/write")
     public String writeUserInquiryUI(@ModelAttribute("inquiryDTO") InquiryDTO dto, @RequestParam(name = "idx", required = false) String i_idx2){
-        return "board/InquiryWrite";
+        return "InquiryWrite";
     }
 
     @PostMapping("/inquiry")
@@ -129,7 +129,7 @@ public class InquiryController {
         logger.debug("result = "+inquiryDTO);
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("board/InquiryRetrieve");
+        modelAndView.setViewName("InquiryRetrieve");
         modelAndView.addObject("inquiryDTO", inquiryDTO);
         modelAndView.addObject("memberDTO", memberDTO);
         return modelAndView;
