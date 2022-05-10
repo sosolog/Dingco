@@ -112,6 +112,13 @@
                 $("#due-date").val("");
                 $("#bill").val("");
                 $("#retrieve-pay-id").val("");
+                $("#payList").html("<tr>"+
+                    "<th>결제 목록</th>"+
+                "<th>결제 금액</th>"+
+                "<th>결제자</th>"+
+                "<th>참여인원</th>"+
+                "<th></th>"+
+                "</tr>");
 
             });
             $("#btn-open-modal").on("click", function(){
