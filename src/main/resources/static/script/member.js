@@ -7,9 +7,9 @@ function socialLoginValidCheck(f){
     const regex = /[^a-zA-Z0-9]/g // 영문 대 소문자, 숫자
 
     $.ajax({
-        url:"/memberIdDuplicateCheck",
+        url:"/join/id/duplicate",
         type:"get",
-        data:{ "userid":userid },
+        data:{"userid":userid},
         success:function(data){
             if(data){
                 $("#idCheckResult").text("중복된 아이디가 존재합니다.");
@@ -124,15 +124,13 @@ function imageFileSizeCheck(file){
     }
 }
 
-
-
 <!-- 민욱: 회원가입_아이디 유효성 검증 -->
 function memberIdDuplicateCheck() {
     var userid = $('#userid').val(); //id값이 "id"인 입력란의 값을 저장
     var str_space = /\s/; // 공백체크
 
     $.ajax({
-        url: 'memberIdDuplicateCheck', // Controller에서 인식할 주소나 메서드
+        url: '/join/id/duplicate', // Controller에서 인식할 주소나 메서드
         type: 'get', //GET 방식으로 전달
         data: {userid: userid}, // Controller에서  @RequestParam으로 들고옴
         datatype: 'text', // ex) text, html, json ...
@@ -338,8 +336,8 @@ function emailValidateSend(){
     var email1 = $("#email1").val();
     var email2 = $("#email2").val();
     $.ajax({
-        url: "emailDuplicateCheck",
-        type: "GET",
+        url: "/join/email/duplicate",
+        type: "get",
         data: {
             "email1": email1,
             "email2": email2
@@ -353,7 +351,7 @@ function emailValidateSend(){
             }
             else {
                 $.ajax({
-                    url: "emailValidationSend",
+                    url: "/join/email/send",
                     type: "GET",
                     data: {
                         "email1": email1,
@@ -377,7 +375,7 @@ function emailValidateCheck(){
     var emailValidationCheckNumber = $("#emailValidationCheckNumber").val();
 
     $.ajax({
-        url: "emailValidationCheck",
+        url: "/join/email/check",
         type: "GET",
         data: {
             "emailValidationCheckNumber": emailValidationCheckNumber

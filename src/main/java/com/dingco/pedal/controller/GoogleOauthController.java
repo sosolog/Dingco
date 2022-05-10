@@ -32,9 +32,9 @@ public class GoogleOauthController {
     private String GOOGLE_SNS_CALLBACK_URL;
 
     //    주황 - 구글 로그인 인증코드
-    @GetMapping("/auth/google")
+    @GetMapping("/login/oauth/google")
     @ResponseBody
-    public void loginPage(Model model, HttpServletResponse response) throws IOException {
+    public void loginPage(HttpServletResponse response) throws IOException {
         String googleUrl = "https://accounts.google.com/o/oauth2/v2/auth?"
                 + "scope=profile"
                 + "&response_type=code"
@@ -48,7 +48,7 @@ public class GoogleOauthController {
     }
 
     //    주황 - 구글 로그인 콜백
-    @GetMapping(value = "/auth/google/callback")
+    @GetMapping(value = "/login/oauth/google/callback")
     public String googleLogin(@RequestParam("code") String code,
                               RedirectAttributes redirectAttributes,
                               HttpServletRequest request) throws Exception {
@@ -57,12 +57,6 @@ public class GoogleOauthController {
         JsonNode jsonToken = GoogleLogin.getAccessToken(code);
         String accessToken = jsonToken.get("access_token").toString();
 
-
-        /* String refreshToken = "";
-        if(jsonToken.has("refresh_token")) {
-            refreshToken = jsonToken.get("refresh_token").toString();
-        }
-        String expiresTime = jsonToken.get("expires_in").toString();*/
 
         // Access Token으로 사용자 정보 반환
         JsonNode userInfo = GoogleLogin.getGoogleUserInfo(accessToken);
@@ -77,7 +71,7 @@ public class GoogleOauthController {
 
             redirectAttributes.addFlashAttribute("google_idx",google_idx);
             redirectAttributes.addFlashAttribute("username",name);
-            next = "redirect:/auth/google.form";
+            next = "redirect:/login/oauth/google.form";
         }else {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_MEMBER,googleMemberDTO);
@@ -89,7 +83,7 @@ public class GoogleOauthController {
     }
 
     //    주황 - 구글 로그인 로그인폼
-    @GetMapping(value = "/auth/google.form")
+    @GetMapping(value = "/login/oauth/google.form")
     public String googleLoginForm() throws Exception {
 
         return "googleLoginForm";
@@ -98,7 +92,7 @@ public class GoogleOauthController {
 
 //    주황 - 구글 로그인 로그인확인
 
-    @PostMapping(value = "/auth/google.action")
+    @PostMapping(value = "/login/oauth/google.action")
     public String loginCheck(MemberDTO memberDTO,HttpServletRequest request) throws Exception {
         mService.memberGoogleAdd(memberDTO);
         HttpSession session = request.getSession();

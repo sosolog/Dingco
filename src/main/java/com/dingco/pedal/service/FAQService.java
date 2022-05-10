@@ -11,8 +11,11 @@ public interface FAQService {
    //글 생성
    public int boardWrite(FAQDTO dto) throws Exception;
 
-   // 태아블 select 생성 (페이징)
-   public PageDTO selectAllPage( int curPage, int category_idx )throws Exception;
+   // 테이블 selectAnouncePage 생성 (페이징)
+   public PageDTO selectNoticePage( int curPage, int category_idx )throws Exception;
+
+   // 테이블 selectFAQPage 생성 (페이징)
+   public PageDTO selectFAQPage( int curPage, int category_idx )throws Exception;
 
    // 카테고리 넘기기
    public List<HashMap<String, String>> category()throws Exception;

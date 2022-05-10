@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div id="join">
-    <form action="/memberAdd" id="joinForm" name="joinForm" method="post" enctype="multipart/form-data">
+    <form action="/join.action" id="joinForm" name="joinForm" method="post" enctype="multipart/form-data">
         <!-- ID/PW Check -->
         <c:if test="${idCheckHidden == true}"><input type="hidden" value="true" id="idCheckHidden" name="idCheckHidden"></c:if>
         <c:if test="${idCheckHidden == false || idCheckHidden == null}"><input type="hidden" value="false" id="idCheckHidden" name="idCheckHidden"></c:if>

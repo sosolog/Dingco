@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.config.PayRoomMapper">
+
+    <select id="selectPayRoom" parameterType="int" resultType="PayRoomDTO">
+        select pr_idx, room_name, date_format(create_date,'%Y-%m-%d') as create_date
+        from PAYROOM
+        where m_idx = #{m_idx}
+        order by create_date desc
+    </select>
+
+    <insert id="insertPayRoom" parameterType="PayRoomDTO" useGeneratedKeys="true" keyProperty="pr_idx">
+        insert into PAYROOM (m_idx,room_name) values (#{m_idx},#{room_name});
+    </insert>
+
+    <insert id="insertMemberList" parameterType="PayRoomDTO">
+        INSERT INTO PAYGROUPMEMBER (PR_IDX,paymember_name)
+        values
+<foreach collection="groupMemberList" index="index" item="item" separator=",">
+         (#{pr_idx},#{item.payMember_name})
+</foreach>
+    </insert>
+
+    <resultMap id="payRoom" type="PayRoomDTO">
+        <id property="pr_idx" column="pr_idx"></id>
+        <result property="m_idx" column="m_idx"></result>
+        <result property="room_name" column="room_name"></result>
+        <result property="create_date" column="create_date"></result>
+        <collection property="groupMemberList" column="pr_idx" javaType="java.util.ArrayList" ofType="PayGroupMemberDTO" select="selectPayRoomGroupMember">
+        </collection>
+    </resultMap>
+
+    <select id="selectPayRoomGroupMember" resultType="PayGroupMemberDTO">
+        select pr_idx, prgm_idx, PAYMEMBER_NAME, PAYMEMBER_ACCOUNT, PAYMEMBER_BANK
+        from PAYGROUPMEMBER
+        where PR_IDX = #{pr_idx}
+    </select>
+    <select id="selectPayRoomRetrieve" resultMap="payRoom" parameterType="hashmap">
+        select pr_idx, m_idx, room_name, date_format(create_date,'%Y-%m-%d') as create_date
+        from PAYROOM
+        where PR_IDX = #{pr_idx} and m_idx = #{m_idx}
+    </select>
+
+    <update id="updateAccount" parameterType="map">
+        UPDATE PAYGROUPMEMBER
+        SET
+            paymember_account = #{payMember_account},
+            paymember_bank = #{payMember_bank}
+        where prgm_idx = #{prgm_idx}
+    </update>
+
+    <delete id="accountNull" parameterType="int">
+        UPDATE PAYGROUPMEMBER
+        SET
+            paymember_account = NULL,
+            paymember_bank = NULL
+        where prgm_idx = #{prgm_idx}
+    </delete>
+    <insert id="insertDutchPay" parameterType="DutchPayDTO" useGeneratedKeys="true" keyProperty="dp_idx">
+        insert into DUTCHPAYLIST (pr_idx,dp_name, cut_option
+            <if test="createDate != null">
+            , create_date
+            </if>
+            <if test="dueDate != null">
+                , due_date
+            </if>
+        )
+        values (#{pr_idx},#{dutchPayName}, #{option}
+            <if test="createDate != null">
+                , #{createDate}
+            </if>
+            <if test="dueDate != null">
+                , #{dueDate}
+            </if>
+        )
+    </insert>
+    <insert id="insertPayList" parameterType="PayDTO" useGeneratedKeys="true" keyProperty="p_idx">
+        insert into PAYLIST(dp_idx, pay_name, payer, price)
+        values(#{dp_idx}, #{p_name}, #{payMember.prgm_idx}, #{price})
+    </insert>
+    <insert id="insertPayParticipants" parameterType="PayAndParticipants">
+        insert into PAYPARTICIPANTS(p_idx, prgm_idx)
+        values
+        <foreach collection="participants" index="index" item="item" separator=",">
+            (#{p_idx}, #{item.prgm_idx})
+        </foreach>
+    </insert>
+    <select id="dutchpayListInfo" parameterType="int" resultType="DutchPayDTO">
+        select dp.dp_idx, dp.dp_name dutchPayName, dp.create_date createDate, dp.due_date dueDate, t.totalPay
+        from (select sum(price) totalPay, dp_idx from PAYLIST group by dp_idx) t
+            join DUTCHPAYLIST dp on dp.dp_idx = t.dp_idx
+        where dp.pr_idx = #{pr_idx};
+    </select>
+
+    <resultMap id="dutchPay" type="DutchPayDTO">
+        <id property="dp_idx" column="dp_idx"></id>
+        <result property="dutchPayName" column="dp_name"></result>
+        <result property="option" column="cut_option"></result>
+        <result property="createDate" column="create_date"></result>
+        <result property="dueDate" column="due_date"></result>
+        <collection property="payList" ofType="PayDTO">
+            <id property="p_idx" column="p_idx"></id>
+            <result property="p_name" column="pay_name"></result>
+            <result property="price" column="price"></result>
+            <association property="payMember" javaType="PayGroupMemberDTO">
+                <id property="prgm_idx" column="payer"/>
+                <result property="payMember_name" column="paymember_name"/>
+            </association>
+            <collection property="participants" ofType="PayGroupMemberDTO">
+                <id property="prgm_idx" column="p_prgm_idx"/>
+                <result property="payMember_name" column="p_paymember_name"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="dutchpayInfo" parameterType="hashmap" resultMap="dutchPay">
+        select dp.dp_idx, dp.dp_name, dp.cut_option, dp.create_date, dp.due_date,
+               p.p_idx, p.pay_name, p.price, p.payer, pg2.paymember_name,
+               pp.prgm_idx p_prgm_idx, pg.paymember_name p_payMember_name
+        from DUTCHPAYLIST dp
+                 left outer join PAYLIST p on dp.dp_idx = p.dp_idx
+                 left outer join PAYPARTICIPANTS pp on p.p_idx = pp.p_idx
+                 join PAYGROUPMEMBER pg on pp.prgm_idx = pg.prgm_idx
+                 join PAYGROUPMEMBER pg2 on p.payer = pg2.prgm_idx
+        where dp.pr_idx = #{pr_idx} and dp.dp_idx = #{dp_idx};
+    </select>
+</mapper>

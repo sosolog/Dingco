@@ -26,19 +26,34 @@ public class FAQController {
     // select f.number_idx, f.m_idx, f.title, f.content, c.category_name
     //  from FAQ f join CATEGORY c on f.category_idx = c.CATEGORY_IDX;
     //localhost:9090/faq
-    @GetMapping("/faq")
-    public String faq(@Login MemberDTO memberDTO,
-                      @RequestParam(value = "c_id", required = false, defaultValue = "2") int category_idx,
-                      @RequestParam(value = "curPage", required = false, defaultValue = "1") String curPage,Model model) throws Exception {
+    @GetMapping("/notice")
+    public String notice(@Login MemberDTO memberDTO,
+                         @RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx,
+                         @RequestParam(value = "pg", required = false, defaultValue = "1") String curPage, Model model) throws Exception {
 
         logger.info("로그");
 
         //페이징 처리
-        PageDTO<FAQDTO> pageDTO = service.selectAllPage(Integer.parseInt(curPage), category_idx);
+        PageDTO<FAQDTO> pageDTO = service.selectNoticePage(Integer.parseInt(curPage), category_idx);
+        System.out.println(pageDTO);
+        model.addAttribute("pageDTO", pageDTO);
+        return "notice";
+    }
 
+    @GetMapping("/faq")
+    public String faq(@Login MemberDTO memberDTO,
+                      @RequestParam(value = "c_id", required = false, defaultValue = "2") int category_idx,
+                      @RequestParam(value = "pg", required = false, defaultValue = "1") String curPage, Model model) throws Exception {
+
+        logger.info("로그");
+
+        //페이징 처리
+        PageDTO<FAQDTO> pageDTO = service.selectFAQPage(Integer.parseInt(curPage), category_idx);
+        System.out.println(pageDTO);
         model.addAttribute("pageDTO", pageDTO);
         return "FaqList";
     }
+
 
     @GetMapping("/faq/write")
     public String boardWriteUI(@Login MemberDTO memberDTO, Model m) throws Exception {
@@ -57,8 +72,8 @@ public class FAQController {
         return "redirect:/faq";
     }
 
-    @GetMapping("/faq/{number_idx}")
-    public String retrieve(@PathVariable("number_idx") int number_idx, @Login MemberDTO memberDTO,Model m) throws Exception {
+    @GetMapping("/faq/{idx}")
+    public String retrieve(@PathVariable("idx") int number_idx, @Login MemberDTO memberDTO, Model m) throws Exception {
 
         FAQDTO faqDTO = service.retrieve(number_idx);
         List<HashMap<String, String>> category = service.category();
@@ -70,15 +85,15 @@ public class FAQController {
     }
 
     @ResponseBody
-    @PutMapping("/faq/{number_idx}")
-    public int update(@PathVariable("number_idx") int number_idx, FAQDTO dto) throws Exception {
+    @PutMapping("/faq/{idx}")
+    public int update(@PathVariable("idx") int number_idx, FAQDTO dto) throws Exception {
         int result = service.update(dto);
         return result;
     }
 
     @ResponseBody
-    @DeleteMapping("/faq/{number_idx}")
-    public int delete(@PathVariable("number_idx") int number_idx) throws Exception {
+    @DeleteMapping("/faq/{idx}")
+    public int delete(@PathVariable("idx") int number_idx) throws Exception {
         int result = service.delete(number_idx);
         return result;
     }

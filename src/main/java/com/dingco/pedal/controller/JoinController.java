@@ -55,7 +55,7 @@ public class JoinController {
      * @param model : VIEW에서 이미 처리 완료한 유효성 검증(보내기)
      * @return : 성공 -> 메인 페이지 / 실패 -> 성공한 파라미터와 실패한 에러 내용을 가지고 다시 회원가입 폼 이동
      */
-    @RequestMapping(value="/memberAdd", method = RequestMethod.POST) // BindingResult 타입의 객체는 사용하는 데이터 뒤에 넣어야함(그래야 인식 가능)
+    @PostMapping("/join.action") // BindingResult 타입의 객체는 사용하는 데이터 뒤에 넣어야함(그래야 인식 가능)
     public String memberAdd(@Validated(value = ValidationSequence.class) @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
                             @RequestParam(required=false) MultipartFile file,
                             HttpServletRequest request, Model model) throws Exception{
@@ -73,8 +73,7 @@ public class JoinController {
             model.addAttribute("idCheckHidden", idCheckHidden);
             model.addAttribute("emailCheckHidden", emailCheckHidden);
             model.addAttribute("emailValidationCheckNumber", emailValidationCheckNumber);
-            log.info("errors={}", bindingResult);
-            return "join";
+            return "/join";
         }
 
         // 성공 로직(파일 업로드 및 회원 추가)
@@ -104,7 +103,7 @@ public class JoinController {
             // 회원 추가
             int num = mService.memberAdd(memberDTO);
 
-            return "redirect:main";
+            return "redirect:/main";
         }
     }
 
@@ -113,12 +112,18 @@ public class JoinController {
      * 민욱_소셜 회원가입_회원 추가
      * @param memberDTO
      */
-    @PostMapping("/socialMemberAdd")
-    public String socialMemberAdd(@ModelAttribute MemberDTO memberDTO) throws Exception{
+    @PostMapping("/join/naver.action")
+    public String socialMemberAdd(@ModelAttribute MemberDTO memberDTO, HttpServletRequest request) throws Exception{
 
         int num = mService.socialMemberAdd(memberDTO);
 
-        return "redirect:main";
+        //세션에 회원 정보 저장
+        HttpSession session = request.getSession();
+
+        MemberDTO loginMember = mService.selectByNaverIdx(memberDTO.getNaver_idx());
+        session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
+
+        return "redirect:/main";
     }
 
 
@@ -128,7 +133,7 @@ public class JoinController {
      * @return : 유효성 검증 성공시 cnt = 1 / 유효성 검사 실패시 cnt = 0
      */
     @ResponseBody
-    @GetMapping ("/memberIdDuplicateCheck" )
+    @GetMapping ("/join/id/duplicate" )
     public int  memberIdDuplicateCheck(@RequestParam("userid") String userid) throws Exception{
         int cnt = mService.memberIdDuplicateCheck(userid);
         return cnt;
@@ -142,7 +147,7 @@ public class JoinController {
      * @return 네이버 고유 id가 존재시 cnt = 1 / 네이버 고유 id가 없을시 cnt = 0
      */
     @ResponseBody
-    @PostMapping("/socialMemberNaverIdxCheck" )
+    @PostMapping("/login/oauth/naver/duplicate" )
     public int socialMemberNaverIdxCheck(HttpServletRequest request,
                                          @RequestParam("naver_idx") String naver_idx) throws Exception{
         // 네이버 고유 id 확인(DB)
@@ -162,7 +167,7 @@ public class JoinController {
      * 민욱: 회원가입_이메일 유효성 검증
      * @param map : email1, email2
      */
-    @GetMapping("emailDuplicateCheck")
+    @GetMapping("/join/email/duplicate")
     public @ResponseBody int emailDuplicateCheck(@RequestParam Map<String,String> map) throws Exception {
         return mService.emailDuplicateCheck(map);
 

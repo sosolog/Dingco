@@ -23,7 +23,7 @@ public class FAQDAO {
     //SqlSessionTemplate session;
 
     //페이징
-    public PageDTO<FAQDTO> selectAllPage(int curPage, int category_idx) throws Exception {
+    public PageDTO<FAQDTO> selectNoticePage(int curPage, int category_idx) throws Exception {
         int totalRecord = totalRecord();    //전체 레코드 갯수
 //        int perPage = pageDTO.getPerPage();
         int offset = (curPage - 1) * perPage;      // select시 시작점
@@ -31,7 +31,21 @@ public class FAQDAO {
         map.put("perPage", perPage);
         map.put("offset", offset);
         map.put("category_idx", category_idx);
-        List<FAQDTO> list = session.selectList("com.config.FAQMapper.selectAllPage", map);
+        List<FAQDTO> list = session.selectList("com.config.FAQMapper.selectNoticePage", map);
+        PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(list, totalRecord, curPage, perPage); // pageDTO 저장
+        pageDTO.setPageBlock(pagesPerBlock);
+
+        return pageDTO;
+    }
+
+    public PageDTO<FAQDTO> selectFAQPage(int curPage, int category_idx) throws Exception {
+        int totalRecord = totalRecord();    //전체 레코드 갯수
+        int offset = (curPage - 1) * perPage;      // select시 시작점
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("perPage", perPage);
+        map.put("offset", offset);
+        map.put("category_idx", category_idx);
+        List<FAQDTO> list = session.selectList("com.config.FAQMapper.selectFAQPage", map);
         PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(list, totalRecord, curPage, perPage); // pageDTO 저장
         pageDTO.setPageBlock(pagesPerBlock);
 
@@ -50,9 +64,9 @@ public class FAQDAO {
     }
 
     // 글 작성
-    public int boardWrite(FAQDTO dto)throws Exception{
+    public int boardWrite(FAQDTO dto) throws Exception {
         System.out.println(dto);
-        return session.insert("com.config.FAQMapper.boardWrite",dto);
+        return session.insert("com.config.FAQMapper.boardWrite", dto);
     }
 
     //글 자세히 보기
@@ -63,16 +77,16 @@ public class FAQDAO {
 
     //조회수 수정
     private int readcnt(int number_idx) throws Exception {
-        return session.update("com.config.FAQMapper.readcnt",number_idx);
+        return session.update("com.config.FAQMapper.readcnt", number_idx);
     }
 
     // 글 수정
-    public int update(FAQDTO dto)throws Exception{
+    public int update(FAQDTO dto) throws Exception {
         return session.update("com.config.FAQMapper.update", dto);
     }
 
     // 글 삭제
-    public int delete(int number_idx){
+    public int delete(int number_idx) {
         return session.delete("com.config.FAQMapper.delete", number_idx);
     }
 

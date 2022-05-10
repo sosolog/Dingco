@@ -57,7 +57,3 @@
     <a href="/faq/write">글쓰기</a>
 </div>
 
-
-
-
-
