@@ -24,7 +24,7 @@
                c1.i_idx,
                c1.m_idx,
                c1.comment,
-               date_format(c1.post_date, "%Y/%m/%d %H:%i:%s") as post_date,
+               date_format(c1.post_date, "%Y/%m/%d %H:%i") as post_date,
                c2.count_sub
         from COMMENT c1 left outer join
              (select comment_idx2, count(*) count_sub from COMMENT group by comment_idx2)  c2
@@ -36,7 +36,7 @@
                i_idx,
                m_idx,
                comment,
-               date_format(post_date, "%Y/%m/%d %H:%i:%s") as post_date,
+               date_format(post_date, "%Y/%m/%d %H:%i") as post_date,
                comment_idx2 as c_idx2
         from COMMENT
         where comment_idx2 = ${c_idx}

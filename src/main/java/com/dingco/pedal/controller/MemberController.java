@@ -109,18 +109,25 @@ public class MemberController {
     // -------------------------------- End : 명지 -------------------------------- //
 
     // -------------------------------- Start : 주황 -------------------------------- //
-    //주황 - 아이디/비밀번호 찾기
-    @GetMapping("/find/passwd")
-    public String find_ID_PW(){
-        return "find_ID_PW";
-    }
-
     // 명지 - 아이디 찾기
     @GetMapping("/find/userid")
-    public @ResponseBody String findId(@RequestParam Map<String,Object> map) throws Exception {
+    public String find_ID(){
+        return "findUserid";
+    }
+
+    @GetMapping("/find/userid.action")
+    public @ResponseBody String findIdAction(@RequestParam Map<String,Object> map) throws Exception {
         String json = mService.findUserId(map);
         return json;
     }
+
+    //주황 - 아이디/비밀번호 찾기
+    @GetMapping("/find/passwd")
+    public String find_PW(){
+        return "findPasswd";
+    }
+
+
     // -------------------------------- End : 주황 -------------------------------- //
     // -------------------------------- Start : 민욱 -------------------------------- //
     // 네이버 콜백

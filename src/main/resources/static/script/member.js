@@ -219,7 +219,7 @@ function finduserid(f){
 
     if (check == true){
         $.ajax({
-            url: "/find/passwd",
+            url: "/find/userid.action",
             type: "GET",
             data: {
                 "username":f.username.value,
@@ -228,9 +228,9 @@ function finduserid(f){
             },
             success: function (res) {
                 if (res==""){
-                    $('.findidresult').text("일치하는 값이 없습니다.");
+                    $('.result').text("일치하는 정보가 없습니다.");
                 } else {
-                    $('.findidresult').text("회원님의 아이디는 "+res+"입니다");
+                    $('.result').text("회원님의 아이디는 "+res+"입니다");
                 }
             }
         });
@@ -269,9 +269,9 @@ function findpasswd(f){
 
                     }
                 )
-                $('.findpwresult').html('<p style="color:darkblue"></p>');
+                $('.result').text('이메일을 확인해주세요');
             } else {
-                $('.findpwresult').html('<p style="color:red">일치하는 정보가 없습니다.</p>');
+                $('.result').text('일치하는 정보가 없습니다.');
             }
         }
     });

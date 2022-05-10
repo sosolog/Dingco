@@ -18,8 +18,8 @@
                 category_id,
                 title,
                 content,
-                date_format(upload_date, "%Y/%m/%d %H:%i:%s") as upload_date,
-                date_format(last_updated_date, "%Y/%m/%d %H:%i:%s") as last_updated_date,
+                date_format(upload_date, "%m/%d") as upload_date,
+                date_format(last_updated_date, "%m/%d") as last_updated_date,
                 inquiry_idx2 as i_idx2,
                 case
                     when inquiry_idx2 is null then inquiry_idx
@@ -39,8 +39,8 @@
                category_id,
                title,
                content,
-               date_format(upload_date, "%Y/%m/%d %H:%i:%s") as upload_date,
-               date_format(last_updated_date, "%Y/%m/%d %H:%i:%s") as last_updated_date,
+               date_format(upload_date, "%Y/%m/%d %H:%i") as upload_date,
+               date_format(last_updated_date, "%Y/%m/%d %H:%i") as last_updated_date,
                inquiry_idx2 as i_idx2,
                i_status as status
         from INQUIRY

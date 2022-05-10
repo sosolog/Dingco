@@ -54,7 +54,7 @@
         <div class="box_wrap">
             <span class="tit">고객센터</span>
             <div class="menu_detail">
-                <a href="/faq"><span>공지사항</span></a>
+                <a href="/notice"><span>공지사항</span></a>
                 <a href="/faq"><span>FAQ</span></a>
                 <c:if test="${loginMember != null}">
                     <a href="/inquiry"><span>1:1 문의</span></a>
