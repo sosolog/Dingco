@@ -154,34 +154,14 @@
 
         function updateSavePay(btn) {
             console.log($(btn).parents("tr"));
-            var dp_idx = $("#retrieve-pay-id").val();
-            var p_idx = $(btn).attr("data-idx");
             var groupMember = null;
             $.ajax({
                 url:`/pay/\${pr_idx}/member`,
                 type:"GET",
                 success:function (data){
-                    // console.log(data);
+                    console.log(data);
                     groupMember = data;
-                },
-                error:function (x,i,e){
-                    console.log(e);
-                }
-            })
-            $.ajax({
-                url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
-                type:"GET",
-                success:function (data){
-                    // console.log(data);
-                    var participantsNum = [];
-                    data.participants.forEach(participant => participantsNum.push(participant.prgm_idx));
-                    var payObj = {
-                        "groupMember": groupMember,
-                        "pay": data,
-                        "participants_prgm_idx":participantsNum
-                    }
-                    $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
-                    console.log(payObj)
+                    afterSuccessGetGroupMember(groupMember, btn);
                 },
                 error:function (x,i,e){
                     console.log(e);
@@ -189,39 +169,113 @@
             })
         }
 
+        function afterSuccessGetGroupMember(groupMember, btn){
+            var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
+            var dp_idx = $("#retrieve-pay-id").val();
+            var p_idx = $(btn).attr("data-idx");
+
+            if (isRetrieveInfo) {
+                $.ajax({
+                    url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
+                    type:"GET",
+                    success:function (data){
+                        // console.log(data);
+                        var participantsNum = [];
+
+                        data.participants.forEach(participant => participantsNum.push(participant.prgm_idx));
+                        var payObj = {
+                            "groupMember": groupMember,
+                            "pay": data,
+                            "participants_prgm_idx":participantsNum
+                        }
+                        $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
+                        console.log(payObj)
+                    },
+                    error:function (x,i,e){
+                        console.log(e);
+                    }
+                })
+            } else {
+                var index = Number.parseInt($(btn).attr("data-idx"));
+                // console.log(groupMember, index, payArr, payArr[index]);
+                var data = payArr[index];
+                var participantsNum = [];
+                data.spp3.forEach(participant => {
+                    var prgm_idx = Number.parseInt(participant.prgm_idx);
+                    participantsNum.push(prgm_idx);
+                    participant.prgm_idx = prgm_idx;
+                });
+                var payObj = {
+                    "groupMember": groupMember,
+                    "pay": {
+                        "p_idx":index,
+                        "p_name":data.sn,
+                        "price":data.spp,
+                        "payMember":data.spp2,
+                        "participants":data.spp3
+                    },
+                    "participants_prgm_idx":participantsNum
+                }
+                $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
+                $(btn).parents("tr").attr("id", "update-pay-form");
+            }
+        }
+
         function saveUpdatedPay(p_idx) {
+            var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
             console.log(p_idx);
+
+
             var dp_idx = $("#retrieve-pay-id").val();
             var savePayName = $("#update-pay-name").val();
             var savePayPrice = $("#update-pay-price").val();
             var savePayPayer = {"prgm_idx":$(".update-pay-selector:selected").val(), "payMember_name":$(".update-pay-selector:selected").text()};
             var savePayParticipants = [];
             $(".new-pay-participants-check:checked").each((idx, chked) => savePayParticipants.push({"prgm_idx": chked.value, "payMember_name":$(chked).attr("data-prgm-name")}));
-            console.log(savePayName, savePayPrice, savePayPayer, savePayParticipants);
-            var payObj = {
-                "p_idx":p_idx,
-                "p_name":savePayName,
-                "price":uncomma(savePayPrice)*1
-            }
-            payObj['payMember.prgm_idx'] = savePayPayer.prgm_idx;
-            payObj['payMember.payMember_name'] = savePayPayer.payMember_name;
-            savePayParticipants.forEach((v, index) => {
-                payObj['participants['+index+'].prgm_idx'] = v.prgm_idx;
-                payObj['participants['+index+'].payMember_name'] = v.payMember_name;
-            })
-            console.log(payObj);
-            $.ajax({
-                url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
-                type:"PUT",
-                data: payObj,
-                success:function (data){
-                    console.log(data);
-                    showDutchPayInfo(dp_idx);
-                },
-                error:function (x,i,e){
-                    console.log(e);
+            // console.log(savePayName, savePayPrice, savePayPayer, savePayParticipants);
+            if (isRetrieveInfo) {
+                var payObj = {
+                    "p_idx":p_idx,
+                    "p_name":savePayName,
+                    "price":uncomma(savePayPrice)*1
                 }
-            })
+                payObj['payMember.prgm_idx'] = savePayPayer.prgm_idx;
+                payObj['payMember.payMember_name'] = savePayPayer.payMember_name;
+                savePayParticipants.forEach((v, index) => {
+                    payObj['participants['+index+'].prgm_idx'] = v.prgm_idx;
+                    payObj['participants['+index+'].payMember_name'] = v.payMember_name;
+                })
+                console.log(payObj);
+                $.ajax({
+                    url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
+                    type:"PUT",
+                    data: payObj,
+                    success:function (data){
+                        console.log(data);
+                        showDutchPayInfo(dp_idx);
+                    },
+                    error:function (x,i,e){
+                        console.log(e);
+                    }
+                })
+            } else {
+                // console.log(payArr[p_idx])
+                savePayParticipants.forEach(participant => participant.prgm_idx = Number.parseInt(participant.prgm_idx));
+                payArr[p_idx] = {
+                    "sn":savePayName,
+                    "spp":savePayPrice,
+                    "spp2":savePayPayer,
+                    "spp3":savePayParticipants
+                }
+                // console.log(payArr[p_idx])
+                $("#update-pay-form").remove();
+                $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
+                var total = 0;
+                console.log(payArr);
+                payArr.forEach(pay => total += uncomma(pay.spp)*1);
+                $("#allPrice").val(comma(total));
+            }
+
 
         }
 
@@ -379,8 +433,8 @@
                 {{/each}}
             </td>
             <td>
-                <button id="btn-delete-pay" class="btn-delete-pay" data-idx="\${index}" onclick="deleteSavePay($(this))">삭제</button>
-                <button class="btn-update-pay" data-idx="\${index}" onclick="updateSavePay($(this))">수정</button>
+                <button type="button" id="btn-delete-pay" class="btn-delete-pay" data-idx="\${index}" onclick="deleteSavePay($(this))">삭제</button>
+                <button type="button" class="btn-update-pay" data-idx="\${index}" onclick="updateSavePay($(this))">수정</button>
             </td>
         </tr>
         {{/each}}
@@ -524,7 +578,7 @@
 </script>
 
 <h1>여기는 PAY방입니다<h1><br>
-    <button>취소</button>
+    <button onclick="javascript:location.href='/pay/list'">취소</button>
     <h2>Pedal</h2>
 <button>등록</button><br>
 방이름 : <input type="text" name="room_name" id="room_name" readonly><br>
@@ -553,13 +607,6 @@
             <td>${payDTO.???}</td> <!--정산현황은 어떻게 처리해야 할까유-->
         </tr>
     </c:forEach>--%>
-
-
-
-
-
-
-
 
 
     <div class="modal">

@@ -143,7 +143,7 @@ public class PayRoomServiceImpl implements PayRoomService{
     @Override
     @Transactional
     public void transactionAccount(HashMap<String, String> map, int prev_gm_idx) throws Exception {
-        dao.updateAccount(map);
         dao.accountNull(prev_gm_idx);
+        dao.updateAccount(map);
     }
 }

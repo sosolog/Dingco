@@ -136,8 +136,6 @@ public class PayRoomController {
         JsonNode obj = mapper.readTree(map.get("payArr"));
 
         System.out.println(map.get("allPrice").replace(",",""));
-
-
         return obj;
     }
 
@@ -209,5 +207,4 @@ public class PayRoomController {
     public int updateDutchPay(@PathVariable int pr_idx, @PathVariable int dp_idx, DutchPayDTO dutchPayDTO) throws Exception{
         return payRoomService.updateDutchPay(dutchPayDTO);
     }
-
 }
