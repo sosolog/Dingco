@@ -134,4 +134,8 @@ public class PayRoomDAO {
     public int updateDutchPay(DutchPayDTO dutchPayDTO)  {
         return session.update("com.config.PayRoomMapper.updateDutchPay", dutchPayDTO);
     }
+
+    public PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception{
+        return session.selectOne("com.config.PayRoomMapper.selectAccount",prgm_idx);
+    }
 }

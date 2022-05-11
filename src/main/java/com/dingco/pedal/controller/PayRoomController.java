@@ -143,9 +143,25 @@ public class PayRoomController {
 
     @PutMapping("/pay/accountInfo")
     @ResponseBody
-    public void PutaccountInfo(@RequestParam HashMap<String,String> map) throws Exception {
+    public void putAccountInfo(@RequestParam HashMap<String,String> map) throws Exception {
 
        int num = payRoomService.updateAccount(map);
+    }
+
+    @GetMapping("/pay/accountInfo/{prgm_idx}")
+    @ResponseBody
+    public String getAccountInfo(@PathVariable int prgm_idx) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println(prgm_idx);
+        String payMemberJson = mapper.writeValueAsString(payRoomService.selectAccount(prgm_idx));
+       return payMemberJson;
+    }
+
+    @PutMapping("/pay/accountInfo/{prev_gm_idx}")
+    @ResponseBody
+    public void putAccountInfo(@PathVariable int prev_gm_idx, @RequestParam HashMap<String,String> map) throws Exception {
+
+        payRoomService.transactionAccount(map,prev_gm_idx);
     }
 
     @PutMapping("/pay/accountNull")

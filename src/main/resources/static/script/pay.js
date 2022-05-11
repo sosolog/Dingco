@@ -181,13 +181,11 @@ function saveNewAccount(){
 
         var saveOwner = $(".new-account-selector:selected").text();
         var gm_idx = $("#new-account-owner").val();
-        accountArr.push({"prgm":gm_idx,"sb":savebank,"sn":saveNumber,"so":saveOwner});
         var findMember = groupMemberArr.filter(gm => gm.prgm_idx == gm_idx);
         findMember[0].payMember_bank = savebank;
         findMember[0].payMember_account = saveNumber;
         console.log(findMember, ">>", groupMemberArr);
 
-        // console.log(accountArr);
         $("#new-account-form").remove();
         $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr}));
 
@@ -244,9 +242,6 @@ function deleteSavePay(tr){
 //저장된 계좌 삭제하는 함수
 function deleteSaveAccount(tr){
 
-    // let index = $(tr).attr("data-idx");
-    // accountArr.splice(index,1);
-    // console.log(accountArr);
 
 
     let prgm_idx = $(tr).parent().find("#prgm_idx").val();
@@ -272,6 +267,7 @@ function deleteSaveAccount(tr){
 
 }
 
+/*
 //저장된 결제정보들 데이터 보내주는 함수
 function dataAjax(f){
 
@@ -309,6 +305,7 @@ function dataAjax(f){
     })
 
 }
+*/
 
 function changeParticipants() {
     $("#new-pay-participants-form").css("display", "block");
@@ -363,6 +360,47 @@ function showDutchPayInfo(dp_idx) {
             $("#due-date").val(data.dueDate);
             $("#bill").val("");
             $("#retrieve-pay-id").val(data.dp_idx);
+        },
+        error:function (x,i,e){
+            console.log(e);
+        }
+    })
+}
+
+//삭제할 멤버가 결제에 참여하고 있는지 확인하고 없으면 삭제, 있으면 alert
+function memberCheck(self){
+    var prgm_idx = self.parent().attr("data-idx");
+    console.log(pr_idx,prgm_idx);
+    $.ajax({
+        url: "/pay/membercheck",
+        type: "GET",
+        data: {
+            "pr_idx": pr_idx,
+            "prgm_idx": prgm_idx
+        },
+        success:function (data){
+            console.log(data);
+            if(data){
+                alert("결제참여자인지 확인해주십시오.");
+            }else{
+                console.log("memberList에서 member 삭제")
+                let index = self.attr("data-idx");
+                groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
+                self.parent().remove(); // html에서 해당 member span 태그 삭제
+                console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
+                $.ajax({
+                    url: "/pay/membercheck",
+                    type: "DELETE",
+                    data: {"prgm_idx": prgm_idx},
+                    success:function (data){
+                        console.log("성공한 ajax"+data);
+                    },
+                    error(x,i,e){
+                        console.log(e);
+                    }
+                })
+            }
+
         },
         error:function (x,i,e){
             console.log(e);

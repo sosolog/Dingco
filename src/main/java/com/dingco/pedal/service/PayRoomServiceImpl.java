@@ -69,7 +69,6 @@ public class PayRoomServiceImpl implements PayRoomService{
         return dao.dutchpayListInfo(pr_idx);
     }
 
-
     @Override
     public DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) throws Exception{
 
@@ -136,4 +135,15 @@ public class PayRoomServiceImpl implements PayRoomService{
         return dao.updateDutchPay(dutchPayDTO);
     }
 
+    @Override
+    public PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception {
+        return dao.selectAccount(prgm_idx);
+    }
+
+    @Override
+    @Transactional
+    public void transactionAccount(HashMap<String, String> map, int prev_gm_idx) throws Exception {
+        dao.updateAccount(map);
+        dao.accountNull(prev_gm_idx);
+    }
 }

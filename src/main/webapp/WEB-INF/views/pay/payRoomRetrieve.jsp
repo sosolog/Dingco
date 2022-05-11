@@ -24,14 +24,10 @@
         let groupMemberArr = payRoom.groupMemberList;
         let payArr = [];
         let memberArr = [];
-        let accountArr = [];
 
 
         for (let x of groupMemberArr) {
             memberArr.push(x.payMember_name);
-            if(x.payMember_account != null || x.payMember_bank != null){
-                accountArr.push({"prgm":x.prgm_idx,"sb":x.payMember_bank,"sn":x.payMember_account,"so":x.payMember_name});
-            }
         }
 
         $(document).ready(function(){
@@ -260,52 +256,64 @@
             })
         }
 
-
-        function memberCheck(self){
-            var prgm_idx = self.parent().attr("data-idx");
-            console.log(pr_idx,prgm_idx);
+        function updateSaveAccount(btn) {
+            var prgm_idx = btn.parents().find("#prgm_idx").val();
+            console.log(prgm_idx);
             $.ajax({
-                url: "/pay/membercheck",
-                type: "GET",
-                data: {
-                    "pr_idx": pr_idx,
-                    "prgm_idx": prgm_idx
-                },
+                url:`/pay/accountInfo/\${prgm_idx}`,
+                type:"GET",
                 success:function (data){
                     console.log(data);
-                    if(data){
-                        alert("결제참여자인지 확인해주십시오.");
-                    }else{
-                        accountArr = [];
-                        for (let x of groupMemberArr) {
-                            if(x.payMember_account != null || x.payMember_bank != null){
-                                accountArr.push({"prgm":x.prgm_idx,"sb":x.payMember_bank,"sn":x.payMember_account,"so":x.payMember_name});
-                            }
-                        }
-                        console.log("memberList에서 member 삭제")
-                        let index = self.attr("data-idx");
-                        groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
-                        self.parent().remove(); // html에서 해당 member span 태그 삭제
-                        console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
-                        $.ajax({
-                            url: "/pay/membercheck",
-                            type: "DELETE",
-                            data: {"prgm_idx": prgm_idx},
-                            success:function (data){
-                                console.log("성공한 ajax"+data);
-                            },
-                            error(x,i,e){
-                                console.log(e);
-                            }
-                        })
+                    var accountInfo = JSON.parse(data);
+                    var accountObj = {
+                        "groupMember":groupMemberArr,
+                        "accountInfo":accountInfo
                     }
+                    btn.parents("tr").html($("#update-account-tmpl").tmpl(accountObj));
 
                 },
                 error:function (x,i,e){
                     console.log(e);
                 }
             })
-        };
+
+        }
+
+        function updateSavedAccount(btn) {
+            var savebank = $("#saved-account-bank").val();
+            var saveNumber = $("#saved-account-number").val();
+
+            if (savebank.length > 0 && saveNumber.length > 0) {
+                $("#btn-account-plus").text("+");
+                var prev_gm_idx = $("#saved-account-prgm_idx").val();
+                var saveOwner = $(".update-account-selector:selected").text();
+                var gm_idx = $("#saved-account-owner").val();
+                var findMember = groupMemberArr.filter(gm => gm.prgm_idx == gm_idx);
+                findMember[0].payMember_bank = savebank;
+                findMember[0].payMember_account = saveNumber;
+                console.log(findMember, ">>", groupMemberArr);
+
+                btn.parents("tr").remove();
+                $("#accountList").html($("#save-account-tmpl").tmpl({pSave: findMember}));
+
+                $.ajax({
+                    url: `/pay/accountInfo/\${prev_gm_idx}`,
+                    type: "PUT",
+                    data: {
+                        "payMember_account": saveNumber,
+                        "payMember_bank": savebank,
+                        "prgm_idx":gm_idx
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (x, i, e) {
+                        console.log(e);
+                    }
+                })
+
+            }
+        }
 
 
     </script>
@@ -377,6 +385,7 @@
         </tr>
         {{/each}}
     </script>
+
     <script type="text/html" id="retrieve-pay-tmpl">
         <tr>
             <th>결제 목록</th>
@@ -401,6 +410,7 @@
         </tr>
         {{/each}}
     </script>
+
     <script type="text/html" id="update-pay-tmpl">
             <td><input type="text" id="update-pay-name" style="width: 50px" value="\${pay.p_name}"></td>
             <td><input type="text" id="update-pay-price" onkeyup="inputNumberFormat(this)" style="width: 100px" value="\${pay.price}"></td>
@@ -485,12 +495,33 @@
             <td id="save-owner">\${p.payMember_name}</td>
             <td>
                 <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
-                <button id="btn-delete-account" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
+                <button id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
+                <button id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>
             </td>
         </tr>
                 {{/if}}
             {{/each}}
     </script>
+
+<script type="text/html" id="update-account-tmpl">
+        <td>
+            <input type="hidden" value="\${accountInfo.prgm_idx}" id="saved-account-prgm_idx">
+            <input type="text" id="saved-account-bank" style="width: 50px" value="\${accountInfo.payMember_bank}"></td>
+        <td><input type="text" id="saved-account-number" style="width: 100px" value="\${accountInfo.payMember_account}"></td>
+        <td>
+            <select id="saved-account-owner">
+                {{each(index,p) groupMember}}
+                {{if p.prgm_idx == accountInfo.prgm_idx}}
+                <option class="update-account-selector" value="\${p.prgm_idx}" selected>\${p.payMember_name}</option>
+                {{else}}
+                <option class="update-account-selector" value="\${p.prgm_idx}">\${p.payMember_name}</option>
+                {{/if}}
+
+                {{/each}}
+            </select>
+        </td>
+        <td><button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button></td>
+</script>
 
 <h1>여기는 PAY방입니다<h1><br>
     <button>취소</button>
@@ -533,15 +564,15 @@
 
     <div class="modal">
         <div class="modal_body">
-            <button id="btn-close-modal">X</button>
+            <button type="button" id="btn-close-modal">X</button>
             <button type="button" onclick="saveUpdateDutchPay()">수정하기</button>
             <input type="hidden" id="retrieve-pay-id">
             <hr>
             편집하기<br>
 
             <form id="pay-form">
-<%--                <input type="text" name="payRoom" id="payRoom" value="${payRoom}">--%>
-            <input type="text" id="pay_name" name="pay_name" placeholder="결제이름"> <button id="btn-pay-plus"onclick="return createNewPay()">+</button>
+            <input type="text" id="pay_name" name="pay_name" placeholder="결제이름">
+                <button type="button" id="btn-pay-plus"onclick="return createNewPay()">+</button>
             <br>
             <table id="payList">
                 <tr>
@@ -564,7 +595,7 @@
             결제일<input type="date" name="pay-date" id="pay-date"><br>
             마감일<input type="date" name="due-date" id="due-date"><br>
             영수증<input type="text" name="bill" id="bill"><br>
-            <input type="button" onclick="dataAjax($('#pay-form'))">결과 미리보기(정산하기)</input>
+            <input type="button" onclick="alert('여기에 뭐 넣지')">결과 미리보기(정산하기)</input>
             </form>
         </div>
     </div>
