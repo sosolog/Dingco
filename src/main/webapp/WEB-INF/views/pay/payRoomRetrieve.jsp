@@ -22,8 +22,8 @@
         let pr_idx = payRoom.pr_idx;
         let room_name = payRoom.room_name;
         let groupMemberArr = payRoom.groupMemberList;
-        let memberArr = [];
         let payArr = [];
+        let memberArr = [];
         let accountArr = [];
 
 
@@ -40,7 +40,7 @@
             $("#room_name").val(room_name);
             $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr}));
             $("#pay-date").val(new Date().toISOString().substring(0, 10));
-            $("#memberList").html($("#member-list-tmpl").tmpl({mList:memberArr}));
+            $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr}));
 
             $("#btn-close-modal").on("click", function(){
                 var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
@@ -126,16 +126,64 @@
             });
 
             // 방생성 modal open 이후
-            // 1. memberList에서 일부 member 삭제
+          /*  // 1. memberList에서 일부 member 삭제
             $(document).on("click", ".btn-member-delete", function(){
+
+
                 console.log("memberList에서 member 삭제")
                 let index = $(this).attr("data-idx");
-                memberArr.splice(index,1); // memberArr 에서 member 삭제
+                groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
                 $(this).parent().remove(); // html에서 해당 member span 태그 삭제
-                console.log("[END] index:", index, ", memberArr:", memberArr);
-            });
+                console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
+            });*/
         });
 
+
+        function memberCheck(self){
+            var prgm_idx = self.parent().attr("data-idx");
+            console.log(pr_idx,prgm_idx);
+            $.ajax({
+                url: "/pay/membercheck",
+                type: "GET",
+                data: {
+                    "pr_idx": pr_idx,
+                    "prgm_idx": prgm_idx
+                },
+                success:function (data){
+                    console.log(data);
+                    if(data){
+                        alert("결제참여자인지 확인해주십시오.");
+                    }else{
+                        accountArr = [];
+                        for (let x of groupMemberArr) {
+                            if(x.payMember_account != null || x.payMember_bank != null){
+                                accountArr.push({"prgm":x.prgm_idx,"sb":x.payMember_bank,"sn":x.payMember_account,"so":x.payMember_name});
+                            }
+                        }
+                        console.log("memberList에서 member 삭제")
+                        let index = self.attr("data-idx");
+                        groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
+                        self.parent().remove(); // html에서 해당 member span 태그 삭제
+                        console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
+                        $.ajax({
+                            url: "/pay/membercheck",
+                            type: "DELETE",
+                            data: {"prgm_idx": prgm_idx},
+                            success:function (data){
+                                console.log("성공한 ajax"+data);
+                            },
+                            error(x,i,e){
+                                console.log(e);
+                            }
+                        })
+                    }
+
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
+        };
 
 
     </script>
@@ -143,8 +191,8 @@
     <!-- 방생성 modal member 명단 template-->
     <script type="text/html" id="member-list-tmpl">
         {{each(index, m) mList}}
-            <span id="mList_\${index}">
-            \${m}<button class="btn-member-delete" data-idx="\${index}">X</button>
+            <span id="mList_\${index}" class="mList_\${index}" data-idx="\${m.prgm_idx}">
+            \${m.payMember_name}<button class="btn-member-delete" data-idx="\${index}" onclick="memberCheck($(this))">X</button>
             </span>
         {{/each}}
     </script>
@@ -294,7 +342,7 @@
     <h2>Pedal</h2>
 <button>등록</button><br>
 방이름 : <input type="text" name="room_name" id="room_name" readonly><br>
-방멤버 : <input type="text" name="groupMember" id="groupMember" ><button onclick="memberList()">추가</button><br>
+방멤버 : <input type="text" name="groupMember" id="groupMember" ><button onclick="memberListOne()">추가</button><br>
 <div id="memberList"></div>
 <button>1개만</button><button>여러개</button><br>
 <span>결제 목록</span><button id="btn-open-modal" <%--onclick="createNewDutch()"--%>>추가</button><br>

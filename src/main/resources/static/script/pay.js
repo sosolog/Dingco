@@ -9,6 +9,28 @@ function memberList(){
     }
     $("#groupMember").val("");
 }
+// 방생성 이후 멤버 추가
+function memberListOne(){
+    var member = $("#groupMember").val().trim();
+    if (member.length > 0){
+        $.ajax({
+            url:"/pay/membercheck",
+            type:"POST",
+            data:{"payMember_name":member,
+            "pr_idx":pr_idx},
+            success:function (data){
+                console.log(data);
+                groupMemberArr.push(JSON.parse(data));
+                $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr}));
+                console.log(groupMemberArr);
+            },
+            error:function (x,i,e){
+                console.log(e);
+            }
+        })
+    }
+    $("#groupMember").val("");
+}
 
 //ajax room_name,groupMember Controller에 넘기기
 function payRoomInfo(){

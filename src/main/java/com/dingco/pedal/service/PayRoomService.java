@@ -3,6 +3,7 @@ package com.dingco.pedal.service;
 
 import com.dingco.pedal.dto.DutchPayDTO;
 import com.dingco.pedal.dto.PayDTO;
+import com.dingco.pedal.dto.PayGroupMemberDTO;
 import com.dingco.pedal.dto.PayRoomDTO;
 
 import java.util.HashMap;
@@ -19,5 +20,9 @@ public interface PayRoomService {
     void insertPayIntoDutch(PayDTO payDTO) throws Exception;
     List<DutchPayDTO> dutchPayListInfo(int pr_idx) throws Exception;
 
-    DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx);
+    DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) throws Exception;
+    boolean memberCheck(HashMap<String,Integer> map) throws Exception;
+    int memberDelete(int prgm_idx) throws Exception;
+
+    PayGroupMemberDTO memberAdd(PayGroupMemberDTO payGroupMemberDTO) throws Exception;
 }

@@ -126,12 +126,27 @@
         where dp.pr_idx = #{pr_idx} and dp.dp_idx = #{dp_idx};
     </select>
 
-<!--    select count(*) from (-->
-<!--    select DISTINCT prgm_idx-->
-<!--    from-->
-<!--    (select payer as prgm_idx, p_idx from PAYLIST-->
-<!--    union-->
-<!--    select prgm_idx, p_idx from PAYPARTICIPANTS) A-->
-<!--    where p_idx in (select p_idx from PAYLIST where dp_idx in (select dp_idx from DUTCHPAYLIST where pr_idx = #{pr_idx}))) B-->
-<!--    where prgm_idx = #{prgm_idx};-->
+    <select id="memberCheck" parameterType="hashmap" resultType="boolean">
+        select count(*) from (
+                    select DISTINCT prgm_idx from
+                         (select payer as prgm_idx, p_idx from PAYLIST
+                            union
+                            select prgm_idx, p_idx from PAYPARTICIPANTS) A
+                    where p_idx in (
+                                select p_idx from PAYLIST
+                                where dp_idx in (
+                                    select dp_idx from DUTCHPAYLIST where pr_idx = #{pr_idx}))) B
+        where prgm_idx = #{prgm_idx}
+    </select>
+
+    <delete id="memberDelete" parameterType="int">
+        delete from PAYGROUPMEMBER
+        where prgm_idx = #{prgm_idx}
+    </delete>
+
+    <insert id="memberAdd" parameterType="PayGroupMemberDTO" useGeneratedKeys="true" keyProperty="prgm_idx">
+        insert into PAYGROUPMEMBER (pr_idx,paymember_name)
+        values (#{pr_idx},#{payMember_name})
+    </insert>
+
 </mapper>

@@ -3,6 +3,7 @@ package com.dingco.pedal.service;
 import com.dingco.pedal.dao.PayRoomDAO;
 import com.dingco.pedal.dto.DutchPayDTO;
 import com.dingco.pedal.dto.PayDTO;
+import com.dingco.pedal.dto.PayGroupMemberDTO;
 import com.dingco.pedal.dto.PayRoomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,8 +69,9 @@ public class PayRoomServiceImpl implements PayRoomService{
         return dao.dutchpayListInfo(pr_idx);
     }
 
+
     @Override
-    public DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) {
+    public DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) throws Exception{
 
         DutchPayDTO dutchPayDTO = dao.dutchPayInfo(pr_idx, dp_idx);
         AtomicInteger total = new AtomicInteger();
@@ -78,5 +80,19 @@ public class PayRoomServiceImpl implements PayRoomService{
         });
         dutchPayDTO.setTotalPay(total.get());
         return dutchPayDTO;
+    }
+    @Override
+    public boolean memberCheck(HashMap<String, Integer> map) throws Exception {
+        return dao.memberCheck(map);
+    }
+
+    @Override
+    public int memberDelete(int prgm_idx) throws Exception {
+        return dao.memberDelete(prgm_idx);
+    }
+
+    @Override
+    public PayGroupMemberDTO memberAdd(PayGroupMemberDTO payGroupMemberDTO) throws Exception {
+        return dao.memberAdd(payGroupMemberDTO);
     }
 }

@@ -68,14 +68,28 @@ public class PayRoomDAO {
         session.insert("com.config.PayRoomMapper.insertPayParticipants", payAndParticipants);
     }
 
-    public List<DutchPayDTO> dutchpayListInfo(int pr_idx) {
+    public List<DutchPayDTO> dutchpayListInfo(int pr_idx) throws Exception{
         return session.selectList("com.config.PayRoomMapper.dutchpayListInfo", pr_idx);
     }
 
-    public DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) {
+    public DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) throws Exception{
         HashMap<String, Integer> map = new HashMap<>();
         map.put("pr_idx", pr_idx);
         map.put("dp_idx", dp_idx);
         return session.selectOne("com.config.PayRoomMapper.dutchpayInfo", map);
+    }
+
+    public boolean memberCheck(HashMap<String,Integer> map) throws Exception{
+        return session.selectOne("com.config.PayRoomMapper.memberCheck",map);
+    }
+    public int memberDelete(int prgm_idx) throws Exception{
+        return session.delete("com.config.PayRoomMapper.memberDelete",prgm_idx);
+    }
+
+
+    public PayGroupMemberDTO memberAdd(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
+        session.insert("com.config.PayRoomMapper.memberAdd",payGroupMemberDTO);
+        System.out.println(payGroupMemberDTO.getPrgm_idx());
+        return payGroupMemberDTO;
     }
 }

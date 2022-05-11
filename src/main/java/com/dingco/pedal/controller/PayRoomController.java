@@ -137,4 +137,25 @@ public class PayRoomController {
        int num = payRoomService.accountNull(prgm_idx);
     }
 
+    @GetMapping("/pay/membercheck")
+    @ResponseBody
+    public boolean memberCheck(@RequestParam HashMap<String,Integer> map) throws Exception{
+        return payRoomService.memberCheck(map);
+    }
+
+    @PostMapping("/pay/membercheck")
+    @ResponseBody
+    public String memberCheck(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
+
+        ObjectMapper mapper = new ObjectMapper();
+        String payMemberJson = mapper.writeValueAsString(payRoomService.memberAdd(payGroupMemberDTO));
+        return payMemberJson;
+    }
+
+    @DeleteMapping("/pay/membercheck")
+    @ResponseBody
+    public int memberCheck(@RequestParam int prgm_idx) throws Exception{
+        return payRoomService.memberDelete(prgm_idx);
+    }
+
 }
