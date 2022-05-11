@@ -103,11 +103,29 @@ public class PayRoomController {
         return payRoomService.dutchPayInfo(pr_idx, dp_idx);
     }
 
+    @GetMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
+    @ResponseBody
+    public PayDTO showOnePayInfo(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx) throws Exception {
+        return payRoomService.showOnePayInfo(p_idx);
+    }
+
     @PostMapping("/pay/{pr_idx}/dutch/{dp_idx}")
     @ResponseBody
     public String addPayIntoDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, PayDTO payDTO) throws Exception {
         payRoomService.insertPayIntoDutch(payDTO);
         return payDTO.toString();
+    }
+
+    @DeleteMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
+    @ResponseBody
+    public int deleteOnePayInDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx) throws Exception {
+        return payRoomService.deleteOnePayInDutchpay(p_idx);
+    }
+
+    @PutMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
+    @ResponseBody
+    public int updateOnePayInDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx, PayDTO payDTO) throws Exception {
+        return payRoomService.updateOnePayInDutchpay(payDTO);
     }
 
     @PostMapping("/pay/payInfo")
@@ -156,6 +174,24 @@ public class PayRoomController {
     @ResponseBody
     public int memberCheck(@RequestParam int prgm_idx) throws Exception{
         return payRoomService.memberDelete(prgm_idx);
+    }
+
+    @DeleteMapping("/pay/{pr_idx}/dutch/{dp_idx}")
+    @ResponseBody
+    public int deleteOneDutpay(@PathVariable int pr_idx, @PathVariable int dp_idx) throws Exception{
+        return payRoomService.deleteOneDutchpay(dp_idx);
+    }
+
+    @GetMapping("/pay/{pr_idx}/member")
+    @ResponseBody
+    public List<PayGroupMemberDTO> showPayRoomGroupMember(@PathVariable int pr_idx) throws Exception{
+        return payRoomService.showPayRoomGroupMember(pr_idx);
+    }
+
+    @PutMapping("/pay/{pr_idx}/dutch/{dp_idx}")
+    @ResponseBody
+    public int updateDutchPay(@PathVariable int pr_idx, @PathVariable int dp_idx, DutchPayDTO dutchPayDTO) throws Exception{
+        return payRoomService.updateDutchPay(dutchPayDTO);
     }
 
 }

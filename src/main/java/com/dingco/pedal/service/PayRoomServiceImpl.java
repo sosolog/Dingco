@@ -75,9 +75,11 @@ public class PayRoomServiceImpl implements PayRoomService{
 
         DutchPayDTO dutchPayDTO = dao.dutchPayInfo(pr_idx, dp_idx);
         AtomicInteger total = new AtomicInteger();
-        dutchPayDTO.getPayList().stream().forEach(payDTO -> {
-            total.addAndGet(payDTO.getPrice());
-        });
+        if(dutchPayDTO.getPayList()!= null) {
+            dutchPayDTO.getPayList().stream().forEach(payDTO -> {
+                total.addAndGet(payDTO.getPrice());
+            });
+        }
         dutchPayDTO.setTotalPay(total.get());
         return dutchPayDTO;
     }
@@ -95,4 +97,43 @@ public class PayRoomServiceImpl implements PayRoomService{
     public PayGroupMemberDTO memberAdd(PayGroupMemberDTO payGroupMemberDTO) throws Exception {
         return dao.memberAdd(payGroupMemberDTO);
     }
+
+    @Override
+    public PayDTO showOnePayInfo(int p_idx) throws Exception {
+        return dao.showOnePayInfo(p_idx);
+    }
+
+    @Override
+    @Transactional
+    public int deleteOnePayInDutchpay(int p_idx) throws Exception {
+        int result = dao.deleteOnePayInDutchpay(p_idx);
+        dao.deleteParticipantsInOnePay(p_idx);
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public int deleteOneDutchpay(int dp_idx) throws Exception {
+        int result = dao.deleteOneDutpay(dp_idx);
+        dao.deleteParticipantsInAllPayInOneDutch(dp_idx);
+        dao.deleteAllPayInDutchpay(dp_idx);
+        return result;
+    }
+
+    @Override
+    public List<PayGroupMemberDTO> showPayRoomGroupMember(int pr_idx) throws Exception {
+        return dao.showPayRoomGroupMember(pr_idx);
+    }
+
+    @Override
+    public int updateOnePayInDutchpay(PayDTO payDTO) throws Exception {
+        int result = dao.updateOnePayInDutchpay(payDTO);
+        return result;
+    }
+
+    @Override
+    public int updateDutchPay(DutchPayDTO dutchPayDTO) throws Exception {
+        return dao.updateDutchPay(dutchPayDTO);
+    }
+
 }

@@ -214,6 +214,7 @@ function saveNewAccount(){
 //저장된 결제 삭제하는 함수
 function deleteSavePay(tr){
     var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
+
     if (!isRetrieveInfo){
         var allprice = uncomma($("#allPrice").val())*1;
         var delprice = uncomma($(tr).parent().parent().find("#save-price").text())*1;
@@ -224,7 +225,19 @@ function deleteSavePay(tr){
         // console.log(payArr);
         $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
     } else {
-
+        var dp_idx = $("#retrieve-pay-id").val();
+        var p_idx = $(tr).attr("data-idx");
+        $.ajax({
+            url:`/pay/${pr_idx}/dutch/${dp_idx}/${p_idx}`,
+            type:"DELETE",
+            success:function (data){
+                console.log(data);
+                showDutchPayInfo(dp_idx);
+            },
+            error:function (x,i,e){
+                console.log(e);
+            }
+        })
     }
 }
 

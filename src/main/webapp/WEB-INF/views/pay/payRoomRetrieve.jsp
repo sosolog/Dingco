@@ -138,6 +138,128 @@
             });*/
         });
 
+        function deleteOneDutchPay(dp_idx){
+            console.log(`\${dp_idx} 번 더치페이 삭제`);
+            var isOk = confirm("정말로 삭제하시겠습니까? 이후엔 다시 복구할 수 없습니다.");
+            if(isOk){
+                $.ajax({
+                    url:`/pay/\${pr_idx}/dutch/\${dp_idx}`,
+                    type:"DELETE",
+                    success:function (data){
+                        console.log(data);
+                        showDutchPayList(pr_idx);
+                    },
+                    error:function (x,i,e){
+                        console.log(e);
+                    }
+                })
+            }
+        }
+
+        function updateSavePay(btn) {
+            console.log($(btn).parents("tr"));
+            var dp_idx = $("#retrieve-pay-id").val();
+            var p_idx = $(btn).attr("data-idx");
+            var groupMember = null;
+            $.ajax({
+                url:`/pay/\${pr_idx}/member`,
+                type:"GET",
+                success:function (data){
+                    // console.log(data);
+                    groupMember = data;
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
+            $.ajax({
+                url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
+                type:"GET",
+                success:function (data){
+                    // console.log(data);
+                    var participantsNum = [];
+                    data.participants.forEach(participant => participantsNum.push(participant.prgm_idx));
+                    var payObj = {
+                        "groupMember": groupMember,
+                        "pay": data,
+                        "participants_prgm_idx":participantsNum
+                    }
+                    $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
+                    console.log(payObj)
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
+        }
+
+        function saveUpdatedPay(p_idx) {
+            console.log(p_idx);
+            var dp_idx = $("#retrieve-pay-id").val();
+            var savePayName = $("#update-pay-name").val();
+            var savePayPrice = $("#update-pay-price").val();
+            var savePayPayer = {"prgm_idx":$(".update-pay-selector:selected").val(), "payMember_name":$(".update-pay-selector:selected").text()};
+            var savePayParticipants = [];
+            $(".new-pay-participants-check:checked").each((idx, chked) => savePayParticipants.push({"prgm_idx": chked.value, "payMember_name":$(chked).attr("data-prgm-name")}));
+            console.log(savePayName, savePayPrice, savePayPayer, savePayParticipants);
+            var payObj = {
+                "p_idx":p_idx,
+                "p_name":savePayName,
+                "price":uncomma(savePayPrice)*1
+            }
+            payObj['payMember.prgm_idx'] = savePayPayer.prgm_idx;
+            payObj['payMember.payMember_name'] = savePayPayer.payMember_name;
+            savePayParticipants.forEach((v, index) => {
+                payObj['participants['+index+'].prgm_idx'] = v.prgm_idx;
+                payObj['participants['+index+'].payMember_name'] = v.payMember_name;
+            })
+            console.log(payObj);
+            $.ajax({
+                url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
+                type:"PUT",
+                data: payObj,
+                success:function (data){
+                    console.log(data);
+                    showDutchPayInfo(dp_idx);
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
+
+        }
+
+        function saveUpdateDutchPay(){
+            var dp_idx = $("#retrieve-pay-id").val();
+            var pay_name = $("#pay_name").val();
+            var allPrice = $("#allPrice").val();
+            var cutPrice = $("#cutPrice").val();
+            var pay_date = $("#pay-date").val();
+            var due_date = $("#due-date").val();
+            var dutchpayObj = {
+                "pr_idx":pr_idx,
+                "dp_idx":dp_idx,
+                "dutchPayName":pay_name,
+                "allPrice":allPrice,
+                "option":cutPrice,
+                "createDate":pay_date,
+                "dueDate":due_date
+            }
+            console.log(dutchpayObj)
+            $.ajax({
+                url:`/pay/\${pr_idx}/dutch/\${dp_idx}`,
+                type:"PUT",
+                data: dutchpayObj,
+                success:function (data){
+                    console.log(data);
+                    showDutchPayList(pr_idx)
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
+        }
+
 
         function memberCheck(self){
             var prgm_idx = self.parent().attr("data-idx");
@@ -250,6 +372,7 @@
             </td>
             <td>
                 <button id="btn-delete-pay" class="btn-delete-pay" data-idx="\${index}" onclick="deleteSavePay($(this))">삭제</button>
+                <button class="btn-update-pay" data-idx="\${index}" onclick="updateSavePay($(this))">수정</button>
             </td>
         </tr>
         {{/each}}
@@ -272,10 +395,40 @@
                 {{/each}}
             </td>
             <td>
-                <button id="btn-delete-pay-ajax" class="btn-delete-pay" data-idx="\${p.p_idx}" onclick="deleteSavePay($(this))">삭제</button>
+                <button type="button" id="btn-delete-pay-ajax" class="btn-delete-pay" data-idx="\${p.p_idx}" onclick="deleteSavePay($(this))">삭제</button>
+                <button type="button" id="btn-update-pay-ajax" class="btn-update-pay" data-idx="\${p.p_idx}" onclick="updateSavePay($(this))">수정</button>
             </td>
         </tr>
         {{/each}}
+    </script>
+    <script type="text/html" id="update-pay-tmpl">
+            <td><input type="text" id="update-pay-name" style="width: 50px" value="\${pay.p_name}"></td>
+            <td><input type="text" id="update-pay-price" onkeyup="inputNumberFormat(this)" style="width: 100px" value="\${pay.price}"></td>
+            <td>
+                <select id="update-pay-payer">
+                    {{each(index,p) groupMember}}
+                    {{if p.prgm_idx == pay.payMember.prgm_idx}}
+                        <option class="update-pay-selector" value="\${p.prgm_idx}" selected>\${p.payMember_name}</option>
+                    {{else}}
+                        <option class="update-pay-selector" value="\${p.prgm_idx}">\${p.payMember_name}</option>
+                    {{/if}}
+
+                    {{/each}}
+                </select>
+            </td>
+            <td><button type="button" id="new-pay-participants" style="width: 50px"  onclick="changeParticipants()"> <span>\${participants_prgm_idx.length}</span>명</button>
+                <div id="new-pay-participants-form" style="display: none">
+                    {{each(index, p) groupMember}}
+                    {{if participants_prgm_idx.includes(p.prgm_idx) }}
+                    <input type="checkbox" class="new-pay-participants-check" value="\${p.prgm_idx}" data-prgm-name="\${p.payMember_name}" checked>\${p.payMember_name}
+                    {{else}}
+                    <input type="checkbox" class="new-pay-participants-check" value="\${p.prgm_idx}" data-prgm-name="\${p.payMember_name}">\${p.payMember_name}
+                    {{/if}}
+                    {{/each}}
+                    <button type="button" onclick="changeParticipantsNumber()">OK</button>
+                </div>
+            </td>
+            <td><button type="button" onclick="return saveUpdatedPay(\${pay.p_idx})">저장</button></td>
     </script>
 
     <script type="text/html" id="show-dutch-list-tmpl">
@@ -284,6 +437,7 @@
             <th>제목</th>
             <th>총 결제금액</th>
             <th>정산현황</th>
+            <th></th>
         </tr>
         {{each(index, p) dList}}
         <tr>
@@ -291,6 +445,7 @@
                 <td><a href="javascript:showDutchPayInfo(\${p.dp_idx})"> \${p.dutchPayName}</a></td>
                 <td>\${p.totalPay}</td>
                 <td>정산현황</td>
+                <td><button type="button" onclick="deleteOneDutchPay(\${p.dp_idx})">삭제</button></td>
         </tr>
         {{/each}}
     </script>
@@ -379,6 +534,7 @@
     <div class="modal">
         <div class="modal_body">
             <button id="btn-close-modal">X</button>
+            <button type="button" onclick="saveUpdateDutchPay()">수정하기</button>
             <input type="hidden" id="retrieve-pay-id">
             <hr>
             편집하기<br>

@@ -10,7 +10,7 @@
 </c:if>
 <c:if test="${loginMember != null}">
     <div class="listbox"></div>
-    <a href="" style="padding: 15px 30px; background-color:#333333;">
+    <a href="/pay/list" style="padding: 15px 30px; background-color:#333333;">
         <span style="color:#ffffff; font-size:30px;">방 생성 임시 버튼</span>
     </a>
 </c:if>
