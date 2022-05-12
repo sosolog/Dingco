@@ -29,346 +29,346 @@
         for (let x of groupMemberArr) {
             memberArr.push(x.payMember_name);
         }
-
-        $(document).ready(function(){
-            showDutchPayList(pr_idx)
-            console.log(groupMemberArr)
-            $("#room_name").val(room_name);
-            $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr}));
-            $("#pay-date").val(new Date().toISOString().substring(0, 10));
-            $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr}));
-
-            $("#btn-close-modal").on("click", function(){
-                var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
-                if( payArr.length > 0 && !isRetrieveInfo){
-                    // 더치페이 내용 저장 (새로 생성한 더치페이)
-                    if($("#pay_name").val().trim().length <= 0){
-                        let today = new Date();
-
-                        let month = (today.getMonth() + 1).toString().padStart(2, "0");  // 월
-                        let date = (today.getDate()).toString().padStart(2, "0");  // 날짜
-                        let hours = today.getHours(); // 시
-                        let minutes = today.getMinutes();  // 분
-                        let seconds = today.getSeconds();  // 초
-
-                        $("#pay_name").val(month + date + "_"+ hours + ':' + minutes + ':' + seconds);
-                    }
-                    console.log(payArr, $("#pay_name").val(), $("#allPrice").val(), $("#cutPrice").val(), $("#pay-date").val(), $("#due-date").val())
-                    var ducthPayObj = {
-                        "pr_idx": pr_idx,
-                        "dutchPayName": $("#pay_name").val(),
-                        "totalPay":$("#allPrice").val().replaceAll(",", ""),
-                        "option":$("#cutPrice").val()
-                    }
-                    var pay_date = $("#pay-date").val().trim();
-                    var due_date = $("#due-date").val().trim();
-                    if (pay_date.length > 0){
-                        ducthPayObj.createDate = pay_date;
-                    }
-                    if (due_date.length > 0){
-                        ducthPayObj.dueDate = due_date;
-                    }
-                    payArr.forEach((v, index) => {
-                        ducthPayObj['payList['+index+'].p_name'] = v.sn;
-                        ducthPayObj['payList['+index+'].price'] = v.spp.replaceAll(",", "");
-                        ducthPayObj['payList['+index+'].payMember.prgm_idx'] = v.spp2.prgm_idx;
-                        ducthPayObj['payList['+index+'].payMember.payMember_name'] = v.spp2.payMember_name;
-                        v.spp3.forEach((v2, index2) => {
-                            ducthPayObj['payList['+index+'].participants['+index2+'].prgm_idx'] = v2.prgm_idx;
-                            ducthPayObj['payList['+index+'].participants['+index2+'].payMember_name'] = v2.payMember_name;
-                        })
-                    });
-                    console.log(ducthPayObj)
-
-                    $.ajax({
-                        url:"/pay/new",
-                        type:"POST",
-                        data: ducthPayObj,
-                        success:function (data){
-                            console.log(data);
-                            showDutchPayList(pr_idx);
-                        },
-                        error:function (x,i,e){
-                            console.log(e);
-                        }
-                    })
-                } else if (isRetrieveInfo) { // retrieve한 내용 수정 한 이후, 닫기
-
-                }
-
-                // modal 안보이도록 css 변경
-                $(".modal").removeClass("show");
-                // 현재까지 저장되어있던 정보 삭제
-                payArr = [];
-
-                $("#pay_name").val("");
-                $("#allPrice").val(0);
-                $("#cutPrice").val("0");
-                $("#pay-date").val("");
-                $("#due-date").val("");
-                $("#bill").val("");
-                $("#retrieve-pay-id").val("");
-                $("#payList").html("<tr>"+
-                    "<th>결제 목록</th>"+
-                "<th>결제 금액</th>"+
-                "<th>결제자</th>"+
-                "<th>참여인원</th>"+
-                "<th></th>"+
-                "</tr>");
-
-            });
-
-
-            // 방생성 modal open 이후
-          /*  // 1. memberList에서 일부 member 삭제
-            $(document).on("click", ".btn-member-delete", function(){
-
-
-                console.log("memberList에서 member 삭제")
-                let index = $(this).attr("data-idx");
-                groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
-                $(this).parent().remove(); // html에서 해당 member span 태그 삭제
-                console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
-            });*/
-        });
-
-        function openDutchPayForm() {
-            $(".modal").addClass("show");
-        }
-        function deleteOneDutchPay(dp_idx){
-            console.log(`\${dp_idx} 번 더치페이 삭제`);
-            var isOk = confirm("정말로 삭제하시겠습니까? 이후엔 다시 복구할 수 없습니다.");
-            if(isOk){
-                $.ajax({
-                    url:`/pay/\${pr_idx}/dutch/\${dp_idx}`,
-                    type:"DELETE",
-                    success:function (data){
-                        console.log(data);
-                        showDutchPayList(pr_idx);
-                    },
-                    error:function (x,i,e){
-                        console.log(e);
-                    }
-                })
-            }
-        }
-
-        function updateSavePay(btn) {
-            console.log($(btn).parents("tr"));
-            var groupMember = null;
-            $.ajax({
-                url:`/pay/\${pr_idx}/member`,
-                type:"GET",
-                success:function (data){
-                    console.log(data);
-                    groupMember = data;
-                    afterSuccessGetGroupMember(groupMember, btn);
-                },
-                error:function (x,i,e){
-                    console.log(e);
-                }
-            })
-        }
-
-        function afterSuccessGetGroupMember(groupMember, btn){
-            var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
-            var dp_idx = $("#retrieve-pay-id").val();
-            var p_idx = $(btn).attr("data-idx");
-
-            if (isRetrieveInfo) {
-                $.ajax({
-                    url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
-                    type:"GET",
-                    success:function (data){
-                        // console.log(data);
-                        var participantsNum = [];
-
-                        data.participants.forEach(participant => participantsNum.push(participant.prgm_idx));
-                        var payObj = {
-                            "groupMember": groupMember,
-                            "pay": data,
-                            "participants_prgm_idx":participantsNum
-                        }
-                        $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
-                        console.log(payObj)
-                    },
-                    error:function (x,i,e){
-                        console.log(e);
-                    }
-                })
-            } else {
-                var index = Number.parseInt($(btn).attr("data-idx"));
-                // console.log(groupMember, index, payArr, payArr[index]);
-                var data = payArr[index];
-                var participantsNum = [];
-                data.spp3.forEach(participant => {
-                    var prgm_idx = Number.parseInt(participant.prgm_idx);
-                    participantsNum.push(prgm_idx);
-                    participant.prgm_idx = prgm_idx;
-                });
-                var payObj = {
-                    "groupMember": groupMember,
-                    "pay": {
-                        "p_idx":index,
-                        "p_name":data.sn,
-                        "price":data.spp,
-                        "payMember":data.spp2,
-                        "participants":data.spp3
-                    },
-                    "participants_prgm_idx":participantsNum
-                }
-                $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
-                $(btn).parents("tr").attr("id", "update-pay-form");
-            }
-        }
-
-        function saveUpdatedPay(p_idx) {
-            var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
-            console.log(p_idx);
-
-
-            var dp_idx = $("#retrieve-pay-id").val();
-            var savePayName = $("#update-pay-name").val();
-            var savePayPrice = $("#update-pay-price").val();
-            var savePayPayer = {"prgm_idx":$(".update-pay-selector:selected").val(), "payMember_name":$(".update-pay-selector:selected").text()};
-            var savePayParticipants = [];
-            $(".new-pay-participants-check:checked").each((idx, chked) => savePayParticipants.push({"prgm_idx": chked.value, "payMember_name":$(chked).attr("data-prgm-name")}));
-            // console.log(savePayName, savePayPrice, savePayPayer, savePayParticipants);
-            if (isRetrieveInfo) {
-                var payObj = {
-                    "p_idx":p_idx,
-                    "p_name":savePayName,
-                    "price":uncomma(savePayPrice)*1
-                }
-                payObj['payMember.prgm_idx'] = savePayPayer.prgm_idx;
-                payObj['payMember.payMember_name'] = savePayPayer.payMember_name;
-                savePayParticipants.forEach((v, index) => {
-                    payObj['participants['+index+'].prgm_idx'] = v.prgm_idx;
-                    payObj['participants['+index+'].payMember_name'] = v.payMember_name;
-                })
-                console.log(payObj);
-                $.ajax({
-                    url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
-                    type:"PUT",
-                    data: payObj,
-                    success:function (data){
-                        console.log(data);
-                        showDutchPayInfo(dp_idx);
-                    },
-                    error:function (x,i,e){
-                        console.log(e);
-                    }
-                })
-            } else {
-                // console.log(payArr[p_idx])
-                savePayParticipants.forEach(participant => participant.prgm_idx = Number.parseInt(participant.prgm_idx));
-                payArr[p_idx] = {
-                    "sn":savePayName,
-                    "spp":savePayPrice,
-                    "spp2":savePayPayer,
-                    "spp3":savePayParticipants
-                }
-                // console.log(payArr[p_idx])
-                $("#update-pay-form").remove();
-                $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
-                var total = 0;
-                console.log(payArr);
-                payArr.forEach(pay => total += uncomma(pay.spp)*1);
-                $("#allPrice").val(comma(total));
-            }
-
-
-        }
-
-        function saveUpdateDutchPay(){
-            var dp_idx = $("#retrieve-pay-id").val();
-            var pay_name = $("#pay_name").val();
-            var allPrice = $("#allPrice").val();
-            var cutPrice = $("#cutPrice").val();
-            var pay_date = $("#pay-date").val();
-            var due_date = $("#due-date").val();
-            var dutchpayObj = {
-                "pr_idx":pr_idx,
-                "dp_idx":dp_idx,
-                "dutchPayName":pay_name,
-                "allPrice":allPrice,
-                "option":cutPrice,
-                "createDate":pay_date,
-                "dueDate":due_date
-            }
-            console.log(dutchpayObj)
-            $.ajax({
-                url:`/pay/\${pr_idx}/dutch/\${dp_idx}`,
-                type:"PUT",
-                data: dutchpayObj,
-                success:function (data){
-                    console.log(data);
-                    showDutchPayList(pr_idx)
-                },
-                error:function (x,i,e){
-                    console.log(e);
-                }
-            })
-        }
-
-        function updateSaveAccount(btn) {
-            var prgm_idx = btn.parents().find("#prgm_idx").val();
-            console.log(prgm_idx);
-            $.ajax({
-                url:`/pay/accountInfo/\${prgm_idx}`,
-                type:"GET",
-                success:function (data){
-                    console.log(data);
-                    var accountInfo = JSON.parse(data);
-                    var accountObj = {
-                        "groupMember":groupMemberArr,
-                        "accountInfo":accountInfo
-                    }
-                    btn.parents("tr").html($("#update-account-tmpl").tmpl(accountObj));
-
-                },
-                error:function (x,i,e){
-                    console.log(e);
-                }
-            })
-
-        }
-
-        function updateSavedAccount(btn) {
-            var savebank = $("#saved-account-bank").val();
-            var saveNumber = $("#saved-account-number").val();
-
-            if (savebank.length > 0 && saveNumber.length > 0) {
-                $("#btn-account-plus").text("+");
-                var prev_gm_idx = $("#saved-account-prgm_idx").val();
-                var saveOwner = $(".update-account-selector:selected").text();
-                var gm_idx = $("#saved-account-owner").val();
-                var findMember = groupMemberArr.filter(gm => gm.prgm_idx == gm_idx);
-                findMember[0].payMember_bank = savebank;
-                findMember[0].payMember_account = saveNumber;
-                console.log(findMember, ">>", groupMemberArr);
-
-                btn.parents("tr").remove();
-                $("#accountList").html($("#save-account-tmpl").tmpl({pSave: findMember}));
-
-                $.ajax({
-                    url: `/pay/accountInfo/\${prev_gm_idx}`,
-                    type: "PUT",
-                    data: {
-                        "payMember_account": saveNumber,
-                        "payMember_bank": savebank,
-                        "prgm_idx":gm_idx
-                    },
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (x, i, e) {
-                        console.log(e);
-                    }
-                })
-
-            }
-        }
+        //
+        // $(document).ready(function(){
+        //     showDutchPayList(pr_idx)
+        //     console.log(groupMemberArr)
+        //     $("#room_name").val(room_name);
+        //     $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr}));
+        //     $("#pay-date").val(new Date().toISOString().substring(0, 10));
+        //     $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr}));
+        //
+        //     $("#btn-close-modal").on("click", function(){
+        //         var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
+        //         if( payArr.length > 0 && !isRetrieveInfo){
+        //             // 더치페이 내용 저장 (새로 생성한 더치페이)
+        //             if($("#pay_name").val().trim().length <= 0){
+        //                 let today = new Date();
+        //
+        //                 let month = (today.getMonth() + 1).toString().padStart(2, "0");  // 월
+        //                 let date = (today.getDate()).toString().padStart(2, "0");  // 날짜
+        //                 let hours = today.getHours(); // 시
+        //                 let minutes = today.getMinutes();  // 분
+        //                 let seconds = today.getSeconds();  // 초
+        //
+        //                 $("#pay_name").val(month + date + "_"+ hours + ':' + minutes + ':' + seconds);
+        //             }
+        //             console.log(payArr, $("#pay_name").val(), $("#allPrice").val(), $("#cutPrice").val(), $("#pay-date").val(), $("#due-date").val())
+        //             var ducthPayObj = {
+        //                 "pr_idx": pr_idx,
+        //                 "dutchPayName": $("#pay_name").val(),
+        //                 "totalPay":$("#allPrice").val().replaceAll(",", ""),
+        //                 "option":$("#cutPrice").val()
+        //             }
+        //             var pay_date = $("#pay-date").val().trim();
+        //             var due_date = $("#due-date").val().trim();
+        //             if (pay_date.length > 0){
+        //                 ducthPayObj.createDate = pay_date;
+        //             }
+        //             if (due_date.length > 0){
+        //                 ducthPayObj.dueDate = due_date;
+        //             }
+        //             payArr.forEach((v, index) => {
+        //                 ducthPayObj['payList['+index+'].p_name'] = v.sn;
+        //                 ducthPayObj['payList['+index+'].price'] = v.spp.replaceAll(",", "");
+        //                 ducthPayObj['payList['+index+'].payMember.prgm_idx'] = v.spp2.prgm_idx;
+        //                 ducthPayObj['payList['+index+'].payMember.payMember_name'] = v.spp2.payMember_name;
+        //                 v.spp3.forEach((v2, index2) => {
+        //                     ducthPayObj['payList['+index+'].participants['+index2+'].prgm_idx'] = v2.prgm_idx;
+        //                     ducthPayObj['payList['+index+'].participants['+index2+'].payMember_name'] = v2.payMember_name;
+        //                 })
+        //             });
+        //             console.log(ducthPayObj)
+        //
+        //             $.ajax({
+        //                 url:"/pay/new",
+        //                 type:"POST",
+        //                 data: ducthPayObj,
+        //                 success:function (data){
+        //                     console.log(data);
+        //                     showDutchPayList(pr_idx);
+        //                 },
+        //                 error:function (x,i,e){
+        //                     console.log(e);
+        //                 }
+        //             })
+        //         } else if (isRetrieveInfo) { // retrieve한 내용 수정 한 이후, 닫기
+        //
+        //         }
+        //
+        //         // modal 안보이도록 css 변경
+        //         $(".modal").removeClass("show");
+        //         // 현재까지 저장되어있던 정보 삭제
+        //         payArr = [];
+        //
+        //         $("#pay_name").val("");
+        //         $("#allPrice").val(0);
+        //         $("#cutPrice").val("0");
+        //         $("#pay-date").val("");
+        //         $("#due-date").val("");
+        //         $("#bill").val("");
+        //         $("#retrieve-pay-id").val("");
+        //         $("#payList").html("<tr>"+
+        //             "<th>결제 목록</th>"+
+        //         "<th>결제 금액</th>"+
+        //         "<th>결제자</th>"+
+        //         "<th>참여인원</th>"+
+        //         "<th></th>"+
+        //         "</tr>");
+        //
+        //     });
+        //
+        //
+        //     // 방생성 modal open 이후
+        //   /*  // 1. memberList에서 일부 member 삭제
+        //     $(document).on("click", ".btn-member-delete", function(){
+        //
+        //
+        //         console.log("memberList에서 member 삭제")
+        //         let index = $(this).attr("data-idx");
+        //         groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
+        //         $(this).parent().remove(); // html에서 해당 member span 태그 삭제
+        //         console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
+        //     });*/
+        // });
+        //
+        // function openDutchPayForm() {
+        //     $(".modal").addClass("show");
+        // }
+        // function deleteOneDutchPay(dp_idx){
+        //     console.log(`\${dp_idx} 번 더치페이 삭제`);
+        //     var isOk = confirm("정말로 삭제하시겠습니까? 이후엔 다시 복구할 수 없습니다.");
+        //     if(isOk){
+        //         $.ajax({
+        //             url:`/pay/\${pr_idx}/dutch/\${dp_idx}`,
+        //             type:"DELETE",
+        //             success:function (data){
+        //                 console.log(data);
+        //                 showDutchPayList(pr_idx);
+        //             },
+        //             error:function (x,i,e){
+        //                 console.log(e);
+        //             }
+        //         })
+        //     }
+        // }
+        //
+        // function updateSavePay(btn) {
+        //     console.log($(btn).parents("tr"));
+        //     var groupMember = null;
+        //     $.ajax({
+        //         url:`/pay/\${pr_idx}/member`,
+        //         type:"GET",
+        //         success:function (data){
+        //             console.log(data);
+        //             groupMember = data;
+        //             afterSuccessGetGroupMember(groupMember, btn);
+        //         },
+        //         error:function (x,i,e){
+        //             console.log(e);
+        //         }
+        //     })
+        // }
+        //
+        // function afterSuccessGetGroupMember(groupMember, btn){
+        //     var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
+        //     var dp_idx = $("#retrieve-pay-id").val();
+        //     var p_idx = $(btn).attr("data-idx");
+        //
+        //     if (isRetrieveInfo) {
+        //         $.ajax({
+        //             url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
+        //             type:"GET",
+        //             success:function (data){
+        //                 // console.log(data);
+        //                 var participantsNum = [];
+        //
+        //                 data.participants.forEach(participant => participantsNum.push(participant.prgm_idx));
+        //                 var payObj = {
+        //                     "groupMember": groupMember,
+        //                     "pay": data,
+        //                     "participants_prgm_idx":participantsNum
+        //                 }
+        //                 $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
+        //                 console.log(payObj)
+        //             },
+        //             error:function (x,i,e){
+        //                 console.log(e);
+        //             }
+        //         })
+        //     } else {
+        //         var index = Number.parseInt($(btn).attr("data-idx"));
+        //         // console.log(groupMember, index, payArr, payArr[index]);
+        //         var data = payArr[index];
+        //         var participantsNum = [];
+        //         data.spp3.forEach(participant => {
+        //             var prgm_idx = Number.parseInt(participant.prgm_idx);
+        //             participantsNum.push(prgm_idx);
+        //             participant.prgm_idx = prgm_idx;
+        //         });
+        //         var payObj = {
+        //             "groupMember": groupMember,
+        //             "pay": {
+        //                 "p_idx":index,
+        //                 "p_name":data.sn,
+        //                 "price":data.spp,
+        //                 "payMember":data.spp2,
+        //                 "participants":data.spp3
+        //             },
+        //             "participants_prgm_idx":participantsNum
+        //         }
+        //         $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
+        //         $(btn).parents("tr").attr("id", "update-pay-form");
+        //     }
+        // }
+        //
+        // function saveUpdatedPay(p_idx) {
+        //     var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
+        //     console.log(p_idx);
+        //
+        //
+        //     var dp_idx = $("#retrieve-pay-id").val();
+        //     var savePayName = $("#update-pay-name").val();
+        //     var savePayPrice = $("#update-pay-price").val();
+        //     var savePayPayer = {"prgm_idx":$(".update-pay-selector:selected").val(), "payMember_name":$(".update-pay-selector:selected").text()};
+        //     var savePayParticipants = [];
+        //     $(".new-pay-participants-check:checked").each((idx, chked) => savePayParticipants.push({"prgm_idx": chked.value, "payMember_name":$(chked).attr("data-prgm-name")}));
+        //     // console.log(savePayName, savePayPrice, savePayPayer, savePayParticipants);
+        //     if (isRetrieveInfo) {
+        //         var payObj = {
+        //             "p_idx":p_idx,
+        //             "p_name":savePayName,
+        //             "price":uncomma(savePayPrice)*1
+        //         }
+        //         payObj['payMember.prgm_idx'] = savePayPayer.prgm_idx;
+        //         payObj['payMember.payMember_name'] = savePayPayer.payMember_name;
+        //         savePayParticipants.forEach((v, index) => {
+        //             payObj['participants['+index+'].prgm_idx'] = v.prgm_idx;
+        //             payObj['participants['+index+'].payMember_name'] = v.payMember_name;
+        //         })
+        //         console.log(payObj);
+        //         $.ajax({
+        //             url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
+        //             type:"PUT",
+        //             data: payObj,
+        //             success:function (data){
+        //                 console.log(data);
+        //                 showDutchPayInfo(dp_idx);
+        //             },
+        //             error:function (x,i,e){
+        //                 console.log(e);
+        //             }
+        //         })
+        //     } else {
+        //         // console.log(payArr[p_idx])
+        //         savePayParticipants.forEach(participant => participant.prgm_idx = Number.parseInt(participant.prgm_idx));
+        //         payArr[p_idx] = {
+        //             "sn":savePayName,
+        //             "spp":savePayPrice,
+        //             "spp2":savePayPayer,
+        //             "spp3":savePayParticipants
+        //         }
+        //         // console.log(payArr[p_idx])
+        //         $("#update-pay-form").remove();
+        //         $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
+        //         var total = 0;
+        //         console.log(payArr);
+        //         payArr.forEach(pay => total += uncomma(pay.spp)*1);
+        //         $("#allPrice").val(comma(total));
+        //     }
+        //
+        //
+        // }
+        //
+        // function saveUpdateDutchPay(){
+        //     var dp_idx = $("#retrieve-pay-id").val();
+        //     var pay_name = $("#pay_name").val();
+        //     var allPrice = $("#allPrice").val();
+        //     var cutPrice = $("#cutPrice").val();
+        //     var pay_date = $("#pay-date").val();
+        //     var due_date = $("#due-date").val();
+        //     var dutchpayObj = {
+        //         "pr_idx":pr_idx,
+        //         "dp_idx":dp_idx,
+        //         "dutchPayName":pay_name,
+        //         "allPrice":allPrice,
+        //         "option":cutPrice,
+        //         "createDate":pay_date,
+        //         "dueDate":due_date
+        //     }
+        //     console.log(dutchpayObj)
+        //     $.ajax({
+        //         url:`/pay/\${pr_idx}/dutch/\${dp_idx}`,
+        //         type:"PUT",
+        //         data: dutchpayObj,
+        //         success:function (data){
+        //             console.log(data);
+        //             showDutchPayList(pr_idx)
+        //         },
+        //         error:function (x,i,e){
+        //             console.log(e);
+        //         }
+        //     })
+        // }
+        //
+        // function updateSaveAccount(btn) {
+        //     var prgm_idx = btn.parents().find("#prgm_idx").val();
+        //     console.log(prgm_idx);
+        //     $.ajax({
+        //         url:`/pay/accountInfo/\${prgm_idx}`,
+        //         type:"GET",
+        //         success:function (data){
+        //             console.log(data);
+        //             var accountInfo = JSON.parse(data);
+        //             var accountObj = {
+        //                 "groupMember":groupMemberArr,
+        //                 "accountInfo":accountInfo
+        //             }
+        //             btn.parents("tr").html($("#update-account-tmpl").tmpl(accountObj));
+        //
+        //         },
+        //         error:function (x,i,e){
+        //             console.log(e);
+        //         }
+        //     })
+        //
+        // }
+        //
+        // function updateSavedAccount(btn) {
+        //     var savebank = $("#saved-account-bank").val();
+        //     var saveNumber = $("#saved-account-number").val();
+        //
+        //     if (savebank.length > 0 && saveNumber.length > 0) {
+        //         $("#btn-account-plus").text("+");
+        //         var prev_gm_idx = $("#saved-account-prgm_idx").val();
+        //         var saveOwner = $(".update-account-selector:selected").text();
+        //         var gm_idx = $("#saved-account-owner").val();
+        //         var findMember = groupMemberArr.filter(gm => gm.prgm_idx == gm_idx);
+        //         findMember[0].payMember_bank = savebank;
+        //         findMember[0].payMember_account = saveNumber;
+        //         console.log(findMember, ">>", groupMemberArr);
+        //
+        //         btn.parents("tr").remove();
+        //         $("#accountList").html($("#save-account-tmpl").tmpl({pSave: findMember}));
+        //
+        //         $.ajax({
+        //             url: `/pay/accountInfo/\${prev_gm_idx}`,
+        //             type: "PUT",
+        //             data: {
+        //                 "payMember_account": saveNumber,
+        //                 "payMember_bank": savebank,
+        //                 "prgm_idx":gm_idx
+        //             },
+        //             success: function (data) {
+        //                 console.log(data);
+        //             },
+        //             error: function (x, i, e) {
+        //                 console.log(e);
+        //             }
+        //         })
+        //
+        //     }
+        // }
 
 
     </script>
