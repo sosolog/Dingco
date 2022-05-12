@@ -117,9 +117,7 @@
                 "</tr>");
 
             });
-            $("#btn-open-modal").on("click", function(){
-                $(".modal").addClass("show");
-            });
+
 
             // 방생성 modal open 이후
           /*  // 1. memberList에서 일부 member 삭제
@@ -134,6 +132,9 @@
             });*/
         });
 
+        function openDutchPayForm() {
+            $(".modal").addClass("show");
+        }
         function deleteOneDutchPay(dp_idx){
             console.log(`\${dp_idx} 번 더치페이 삭제`);
             var isOk = confirm("정말로 삭제하시겠습니까? 이후엔 다시 복구할 수 없습니다.");
@@ -496,13 +497,7 @@
     </script>
 
     <script type="text/html" id="show-dutch-list-tmpl">
-        <tr>
-            <th>결제일</th>
-            <th>제목</th>
-            <th>총 결제금액</th>
-            <th>정산현황</th>
-            <th></th>
-        </tr>
+
         {{each(index, p) dList}}
         <tr>
                 <td>\${p.createDate}</td>
@@ -585,70 +580,66 @@
 방멤버 : <input type="text" name="groupMember" id="groupMember" ><button onclick="memberListOne()">추가</button><br>
 <div id="memberList"></div>
 <button>1개만</button><button>여러개</button><br>
-<span>결제 목록</span><button id="btn-open-modal" <%--onclick="createNewDutch()"--%>>추가</button><br>
-<table id="dutchList">
-
+<span>결제 목록</span><button onclick="openDutchPayForm()">추가</button><br>
+<table>
+    <thead>
+        <tr>
+            <th>결제일</th>
+            <th>제목</th>
+            <th>총 결제금액</th>
+            <th>정산현황</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="dutchList">
+    </tbody>
 </table>
 
 <span>계좌 목록</span><button id="btn-account-plus" onclick="createNewAccount()">추가</button><br>
 <table id="accountList">
-    <tr>
-        <th>은행</th>
-        <th>계좌번호</th>
-        <th>이름</th>
-        <th></th>
-    </tr>
-</table>
-<%--    <c:forEach items="${payList}" var="payDTO">
+    <thead>
         <tr>
-            <td>${payDTO.createDate}</td>
-            <td>${payDTO.title}</td> <!-- payDTO에 title이 없었..-->
-            <td>${payDTO.totalPay}</td>
-            <td>${payDTO.???}</td> <!--정산현황은 어떻게 처리해야 할까유-->
+            <th>은행</th>
+            <th>계좌번호</th>
+            <th>이름</th>
+            <th></th>
         </tr>
-    </c:forEach>--%>
-
-
-    <div class="modal">
-        <div class="modal_body">
-            <button type="button" id="btn-close-modal">X</button>
-            <button type="button" onclick="saveUpdateDutchPay()">수정하기</button>
-            <input type="hidden" id="retrieve-pay-id">
-            <hr>
-            편집하기<br>
-
-            <form id="pay-form">
-            <input type="text" id="pay_name" name="pay_name" placeholder="결제이름">
-                <button type="button" id="btn-pay-plus"onclick="return createNewPay()">+</button>
-            <br>
-            <table id="payList">
-                <tr>
-                    <th>결제 목록</th>
-                    <th>결제 금액</th>
-                    <th>결제자</th>
-                    <th>참여인원</th>
-                    <th></th>
-                </tr>
-            </table>
-
-            총금액<input name="allPrice" id="allPrice" value="0" readonly><br>
-            절사옵션
-            <select name="cutPrice" id="cutPrice">
-                <option value="0" id="noCut" selected=true>없음</option>
-                <option value="10" >10원</option>
-                <option value="100">100원</option>
-                <option value="1000">1000원</option>
-            </select><br>
-            결제일<input type="date" name="pay-date" id="pay-date"><br>
-            마감일<input type="date" name="due-date" id="due-date"><br>
-            영수증<input type="text" name="bill" id="bill"><br>
-            <input type="button" onclick="alert('여기에 뭐 넣지')">결과 미리보기(정산하기)</input>
-            </form>
-        </div>
-    </div>
-
-<%--<div class="modal">
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div class="modal">
     <div class="modal_body">
+        <button type="button" id="btn-close-modal">X</button>
+        <button type="button" onclick="saveUpdateDutchPay()">수정하기</button>
+        <input type="hidden" id="retrieve-pay-id">
+        <hr>
+        편집하기<br>
 
+        <input type="text" id="pay_name" name="pay_name" placeholder="결제이름">
+            <button type="button" id="btn-pay-plus"onclick="return createNewPay()">+</button>
+        <br>
+        <table id="payList">
+            <tr>
+                <th>결제 목록</th>
+                <th>결제 금액</th>
+                <th>결제자</th>
+                <th>참여인원</th>
+                <th></th>
+            </tr>
+        </table>
+
+        총금액<input name="allPrice" id="allPrice" value="0" readonly><br>
+        절사옵션
+        <select name="cutPrice" id="cutPrice">
+            <option value="0" id="noCut" selected=true>없음</option>
+            <option value="10" >10원</option>
+            <option value="100">100원</option>
+            <option value="1000">1000원</option>
+        </select><br>
+        결제일<input type="date" name="pay-date" id="pay-date"><br>
+        마감일<input type="date" name="due-date" id="due-date"><br>
+        영수증<input type="text" name="bill" id="bill"><br>
+        <input type="button" onclick="alert('여기에 뭐 넣지')">결과 미리보기(정산하기)</input>
     </div>
-</div>--%>
+</div>
