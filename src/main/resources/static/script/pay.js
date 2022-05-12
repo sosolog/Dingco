@@ -1,15 +1,20 @@
-// 2. memberList에 member 추가
-function memberList(){
+// 방생성 중 memberList에 member 추가
+function memberList() {
     var member = $("#groupMember").val().trim();
-    if (member.length > 0){
+    if (member.length > 0) {
         memberArr.push(member);
-        console.log($("#member-list-tmpl").tmpl({mList:memberArr}));
-        $("#memberList").html($("#member-list-tmpl").tmpl({mList:memberArr}));
-        console.log(memberArr);
+
+        // console.log($("#member-list-tmpl").tmpl({mList:memberArr}));
+
+        $("#memberList").html($("#member-list-tmpl").tmpl({mList: memberArr}));
+
+        // console.log(memberArr);
+
     }
-    $("#groupMember").val("");
+    $("#groupMember").val(""); //추가 후 빈칸으로 만들기
 }
-// 방생성 이후 멤버 추가
+
+// 방생성 이후 멤버 추가 : ajax를 이용한 insert
 function memberListOne(){
     var member = $("#groupMember").val().trim();
     if (member.length > 0){
@@ -19,7 +24,7 @@ function memberListOne(){
             data:{"payMember_name":member,
             "pr_idx":pr_idx},
             success:function (data){
-                console.log(data);
+                // console.log(data); PayGroupMemberDTO를 가져옴
                 groupMemberArr.push(JSON.parse(data));
                 $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr}));
                 console.log(groupMemberArr);
@@ -58,17 +63,6 @@ function payRoomInfo(){
             }
         });
     }
-}
-
-// 새로운 더치페이 폼 생성
-function createNewDutch(){
-    let today = new Date();
-    let year = today.getFullYear().toString().slice(2);
-    let month = String(today.getMonth() + 1).padStart(2, "0");
-    let day = String(today.getDay()).padStart(2, "0");
-    let formattedDate = [year, month, day].join("/");
-    console.log(formattedDate)
-    // $("#new-dutch-tmpl").tmpl({today:formattedDate}).appendTo("#dutchList");
 }
 
 <!--숫자 천자리 콤마 찍어주는 함수-->
@@ -132,7 +126,7 @@ function saveNewPay(){
     // console.log(savePayParticipants)
 
     if ( !isRetrieveInfo && savePayName.length > 0 && savePayPrice.length > 0 ){
-        payArr.push({"sn":savePayName,"spp":savePayPrice,"spp2":savePayPayer,"spp3":savePayParticipants});
+        payArr.push({"payName":savePayName,"payPrice":savePayPrice,"payPayer":savePayPayer,"payParticipants":savePayParticipants});
         console.log(payArr);
         $("#new-pay-form").remove();
         $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
