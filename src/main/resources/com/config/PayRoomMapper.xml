@@ -158,8 +158,7 @@
 
     <insert id="memberAdd" parameterType="PayGroupMemberDTO" useGeneratedKeys="true" keyProperty="prgm_idx">
         insert into PAYGROUPMEMBER (pr_idx,paymember_name)
-        values (#{pr_idx},#{payMe
-        mber_name})
+        values (#{pr_idx},#{payMember_name})
     </insert>
 
     <delete id="deleteOnePayInDutchpay">

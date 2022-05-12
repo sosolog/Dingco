@@ -139,11 +139,4 @@ public class PayRoomServiceImpl implements PayRoomService{
     public PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception {
         return dao.selectAccount(prgm_idx);
     }
-
-    @Override
-    @Transactional
-    public void transactionAccount(HashMap<String, String> map, int prev_gm_idx) throws Exception {
-        dao.accountNull(prev_gm_idx);
-        dao.updateAccount(map);
-    }
 }
