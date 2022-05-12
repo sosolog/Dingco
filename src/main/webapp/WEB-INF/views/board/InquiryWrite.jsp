@@ -5,7 +5,7 @@
 <script src="/script/jquery.tmpl.js"></script>
 <script type="text/html" id="file-input-tmpl">
     <div>
-        <input type="file" name="files" class="img_file img_id_\${index}" accept="img/*" required="required" <%-- hidden="hidden"--%>>
+        <input type="file" name="files" class="img_file" accept="img/*" required="required" data-idx="\${idx}"<%-- hidden="hidden"--%>>
     </div>
 </script>
 <script type="text/html" id="img-preview-tmpl">
@@ -15,9 +15,9 @@
         </a>
         <button class="minus">-</button>
     </div>--%>
-    <li>
-        <a class="minus"><img src="/images/deleteUploadImg.png"></a>
-        <div class="img_id_\${index}"><img src="\${result}" data-file="\${f_name}"></div>
+    <li data-idx="\${idx}">
+        <a onclick="deleteImage(this)"><img src="/images/deleteUploadImg.png"></a>
+        <div><img src="\${result}" data-file="\${f_name}"></div>
     </li>
 </script>
 
@@ -57,9 +57,20 @@
 </div>
 <script>
     let index = 0
+    function deleteImage(btn) {
+        console.log($(btn).siblings().first());
+        // 삭제할 미리보기 이미지의 class 명 가져오기
+        var className = $(btn).siblings().first().attr("class");
+        // 선택한 미리보기 이미지 삭제
+        // $(btn).parent().remove();
+        // $(`input.\${className}`).parent().remove()
+        // isMaximum()
+    }
     $(document).on("click", ".minus",  function (){
         var className = $(this).siblings().first().attr("class");
-        $(this).parent().remove()
+        var tmpImg = $(this).parent();
+        var idx = tmpImg.attr("data-idx");
+        tmpImg.remove();
         $(`input.\${className}`).parent().remove()
         isMaximum()
     })
