@@ -41,9 +41,9 @@ public class InquiryController {
     @GetMapping("/inquiry")
     public ModelAndView showUserInquiry(
             @Login MemberDTO memberDTO,
-            HttpServletRequest request,
-            HttpSession session,
-            @RequestParam(value = "curPage", required = false, defaultValue = "1") int curPage
+            @RequestParam(value = "pg", required = false, defaultValue = "1") int curPage,
+            @RequestParam(value = "sch", required = false) String searchWord,
+            HttpServletRequest request
     ) throws Exception {
         logger.debug(request.getServletPath());
 

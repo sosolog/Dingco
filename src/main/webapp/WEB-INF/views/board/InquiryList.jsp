@@ -26,9 +26,10 @@
             </thead>
             <tbody>
             <c:set var="pageDTO" value="${pageDTO}"/>
+            <c:set var="totalRecord" value="${pageDTO.totalRecord}"/>
             <c:forEach var="dto" items="${pageDTO.dtoList}" varStatus="status">
                 <tr>
-                    <td class="idx"><span> ${dto.i_idx} </span></td>
+                    <td class="idx"><span> ${totalRecord - (pageDTO.curPage-1) * pageDTO.perPage - status.index} </span></td>
                     <td class="title">
                         <a href="inquiry/${dto.i_idx}">
                             <span> ${dto.title} </span>
