@@ -176,19 +176,6 @@
             $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr})); // 방 멤버 목록
             $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr})); // 계좌번호 목록
             showDutchPayList(pr_idx) // 더치페이 목록
-
-
-            // 방생성 modal open 이후
-          /*  // 1. memberList에서 일부 member 삭제
-            $(document).on("click", ".btn-member-delete", function(){
-
-
-                console.log("memberList에서 member 삭제")
-                let index = $(this).attr("data-idx");
-                groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
-                $(this).parent().remove(); // html에서 해당 member span 태그 삭제
-                console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
-            });*/
         });
 
         function isRetrievedDutchInfo(){
@@ -385,64 +372,6 @@
             })
         }
 
-        function updateSaveAccount(btn) {
-            var prgm_idx = btn.parents().find("#prgm_idx").val();
-            console.log(prgm_idx);
-            $.ajax({
-                url:`/pay/accountInfo/\${prgm_idx}`,
-                type:"GET",
-                success:function (data){
-                    console.log(data);
-                    var accountInfo = JSON.parse(data);
-                    var accountObj = {
-                        "groupMember":groupMemberArr,
-                        "accountInfo":accountInfo
-                    }
-                    btn.parents("tr").html($("#update-account-tmpl").tmpl(accountObj));
-
-                },
-                error:function (x,i,e){
-                    console.log(e);
-                }
-            })
-
-        }
-
-        function updateSavedAccount(btn) {
-            var savebank = $("#saved-account-bank").val();
-            var saveNumber = $("#saved-account-number").val();
-
-            if (savebank.length > 0 && saveNumber.length > 0) {
-                $("#btn-account-plus").text("+");
-                var prev_gm_idx = $("#saved-account-prgm_idx").val();
-                var saveOwner = $(".update-account-selector:selected").text();
-                var gm_idx = $("#saved-account-owner").val();
-                var findMember = groupMemberArr.filter(gm => gm.prgm_idx == gm_idx);
-                findMember[0].payMember_bank = savebank;
-                findMember[0].payMember_account = saveNumber;
-                console.log(findMember, ">>", groupMemberArr);
-
-                btn.parents("tr").remove();
-                $("#accountList").html($("#save-account-tmpl").tmpl({pSave: findMember}));
-
-                $.ajax({
-                    url: `/pay/accountInfo/\${prev_gm_idx}`,
-                    type: "PUT",
-                    data: {
-                        "payMember_account": saveNumber,
-                        "payMember_bank": savebank,
-                        "prgm_idx":gm_idx
-                    },
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (x, i, e) {
-                        console.log(e);
-                    }
-                })
-
-            }
-        }
 
 
     </script>
@@ -607,20 +536,11 @@
 
 <script type="text/html" id="update-account-tmpl">
         <td>
-            <input type="hidden" value="\${accountInfo.prgm_idx}" id="saved-account-prgm_idx">
-            <input type="text" id="saved-account-bank" style="width: 50px" value="\${accountInfo.payMember_bank}"></td>
-        <td><input type="text" id="saved-account-number" style="width: 100px" value="\${accountInfo.payMember_account}"></td>
+            <input type="hidden" value="\${prgm_idx}" id="saved-account-prgm_idx">
+            <input type="text" id="saved-account-bank" style="width: 50px" value="\${payMember_bank}"></td>
+        <td><input type="text" id="saved-account-number" style="width: 100px" value="\${payMember_account}"></td>
         <td>
-            <select id="saved-account-owner">
-                {{each(index,p) groupMember}}
-                {{if p.prgm_idx == accountInfo.prgm_idx}}
-                <option class="update-account-selector" value="\${p.prgm_idx}" selected>\${p.payMember_name}</option>
-                {{else}}
-                <option class="update-account-selector" value="\${p.prgm_idx}">\${p.payMember_name}</option>
-                {{/if}}
-
-                {{/each}}
-            </select>
+            <input readonly value="\${payMember_name}">
         </td>
         <td><button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button></td>
 </script>
@@ -648,7 +568,7 @@
     </tbody>
 </table>
 
-<span>계좌 목록</span><button id="btn-account-plus" onclick="createNewAccount()">추가</button><br>
+<span>계좌 목록</span><button id="btn-account-plus" onclick="return createNewAccount()">추가</button><br>
 <table>
     <thead>
         <tr>

@@ -155,13 +155,6 @@ public class PayRoomController {
        return payMemberJson;
     }
 
-    @PutMapping("/pay/accountInfo/{prev_gm_idx}")
-    @ResponseBody
-    public void putAccountInfo(@PathVariable int prev_gm_idx, @RequestParam HashMap<String,String> map) throws Exception {
-
-        payRoomService.transactionAccount(map,prev_gm_idx);
-    }
-
     @PutMapping("/pay/accountNull")
     @ResponseBody
     public void accountNull(@RequestParam int prgm_idx) throws Exception {
