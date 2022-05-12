@@ -127,7 +127,7 @@
         </collection>
     </resultMap>
     <select id="dutchpayInfo" parameterType="hashmap" resultMap="dutchPay">
-        select dp.dp_idx, dp.dp_name, dp.cut_option, date_format(dp.create_date,'%Y-%m-%d') createDate, dp.due_date,
+        select dp.dp_idx, dp.dp_name, dp.cut_option, date_format(dp.create_date,'%Y-%m-%d') create_date, dp.due_date,
                p.p_idx, p.pay_name, p.price, p.payer, pg2.paymember_name,
                pp.prgm_idx p_prgm_idx, pg.paymember_name p_payMember_name
         from DUTCHPAYLIST dp
@@ -158,7 +158,8 @@
 
     <insert id="memberAdd" parameterType="PayGroupMemberDTO" useGeneratedKeys="true" keyProperty="prgm_idx">
         insert into PAYGROUPMEMBER (pr_idx,paymember_name)
-        values (#{pr_idx},#{payMember_name})
+        values (#{pr_idx},#{payMe
+        mber_name})
     </insert>
 
     <delete id="deleteOnePayInDutchpay">
