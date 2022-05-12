@@ -34,13 +34,59 @@
         groupMemberArr.forEach( x => memberArr.push(x.payMeber_name));
 
         // 새로 생성한 더치페이 정보 저장
-        // function saveNewDutchPayInfo() {
-        //     // 더치페이 이름 정보 =>
-        //     if($("#pay_name").val().trim().length <= 0){
-        //         $("#pay_name").val(createArbitraryName());
-        //     }
-        // }
+        function saveNewDutchPayInfo() {
+            // 더치페이 이름 정보 없을 시, 임의로 이름 생성(현재 날짜 & 시간 기준)
+            if($("#pay_name").val().trim().length <= 0){
+                $("#pay_name").val(createArbitraryName());
+            }
+            // TODO: 더치페이 폼에서 정보 가져오기
+            // TODO: 가져온 정보 Ajax로 저장
+        }
 
+        // 더치페이 폼에서 정보 가져오기
+        function getDutchPayInfoFromForm() {
+            var dutchPayObj = {
+                "pr_idx": pr_idx,
+                "dutchPayName": $("#pay_name").val().trim() ? $("#pay_name").val().trim() : null,
+                "totalPay": uncomma($("#allPrice").val()) * 1,
+                "option": $("#cutPrice").val(),
+                "createDate": $("#pay-date").val() ? $("#pay-date").val() : null,
+                "dueDate": $("#due-date").val() ? $("#due-date").val() : null,
+                "totalPay": calculateTotalPay(payArr)
+            }
+            payArr.forEach((v, index) => {
+                mappingPay(dutchPayObj, v, 'payList['+index+'].' )
+            });
+            return dutchPayObj;
+        }
+
+        function calculateTotalPay(payList) {
+            var total = 0;
+            payList.forEach(pay => {
+                total += pay.payPrice
+            });
+            return total;
+        }
+
+        function mappingPay(obj, payObj, prefix = "" ){
+            obj[prefix+'p_name'] = payObj.payName;
+            obj[prefix+'price'] = uncomma(payObj.payPrice) * 1;
+            mappingGroupMember(obj, payObj.payPayer, prefix+'payMember.');
+            mappingPayParticipants(obj, payObj.payParticipants, prefix);
+        }
+
+        function mappingPayParticipants(obj, participants, prefix = "") {
+            participants.forEach((p, idx) => {
+                mappingGroupMember(obj, p, prefix+'participants['+idx+'].');
+            })
+        }
+        function mappingGroupMember(obj, groupMember, prefix = "") {
+            obj[prefix+'prgm_idx'] = groupMember.prgm_idx;
+            obj[prefix+'payMember_name'] = groupMember.payMember_name;
+        }
+
+
+        // 현재 날짜/시간 기준으로 임의 이름 생성 (MMDD_HH:mm:ss 형식)
         function createArbitraryName() {
             let today = new Date();
             let month = (today.getMonth() + 1).toString().padStart(2, "0");  // 월
@@ -52,54 +98,55 @@
         }
 
         function closeDutchPayForm() {
-            if( payArr.length > 0 && !isRetrievedDutchInfo()){
-                // 더치페이 내용 저장 (새로 생성한 더치페이)
-                if($("#pay_name").val().trim().length <= 0){
-                    $("#pay_name").val(createArbitraryName());
-                }
-
-                console.log(payArr, $("#pay_name").val(), $("#allPrice").val(), $("#cutPrice").val(), $("#pay-date").val(), $("#due-date").val())
-                var ducthPayObj = {
-                    "pr_idx": pr_idx,
-                    "dutchPayName": $("#pay_name").val(),
-                    "totalPay":$("#allPrice").val().replaceAll(",", ""),
-                    "option":$("#cutPrice").val()
-                }
-                var pay_date = $("#pay-date").val().trim();
-                var due_date = $("#due-date").val().trim();
-                if (pay_date.length > 0){
-                    ducthPayObj.createDate = pay_date;
-                }
-                if (due_date.length > 0){
-                    ducthPayObj.dueDate = due_date;
-                }
-                payArr.forEach((v, index) => {
-                    ducthPayObj['payList['+index+'].p_name'] = v.payName;
-                    ducthPayObj['payList['+index+'].price'] = v.payPrice.replaceAll(",", "");
-                    ducthPayObj['payList['+index+'].payMember.prgm_idx'] = v.payPayer.prgm_idx;
-                    ducthPayObj['payList['+index+'].payMember.payMember_name'] = v.payPayer.payMember_name;
-                    v.payParticipants.forEach((v2, index2) => {
-                        ducthPayObj['payList['+index+'].participants['+index2+'].prgm_idx'] = v2.prgm_idx;
-                        ducthPayObj['payList['+index+'].participants['+index2+'].payMember_name'] = v2.payMember_name;
-                    })
-                });
-                console.log(ducthPayObj)
-
-                $.ajax({
-                    url:"/pay/new",
-                    type:"POST",
-                    data: ducthPayObj,
-                    success:function (data){
-                        console.log(data);
-                        showDutchPayList(pr_idx);
-                    },
-                    error:function (x,i,e){
-                        console.log(e);
-                    }
-                })
-            } else if (isRetrieveInfo) { // retrieve한 내용 수정 한 이후, 닫기
-
-            }
+            console.log(getDutchPayInfoFromForm());
+            // if( payArr.length > 0 && !isRetrievedDutchInfo()){
+            //     // 더치페이 내용 저장 (새로 생성한 더치페이)
+            //     if($("#pay_name").val().trim().length <= 0){
+            //         $("#pay_name").val(createArbitraryName());
+            //     }
+            //
+            //     console.log(payArr, $("#pay_name").val(), $("#allPrice").val(), $("#cutPrice").val(), $("#pay-date").val(), $("#due-date").val())
+            //     var ducthPayObj = {
+            //         "pr_idx": pr_idx,
+            //         "dutchPayName": $("#pay_name").val(),
+            //         "totalPay":$("#allPrice").val().replaceAll(",", ""),
+            //         "option":$("#cutPrice").val()
+            //     }
+            //     var pay_date = $("#pay-date").val().trim();
+            //     var due_date = $("#due-date").val().trim();
+            //     if (pay_date.length > 0){
+            //         ducthPayObj.createDate = pay_date;
+            //     }
+            //     if (due_date.length > 0){
+            //         ducthPayObj.dueDate = due_date;
+            //     }
+            //     payArr.forEach((v, index) => {
+            //         ducthPayObj['payList['+index+'].p_name'] = v.payName;
+            //         ducthPayObj['payList['+index+'].price'] = v.payPrice.replaceAll(",", "");
+            //         ducthPayObj['payList['+index+'].payMember.prgm_idx'] = v.payPayer.prgm_idx;
+            //         ducthPayObj['payList['+index+'].payMember.payMember_name'] = v.payPayer.payMember_name;
+            //         v.payParticipants.forEach((v2, index2) => {
+            //             ducthPayObj['payList['+index+'].participants['+index2+'].prgm_idx'] = v2.prgm_idx;
+            //             ducthPayObj['payList['+index+'].participants['+index2+'].payMember_name'] = v2.payMember_name;
+            //         })
+            //     });
+            //     console.log(ducthPayObj)
+            //
+            //     $.ajax({
+            //         url:"/pay/new",
+            //         type:"POST",
+            //         data: ducthPayObj,
+            //         success:function (data){
+            //             console.log(data);
+            //             showDutchPayList(pr_idx);
+            //         },
+            //         error:function (x,i,e){
+            //             console.log(e);
+            //         }
+            //     })
+            // } else if (isRetrieveInfo) { // retrieve한 내용 수정 한 이후, 닫기
+            //
+            // }
 
             // modal 안보이도록 css 변경
             $(".modal").removeClass("show");
