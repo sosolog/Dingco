@@ -33,14 +33,72 @@
         let memberArr = []; // 현재 방 멤버 이름 목록
         groupMemberArr.forEach( x => memberArr.push(x.payMeber_name));
 
+        $(document).ready(function(){
+            // 페이방 정보 보여주기
+            $("#room_name").val(room_name); // 페이방 이름
+            $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr})); // 방 멤버 목록
+            $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr})); // 계좌번호 목록
+            showDutchPayList(pr_idx) // 더치페이 목록
+        });
+
+        // 더치페이 생성 폼 열기
+        function openDutchPayForm() {
+            $(".modal").addClass("show");
+
+            // 더치페이 생성 폼 > 더치페이 생성일 오늘로 지정
+            var today = new Date().toISOString().substring(0, 10);
+            $("#pay-date").val(today);
+        }
+
+
+        // 더치페이 폼 닫기
+        function closeDutchPayForm() {
+
+            // TODO: 저장시, 유효성 검사 조건 및 저장 조건 확정하여 변경!
+            // 저장된 결제 목록이 있으면 저장! (이름 없으면 임의 생성)
+            if( payArr.length > 0 && !isRetrievedDutchInfo()){
+
+                // 더치페이 이름 정보 없을 시, 임의로 이름 생성(현재 날짜 & 시간 기준)
+                if($("#pay_name").val().trim().length <= 0){
+                    $("#pay_name").val(createArbitraryName());
+                }
+
+                // 더치페이 폼에서 정보 가져와서 데이터 저장
+                saveNewDutchPayInfo();
+
+            } else if (isRetrievedDutchInfo()) { // TODO: retrieve한 내용 수정 한 이후, 닫기
+
+            }
+
+            // modal 안보이도록 css 변경
+            $(".modal").removeClass("show");
+
+            // 현재까지 저장되어있던 정보 삭제
+            clearDutchPayForm();
+        }
+
+
         // 새로 생성한 더치페이 정보 저장
         function saveNewDutchPayInfo() {
-            // 더치페이 이름 정보 없을 시, 임의로 이름 생성(현재 날짜 & 시간 기준)
-            if($("#pay_name").val().trim().length <= 0){
-                $("#pay_name").val(createArbitraryName());
-            }
+
             // TODO: 더치페이 폼에서 정보 가져오기
+            var dutchObj = getDutchPayInfoFromForm();
+            console.log(dutchObj);
+
             // TODO: 가져온 정보 Ajax로 저장
+            $.ajax({
+                url:"/pay/new",
+                type:"POST",
+                data: dutchObj,
+                success:function (data){
+                    console.log(data);
+                    // showDutchPayList(pr_idx);
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
+
         }
 
         // 더치페이 폼에서 정보 가져오기
@@ -57,17 +115,48 @@
             payArr.forEach((v, index) => {
                 mappingPay(dutchPayObj, v, 'payList['+index+'].' )
             });
+
+            // 유효하지 않은 값이 들어간 키의 경우 삭제
+            // null => ajax를 통해 백단으로 가면 "" 빈문자열로 들어간다.
+            Object.keys(dutchPayObj).forEach(k => {
+                if(!dutchPayObj[k]) delete dutchPayObj[k];
+            });
             return dutchPayObj;
         }
 
+        // 더치페이 폼에서 현재까지 저장되어있던 정보 삭제
+        function clearDutchPayForm() {
+            payArr = [];
+            $("#pay_name").val("");
+            $("#allPrice").val(0);
+            $("#cutPrice").val("0");
+            $("#pay-date").val("");
+            $("#due-date").val("");
+            $("#bill").val("");
+            $("#retrieve-pay-id").val("");
+            $("#payList").html("");
+        }
+
+        // payList를 주면 총 결제금액 계산 하여 반환!
         function calculateTotalPay(payList) {
             var total = 0;
             payList.forEach(pay => {
-                total += pay.payPrice
+                total += uncomma(pay.payPrice) * 1;
             });
             return total;
         }
 
+        // DB에 저장된 정보를 불러온 것인가(아니면, 새로 생성하는 dutchPay 의미)
+        function isRetrievedDutchInfo(){
+            var dp_idx = $("#retrieve-pay-id").val();
+            return dp_idx.length > 0;
+        }
+
+        function getDp_idx() {
+            return $("#retrieve-pay-id").val();
+        }
+
+        // ajax를 통해 보낼 수 있도록 맵핑
         function mappingPay(obj, payObj, prefix = "" ){
             obj[prefix+'p_name'] = payObj.payName;
             obj[prefix+'price'] = uncomma(payObj.payPrice) * 1;
@@ -80,6 +169,7 @@
                 mappingGroupMember(obj, p, prefix+'participants['+idx+'].');
             })
         }
+
         function mappingGroupMember(obj, groupMember, prefix = "") {
             obj[prefix+'prgm_idx'] = groupMember.prgm_idx;
             obj[prefix+'payMember_name'] = groupMember.payMember_name;
@@ -89,112 +179,19 @@
         // 현재 날짜/시간 기준으로 임의 이름 생성 (MMDD_HH:mm:ss 형식)
         function createArbitraryName() {
             let today = new Date();
+            let year = today.getFullYear().toString().slice(-2);
             let month = (today.getMonth() + 1).toString().padStart(2, "0");  // 월
             let date = (today.getDate()).toString().padStart(2, "0");  // 날짜
             let hours = today.getHours(); // 시
             let minutes = today.getMinutes();  // 분
             let seconds = today.getSeconds();  // 초
-            return month + date + "_"+ hours + ':' + minutes + ':' + seconds;
+            return year + month + date + "_"+ hours + ':' + minutes + ':' + seconds;
         }
 
-        function closeDutchPayForm() {
-            console.log(getDutchPayInfoFromForm());
-            // if( payArr.length > 0 && !isRetrievedDutchInfo()){
-            //     // 더치페이 내용 저장 (새로 생성한 더치페이)
-            //     if($("#pay_name").val().trim().length <= 0){
-            //         $("#pay_name").val(createArbitraryName());
-            //     }
-            //
-            //     console.log(payArr, $("#pay_name").val(), $("#allPrice").val(), $("#cutPrice").val(), $("#pay-date").val(), $("#due-date").val())
-            //     var ducthPayObj = {
-            //         "pr_idx": pr_idx,
-            //         "dutchPayName": $("#pay_name").val(),
-            //         "totalPay":$("#allPrice").val().replaceAll(",", ""),
-            //         "option":$("#cutPrice").val()
-            //     }
-            //     var pay_date = $("#pay-date").val().trim();
-            //     var due_date = $("#due-date").val().trim();
-            //     if (pay_date.length > 0){
-            //         ducthPayObj.createDate = pay_date;
-            //     }
-            //     if (due_date.length > 0){
-            //         ducthPayObj.dueDate = due_date;
-            //     }
-            //     payArr.forEach((v, index) => {
-            //         ducthPayObj['payList['+index+'].p_name'] = v.payName;
-            //         ducthPayObj['payList['+index+'].price'] = v.payPrice.replaceAll(",", "");
-            //         ducthPayObj['payList['+index+'].payMember.prgm_idx'] = v.payPayer.prgm_idx;
-            //         ducthPayObj['payList['+index+'].payMember.payMember_name'] = v.payPayer.payMember_name;
-            //         v.payParticipants.forEach((v2, index2) => {
-            //             ducthPayObj['payList['+index+'].participants['+index2+'].prgm_idx'] = v2.prgm_idx;
-            //             ducthPayObj['payList['+index+'].participants['+index2+'].payMember_name'] = v2.payMember_name;
-            //         })
-            //     });
-            //     console.log(ducthPayObj)
-            //
-            //     $.ajax({
-            //         url:"/pay/new",
-            //         type:"POST",
-            //         data: ducthPayObj,
-            //         success:function (data){
-            //             console.log(data);
-            //             showDutchPayList(pr_idx);
-            //         },
-            //         error:function (x,i,e){
-            //             console.log(e);
-            //         }
-            //     })
-            // } else if (isRetrieveInfo) { // retrieve한 내용 수정 한 이후, 닫기
-            //
-            // }
-
-            // modal 안보이도록 css 변경
-            $(".modal").removeClass("show");
-
-            // 현재까지 저장되어있던 정보 삭제
-            clearDutchPayForm();
-        }
-
-        function clearDutchPayForm() {
-            // 더치페이 폼에서 현재까지 저장되어있던 정보 삭제
-            payArr = [];
-            $("#pay_name").val("");
-            $("#allPrice").val(0);
-            $("#cutPrice").val("0");
-            $("#pay-date").val("");
-            $("#due-date").val("");
-            $("#bill").val("");
-            $("#retrieve-pay-id").val("");
-            $("#payList").html("");
-        }
-
-        $(document).ready(function(){
+        // TODO: 여기까지 리팩토링 완료
 
 
-            // 페이방 정보 보여주기
-            $("#room_name").val(room_name); // 페이방 이름
-            $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr})); // 방 멤버 목록
-            $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr})); // 계좌번호 목록
-            showDutchPayList(pr_idx) // 더치페이 목록
-        });
 
-        function isRetrievedDutchInfo(){
-            var dp_idx = $("#retrieve-pay-id").val();
-            return dp_idx.length > 0;
-        }
-
-        function getDp_idx() {
-            return $("#retrieve-pay-id").val();
-        }
-
-        // 더치페이 생성 폼 열기
-        function openDutchPayForm() {
-            $(".modal").addClass("show");
-
-            // 더치페이 생성 폼 > 더치페이 생성일 오늘로 지정
-            var today = new Date().toISOString().substring(0, 10);
-            $("#pay-date").val(today);
-        }
 
         function deleteOneDutchPay(dp_idx){
             console.log(`\${dp_idx} 번 더치페이 삭제`);
