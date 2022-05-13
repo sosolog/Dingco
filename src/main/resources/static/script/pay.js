@@ -509,7 +509,7 @@ function deleteSavePay(tr) {
     function createNewAccount() {
         console.log($("#btn-updated-account"));
         if ($("#btn-updated-account").length != 0) {
-
+          
         } else {
 
             var idInfoArr = ["#btn-update-account", "#btn-account-plus", "#new-account-tmpl",
