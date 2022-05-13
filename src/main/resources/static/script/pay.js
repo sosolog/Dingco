@@ -2,6 +2,30 @@
     방이름 - PayRoom.room_name
     참여자 - PayRoom.pr_idx -> PayGroupMember.pr_idx , PayGroupMember.prgm_idx
 */
+// 방생성 modal open
+function openPayRoomForm() {
+    $(".modal").addClass("show");
+}
+
+// 방생성 modal close ( 방생성 미완료 상태에서 종료 )
+function closePayRoomForm() {
+    // modal 안보이도록 css 변경
+    $(".modal").removeClass("show");
+
+    // 현재까지 저장되어있던 정보 삭제
+    memberArr = [];
+    $("#room_name").val("")
+}
+
+// 방생성 중 memberList에서 member 삭제
+function deleteMemberDuringCreatingPayRoom(btn){
+    // console.log("memberList에서 member 삭제");
+    let index = $(btn).attr("data-idx");
+
+    memberArr.splice(index,1); // memberArr 에서 member 삭제
+    $(this).parent().remove(); // html에서 해당 member span 태그 삭제
+    // console.log("[END] index:", index, ", memberArr:", memberArr);
+}
 
 // 방생성 중 memberList에 member 추가
 function memberList() {

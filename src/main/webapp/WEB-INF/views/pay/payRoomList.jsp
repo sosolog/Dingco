@@ -25,40 +25,14 @@
     let payRoomArr = ${payRoomList};
 
     $(document).ready(function() {
-
         $("#payRoomList").html($("#payRoom-list-tmpl").tmpl({pList:payRoomArr}));
-        // 방생성 modal open
-        $("#btn-open-modal").on("click", function(){
-           $(".modal").addClass("show");
-        });
-        // 방생성 modal close ( 방생성 미완료 상태에서 종료 )
-        $("#btn-close-modal").on("click", function(){
-            // modal 안보이도록 css 변경
-            $(".modal").removeClass("show");
-            // 현재까지 저장되어있던 정보 삭제
-            memberArr = [];
-            $("#room_name").val("")
-        });
-
-        // 방생성 modal open 이후
-        // 1. memberList에서 일부 member 삭제
-        $(document).on("click", ".btn-member-delete", function(){
-            console.log("memberList에서 member 삭제")
-            let index = $(this).attr("data-idx");
-            memberArr.splice(index,1); // memberArr 에서 member 삭제
-            $(this).parent().remove(); // html에서 해당 member span 태그 삭제
-            console.log("[END] index:", index, ", memberArr:", memberArr);
-        });
     });
-
-
-
 </script>
 <!-- 방생성 modal member 명단 template-->
 <script type="text/html" id="member-list-tmpl">
     {{each(index, m) mList}}
    <span id="mList_\${index}">
-        \${m}<button class="btn-member-delete" data-idx="\${index}">X</button>
+        \${m}<button data-idx="\${index}" onclick="deleteMemberDuringCreatingPayRoom(this)">X</button>
    </span>
     {{/each}}
 </script>
@@ -76,7 +50,7 @@
 </script>
 <hr>
 <h1>진행 중인 더치페이</h1>
-<button id="btn-open-modal">방생성</button>
+<button onclick="openPayRoomForm()">방생성</button>
 <hr>
 <div id="payRoomList"></div>
 
@@ -85,7 +59,7 @@
 
 <div class="modal">
     <div class="modal_body">
-        <button id="btn-close-modal">X</button>
+        <button onclick="closePayRoomForm()">X</button>
         <hr>
         방이름 : <input type="text" name="room_name" id="room_name"><br>
         방멤버 : <input type="text" name="groupMember" id="groupMember"><button onclick="memberList()">추가</button><br>
