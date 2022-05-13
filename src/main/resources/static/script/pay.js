@@ -71,7 +71,7 @@ function uncomma(str) {
 <!--숫자 천자리 콤마 없애주는 함수-->
 
 //+, - 버튼 바꿔주는 로직
-function plusMinus(idInfoArr) {
+/*function plusMinus(idInfoArr) {
     if ($(idInfoArr[0]).length == 0) {
         $(idInfoArr[1]).text("-");
         $(idInfoArr[2]).tmpl({pr: groupMemberArr}).appendTo(idInfoArr[3]);
@@ -79,7 +79,7 @@ function plusMinus(idInfoArr) {
         $(idInfoArr[4]).text("+");
         $(idInfoArr[5]).remove();
     }
-}
+}*/
 
 /* END : 기타 기능 */
 
@@ -191,9 +191,8 @@ function plusMinus(idInfoArr) {
 
     /* START : PAYGROUPMEMBER 계좌정보 UPDATE */
 
-//새로운 계좌 템플릿 테이블에 넣는 함수
+/*//새로운 계좌 템플릿 테이블에 넣는 함수
     function createNewAccount() {
-        console.log($("#btn-updated-account"));
         if ($("#btn-updated-account").length != 0) {
           
         } else {
@@ -201,17 +200,11 @@ function plusMinus(idInfoArr) {
             var idInfoArr = ["#btn-update-account", "#btn-account-plus", "#new-account-tmpl",
                 "#accountList", "#btn-account-plus", "#new-account-form:last"]
             plusMinus(idInfoArr);
-            /*if ($("#btn-update-account").length == 0) {
-                $("#btn-account-plus").text("-");
-                $("#new-account-tmpl").tmpl({pr: groupMemberArr}).appendTo("#accountList");
-            } else {
-                $("#btn-account-plus").text("+");
-                $("#new-account-form:last").remove();
-            }*/
         }
-    }
+    }*/
 
 //적은 계좌 텍스트로 저장해주고 PayGroupMember DB에 update 해주는 함수
+/*
     function saveNewAccount(btn) {
         var savebank = $("#new-account-bank").val();
         var saveNumber = $("#new-account-number").val();
@@ -222,21 +215,69 @@ function plusMinus(idInfoArr) {
 
             groupMemberArrRefresh(btn, gm_idx, savebank, saveNumber);
 
-            $("#accountList").html($("#save-account-tmpl").tmpl({pSave: groupMemberArr}));
+            // $("#accountList").html($("#save-account-tmpl").tmpl({pSave: groupMemberArr}));
+            $("#accountList").html($("#account-form-tmpl").tmpl({pSave: groupMemberArr, accountIdx: 1}));
 
             putAccountAjax(gm_idx, savebank, saveNumber);
         }
     }
+*/
 
 
+//새로운 계좌 템플릿 테이블에 넣는 함수
+function createNewAccount() {
+    if ($("#btn-updated-account").length != 0) {
+    } else {
+        if(groupMemberArr.filter(gm => gm.payMember_account == null).length == 0){
+            alert("추가할 인원이 없습니다.");
+        }else{
+            var tmplInfo = {pr: groupMemberArr,accountInfo:null, accountIdx:0};
+            var idInfoArr = ["#btn-update-account", "#btn-account-plus", "#account-form-tmpl", tmplInfo,
+                "#accountList", "#btn-account-plus", "#accountList:last"]
+            plusMinus(idInfoArr);
+        }
+    }
+}
+
+//적은 계좌 텍스트로 저장해주고 PayGroupMember DB에 update 해주는 함수
+function saveNewAccount(btn) {
+    var savebank = $("#new-account-bank").val();
+    var saveNumber = $("#new-account-number").val();
+    if (savebank.length > 0 && saveNumber.length > 0) {
+        $("#btn-account-plus").text("+");
+
+        var gm_idx = $("#new-account-owner").val();
+
+        groupMemberArrRefresh(btn, gm_idx, savebank, saveNumber);
+        putAccountAjax(gm_idx, savebank, saveNumber);
+
+        // $("#accountList").html($("#save-account-tmpl").tmpl({pSave: groupMemberArr}));
+        $("#accountList").html($("#account-form-tmpl").tmpl({pSave: groupMemberArr, accountIdx: 1}));
+
+    }
+}
+
+function plusMinus(idInfoArr) {
+    if ($(idInfoArr[0]).length == 0) {
+        $(idInfoArr[1]).text("-");
+        $(idInfoArr[2]).tmpl(idInfoArr[3]).appendTo(idInfoArr[4]);
+    } else {
+        $(idInfoArr[5]).text("+");
+        $("#accountList").html($("#account-form-tmpl").tmpl({pSave: groupMemberArr, accountIdx: 1}));
+    }
+}
 
 //저장된 계좌 삭제하는 함수
     function deleteSaveAccount(btn) {
 
+        var plusValid = $("#btn-account-plus").text();
+        if (plusValid == "-" || $("#btn-updated-account").length != 0) {
+        } else {
+
         let prgm_idx = $(btn).parent().find("#prgm_idx").val();
         console.log(prgm_idx);
 
-        groupMemberArrRefresh(btn, prgm_idx, null, null);
+        groupMemberArrRefresh(btn, prgm_idx);
 
         $.ajax({
             url: "/pay/accountNull",
@@ -251,13 +292,14 @@ function plusMinus(idInfoArr) {
                 console.log(e);
             }
         })
+        }
 
     }
 
     function updateSaveAccount(btn) {
 
         var plusValid = $("#btn-account-plus").text();
-        if (plusValid == "-") {
+        if (plusValid == "-" || $("#btn-updated-account").length != 0) {
         } else {
 
             var prgm_idx = btn.parents("tr").find("#prgm_idx").val();
@@ -270,7 +312,7 @@ function plusMinus(idInfoArr) {
                     console.log(data);
                     var accountInfo = JSON.parse(data);
                     console.log(accountInfo);
-                    btn.parents("tr").html($("#update-account-tmpl").tmpl(accountInfo));
+                    btn.parents("tr").html($("#account-form-tmpl").tmpl({accountInfo:accountInfo,accountIdx:0}));
                 },
                 error: function (x, i, e) {
                     console.log(e);
@@ -280,16 +322,16 @@ function plusMinus(idInfoArr) {
     }
 
     function updateSavedAccount(btn) {
-        var savebank = $("#saved-account-bank").val();
-        var saveNumber = $("#saved-account-number").val();
+        var savebank = $("#new-account-bank").val();
+        var saveNumber = $("#new-account-number").val();
         var gm_idx = $("#saved-account-prgm_idx").val();
 
         if (savebank.length > 0 && saveNumber.length > 0) {
-            $("#btn-account-plus").text("+");
 
+            console.log(groupMemberArr);
             groupMemberArrRefresh(btn, gm_idx, savebank, saveNumber);
-
-            $("#accountList").html($("#save-account-tmpl").tmpl({pSave: groupMemberArr}));
+            console.log(groupMemberArr);
+            $("#accountList").html($("#account-form-tmpl").tmpl({pSave: groupMemberArr,accountIdx:1}));
 
             putAccountAjax(gm_idx, savebank, saveNumber);
 
@@ -297,7 +339,7 @@ function plusMinus(idInfoArr) {
     }
 
     //계좌번호 수정 및 삭제시 groupMemberArr를 수정하는 함수
-    function groupMemberArrRefresh(btn, gm_idx, savebank, saveNumber) {
+    function groupMemberArrRefresh(btn, gm_idx, savebank=null, saveNumber=null) {
         var findMember = groupMemberArr.filter(gm => gm.prgm_idx == gm_idx);
         findMember[0].payMember_bank = savebank;
         findMember[0].payMember_account = saveNumber;

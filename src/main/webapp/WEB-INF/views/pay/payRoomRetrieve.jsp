@@ -38,7 +38,7 @@
             // 페이방 정보 보여주기
             $("#room_name").val(room_name); // 페이방 이름
             $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr})); // 방 멤버 목록
-            $("#accountList").html($("#save-account-tmpl").tmpl({pSave:groupMemberArr})); // 계좌번호 목록
+            $("#accountList").html($("#account-form-tmpl").tmpl({pSave:groupMemberArr, accountIdx:1})); // 계좌번호 목록
             showDutchPayList(pr_idx) // 더치페이 목록
         });
 
@@ -617,11 +617,24 @@
     </script>
 
     <!-- 새 계좌번호 생성 template-->
-    <script type="text/html" id="new-account-tmpl">
-        <tr style="color: #888888" id="new-account-form" >
-            <td><input type="text" id="new-account-bank" style="width: 50px"></td>
-            <td><input type="text" id="new-account-number" style="width: 100px"></td>
+    <script type="text/html" id="account-form-tmpl">
+
+        <%--<td>
+            <input type="hidden" value="\${prgm_idx}" id="saved-account-prgm_idx">
+            <input type="text" id="saved-account-bank" style="width: 50px" value="\${payMember_bank}"></td>
+        <td><input type="text" id="saved-account-number" style="width: 100px" value="\${payMember_account}"></td>
+        <td>
+            <input readonly value="\${payMember_name}">
+        </td>
+        <td><button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button></td>
+        --%>
+        {{if accountIdx == 0}}
+<%--        <tr style="color: #888888" id="new-account-form" >--%>
+            <td><input type="hidden" value="{{= accountInfo ? accountInfo.prgm_idx : ''}}" id="saved-account-prgm_idx">
+            <input type="text" id="new-account-bank" style="width: 50px" value="{{= accountInfo ? accountInfo.payMember_bank : ''}}"></td>
+            <td><input type="text" id="new-account-number" style="width: 100px" value="{{= accountInfo ? accountInfo.payMember_account : ''}}"></td>
             <td>
+                {{if accountInfo == null}}
                 <select id="new-account-owner">
                     {{each(index,p) pr}}
                     {{if p.payMember_account == null}}
@@ -629,12 +642,40 @@
                     {{/if}}
                     {{/each}}
                 </select>
+            <td>
+                <button id="btn-update-account" onclick="saveNewAccount($(this))">저장</button>
             </td>
-            <td><button id="btn-update-account" onclick="saveNewAccount($(this))">저장</button></td>
+                {{/if}}
+                {{if accountInfo != null}}
+                    <input readonly value="\${accountInfo.payMember_name}">
+            <td>
+                <button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button>
+            </td>
+                {{/if}}
+            </td>
+<%--        </tr>--%>
+        {{/if}}
+
+        {{if accountIdx == 1}}
+        {{each(index, p) pSave}}
+        {{if p.payMember_account != null}}
+        <tr style="color: #888888" class="save-account-form\${index}">
+
+            <td id="save-bank">\${p.payMember_bank}</td>
+            <td id="save-number">\${p.payMember_account}</td>
+            <td id="save-owner">\${p.payMember_name}</td>
+            <td>
+                <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
+                <button id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
+                <button id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>
+            </td>
         </tr>
+        {{/if}}
+        {{/each}}
+        {{/if}}
     </script>
 
-    <!--입력한 계좌번호 저장 template-->
+<%--    <!--입력한 계좌번호 저장 template-->
     <script type="text/html" id="save-account-tmpl">
 
             {{each(index, p) pSave}}
@@ -652,8 +693,9 @@
         </tr>
                 {{/if}}
             {{/each}}
-    </script>
+    </script>--%>
 
+<%--
 <script type="text/html" id="update-account-tmpl">
         <td>
             <input type="hidden" value="\${prgm_idx}" id="saved-account-prgm_idx">
@@ -664,6 +706,7 @@
         </td>
         <td><button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button></td>
 </script>
+--%>
 
 <h1>여기는 PAY방입니다</h1><br>
     <button onclick="javascript:location.href='/pay/list'">취소</button>
