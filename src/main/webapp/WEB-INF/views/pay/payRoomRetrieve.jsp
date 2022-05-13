@@ -28,6 +28,7 @@
 
         // 기타 로직을 위한 정보
         let payArr = []; // 새로 더치페이 생성시, 추가하는 결제 목록 리스트
+        let tempObj = null;
 
         // TODO: 현재 방 멤버 목록 수정 된 이후, memberArr도 수정되는지 확인
         let memberArr = []; // 현재 방 멤버 이름 목록
@@ -82,18 +83,19 @@
         // 새로 생성한 더치페이 정보 저장
         function saveNewDutchPayInfo() {
 
-            // TODO: 더치페이 폼에서 정보 가져오기
+            // 더치페이 폼에서 정보 가져오기
             var dutchObj = getDutchPayInfoFromForm();
+            getNewPayListFromForm(dutchObj);
             console.log(dutchObj);
 
-            // TODO: 가져온 정보 Ajax로 저장
+            // 가져온 정보 Ajax로 저장
             $.ajax({
                 url:"/pay/new",
                 type:"POST",
                 data: dutchObj,
                 success:function (data){
                     console.log(data);
-                    // showDutchPayList(pr_idx);
+                    showDutchPayList(pr_idx);
                 },
                 error:function (x,i,e){
                     console.log(e);
@@ -102,20 +104,18 @@
 
         }
 
-        // 더치페이 폼에서 정보 가져오기
+
+        // 더치페이 폼에서 정보(payList 제외) 가져오기
         function getDutchPayInfoFromForm() {
             var dutchPayObj = {
                 "pr_idx": pr_idx,
+                "dp_idx": getDp_idx(),
                 "dutchPayName": $("#pay_name").val().trim() ? $("#pay_name").val().trim() : null,
                 "totalPay": uncomma($("#allPrice").val()) * 1,
                 "option": $("#cutPrice").val(),
                 "createDate": $("#pay-date").val() ? $("#pay-date").val() : null,
                 "dueDate": $("#due-date").val() ? $("#due-date").val() : null,
-                "totalPay": calculateTotalPay(payArr)
             }
-            payArr.forEach((v, index) => {
-                mappingPay(dutchPayObj, v, 'payList['+index+'].' )
-            });
 
             // 유효하지 않은 값이 들어간 키의 경우 삭제
             // null => ajax를 통해 백단으로 가면 "" 빈문자열로 들어간다.
@@ -123,6 +123,13 @@
                 if(!dutchPayObj[k]) delete dutchPayObj[k];
             });
             return dutchPayObj;
+        }
+
+        // 새로 추가한 결제목록 정보 가져오기
+        function getNewPayListFromForm(obj){
+            payArr.forEach((v, index) => {
+                mappingPay(obj, v, 'payList['+index+'].' )
+            });
         }
 
         // 더치페이 폼에서 현재까지 저장되어있던 정보 삭제
@@ -136,6 +143,9 @@
             $("#bill").val("");
             $("#retrieve-pay-id").val("");
             $("#payList").html("");
+
+            $("#is-pay-form-opened").val("");
+            $("#btn-pay-plus").text("+");
         }
 
         // payList를 주면 총 결제금액 계산 하여 반환!
@@ -154,7 +164,7 @@
         }
 
         function getDp_idx() {
-            return $("#retrieve-pay-id").val();
+            return isRetrievedDutchInfo() ? Number.parseInt($("#retrieve-pay-id").val()) : null;
         }
 
         // ajax를 통해 보낼 수 있도록 맵핑
@@ -189,11 +199,26 @@
             return year + month + date + "_"+ hours + ':' + minutes + ':' + seconds;
         }
 
-        // TODO: 여기까지 리팩토링 완료
+        // 결제 목록(payList)를 제외한 더치페이 정보 수정
+        function saveUpdateDutchPay(){
+            var dutchpayObj = getDutchPayInfoFromForm();
+            console.log(dutchpayObj);
+            $.ajax({
+                url:`/pay/\${pr_idx}/dutch/\${dp_idx}`,
+                type:"PUT",
+                data: dutchpayObj,
+                success:function (data){
+                    console.log(data);
+                    showDutchPayList(pr_idx)
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            });
+        }
 
-
-
-
+        // 최초 화면 - 결제목록(더치페이목록) - 삭제 버튼
+        // 더치페이 내역 하나 삭제
         function deleteOneDutchPay(dp_idx){
             console.log(`\${dp_idx} 번 더치페이 삭제`);
             var isOk = confirm("정말로 삭제하시겠습니까? 이후엔 다시 복구할 수 없습니다.");
@@ -212,16 +237,19 @@
             }
         }
 
+        // TODO: 여기까지 리팩토링 완료
+
         function updateSavePay(btn) {
             console.log($(btn).parents("tr"));
             var groupMember = null;
+            // 현재 페이방 그룹 멤버 가져오기
             $.ajax({
                 url:`/pay/\${pr_idx}/member`,
                 type:"GET",
                 success:function (data){
                     console.log(data);
                     groupMember = data;
-                    afterSuccessGetGroupMember(groupMember, btn);
+                    // afterSuccessGetGroupMember(groupMember, btn);
                 },
                 error:function (x,i,e){
                     console.log(e);
@@ -230,25 +258,23 @@
         }
 
         function afterSuccessGetGroupMember(groupMember, btn){
-            var isRetrieveInfo = ($("#retrieve-pay-id").val().length > 0);
-            var dp_idx = $("#retrieve-pay-id").val();
             var p_idx = $(btn).attr("data-idx");
 
-            if (isRetrieveInfo) {
+            if (isRetrievedDutchInfo()) {
+                var dp_idx = getDp_idx();
                 $.ajax({
                     url:`/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
                     type:"GET",
                     success:function (data){
                         // console.log(data);
                         var participantsNum = [];
-
                         data.participants.forEach(participant => participantsNum.push(participant.prgm_idx));
                         var payObj = {
-                            "groupMember": groupMember,
-                            "pay": data,
+                            "groupMember": groupMemberArr,
+                            "pay": parsePayIntoPayObj(data),
                             "participants_prgm_idx":participantsNum
                         }
-                        $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
+                        $(btn).parents("tr").html($("#pay-form-tmpl").tmpl(payObj));
                         console.log(payObj)
                     },
                     error:function (x,i,e){
@@ -257,26 +283,20 @@
                 })
             } else {
                 var index = Number.parseInt($(btn).attr("data-idx"));
-                // console.log(groupMember, index, payArr, payArr[index]);
                 var data = payArr[index];
+                data.p_idx = index;
                 var participantsNum = [];
-                data.spp3.forEach(participant => {
+                data.payParticipants.forEach(participant => {
                     var prgm_idx = Number.parseInt(participant.prgm_idx);
                     participantsNum.push(prgm_idx);
                     participant.prgm_idx = prgm_idx;
                 });
                 var payObj = {
-                    "groupMember": groupMember,
-                    "pay": {
-                        "p_idx":index,
-                        "p_name":data.payName,
-                        "price":data.payPrice,
-                        "payMember":data.payPayer,
-                        "participants":data.payParticipants
-                    },
+                    "groupMember": groupMemberArr,
+                    "pay": data,
                     "participants_prgm_idx":participantsNum
                 }
-                $(btn).parents("tr").html($("#update-pay-tmpl").tmpl(payObj));
+                $(btn).parents("tr").html($("#pay-form-tmpl").tmpl(payObj));
                 $(btn).parents("tr").attr("id", "update-pay-form");
             }
         }
@@ -321,12 +341,7 @@
             } else {
                 // console.log(payArr[p_idx])
                 savePayParticipants.forEach(participant => participant.prgm_idx = Number.parseInt(participant.prgm_idx));
-                payArr[p_idx] = {
-                    "payName":savePayName,
-                    "payPrice":savePayPrice,
-                    "payPayer":savePayPayer,
-                    "payParticipants":savePayParticipants
-                }
+                payArr[p_idx] = PayObjForPayArr(savePayName, savePayPrice, savePayPayer, savePayParticipants);
                 // console.log(payArr[p_idx])
                 $("#update-pay-form").remove();
                 $("#payList").html($("#save-pay-tmpl").tmpl({pSave:payArr}));
@@ -339,35 +354,145 @@
 
         }
 
-        function saveUpdateDutchPay(){
-            var dp_idx = $("#retrieve-pay-id").val();
-            var pay_name = $("#pay_name").val();
-            var allPrice = $("#allPrice").val();
-            var cutPrice = $("#cutPrice").val();
-            var pay_date = $("#pay-date").val();
-            var due_date = $("#due-date").val();
-            var dutchpayObj = {
-                "pr_idx":pr_idx,
-                "dp_idx":dp_idx,
-                "dutchPayName":pay_name,
-                "allPrice":allPrice,
-                "option":cutPrice,
-                "createDate":pay_date,
-                "dueDate":due_date
+        // TODO: 아래 부분도 리팩토링 완료
+        function parsePayIntoPayObj(dtoObj) {
+            var payMember = Member(dtoObj.payMember.prgm_idx, dtoObj.payMember.payMember_name);
+            var participants = dtoObj.forEach( p => Member(p.prgm_idx, p.payMember_name) );
+            return PayObjForPayArr(dtoObj.p_name, dtoObj.price, payMember, participants);
+        }
+
+        function PayObjForPayArr(payName = null, payPrice = null, payPayer = null, payParticipants = null, p_idx = null) {
+            var payObj = {
+                "payName": payName,
+                "payPrice": payPrice,
+                "payPayer": payPayer,
+                "payParticipants": payParticipants,
+                "p_idx": p_idx
             }
-            console.log(dutchpayObj)
-            $.ajax({
-                url:`/pay/\${pr_idx}/dutch/\${dp_idx}`,
-                type:"PUT",
-                data: dutchpayObj,
-                success:function (data){
-                    console.log(data);
-                    showDutchPayList(pr_idx)
-                },
-                error:function (x,i,e){
-                    console.log(e);
-                }
-            })
+            return payObj;
+        }
+
+        function Member(prgm_idx = null, payMember_name = null) {
+            var member = {
+                "prgm_idx": prgm_idx,
+                "payMember_name": payMember_name
+            }
+            return member;
+        }
+
+        // pay form 열려 있는가?
+        function isPayFormOpened() {
+            return new Boolean($("#is-pay-form-opened").val()).valueOf();
+        }
+
+        // 새 pay 입력시, 폼 탬플릿 보여주기/없애기 토글
+        function togglePayForm(){
+            if(!isPayFormOpened()){
+                $("#btn-pay-plus").text("-");
+                $("#pay-form-tmpl").tmpl({groupMember:groupMemberArr, pay: null, participants_prgm_idx:null}).appendTo("#payList");
+                $("#is-pay-form-opened").val("true");
+            }else{
+                $("#btn-pay-plus").text("+");
+                $("#pay-form:last").remove();
+                $("#is-pay-form-opened").val("");
+            }
+            return false;
+        }
+
+        // pay 폼에 작성된 정보 가져오기
+        function getPayInfoFromForm() {
+            var payName = $("#form-pay-name").val().trim();
+            var payPrice = $("#form-pay-price").val();
+            var payPayer = Member(
+                prgm_idx = $(".form-pay-selector:selected").val(),
+                payMember_name = $(".form-pay-selector:selected").text().trim()
+            );
+            var payParticipants = [];
+            $(".form-pay-participants-check:checked")
+                .each(
+                    (idx, chked) =>
+                    payParticipants.push(Member(
+                        prgm_idx = chked.value,
+                        payMember_name = $(chked).attr("data-prgm-name")
+                    ))
+                );
+            return PayObjForPayArr(payName, payPrice, payPayer, payParticipants);
+        }
+
+        // 결제내역 폼에 작성된 정보 저장해주는 함수
+        function saveNewPay() {
+            // 폼에서 정보가져오기
+            var payObj = getPayInfoFromForm();
+            console.log(payObj);
+
+            // 저장전 유효성 검사
+            if(payObj.payName.length <= 0){ // payName 유효성 체크
+                alert("결제 내역 이름을 입력하세요.");
+                return false;
+            } else if(payObj.payPrice <= 0) { // payName 유효성 체크
+                alert("결제 금액을 입력하세요.");
+                return false;
+            } else if(payObj.payParticipants.length < 1){ // payParticipants 유효성 체크
+                alert("참여인원은 1명 이상이어야 합니다.");
+                return false;
+            }
+
+            togglePayForm();
+
+            if (!isRetrievedDutchInfo()) {
+                payArr.push(payObj);
+                console.log(payArr);
+
+                $("#payList").html($("#save-pay-tmpl").tmpl({pSave: payArr}));
+                $("#allPrice").val(comma(calculateTotalPay(payArr)));
+
+                return false;
+            } else {
+                var dp_idx = getDp_idx();
+                var mappedObj = {};
+                mappingPay(mappedObj, payObj); // ajax로 데이터 보낼 수 있도록 맵핑하기
+                console.log(mappedObj);
+
+                $.ajax({
+                    url: `/pay/\${pr_idx}/dutch/\${dp_idx}`,
+                    type: "POST",
+                    data: mappedObj,
+                    success: function (data) {
+                        console.log(data);
+                        showDutchPayInfo(dp_idx);
+                    },
+                    error: function (x, i, e) {
+                        console.log(e);
+                    }
+                });
+            }
+        }
+
+        //저장된 결제 삭제하는 함수
+        function deleteSavePay(tr) {
+            let index = $(tr).attr("data-idx");
+
+            if (!isRetrievedDutchInfo()) {
+                payArr.splice(index, 1);
+                // console.log(payArr);
+                $("#payList").html($("#save-pay-tmpl").tmpl({pSave: payArr}));
+                $("#allPrice").val(comma(calculateTotalPay(payArr)));
+            } else {
+                var dp_idx = getDp_idx();
+                var p_idx = index;
+
+                $.ajax({
+                    url: `/pay/\${pr_idx}/dutch/\${dp_idx}/\${p_idx}`,
+                    type: "DELETE",
+                    success: function (data) {
+                        console.log(data);
+                        showDutchPayInfo(dp_idx);
+                    },
+                    error: function (x, i, e) {
+                        console.log(e);
+                    }
+                });
+            }
         }
 
 
@@ -381,15 +506,6 @@
             \${m.payMember_name}<button class="btn-member-delete" data-idx="\${index}" onclick="memberCheck($(this))">X</button>
             </span>
         {{/each}}
-    </script>
-    <!-- 새 더치페이 생성 template-->
-    <script type="text/html" id="new-dutch-tmpl">
-        <tr style="color: #888888" id="new-dutch-form">
-            <td>\${today}</td>
-            <td><input type="text" id="new-dutch-name"></td>
-            <td>0</td>
-            <td><button onclick="createNewDutchCfm()">확인</button></td>
-        </tr>
     </script>
 
     <!-- 새 더치페이 생성 template-->
@@ -405,7 +521,7 @@
                 </select>
             </td>
             <td><button type="button" id="new-pay-participants" style="width: 50px"  onclick="changeParticipants()"> <span>\${pr.length}</span>명</button>
-                <div id="new-pay-participants-form" style="display: none">
+                <div id="form-pay-participants-form" style="display: none">
                     {{each(index, p) pr}}
                     <input type="checkbox" class="new-pay-participants-check" value="\${p.prgm_idx}" data-prgm-name="\${p.payMember_name}" checked>\${p.payMember_name}
                     {{/each}}
@@ -413,6 +529,40 @@
                 </div>
             </td>
             <td><button id="btn-update-pay" type="button" onclick="return saveNewPay()">저장</button></td>
+        </tr>
+    </script>
+
+    <script type="text/html" id="pay-form-tmpl">
+        <tr id="pay-form">
+            <td>
+                <input type="text" id="form-pay-name" style="width: 50px" value="{{= pay ? pay.payName : ''}}">
+            </td>
+            <td><input type="text" id="form-pay-price" onkeyup="inputNumberFormat(this)" style="width: 100px" value="{{= pay ? pay.payPrice : ''}}"></td>
+            <td>
+                <select id="form-pay-payer">
+                        {{each(index,p) groupMember}}
+                            <option class="form-pay-selector" value="\${p.prgm_idx}"
+                                    {{= pay && (p.prgm_idx == pay.payPayer.prgm_idx) ? 'selected' : null}}>
+                                \${p.payMember_name}
+                            </option>
+                        {{/each}}
+                </select>
+            </td>
+            <td>
+                <button type="button" id="form-pay-participants" style="width: 50px"  onclick="changeParticipants()">
+                    <span>{{= participants_prgm_idx ? participants_prgm_idx.length : groupMember.length}}</span>명
+                </button>
+                <div id="form-pay-participants-list" style="display: none">
+                    {{each(index, p) groupMember}}
+                        <input type="checkbox" class="form-pay-participants-check" value="\${p.prgm_idx}"
+                               data-prgm-name="\${p.payMember_name}"
+                               {{= participants_prgm_idx && !participants_prgm_idx.includes(p.prgm_idx) ? null : 'checked'}}>
+                        \${p.payMember_name}
+                    {{/each}}
+                    <button type="button" onclick="changeParticipantsNumber()">OK</button>
+                </div>
+            </td>
+            <td><button type="button" onclick="return {{= pay ? 'saveUpdatedPay('+pay.p_idx+')' : 'saveNewPay()'}}">저장</button></td>
         </tr>
     </script>
 
@@ -452,35 +602,7 @@
         {{/each}}
     </script>
 
-    <script type="text/html" id="update-pay-tmpl">
-            <td><input type="text" id="update-pay-name" style="width: 50px" value="\${pay.p_name}"></td>
-            <td><input type="text" id="update-pay-price" onkeyup="inputNumberFormat(this)" style="width: 100px" value="\${pay.price}"></td>
-            <td>
-                <select id="update-pay-payer">
-                    {{each(index,p) groupMember}}
-                    {{if p.prgm_idx == pay.payMember.prgm_idx}}
-                        <option class="update-pay-selector" value="\${p.prgm_idx}" selected>\${p.payMember_name}</option>
-                    {{else}}
-                        <option class="update-pay-selector" value="\${p.prgm_idx}">\${p.payMember_name}</option>
-                    {{/if}}
 
-                    {{/each}}
-                </select>
-            </td>
-            <td><button type="button" id="new-pay-participants" style="width: 50px"  onclick="changeParticipants()"> <span>\${participants_prgm_idx.length}</span>명</button>
-                <div id="new-pay-participants-form" style="display: none">
-                    {{each(index, p) groupMember}}
-                    {{if participants_prgm_idx.includes(p.prgm_idx) }}
-                    <input type="checkbox" class="new-pay-participants-check" value="\${p.prgm_idx}" data-prgm-name="\${p.payMember_name}" checked>\${p.payMember_name}
-                    {{else}}
-                    <input type="checkbox" class="new-pay-participants-check" value="\${p.prgm_idx}" data-prgm-name="\${p.payMember_name}">\${p.payMember_name}
-                    {{/if}}
-                    {{/each}}
-                    <button type="button" onclick="changeParticipantsNumber()">OK</button>
-                </div>
-            </td>
-            <td><button type="button" onclick="return saveUpdatedPay(\${pay.p_idx})">저장</button></td>
-    </script>
 
     <script type="text/html" id="show-dutch-list-tmpl">
         {{each(index, p) dList}}
@@ -588,8 +710,9 @@
         편집하기<br>
 
         <input type="text" id="pay_name" name="pay_name" placeholder="결제이름">
-            <button type="button" id="btn-pay-plus"onclick="createNewPay()">+</button>
+            <button type="button" id="btn-pay-plus"onclick="return togglePayForm()">+</button>
         <br>
+        <input type="hidden" id="is-pay-form-opened">
         <table>
             <thead>
             <tr>
