@@ -42,6 +42,7 @@
             showDutchPayList(pr_idx) // 더치페이 목록
         });
 
+
         // 더치페이 생성 폼 열기
         function openDutchPayForm() {
             $(".modal").addClass("show");
@@ -629,7 +630,7 @@
                     {{/each}}
                 </select>
             </td>
-            <td><button id="btn-update-account" onclick=" return saveNewAccount()">저장</button></td>
+            <td><button id="btn-update-account" onclick="saveNewAccount($(this))">저장</button></td>
         </tr>
     </script>
 
@@ -664,7 +665,7 @@
         <td><button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button></td>
 </script>
 
-<h1>여기는 PAY방입니다<h1><br>
+<h1>여기는 PAY방입니다</h1><br>
     <button onclick="javascript:location.href='/pay/list'">취소</button>
     <h2>Pedal</h2>
 <button>등록</button><br>
@@ -687,7 +688,7 @@
     </tbody>
 </table>
 
-<span>계좌 목록</span><button id="btn-account-plus" onclick="return createNewAccount()">추가</button><br>
+<span>계좌 목록</span><button type="button" id="btn-account-plus" onclick="createNewAccount()">+</button><br>
 <table>
     <thead>
         <tr>
