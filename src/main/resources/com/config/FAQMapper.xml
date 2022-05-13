@@ -18,7 +18,7 @@
                  join CATEGORY c on f.category_idx = c.CATEGORY_IDX
                  join MEMBER m on f.m_idx = m.m_idx
         where f.category_idx = 1
-        order by f.number_idx asc
+        order by f.number_idx desc
             limit ${perPage} offset ${offset}
         ]]>
 	</select>
@@ -37,7 +37,7 @@
                  join CATEGORY c on f.category_idx = c.CATEGORY_IDX
                  join MEMBER m on f.m_idx = m.m_idx
         where f.category_idx = 2
-        order by f.number_idx asc
+        order by f.number_idx desc
             limit ${perPage} offset ${offset}
         ]]>
 	</select>
@@ -47,16 +47,30 @@
         <result property="category_idx" column="category_idx"/>
         <result property="category_name" column="category_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
     </resultMap>
-    <select id="category" resultMap="category">
+
+    <select id="categoryBoardNotice" resultMap="category">
         select category_idx, category_name
         from CATEGORY
+        where  category_idx = 1
+    </select>
+
+    <select id="categoryBoardFaq" resultMap="category">
+        select category_idx, category_name
+        from CATEGORY
+        where  category_idx = 2
     </select>
 
     <!--    https://stage-diary.tistory.com/594 -->
-    <insert id="boardWrite" parameterType="FAQDTO">
+    <insert id="writeUserNotice" parameterType="FAQDTO">
         insert into FAQ (title, content,m_idx ,category_idx)
-            value (#{title}, #{content}, #{m_idx},#{category_idx});
+            value (#{title}, #{content}, #{m_idx}, #{category_idx});
     </insert>
+
+    <insert id="writeUserFaq" parameterType="FAQDTO">
+        insert into FAQ (title, content,m_idx ,category_idx)
+            value (#{title}, #{content}, #{m_idx}, #{category_idx});
+    </insert>
+
 
 
     <select id="retrieve" parameterType="int" resultType="FAQDTO">
@@ -76,13 +90,16 @@
 
     </select>
 
-    <update id="update" parameterType="FAQDTO">
+    <update id="updateUserBoard" parameterType="FAQDTO">
         update FAQ
         set title = #{title},content = #{content},category_idx = #{category_idx}
         where number_idx = #{number_idx}
     </update>
 
-    <delete id="delete" parameterType="int">
+
+
+
+    <delete id="deleteUserBoard" parameterType="int">
         delete from FAQ
         where number_idx = #{number_idx}
     </delete>
@@ -95,9 +112,16 @@
     </update>
 
 
-    <select id="totalRecord" resultType="int">
+    <select id="totalRecordNotice" resultType="int">
         select count(*)
         from FAQ
+        where CATEGORY_IDX = 1
+    </select>
+
+    <select id="totalRecordFaq" resultType="int">
+        select count(*)
+        from FAQ
+        where CATEGORY_IDX = 2
     </select>
 
 </mapper>

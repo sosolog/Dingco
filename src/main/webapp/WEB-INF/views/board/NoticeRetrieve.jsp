@@ -13,14 +13,14 @@
 
                 $.ajax({
                     type: 'DELETE',
-                    url: `/faq/${faqDTO.number_idx}`,
+                    url: `/notice/${faqDTO.number_idx}`,
                     datatype: "json",
                     success: function (result) {
-                        confirm("삭제되었습니다.")
+                        confirm("수정되었습니다.")
                         console.log("success")
                         console.log(result)
                         if(result) {
-                            location.href="/faq";
+                            location.href="/notice";
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -52,7 +52,7 @@
                 if(confirm("정말 수정하시겠습니까?")){
                     $.ajax({
                         type: 'PUT',
-                        url: `/faq/${faqDTO.number_idx}`,
+                        url: `/notice/${faqDTO.number_idx}`,
                         datatype: "json",
                         data: {
                             title: title,
@@ -65,7 +65,7 @@
                             console.log("success")
                             console.log(result)
                             if(result) {
-                                location.href="/faq";
+                                location.href="/notice";
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -103,10 +103,10 @@
 <form name="retrieve">
     제목:<input type="text" name="title" id="title" value="${faqDTO.title}"><br>
     카테고리:
-        <c:forEach var="cat" items="${category}" varStatus="status">
-            <input type="text" id="${cat.category_idx}" value="${cat.category_name}" readonly>
-            <input type="hidden"  id="category_idx" value="${cat.category_idx}"><br>
-        </c:forEach>
+    <c:forEach var="cat" items="${category}" varStatus="status">
+        <input type="text" id="${cat.category_idx}" value="${cat.category_name}" readonly>
+        <input type="hidden"  id="category_idx" value="${cat.category_idx}"><br>
+    </c:forEach>
 
     작성자:<input type="text" name="username" id="username" value="${memberDTO.username}" readonly><br>
     내용:<textarea rows="10" cols="10" name="content" id="content" value="${faqDTO.content}">${faqDTO.content}</textarea><br>

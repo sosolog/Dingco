@@ -29,7 +29,7 @@ public class NoticeController {
     @GetMapping("/notice")
     public String faq(@Login MemberDTO memberDTO,
                       @RequestParam(value = "c_id", required = false, defaultValue = "1") int category_idx,
-                      @RequestParam(value = "curPage", required = false, defaultValue = "1") String curPage,Model model) throws Exception {
+                      @RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,Model model) throws Exception {
 
         logger.info("로그");
 
@@ -40,4 +40,46 @@ public class NoticeController {
         return "NoticeList";
     }
 
+    @GetMapping("/notice/write")
+    public String noticeWriteUI(@Login MemberDTO memberDTO, Model m) throws Exception {
+
+        List<HashMap<String, String>> category = service.categoryBoardNotice();
+        m.addAttribute("category", category);
+        m.addAttribute("dto", memberDTO);
+        return "NoticeWrite";
+    }
+
+
+    @PostMapping("/notice/write")
+    public String noticeWrite(FAQDTO dto) throws Exception {
+        service.writeUserFaq(dto);
+        System.out.println(dto);
+        return "redirect:/notice";
+    }
+
+    @GetMapping("/notice/{idx}")
+    public String noticeRetrieve(@PathVariable("idx") int number_idx, @Login MemberDTO memberDTO, Model m) throws Exception {
+
+        FAQDTO faqDTO = service.retrieve(number_idx);
+        List<HashMap<String, String>> category = service.categoryBoardNotice();
+
+        m.addAttribute("faqDTO", faqDTO);
+        m.addAttribute("memberDTO", memberDTO);
+        m.addAttribute("category", category);
+        return "NoticeRetrieve";
+    }
+
+    @ResponseBody
+    @PutMapping("/notice/{idx}")
+    public int update(@PathVariable("idx") int number_idx, FAQDTO dto) throws Exception {
+        int result = service.updateUserBoard(dto);
+        return result;
+    }
+
+    @ResponseBody
+    @DeleteMapping("/notice/{idx}")
+    public int delete(@PathVariable("idx") int number_idx) throws Exception {
+        int result = service.deleteUserBoard(number_idx);
+        return result;
+    }
 }

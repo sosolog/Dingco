@@ -34,17 +34,16 @@ public class FAQController {
         logger.info("로그");
 
         //페이징 처리
-        PageDTO<FAQDTO> pageDTO = service.selectNoticePage(Integer.parseInt(curPage), category_idx);
-        System.out.println(pageDTO);
+        PageDTO<FAQDTO> pageDTO = service.selectFAQPage(Integer.parseInt(curPage), category_idx);
         model.addAttribute("pageDTO", pageDTO);
         return "FaqList";
     }
 
 
     @GetMapping("/faq/write")
-    public String boardWriteUI(@Login MemberDTO memberDTO, Model m) throws Exception {
+    public String FAQWriteUI(@Login MemberDTO memberDTO, Model m) throws Exception {
 
-        List<HashMap<String, String>> category = service.category();
+        List<HashMap<String, String>> category = service.categoryBoardFaq();
         m.addAttribute("category", category);
         m.addAttribute("dto", memberDTO);
         return "FaqWrite";
@@ -52,17 +51,17 @@ public class FAQController {
 
 
     @PostMapping("/faq/write")
-    public String boardWrite(FAQDTO dto) throws Exception {
+    public String FAQWrite(FAQDTO dto) throws Exception {
+        service.writeUserFaq(dto);
         System.out.println(dto);
-        service.boardWrite(dto);
         return "redirect:/faq";
     }
 
     @GetMapping("/faq/{idx}")
-    public String retrieve(@PathVariable("idx") int number_idx, @Login MemberDTO memberDTO, Model m) throws Exception {
+    public String faqRetrieve(@PathVariable("idx") int number_idx, @Login MemberDTO memberDTO, Model m) throws Exception {
 
         FAQDTO faqDTO = service.retrieve(number_idx);
-        List<HashMap<String, String>> category = service.category();
+        List<HashMap<String, String>> category = service.categoryBoardFaq();
 
         m.addAttribute("faqDTO", faqDTO);
         m.addAttribute("memberDTO", memberDTO);
@@ -73,14 +72,15 @@ public class FAQController {
     @ResponseBody
     @PutMapping("/faq/{idx}")
     public int update(@PathVariable("idx") int number_idx, FAQDTO dto) throws Exception {
-        int result = service.update(dto);
+        int result = service.updateUserBoard(dto);
+        System.out.println(result);
         return result;
     }
 
     @ResponseBody
     @DeleteMapping("/faq/{idx}")
     public int delete(@PathVariable("idx") int number_idx) throws Exception {
-        int result = service.delete(number_idx);
+        int result = service.deleteUserBoard(number_idx);
         return result;
     }
 
