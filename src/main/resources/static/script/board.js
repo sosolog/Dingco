@@ -11,13 +11,7 @@ function flipFAQ(idx) {
     $('#flipFAQ'+idx+' .btn_flipFAQ').css("display", "none");
 }
 
-function editInquiryForm_submit(f){
-    var file_input = $("#file-input-list").children().last().children("input");
-    if(file_input.val() !== undefined && !file_input.val()){
-        file_input.remove()
-    }
-    f.submit();
-}
+
 // START : InquiryRetrieve 용
 // 글 삭제
 function deletePost() {
@@ -225,3 +219,60 @@ function deleteComment(c_idx) {
 }
 
 // END : InquiryRetrieve
+
+// START : InquiryWrite
+// 업로드 대기중인(미리보기) 이미지 삭제
+function deleteImage(btn) {
+    var idx = $(btn).parent().attr("data-idx");
+    $(btn).parent().remove();
+    $(`input[data-idx='\${idx}']`).parent().remove();
+}
+
+// 파일이 등록되지 않은 파일 태그 삭제하기
+function deleteEmptyFileForm() {
+    var file_input = $("#file-input-list").children().last().children("input");
+    if(file_input.val() !== undefined && !file_input.val()){
+        file_input.parent().remove();
+    }
+}
+
+// 이미지 -> 파일 폼(태그)에 저장하기
+function addImage(){
+    deleteEmptyFileForm();
+
+    // 5개 이상 등록 막기(유효성 검사)
+    if ($("#img-preview-area").children().children().length >= 5){
+        alert("이미지 파일은 최대 5개 업로드 가능합니다.");
+    } else {
+        $("#file-input-tmpl").tmpl(index).appendTo( "#file-input-list" );
+        $("#file-input-list").children().last().children("input").click()
+    }
+}
+
+// 이미지 폼태그에 저장하기
+function readInputFile(input){
+    var file = input.files[0];
+
+    // 파일 타입 확인 (유효성 검사)
+    if(!file.type.match("image/.*")){
+        alert("이미지 확장자만 업로드 가능합니다.");
+        $(input).parent().remove();
+        return false;
+    };
+
+    var reader = new FileReader();
+    reader.onload = function(e){
+        var data = {
+            "index":index,
+            "result":e.target.result
+        }
+        $("#img-preview-tmpl").tmpl(data).appendTo( "#img-preview-area ul" );
+        index++;
+    };
+    reader.readAsDataURL(file);
+}
+function submitInquiryForm(f){
+    deleteEmptyFileForm();
+    f.submit();
+}
+// END : InquiryWrite

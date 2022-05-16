@@ -14,7 +14,7 @@
         </div>
         <c:if test="${fn:contains(url, 'inquiry')}">
             <div class="ico_rt">
-                <a class="save" onclick="editInquiryForm_submit(inquiryForm)"><span>등록</span></a>
+                <a class="save" onclick="submitInquiryForm(inquiryForm)"><span>등록</span></a>
             </div>
         </c:if>
     </header>
