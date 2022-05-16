@@ -19,12 +19,10 @@ function closePayRoomForm() {
 
 // 방생성 중 memberList에서 member 삭제
 function deleteMemberDuringCreatingPayRoom(btn){
-    // console.log("memberList에서 member 삭제");
     let index = $(btn).attr("data-idx");
 
     memberArr.splice(index,1); // memberArr 에서 member 삭제
     $(this).parent().remove(); // html에서 해당 member span 태그 삭제
-    // console.log("[END] index:", index, ", memberArr:", memberArr);
 }
 
 // 방생성 중 memberList에 member 추가
