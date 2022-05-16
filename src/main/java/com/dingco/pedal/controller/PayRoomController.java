@@ -6,6 +6,7 @@ import com.dingco.pedal.service.PayRoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -201,4 +202,19 @@ public class PayRoomController {
     public int updateDutchPay(@PathVariable int pr_idx, @PathVariable int dp_idx, DutchPayDTO dutchPayDTO) throws Exception{
         return payRoomService.updateDutchPay(dutchPayDTO);
     }
+
+    @PostMapping("/pay/test")
+    @ResponseBody
+        public String test(DutchPayDTO updateDTO) {
+        System.out.println("updateDTO = " + updateDTO);
+        return updateDTO.toString();
+    }
+
+    @PostMapping("/pay/test2")
+    @ResponseBody
+    public String test2(@RequestParam("deleteArr[]") List<Integer> deleteArr) {
+        System.out.println("deleteArr = " + deleteArr);
+        return deleteArr.toString();
+    }
+
 }

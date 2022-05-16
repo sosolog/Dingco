@@ -115,32 +115,31 @@ function openDutchPayForm() {
     $("#pay-date").val(today);
 }
 
-
-// 더치페이 폼 닫기
-function closeDutchPayForm() {
-
-    // TODO: 저장시, 유효성 검사 조건 및 저장 조건 확정하여 변경!
-    // 저장된 결제 목록이 있으면 저장! (이름 없으면 임의 생성)
-    if( payArr.length > 0 && !isRetrievedDutchInfo()){
-
-        // 더치페이 이름 정보 없을 시, 임의로 이름 생성(현재 날짜 & 시간 기준)
-        if($("#pay_name").val().trim().length <= 0){
-            $("#pay_name").val(createArbitraryName());
-        }
-
-        // 더치페이 폼에서 정보 가져와서 데이터 저장
-        saveNewDutchPayInfo();
-
-    } else if (isRetrievedDutchInfo()) { // TODO: retrieve한 내용 수정 한 이후, 닫기
-
-    }
-
-    // modal 안보이도록 css 변경
-    $(".modal").removeClass("show");
-
-    // 현재까지 저장되어있던 정보 삭제
-    clearDutchPayForm();
-}
+// // 더치페이 폼 닫기
+// function closeDutchPayForm() {
+//
+//     // TODO: 저장시, 유효성 검사 조건 및 저장 조건 확정하여 변경!
+//     // 저장된 결제 목록이 있으면 저장! (이름 없으면 임의 생성)
+//     if( payArr.length > 0 && !isRetrievedDutchInfo()){
+//
+//         // 더치페이 이름 정보 없을 시, 임의로 이름 생성(현재 날짜 & 시간 기준)
+//         if($("#pay_name").val().trim().length <= 0){
+//             $("#pay_name").val(createArbitraryName());
+//         }
+//
+//         // 더치페이 폼에서 정보 가져와서 데이터 저장
+//         saveNewDutchPayInfo();
+//
+//     } else if (isRetrievedDutchInfo()) { // TODO: retrieve한 내용 수정 한 이후, 닫기
+//
+//     }
+//
+//     // modal 안보이도록 css 변경
+//     $(".modal").removeClass("show");
+//
+//     // 현재까지 저장되어있던 정보 삭제
+//     clearDutchPayForm();
+// }
 
 
 // 새로 생성한 더치페이 정보 저장
@@ -209,6 +208,11 @@ function clearDutchPayForm() {
 
     $("#is-pay-form-opened").val("");
     $("#btn-pay-plus").text("+");
+
+    $("#payList2").html("");
+    savedPayArr = [];
+    updatedPayArr = new Set();
+    deletedPayArr = [];
 }
 
 // payList를 주면 총 결제금액 계산 하여 반환!
@@ -262,23 +266,23 @@ function createArbitraryName() {
     return year + month + date + "_"+ hours + ':' + minutes + ':' + seconds;
 }
 
-// 결제 목록(payList)를 제외한 더치페이 정보 수정
-function saveUpdateDutchPay(){
-    var dutchpayObj = getDutchPayInfoFromForm();
-    console.log(dutchpayObj);
-    $.ajax({
-        url:`/pay/${pr_idx}/dutch/${dp_idx}`,
-        type:"PUT",
-        data: dutchpayObj,
-        success:function (data){
-            console.log(data);
-            showDutchPayList(pr_idx)
-        },
-        error:function (x,i,e){
-            console.log(e);
-        }
-    });
-}
+// 결제 목록(payList)를 제외한 더치페이 정보 수정 -- 삭제됨
+// function saveUpdateDutchPay(){
+//     var dutchpayObj = getDutchPayInfoFromForm();
+//     console.log(dutchpayObj);
+//     $.ajax({
+//         url:`/pay/${pr_idx}/dutch/${dp_idx}`,
+//         type:"PUT",
+//         data: dutchpayObj,
+//         success:function (data){
+//             console.log(data);
+//             showDutchPayList(pr_idx)
+//         },
+//         error:function (x,i,e){
+//             console.log(e);
+//         }
+//     });
+// }
 
 // 최초 화면 - 결제목록(더치페이목록) - 삭제 버튼
 // 더치페이 내역 하나 삭제
@@ -310,34 +314,34 @@ function makeParticipantsIdxList(participants) {
     return participantsIdxList;
 }
 
-// pay 수정 폼 보여주기
-function showUpdatePayForm(btn){
-    var index = Number.parseInt($(btn).attr("data-idx"));
-
-    console.log($(btn).parents("tr").after())
-    if (!isRetrievedDutchInfo()) {
-        var data = payArr[index];
-        data.p_idx = index;
-
-        mapInfoToUpdatePayForm(data, btn);
-    } else {
-        var dp_idx = getDp_idx();
-        var p_idx = index;
-
-        $.ajax({
-            url:`/pay/${pr_idx}/dutch/${dp_idx}/${p_idx}`,
-            type:"GET",
-            success:function (data){
-                // console.log(data);
-                mapInfoToUpdatePayForm(parsePayIntoPayObj(data), btn);
-
-            },
-            error:function (x,i,e){
-                console.log(e);
-            }
-        });
-    }
-}
+// // pay 수정 폼 보여주기
+// function showUpdatePayForm(btn){
+//     var index = Number.parseInt($(btn).attr("data-idx"));
+//
+//     console.log($(btn).parents("tr").after())
+//     if (!isRetrievedDutchInfo()) {
+//         var data = payArr[index];
+//         data.p_idx = index;
+//
+//         mapInfoToUpdatePayForm(data, btn);
+//     } else {
+//         var dp_idx = getDp_idx();
+//         var p_idx = index;
+//
+//         $.ajax({
+//             url:`/pay/${pr_idx}/dutch/${dp_idx}/${p_idx}`,
+//             type:"GET",
+//             success:function (data){
+//                 // console.log(data);
+//                 mapInfoToUpdatePayForm(parsePayIntoPayObj(data), btn);
+//
+//             },
+//             error:function (x,i,e){
+//                 console.log(e);
+//             }
+//         });
+//     }
+// }
 
 // 수정할 결제 정보를 수정 폼에 맵핑 후 보여주기
 function mapInfoToUpdatePayForm(pay, btn){
@@ -351,35 +355,35 @@ function mapInfoToUpdatePayForm(pay, btn){
     $(btn).parents("tr").remove();
 }
 
-function saveUpdatedPay(p_idx) {
-    console.log(p_idx);
-    var payObj = getPayInfoFromForm();
-
-    if (!isRetrievedDutchInfo()) {
-        payArr[p_idx] = payObj;
-        $("#pay-form").remove();
-
-        $("#payList").html($("#pay-list-tmpl").tmpl({pSave:payArr}));
-        $("#allPrice").val(comma(calculateTotalPay(payArr)));
-    } else {
-        var dp_idx = getDp_idx();
-        var mappedObj = {};
-        mappingPay(mappedObj, payObj);
-
-        $.ajax({
-            url:`/pay/${pr_idx}/dutch/${dp_idx}/${p_idx}`,
-            type:"PUT",
-            data: mappedObj,
-            success:function (data){
-                console.log(data);
-                showDutchPayInfo(dp_idx);
-            },
-            error:function (x,i,e){
-                console.log(e);
-            }
-        })
-    }
-}
+// function saveUpdatedPay(p_idx) {
+//     console.log(p_idx);
+//     var payObj = getPayInfoFromForm();
+//
+//     if (!isRetrievedDutchInfo()) {
+//         payArr[p_idx] = payObj;
+//         $("#pay-form").remove();
+//
+//         $("#payList").html($("#pay-list-tmpl").tmpl({pSave:payArr}));
+//         $("#allPrice").val(comma(calculateTotalPay(payArr)));
+//     } else {
+//         var dp_idx = getDp_idx();
+//         var mappedObj = {};
+//         mappingPay(mappedObj, payObj);
+//
+//         $.ajax({
+//             url:`/pay/${pr_idx}/dutch/${dp_idx}/${p_idx}`,
+//             type:"PUT",
+//             data: mappedObj,
+//             success:function (data){
+//                 console.log(data);
+//                 showDutchPayInfo(dp_idx);
+//             },
+//             error:function (x,i,e){
+//                 console.log(e);
+//             }
+//         })
+//     }
+// }
 
 function parsePayIntoPayObj(dtoObj) {
     console.log(dtoObj);
@@ -452,7 +456,8 @@ function getPayInfoFromForm() {
 function saveNewPay() {
     // 폼에서 정보가져오기
     var payObj = getPayInfoFromForm();
-    console.log(payObj);
+    // payObj["p_idx"] = -(payArr.length+1);
+    // console.log(payObj);
 
     // 저장전 유효성 검사
     if(payObj.payName.length <= 0){ // payName 유효성 체크
@@ -468,61 +473,88 @@ function saveNewPay() {
 
     togglePayForm();
 
+    payArr.push(payObj);
+    console.log(payArr);
     if (!isRetrievedDutchInfo()) {
-        payArr.push(payObj);
-        console.log(payArr);
 
         $("#payList").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
         $("#allPrice").val(comma(calculateTotalPay(payArr)));
 
         return false;
     } else {
-        var dp_idx = getDp_idx();
-        var mappedObj = {};
-        mappingPay(mappedObj, payObj); // ajax로 데이터 보낼 수 있도록 맵핑하기
-        console.log(mappedObj);
+        // var dp_idx = getDp_idx();
+        // var mappedObj = {};
+        // mappingPay(mappedObj, payObj); // ajax로 데이터 보낼 수 있도록 맵핑하기
+        // console.log(mappedObj);
+        //
+        // $.ajax({
+        //     url: `/pay/${pr_idx}/dutch/${dp_idx}`,
+        //     type: "POST",
+        //     data: mappedObj,
+        //     success: function (data) {
+        //         console.log(data);
+        //         showDutchPayInfo(dp_idx);
+        //     },
+        //     error: function (x, i, e) {
+        //         console.log(e);
+        //     }
+        // });
+        $("#payList2").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
 
-        $.ajax({
-            url: `/pay/${pr_idx}/dutch/${dp_idx}`,
-            type: "POST",
-            data: mappedObj,
-            success: function (data) {
-                console.log(data);
-                showDutchPayInfo(dp_idx);
-            },
-            error: function (x, i, e) {
-                console.log(e);
-            }
-        });
+        var preTotal = uncomma($("#allPrice").val()) * 1;
+        $("#allPrice").val(comma(preTotal + calculateTotalPay(payArr)));
     }
 }
 
-//저장된 결제 삭제하는 함수
-function deleteSavePay(tr) {
-    let index = $(tr).attr("data-idx");
-
-    if (!isRetrievedDutchInfo()) {
-        payArr.splice(index, 1);
-        // console.log(payArr);
-        $("#payList").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
-        $("#allPrice").val(comma(calculateTotalPay(payArr)));
-    } else {
-        var dp_idx = getDp_idx();
-        var p_idx = index;
-
-        $.ajax({
-            url: `/pay/${pr_idx}/dutch/${dp_idx}/${p_idx}`,
-            type: "DELETE",
-            success: function (data) {
-                console.log(data);
-                showDutchPayInfo(dp_idx);
-            },
-            error: function (x, i, e) {
-                console.log(e);
-            }
-        });
-    }
-}
+// //저장된 결제 삭제하는 함수
+// function deleteSavePay(tr) {
+//     let index = Number.parseInt($(tr).attr("data-idx"));
+//     console.log($(tr).parent().parent().parent().attr("id"));
+//
+//     if (!isRetrievedDutchInfo()) {
+//         payArr.splice(index, 1);
+//         // console.log(payArr);
+//         $("#payList").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
+//         $("#allPrice").val(comma(calculateTotalPay(payArr)));
+//     } else {
+//         // var dp_idx = getDp_idx();
+//         // var p_idx = index;
+//         //
+//         // $.ajax({
+//         //     url: `/pay/${pr_idx}/dutch/${dp_idx}/${p_idx}`,
+//         //     type: "DELETE",
+//         //     success: function (data) {
+//         //         console.log(data);
+//         //         showDutchPayInfo(dp_idx);
+//         //     },
+//         //     error: function (x, i, e) {
+//         //         console.log(e);
+//         //     }
+//         // });
+//         console.log(index);
+//         if(index < 0) {
+//             for (let i = 0; i < payArr.length; i++) {
+//                 var pay = payArr[i];
+//                 if(pay.p_idx == Math.index){
+//
+//                 }
+//             }
+//             var payObj = payArr[Math.abs(index)-1];
+//             payArr.splice(Math.abs(index)-1, 1);
+//             console.log(payArr);
+//
+//             $("#payList2").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
+//             var total = uncomma($("#allPrice").val()) * 1;
+//             var price = uncomma(payObj.payPrice) * 1;
+//             $("#allPrice").val(comma(total - price));
+//         } else {
+//             var p_idx = index;
+//             deletedPayArr.push(p_idx);
+//             console.log($(tr).parent().parent());
+//             $(tr).parent().parent().remove();
+//         }
+//     }
+// }
 
 
     /* START : PAYGROUPMEMBER 계좌정보 UPDATE */
@@ -733,6 +765,7 @@ function plusMinus(idInfoArr) {
                 data.payList.forEach(p => payList.push(parsePayIntoPayObj(p)));
                 payList.forEach(p => p.payPrice = comma(p.payPrice));
                 console.log(payList)
+                savedPayArr = payList;
 
                 $(".modal").addClass("show");
                 $("#payList").html($("#pay-list-tmpl").tmpl({pSave: payList}));

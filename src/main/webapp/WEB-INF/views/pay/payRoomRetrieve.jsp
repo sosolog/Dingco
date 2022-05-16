@@ -29,6 +29,10 @@
         let payArr = []; // 새로 더치페이 생성시, 추가하는 결제 목록 리스트
         let tempObj = null;
 
+        let savedPayArr = [];
+        let updatedPayArr = new Set();
+        let deletedPayArr = []; //DB에 저장된 애들 중에서 삭제할 결제목록
+
         // TODO: 현재 방 멤버 목록 수정 된 이후, memberArr도 수정되는지 확인
         let memberArr = []; // 현재 방 멤버 이름 목록
         groupMemberArr.forEach( x => memberArr.push(x.payMeber_name));
@@ -81,7 +85,7 @@
                     <button type="button" onclick="changeParticipantsNumber()">OK</button>
                 </div>
             </td>
-            <td><button type="button" onclick="return {{= pay ? 'saveUpdatedPay('+pay.p_idx+')' : 'saveNewPay()'}}">저장</button></td>
+            <td><button type="button" onclick="return {{= pay ? 'saveUpdatedPay('+pay.p_idx+', this)' : 'saveNewPay()'}}">저장</button></td>
         </tr>
     </script>
 
@@ -95,9 +99,10 @@
             <td id="save-participants">
                 \${p.payParticipants.length}명
             </td>
-            <td>
-                <button type="button" class="btn-delete-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="deleteSavePay($(this))">삭제</button>
-                <button type="button" class="btn-update-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="showUpdatePayForm($(this))">수정</button>
+            <td> <!-- DB에 저장된 더치페이 내 결제 내역 -- 수정/삭제 -- DB단으로 바로 갔다와요...-->
+                <!-- DB 저장된 더치페이 -- 결제 목록 -- 1. DB에서 가져올때 같이 가져온 결제 목록 2. 새로 추가한 결제 목록 -->
+                <button type="button" class="btn-delete-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="deleteSavePay(this)">삭제</button>
+                <button type="button" class="btn-update-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="showUpdatePayForm(this)">수정</button>
             </td>
         </tr>
         {{/each}}
@@ -246,7 +251,7 @@
 <div class="modal">
     <div class="modal_body">
         <button type="button" onclick="closeDutchPayForm()">X</button>
-        <button type="button" onclick="saveUpdateDutchPay()">수정하기</button>
+        <button type="button" onclick="saveDutchPayForm()">저장</button>
         <input type="hidden" id="retrieve-pay-id">
         <hr>
         편집하기<br>
@@ -268,6 +273,9 @@
             <tbody id="payList">
 
             </tbody>
+            <tbody id="payList2">
+
+            </tbody>
         </table>
 
         총금액<input name="allPrice" id="allPrice" value="0" readonly><br>
@@ -284,3 +292,192 @@
         <input type="button" onclick="alert('여기에 뭐 넣지')">결과 미리보기(정산하기)</input>
     </div>
 </div>
+<script>
+    //저장된 결제 삭제하는 함수
+    function deleteSavePay(tr) {
+        let index = Number.parseInt($(tr).attr("data-idx"));
+
+        if (!isRetrievedDutchInfo()) {
+            payArr.splice(index, 1);
+            $("#payList").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
+            $("#allPrice").val(comma(calculateTotalPay(payArr)));
+        } else {
+            var position = $(tr).parent().parent().parent().attr("id");
+            if(position == 'payList2') {
+                var payObj = payArr[index];
+                payArr.splice(index, 1);
+                console.log(payArr);
+
+                $("#payList2").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
+            } else {
+                var p_idx = index;
+                deletedPayArr.push(p_idx);
+                if(updatedPayArr.has(p_idx)){
+                    updatedPayArr.delete(p_idx);
+                }
+                $(tr).parent().parent().remove();
+
+                var idx = 0;
+                savedPayArr.forEach((p, i) => {
+                    if(p.p_idx == p_idx) {
+                        idx = i;
+                    }
+                });
+                savedPayArr.splice(idx, 1);
+
+            }
+            $("#allPrice").val(comma(calculateTotalPay(payArr)+calculateTotalPay(savedPayArr)));
+        }
+    }
+
+
+    // pay 수정 폼 보여주기
+    function showUpdatePayForm(btn){
+        var index = Number.parseInt($(btn).attr("data-idx"));
+        if (!isRetrievedDutchInfo()) {
+            var data = payArr[index];
+            data.p_idx = index;
+
+            mapInfoToUpdatePayForm(data, btn);
+        } else {
+            var position = $(btn).parent().parent().parent().attr("id");
+
+            if(position == 'payList2') {
+                var data = payArr[index];
+                data.p_idx = index;
+                mapInfoToUpdatePayForm(data, btn);
+            } else {
+                var p_idx = index;
+                var findPay = savedPayArr.filter(p => p.p_idx == p_idx);
+                mapInfoToUpdatePayForm(findPay[0], btn);
+            }
+        }
+    }
+
+    function saveUpdatedPay(p_idx, btn) {
+        var payObj = getPayInfoFromForm();
+
+        if (!isRetrievedDutchInfo()) {
+            payArr[p_idx] = payObj;
+            $("#pay-form").remove();
+
+            $("#payList").html($("#pay-list-tmpl").tmpl({pSave:payArr}));
+            $("#allPrice").val(comma(calculateTotalPay(payArr)));
+        } else {
+            var position = $(btn).parent().parent().parent().attr("id");
+            if(position == 'payList2') {
+                payArr[p_idx] = payObj;
+                $("#pay-form").remove();
+                $("#payList2").html($("#pay-list-tmpl").tmpl({pSave:payArr}));
+            } else {
+                payObj.p_idx = p_idx;
+                var findPay = savedPayArr.filter(p => p.p_idx == p_idx);
+                updatedPayArr.add(p_idx);
+
+                findPay[0].payName = payObj.payName;
+                findPay[0].payPrice = payObj.payPrice;
+                findPay[0].payPayer = payObj.payPayer;
+                findPay[0].payParticipants = payObj.payParticipants;
+
+                $("#pay-form").remove();
+                $("#payList").html($("#pay-list-tmpl").tmpl({pSave:savedPayArr}));
+            }
+            $("#allPrice").val(comma(calculateTotalPay(payArr)+calculateTotalPay(savedPayArr)));
+        }
+    }
+
+    // 더치페이 폼 닫기
+    function closeDutchPayForm() {
+        // modal 안보이도록 css 변경
+        $(".modal").removeClass("show");
+
+        // 현재까지 저장되어있던 정보 삭제
+        clearDutchPayForm();
+    }
+
+    function saveDutchPayForm() {
+        // TODO: 저장시, 유효성 검사 조건 및 저장 조건 확정하여 변경!
+        // 저장된 결제 목록이 있으면 저장! (이름 없으면 임의 생성)
+        if(!isRetrievedDutchInfo()){
+            // 유효성 검사 (결제목록도 없고, 이름도 없을 시 생성 안됨)
+            if( payArr.length <= 0 && $("#pay_name").val().trim().length <= 0) {
+                alert("생성할 페이목록의 이름을 작성하거나, 결제목록을 추가하세요.");
+                return false;
+            }
+
+            // 더치페이 이름 정보 없을 시, 임의로 이름 생성(현재 날짜 & 시간 기준)
+            if($("#pay_name").val().trim().length <= 0){
+                $("#pay_name").val(createArbitraryName());
+            }
+
+            // 더치페이 폼에서 정보 가져와서 데이터 저장
+            saveNewDutchPayInfo();
+
+        } else { // TODO: retrieve한 내용 수정 한 이후, 닫기
+
+            // 추가할 데이터
+            // TODO: 넘어가는 것 확인
+            var dutchObj = {
+                "pr_idx": pr_idx,
+                "dp_idx": getDp_idx()
+            }
+            getNewPayListFromForm(dutchObj);
+            $.ajax({
+                url:`/pay/test`,
+                type:"POST",
+                data:dutchObj,
+                success:function (data){
+                    console.log(data);
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
+
+            // 수정할 데이터(update 할 데이터)
+            // TODO: 넘어가는 것 확인
+            var dutchObj = getDutchPayInfoFromForm();
+            var updatePayList = savedPayArr.filter(p => updatedPayArr.has(p.p_idx));
+            updatePayList.forEach((v, index) => {
+                mappingPay(dutchObj, v, 'payList['+index+'].' )
+            });
+            console.log(dutchObj);
+            $.ajax({
+                url:`/pay/test`,
+                type:"POST",
+                data:dutchObj,
+                success:function (data){
+                    console.log(data);
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            })
+
+            // 삭제할 데이터
+            // TODO: 넘어가는 것 확인
+            if(deletedPayArr.length > 0){
+                $.ajax({
+                    url:`/pay/test2`,
+                    type:"POST",
+                    data:{
+                        "deleteArr":deletedPayArr
+                    },
+                    success:function (data){
+                        console.log(data);
+                    },
+                    error:function (x,i,e){
+                        console.log(e);
+                    }
+                })
+            }
+        }
+
+        var dp_idx = getDp_idx();
+
+        // 현재까지 저장되어있던 정보 삭제
+        clearDutchPayForm();
+        showDutchPayInfo(dp_idx);
+    }
+
+</script>
