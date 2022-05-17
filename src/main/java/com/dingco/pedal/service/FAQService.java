@@ -11,11 +11,12 @@ public interface FAQService {
    //글 생성
    public int writeUserFaq(FAQDTO dto) throws Exception;
 
-   // 테이블 selectAllPage 생성 (페이징)
-   public PageDTO selectAllPage( int curPage, int category_idx )throws Exception;
 
-   // 테이블 selectNoticePage 생성 (페이징)
-   public PageDTO selectNoticePage( int curPage, int category_idx )throws Exception;
+   // Notice 전체 조회
+   public PageDTO selectNOTICERecordPaging(int curPage)throws Exception;
+
+   // Notice 부분 조회(searchKey = 검색 조건 문자열)
+   public PageDTO selectNOTICESearchRecordPaging(int curPage, String searchKey)throws Exception;
 
    // FAQ 전체 조회
    public PageDTO selectFAQRecordPaging(int curPage)throws Exception;

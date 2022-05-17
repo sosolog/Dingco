@@ -15,15 +15,17 @@ public class FAQServiceImpl implements FAQService {
     @Autowired
     FAQDAO dao;
 
+    // NOTICE 전체 조회
     @Override
-    public PageDTO selectAllPage(int curPage, int category_idx) throws Exception {
-        PageDTO pageDTO = dao.selectNoticePage(curPage, category_idx);
+    public PageDTO selectNOTICERecordPaging(int curPage) throws Exception {
+        PageDTO pageDTO = dao.selectNOTICERecordPaging(curPage);
         return pageDTO;
     }
 
+    // NOTICE 부분 조회(searchKey = 검색 조건 문자열)
     @Override
-    public PageDTO selectNoticePage(int curPage, int category_idx) throws Exception {
-        PageDTO pageDTO = dao.selectNoticePage(curPage, category_idx);
+    public PageDTO selectNOTICESearchRecordPaging(int curPage, String searchKey) throws Exception {
+        PageDTO pageDTO = dao.selectNOTICESearchRecordPaging(curPage, searchKey);
         return pageDTO;
     }
 

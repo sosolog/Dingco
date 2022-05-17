@@ -2,14 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div id="faqList">
-    <form class="sch" method="get" name="searchForm">
+    <form class="sch" method="get" action="/notice/search" id = "searchForm" name="searchForm">
         <div class="sch_wrap">
             <div class="sch_input_wrap">
-                <input type="text" data-role="none" name="searchKey" class="sch_input"
-                       placeholder="검색어를 입력하세요" onkeydown="if(event.keyCode === 13) go_search(searchForm);">
+                <input type="text" data-role="none" class="sch_input" id = "searchKey" name="searchKey"
+                       placeholder="검색어를 입력하세요" onkeydown="if(event.keyCode === 13) $(this).submit();">
             </div>
             <div class="sch_ico_rt">
-                <a onclick="go_search(searchForm)"><img src="/images/ico_search_02.png"></a>
+                <input type="submit"><img src="/images/ico_search_02.png"></a>
             </div>
         </div>
     </form>
@@ -27,7 +27,7 @@
             <c:set var="pageDTO" value="${pageDTO}"/>
             <c:forEach var="dto" items="${pageDTO.dtoList}" varStatus="status">
                 <tr id="flipFAQ${dto.number_idx}" class="flipFAQ">
-                    <td class="idx"><span>${totalRecord - (pageDTO.curPage-1) * pageDTO.criteriaOfPage - status.index}</span></td>
+                    <td class="idx"><span>${totalRecord - ((pageDTO.curPage-1) * pageDTO.criteriaOfPage) - status.index}</span></td>
                     <td class="title"><span> ${dto.title} </span></td>
                     <td class="btn_openFAQ"><a onclick="openFAQ(${dto.number_idx})"><img src="/images/openFAQ.png"></a></td>
                     <td class="btn_flipFAQ"><a onclick="flipFAQ(${dto.number_idx})"><img src="/images/flipFAQ.png"></a></td>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="open_writeday">
                             <span>${dto.writeday}</span><br>
-                            <span><a href="notice/${dto.number_idx}">자세히 보기</a></span>
+                            <span><a href="faq/${dto.number_idx}">자세히 보기</a></span>
                         </div>
                     </td>
                 </tr>
@@ -53,9 +53,13 @@
         </table>
     </div>
     <!-- 페이지 번호 출력 -->
-    <%@ include file="../page.jsp" %>
+    <%@ include file="../searchPage.jsp" %>
     <br>
-    <!-- 페이지 번호 출력 -->
+
     <a href="/notice/write">글쓰기</a>
 </div>
+
+
+
+
 

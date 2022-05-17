@@ -29,15 +29,21 @@ public class FAQController {
      * @param request : page.jsp에서 <a> 태그를 사용하여 이동할 때 참고하는 현재 위치의 절대 주소값(request.getServletPath())
      * @return FaqList로 이동
      */
-    @GetMapping("/faq") //
+    @GetMapping("/faq")
     public String faq(@RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,
                       HttpServletRequest request,
                       Model model) throws Exception {
 
-        // 페이징 처리
         PageDTO<FAQDTO> pageDTO = service.selectFAQRecordPaging(Integer.parseInt(curPage));
 
-        // 조건 : 전체 페이지 범위를 초과해서 조회할 경우에는 redirect:/faq를 통해서 FAQ로 돌아가게끔 세팅
+        // 조건(1) : 검색되는 값이 존재하지 않으면 전체 페이지가 0이 되고 현재 페이지가 1(default)이라서 조건(2)의 else 조건문이 실행
+        // 검색되는 값이 존재하지 않는 값이 있더라도 조회가 될 수 있도록 먼저 조건문 배치
+        if(Integer.parseInt(curPage) == 1 && pageDTO.getTotalPage() == 0){
+            model.addAttribute("pageDTO", pageDTO);
+            model.addAttribute("requestMapping", request.getServletPath());
+            return "FaqList";
+        }
+        // 조건(2) : 전체 페이지 범위를 초과해서 조회할 경우에는 redirect:/faq를 통해서 FAQ로 돌아가게끔 세팅
         if(Integer.parseInt(curPage) > pageDTO.getTotalPage()) {
             return "redirect:/faq";
         }

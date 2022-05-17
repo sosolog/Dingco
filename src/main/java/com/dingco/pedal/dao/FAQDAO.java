@@ -26,37 +26,50 @@ public class FAQDAO {
     @Autowired
     SqlSession session;
 
+    /**
+     * NOTICE 전체 조회(페이징)
+     * @param curPage : 현재 페이지
+     */
+    public PageDTO<FAQDTO> selectNOTICERecordPaging(int curPage) throws Exception {
 
-    public PageDTO<FAQDTO> selectAllPage(int curPage, int category_idx) throws Exception {
-        int totalRecord = totalRecordAll();    //전체 레코드 갯수
-//        int perPage = pageDTO.getPerPage();
-        int offset = (curPage - 1) * perPage;      // select시 시작점
-        HashMap<String, Integer> map = new HashMap<>();
-        map.put("perPage", perPage);
-        map.put("offset", offset);
-        map.put("category_idx", category_idx);
-        List<FAQDTO> list = session.selectList("com.config.FAQMapper.selectAllPage", map);
-        PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(list, totalRecord, curPage, perPage); // pageDTO 저장
-        pageDTO.setPageBlock(pagesPerBlock);
-
-        return pageDTO;
-    }
-
-
-    //페이징
-    public PageDTO<FAQDTO> selectNoticePage(int curPage, int category_idx) throws Exception {
-        int totalRecord = totalRecordNotice();    //전체 레코드 갯수
-        int offset = (curPage - 1) * criteriaOfPage;      // select시 시작점
+        int totalRecord = findTotalNoticeRecordCount();    // FAQ 전체 레코드 개수 조회
+        int offset = (curPage - 1) * criteriaOfPage;      // 페이징 시작점(페이징 블럭에 따라서 동적으로 값 설정)
 
         HashMap<String, Integer> map = new HashMap<>();
-
         map.put("perPage", criteriaOfPage);
         map.put("offset", offset);
 
-        List<FAQDTO> list = session.selectList("com.config.FAQMapper.selectNoticePage", map);
-        PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(list, totalRecord, curPage, criteriaOfPage); // pageDTO 저장
+        List<FAQDTO> dtolist = session.selectList("com.config.FAQMapper.selectNOTICERecordPaging", map);
 
-        pageDTO.setPageListInBlock(criteriaOfBlock);
+        PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(dtolist, criteriaOfPage, totalRecord, curPage); // pageDTO 객체 생성(파라미터 : final 변수) + 순서 중요(PageDTO final 변수 순서와 동일하게 세팅 필수)
+        pageDTO.setPageListInBlock(criteriaOfBlock); // 위에서 생성된 pageDTO 객체에 현재 블럭의 페이지 리스트 세팅 및 fianl 변수를 제외한 모든 기본 변수 대입
+
+        return pageDTO;
+
+    }
+
+    /**
+     * 검색 조건에 맞는 NOTICE 부분 조회(페이징)
+     * @param curPage : 현재 페이지
+     * @param searchKey : 검색 조건 문자열(DB에서 FAQ테이블 'title'과 'content' 컬럼에 검색 조건 문자열이 포함되어 있는지 확인)
+     *                    searchKey 값을 공백으로 조회하게 되면 모든 FAQ 테이블의 내용을 가져옴
+     */
+    public PageDTO selectNOTICESearchRecordPaging(int curPage, String searchKey) {
+
+        int totalRecord = findTotalNoticeSearchRecordCount(searchKey); // 검색 조건에 맞는 FAQ 부분 레코드 개수 조회(검색 조건 = searchKey)
+        int offset = (curPage - 1) * criteriaOfPage; // 페이징 시작점(페이징 블럭에 따라서 동적으로 값 설정)
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("perPage", criteriaOfPage);
+        map.put("offset", offset);
+        map.put("searchKey", searchKey);
+
+        List<FAQDTO> dtolist = session.selectList("com.config.FAQMapper.selectNoticeRecordPaging", map);
+
+        PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(dtolist, criteriaOfPage, totalRecord, curPage); // pageDTO 객체 생성(파라미터 : final 변수) + 순서 중요(PageDTO final 변수 순서와 동일하게 세팅 필수)
+        pageDTO.setPageListInBlock(criteriaOfBlock); // 위에서 생성된 pageDTO 객체에 현재 블럭의 페이지 리스트 세팅 및 fianl 변수를 제외한 모든 기본 변수 대입
+
         return pageDTO;
 
     }
@@ -109,16 +122,12 @@ public class FAQDAO {
     }
 
 
-    // 전체 레코드
-    public int totalRecordAll() {
-        return session.selectOne("com.config.FAQMapper.totalRecordAll");
-    }
+    // NOTICE 전체 레코드 개수 조회
+    public int findTotalNoticeRecordCount() { return session.selectOne("com.config.FAQMapper.findTotalNoticeRecordCount"); }// Notice 전체 레코드 개수 조회
 
-
-    //Notice 전체 레코드
-    public int totalRecordNotice() {
-        return session.selectOne("com.config.FAQMapper.totalRecordNotice");
-    }
+    // FAQ 부분 레코드 개수 조회(searchKey = 검색 조건 문자열 -> DB에서 FAQ테이블 'title'과 'content' 컬럼에 검색 조건 문자열이 포함되어 있는 레코드 개수 조회)
+    public int findTotalNoticeSearchRecordCount(String searchKey) {
+        return session.selectOne("com.config.FAQMapper.findTotalNoticeSearchRecordCount", searchKey); }
 
     // FAQ 전체 레코드 개수 조회
     public int findTotalFAQRecordCount() { return session.selectOne("com.config.FAQMapper.findTotalFAQRecordCount"); }// FAQ 전체 레코드 개수 조회
