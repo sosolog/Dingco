@@ -33,4 +33,6 @@ public interface PayRoomService {
     int updateDutchPay(DutchPayDTO dutchPayDTO) throws Exception;
 
     PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception;
+
+
 }

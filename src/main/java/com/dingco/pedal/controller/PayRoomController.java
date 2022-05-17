@@ -6,6 +6,7 @@ import com.dingco.pedal.service.PayRoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
 import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,18 +204,42 @@ public class PayRoomController {
         return payRoomService.updateDutchPay(dutchPayDTO);
     }
 
-    @PostMapping("/pay/test")
+    @PostMapping("/pay/RetrieveInfo")
     @ResponseBody
-        public String test(DutchPayDTO updateDTO) {
-        System.out.println("updateDTO = " + updateDTO);
-        return updateDTO.toString();
+        public int postRetrieveInfo(DutchPayDTO insertDTO) throws Exception {
+        System.out.println("insertDTO = " + insertDTO);
+        if(insertDTO.getPayList()!=null){
+            for (PayDTO paydto: insertDTO.getPayList()) {
+                payRoomService.insertPayIntoDutch(paydto);
+            }
+        }
+        return 1;
     }
 
-    @PostMapping("/pay/test2")
+    @PutMapping("/pay/RetrieveInfo")
     @ResponseBody
-    public String test2(@RequestParam("deleteArr[]") List<Integer> deleteArr) {
+        public int putRetrieveInfo(DutchPayDTO updateDTO) throws Exception {
+        System.out.println("updateDTO = " + updateDTO);
+        if(updateDTO.getPayList()!=null){
+            for (PayDTO paydto: updateDTO.getPayList()) {
+                payRoomService.updateOnePayInDutchpay(paydto);
+            }
+        }
+        return 1;
+    }
+
+    @DeleteMapping("/pay/RetrieveInfo")
+    @ResponseBody
+    public int deleteRetrieveInfo(@RequestParam("deleteArr[]") List<Integer> deleteArr) throws Exception {
         System.out.println("deleteArr = " + deleteArr);
-        return deleteArr.toString();
+        int num = 0;
+        if(deleteArr.size()!=0){
+            for (int delete:deleteArr) {
+                num = payRoomService.deleteOnePayInDutchpay(delete);
+            }
+        }
+
+        return num;
     }
 
 }

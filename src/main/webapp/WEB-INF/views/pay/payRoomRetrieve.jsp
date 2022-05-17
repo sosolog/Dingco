@@ -44,6 +44,9 @@
             $("#accountList").html($("#account-form-tmpl").tmpl({pSave:groupMemberArr, accountIdx:1})); // 계좌번호 목록
             showDutchPayList(pr_idx) // 더치페이 목록
         });
+
+
+
     </script>
 
     <!-- 방생성 modal member 명단 template-->
@@ -123,17 +126,8 @@
     <!-- 새 계좌번호 생성 template-->
     <script type="text/html" id="account-form-tmpl">
 
-        <%--<td>
-            <input type="hidden" value="\${prgm_idx}" id="saved-account-prgm_idx">
-            <input type="text" id="saved-account-bank" style="width: 50px" value="\${payMember_bank}"></td>
-        <td><input type="text" id="saved-account-number" style="width: 100px" value="\${payMember_account}"></td>
-        <td>
-            <input readonly value="\${payMember_name}">
-        </td>
-        <td><button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button></td>
-        --%>
+
         {{if accountIdx == 0}}
-<%--        <tr style="color: #888888" id="new-account-form" >--%>
             <td><input type="hidden" value="{{= accountInfo ? accountInfo.prgm_idx : ''}}" id="saved-account-prgm_idx">
             <input type="text" id="new-account-bank" style="width: 50px" value="{{= accountInfo ? accountInfo.payMember_bank : ''}}"></td>
             <td><input type="text" id="new-account-number" style="width: 100px" value="{{= accountInfo ? accountInfo.payMember_account : ''}}"></td>
@@ -146,18 +140,19 @@
                     {{/if}}
                     {{/each}}
                 </select>
+            </td>
             <td>
                 <button id="btn-update-account" onclick="saveNewAccount($(this))">저장</button>
             </td>
+            <td>
                 {{/if}}
                 {{if accountInfo != null}}
                     <input readonly value="\${accountInfo.payMember_name}">
+            </td>
             <td>
                 <button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button>
             </td>
                 {{/if}}
-            </td>
-<%--        </tr>--%>
         {{/if}}
 
         {{if accountIdx == 1}}
@@ -178,39 +173,6 @@
         {{/each}}
         {{/if}}
     </script>
-
-<%--    <!--입력한 계좌번호 저장 template-->
-    <script type="text/html" id="save-account-tmpl">
-
-            {{each(index, p) pSave}}
-                {{if p.payMember_account != null}}
-        <tr style="color: #888888" class="save-account-form\${index}">
-
-            <td id="save-bank">\${p.payMember_bank}</td>
-            <td id="save-number">\${p.payMember_account}</td>
-            <td id="save-owner">\${p.payMember_name}</td>
-            <td>
-                <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
-                <button id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
-                <button id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>
-            </td>
-        </tr>
-                {{/if}}
-            {{/each}}
-    </script>--%>
-
-<%--
-<script type="text/html" id="update-account-tmpl">
-        <td>
-            <input type="hidden" value="\${prgm_idx}" id="saved-account-prgm_idx">
-            <input type="text" id="saved-account-bank" style="width: 50px" value="\${payMember_bank}"></td>
-        <td><input type="text" id="saved-account-number" style="width: 100px" value="\${payMember_account}"></td>
-        <td>
-            <input readonly value="\${payMember_name}">
-        </td>
-        <td><button id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button></td>
-</script>
---%>
 
 <h1>여기는 PAY방입니다</h1><br>
     <button onclick="javascript:location.href='/pay/list'">취소</button>
@@ -396,6 +358,7 @@
     }
 
     function saveDutchPayForm() {
+        var dp_idx = getDp_idx();
         // TODO: 저장시, 유효성 검사 조건 및 저장 조건 확정하여 변경!
         // 저장된 결제 목록이 있으면 저장! (이름 없으면 임의 생성)
         if(!isRetrievedDutchInfo()){
@@ -417,54 +380,69 @@
 
             // 추가할 데이터
             // TODO: 넘어가는 것 확인
-            var dutchObj = {
-                "pr_idx": pr_idx,
-                "dp_idx": getDp_idx()
-            }
-            getNewPayListFromForm(dutchObj);
-            $.ajax({
-                url:`/pay/test`,
-                type:"POST",
-                data:dutchObj,
-                success:function (data){
-                    console.log(data);
-                },
-                error:function (x,i,e){
-                    console.log(e);
+            console.log(1);
+            if (payArr.length > 0) {
+                var dutchObj = {
+                    "pr_idx": pr_idx,
+                    "dp_idx": getDp_idx()
                 }
-            })
+                getNewPayListFromForm(dutchObj);
 
+                console.log("insert:", dutchObj);
+                $.ajax({
+                    url:`/pay/RetrieveInfo`,
+                    type:"POST",
+                    data:dutchObj,
+                    success:function (data){
+                        console.log(data);
+                        // showDutchPayInfo(dp_idx);
+                    },
+                    error:function (x,i,e){
+                        console.log(e);
+                    }
+                })
+            }
+
+            console.log("updatedPayArr:"+updatedPayArr)
             // 수정할 데이터(update 할 데이터)
             // TODO: 넘어가는 것 확인
-            var dutchObj = getDutchPayInfoFromForm();
-            var updatePayList = savedPayArr.filter(p => updatedPayArr.has(p.p_idx));
-            updatePayList.forEach((v, index) => {
-                mappingPay(dutchObj, v, 'payList['+index+'].' )
-            });
-            console.log(dutchObj);
-            $.ajax({
-                url:`/pay/test`,
-                type:"POST",
-                data:dutchObj,
-                success:function (data){
-                    console.log(data);
-                },
-                error:function (x,i,e){
-                    console.log(e);
-                }
-            })
+
+            console.log(2);
+            if(updatedPayArr.size > 0) {
+                var dutchObj = getDutchPayInfoFromForm();
+                var updatePayList = savedPayArr.filter(p => updatedPayArr.has(p.p_idx));
+                updatePayList.forEach((v, index) => {
+                    mappingPay(dutchObj, v, 'payList['+index+'].' );
+                });
+                console.log("update:", dutchObj, updatePayList);
+                $.ajax({
+                    url:`/pay/RetrieveInfo`,
+                    type:"PUT",
+                    data:dutchObj,
+                    success:function (data){
+                        console.log(data);
+                        // showDutchPayInfo(dp_idx);
+                    },
+                    error:function (x,i,e){
+                        console.log(e);
+                    }
+                })
+            }
 
             // 삭제할 데이터
             // TODO: 넘어가는 것 확인
+            console.log(3);
             if(deletedPayArr.length > 0){
+                console.log("delete:", deletedPayArr);
                 $.ajax({
-                    url:`/pay/test2`,
-                    type:"POST",
+                    url:`/pay/RetrieveInfo`,
+                    type:"DELETE",
                     data:{
                         "deleteArr":deletedPayArr
                     },
                     success:function (data){
                         console.log(data);
+                        // showDutchPayInfo(dp_idx);
                     },
                     error:function (x,i,e){
                         console.log(e);
@@ -473,11 +451,11 @@
             }
         }
 
-        var dp_idx = getDp_idx();
-
         // 현재까지 저장되어있던 정보 삭제
+          /*  console.log(4);
         clearDutchPayForm();
         showDutchPayInfo(dp_idx);
+            console.log(5);*/
     }
 
 </script>

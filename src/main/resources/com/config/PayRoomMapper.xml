@@ -51,13 +51,13 @@
         where prgm_idx = #{prgm_idx}
     </update>
 
-    <delete id="accountNull" parameterType="int">
+    <update id="accountNull" parameterType="int">
         UPDATE PAYGROUPMEMBER
         SET
             paymember_account = NULL,
             paymember_bank = NULL
         where prgm_idx = #{prgm_idx}
-    </delete>
+    </update>
     <insert id="insertDutchPay" parameterType="DutchPayDTO" useGeneratedKeys="true" keyProperty="dp_idx">
         insert into DUTCHPAYLIST (pr_idx,dp_name, cut_option
             <if test="createDate != null">
@@ -162,7 +162,7 @@
     </insert>
 
     <delete id="deleteOnePayInDutchpay">
-        delete from PAYLIST where p_idx = #{p_idx};
+        delete from PAYLIST where p_idx = #{p_idx}
     </delete>
     <delete id="deleteParticipantsInOnePay">
         delete from PAYPARTICIPANTS where p_idx = #{p_idx}
@@ -211,4 +211,7 @@
     <select id="selectAccount" parameterType="int" resultType="PayGroupMemberDTO">
         select * from PAYGROUPMEMBER where prgm_idx = #{prgm_idx}
     </select>
+
+
+
 </mapper>

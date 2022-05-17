@@ -138,4 +138,6 @@ public class PayRoomDAO {
     public PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception{
         return session.selectOne("com.config.PayRoomMapper.selectAccount",prgm_idx);
     }
+
+
 }

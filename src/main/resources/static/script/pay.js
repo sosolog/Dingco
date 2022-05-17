@@ -192,6 +192,12 @@ function getNewPayListFromForm(obj){
     payArr.forEach((v, index) => {
         mappingPay(obj, v, 'payList['+index+'].' )
     });
+
+    // 유효하지 않은 값이 들어간 키의 경우 삭제
+    // null => ajax를 통해 백단으로 가면 "" 빈문자열로 들어간다.
+    Object.keys(obj).forEach(k => {
+        if(!obj[k]) delete obj[k];
+    });
 }
 
 // 더치페이 폼에서 현재까지 저장되어있던 정보 삭제
@@ -237,6 +243,8 @@ function getDp_idx() {
 // ajax를 통해 보낼 수 있도록 맵핑
 function mappingPay(obj, payObj, prefix = "" ){
     obj[prefix+'p_name'] = payObj.payName;
+    obj[prefix+'dp_idx'] = obj.dp_idx;
+    obj[prefix+'p_idx'] = payObj.p_idx;
     obj[prefix+'price'] = uncomma(payObj.payPrice) * 1;
     mappingGroupMember(obj, payObj.payPayer, prefix+'payMember.');
     mappingPayParticipants(obj, payObj.payParticipants, prefix);
