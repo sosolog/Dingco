@@ -18,3 +18,4 @@ function editInquiryForm_submit(f){
     }
     f.submit();
 }
+

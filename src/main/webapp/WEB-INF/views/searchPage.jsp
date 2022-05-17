@@ -11,7 +11,7 @@
 <c:set var="pageListInBlock" value="${dto.pageListInBlock}"></c:set>
 <c:set var="totalPage" value="${dto.totalPage}"></c:set>
 
-<c:set var="path" value="${requestMapping}"></c:set>
+<c:set var="path" value="${path}?searchKey=${searchKey}"></c:set>
 
 
 <!-- 현재 블럭의 페이지 리스트의 길이가 0일 경우 -->
@@ -21,6 +21,7 @@
 	<c:if test="${totalRecord%perPage != 0}">
 		<c:set var="totalPage" value="${totalPage+1}" ></c:set>
 	</c:if>
+
 	<!-- 레코드가 없을 경우 나오는 경우는 아래의 경우 밖에 없는거 같습니다 ,,, -->
 	<c:forEach var="i" begin="1" end="${totalPage+1}">
 		<c:if test="${i==pg}">
@@ -28,7 +29,7 @@
 		</c:if>
 	<!-- 끝 -->
 		<c:if test="${i!=pg}">
-			<a href="${path}?pg=${i}">${i}</a>
+			<a href="${path}&pg=${i}">${i}</a>
 		</c:if>
 	</c:forEach>
 </c:if>
@@ -38,7 +39,7 @@
 
 	<!-- 지난 블럭이 존재할 경우 '<' 버튼 클릭시 지난 블럭의 마지막 페이지로 이동-->
 	<c:if test="${lastPageInPrevBlock != null}">
-		<a href="${path}?pg=${lastPageInPrevBlock}">&lt;</a>
+		<a href="${path}&pg=${lastPageInPrevBlock}">&lt;</a>
 	</c:if>
 
 	<!-- 현재 블럭의 페이지 리스트에서 값을 들고와서 현재 위치가 현재 페이지와 같다면 현재 페이지 값만 출력 그렇지 않다면 이동할 수 있도록 <a> 사용-->
@@ -47,13 +48,13 @@
 			${i}
 		</c:if>
 		<c:if test="${i!=pg}">
-			<a href="${path}?pg=${i}">${i}</a>
+			<a href="${path}&pg=${i}">${i}</a>
 		</c:if>
 	</c:forEach>
 
 	<!-- 다음 블럭이 존재할 경우 '>' 버튼 클릭시 다음 블럭의 첫 번째 페이지로 이동-->
 	<c:if test="${firstPageInNextBlock != null}">
-		<a href="${path}?pg=${firstPageInNextBlock}">&gt;</a>
+		<a href="${path}&pg=${firstPageInNextBlock}">&gt;</a>
 	</c:if>
 
 </c:if>

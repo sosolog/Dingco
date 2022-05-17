@@ -27,17 +27,20 @@ public class FAQServiceImpl implements FAQService {
         return pageDTO;
     }
 
-//    @Override
-//    public PageDTO selectFAQPage(int curPage, int category_idx) throws Exception {
-//        PageDTO pageDTO = dao.selectFAQPage(curPage, category_idx);
-//        return pageDTO;
-//    }
-
+    // FAQ 전체 조회
     @Override
-    public PageDTO selectFAQPage(int curPage) throws Exception {
-        PageDTO pageDTO = dao.selectFAQPage(curPage);
+    public PageDTO selectFAQRecordPaging(int curPage) throws Exception {
+        PageDTO pageDTO = dao.selectFAQRecordPaging(curPage);
         return pageDTO;
     }
+
+    // FAQ 부분 조회(searchKey = 검색 조건 문자열)
+    @Override
+    public PageDTO selectFAQSearchRecordPaging(int curPage, String searchKey) throws Exception {
+        PageDTO pageDTO = dao.selectFAQSearchRecordPaging(curPage, searchKey);
+        return pageDTO;
+    }
+
 
     @Override
     public List<HashMap<String, String>> categoryBoardNotice() throws Exception {

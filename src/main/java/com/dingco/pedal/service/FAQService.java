@@ -17,9 +17,11 @@ public interface FAQService {
    // 테이블 selectNoticePage 생성 (페이징)
    public PageDTO selectNoticePage( int curPage, int category_idx )throws Exception;
 
-   // 테이블 selectFAQPage 생성 (페이징)
-//   public PageDTO selectFAQPage( int curPage, int category_idx )throws Exception;
-   public PageDTO selectFAQPage( int curPage )throws Exception;
+   // FAQ 전체 조회
+   public PageDTO selectFAQRecordPaging(int curPage)throws Exception;
+
+   // FAQ 부분 조회(searchKey = 검색 조건 문자열)
+   public PageDTO selectFAQSearchRecordPaging(int curPage, String searchKey)throws Exception;
 
    // Notice 카테고리 넘기기
    public List<HashMap<String, String>> categoryBoardNotice()throws Exception;

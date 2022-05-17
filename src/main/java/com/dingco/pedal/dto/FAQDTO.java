@@ -16,6 +16,5 @@ public class FAQDTO {
     private int readcnt;
     private  String writeday;
     private String category_name;
-    private int category_idx;
     private int m_idx;
 }
