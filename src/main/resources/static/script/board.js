@@ -89,13 +89,13 @@ function getComments(){
 }
 
 // 새 댓글 작성
-function createNewComment(m_idx) {
+function createNewComment() {
     var comment = $("#comment").val().trim();
     if(comment.length >= 2){ // 유효성 검사
         let comment_data = {
             comment: comment
         }
-        writeComments(comment_data, m_idx);
+        writeComments(comment_data);
     } else {
         alert("2자 이상 입력해주세요!")
     }
@@ -108,7 +108,7 @@ function showReCommentForm(c_idx) {
 }
 
 // 대댓글 작성하기 : 대댓글 폼 -> 확인 버튼 클릭
-function createReComment(c_idx, m_idx){
+function createReComment(c_idx){
     var comment = $(`#recomment_${c_idx}`).val();
     console.log(comment)
     if(comment.length >= 2){ // 유효성 검사
@@ -116,7 +116,7 @@ function createReComment(c_idx, m_idx){
             comment: comment,
             c_idx2: c_idx
         }
-        writeComments(comment_data, m_idx);
+        writeComments(comment_data);
     } else {
         alert("2자 이상 입력해주세요!")
     }
@@ -124,10 +124,10 @@ function createReComment(c_idx, m_idx){
 }
 
 // 댓글/대댓글 작성 -> Ajax 작업
-function writeComments(comment_data, m_idx){
+function writeComments(comment_data){
     $.ajax({
         type: 'POST',
-        url: `/inquiry/${i_idx}/comment/${m_idx}`,
+        url: `/inquiry/${i_idx}/comment`,
         data: comment_data,
         success: function (result) {
             console.log(result)
@@ -179,16 +179,13 @@ function showUpdateCommentForm(c_idx) {
 
 
 // 댓글/대댓글 수정 -> Ajax 작업
-function updateComment(c_idx, m_idx){
+function updateComment(c_idx){
     var comment_data = $(`#comment_input_${c_idx}`).val();
-    console.log(c_idx, m_idx, comment_data);
-
     $(`#btn-${c_idx}-update`).hide();
     $.ajax({
         type: 'PUT',
-        url: `/inquiry/${i_idx}/comment/${m_idx}`,
+        url: `/inquiry/${i_idx}/comment/${c_idx}`,
         data: {
-            c_idx: c_idx,
             comment: comment_data
         },
         success: function (result) {

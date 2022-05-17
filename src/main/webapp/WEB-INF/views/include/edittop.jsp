@@ -18,7 +18,7 @@
                 <a class="save" onclick="submitInquiryForm(inquiryForm)"><span>등록</span></a>
             </div>
         </c:if>
-        <c:if test="${fn:contains(url, 'inquiry') && fn:contains(url, 'update')}">
+        <c:if test="${fn:contains(url, 'inquiry') && fn:contains(url, 'edit')}">
             <div class="ico_rt">
                 <a class="save" onclick="submitInquiryForm(inquiryForm, ${inquiryDTO.i_idx})"><span>저장</span></a>
             </div>

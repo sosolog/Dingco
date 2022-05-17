@@ -22,11 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,18 +40,14 @@ public class InquiryController {
     public ModelAndView showUserInquiry(
             @Login MemberDTO memberDTO,
             @RequestParam(value = "pg", required = false, defaultValue = "1") int curPage,
-            @RequestParam(value = "sch", required = false) String searchWord,
-            HttpServletRequest request
+            @RequestParam(value = "sch", required = false) String searchWord
     ) throws Exception {
-        logger.debug(request.getServletPath());
-
         PageDTO<InquiryDTO> pageDTO = inquiryService.showUserInquiry(memberDTO, curPage);
 
         ModelAndView mav = new ModelAndView();
         mav.setViewName("InquiryList");
         mav.addObject("pageDTO", pageDTO);
         mav.addObject("memberDTO", memberDTO);
-        mav.addObject("requestMapping", request.getServletPath());
         return mav;
     }
 
@@ -80,25 +73,16 @@ public class InquiryController {
         return "redirect:inquiry";
     }
 
-    @GetMapping("/inquiry/{idx}/update")
-//    public ModelAndView updateUserInquiryUI(@Login MemberDTO memberDTO,
+    @GetMapping("/inquiry/{idx}/edit")
     public String updateUserInquiryUI(@Login MemberDTO memberDTO,
-                                            @PathVariable("idx") int i_idx,
-                                            @ModelAttribute("inquiryDTO") InquiryDTO dto,
+                                      @PathVariable("idx") int i_idx,
+                                      @ModelAttribute("inquiryDTO") InquiryDTO dto,
                                       Model model) throws Exception {
-//        InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
+        dto = inquiryService.showOneUserInquiry(i_idx);
 //        if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
 //            throw new NotMatchedException("유효하지 않은 접근입니다.");
 //        }
-//        logger.debug("result = "+inquiryDTO);
-
-        dto = inquiryService.showOneUserInquiry(i_idx);
         model.addAttribute("inquiryDTO", dto);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("board/InquiryUpdate");
-//        modelAndView.setViewName("InquiryWrite");
-//        modelAndView.addObject("inquiryDTO", inquiryDTO);
-//        return modelAndView;
         return "InquiryWrite";
     }
 
@@ -190,47 +174,98 @@ public class InquiryController {
         return 0;
     }
 
-    @ResponseBody
-    @PostMapping("/inquiry/{i_idx}/comment/{m_idx}")
-    public int writeComment(@PathVariable int i_idx,
-                           @PathVariable int m_idx,
-                           CommentDTO commentDTO) throws Exception {
-        System.out.println("i_idx = " + i_idx + ", m_idx = " + m_idx + ", commentDTO = " + commentDTO);
-        int result = commentService.writeComment(commentDTO);
-        System.out.println("result = " + result);
-
-        return result;
-    }
-
+    /**
+     * 해당 게시글 댓글 목록
+     * @param i_idx 게시글 번호
+     * @return 해당 게시글 내 댓글 목록
+     * @throws Exception
+     */
     @ResponseBody
     @GetMapping("/inquiry/{i_idx}/comment")
     public List<CommentDTO> showAllComment(@PathVariable int i_idx) throws Exception{
         return commentService.showAllComment(i_idx);
     }
 
+    /**
+     * 해당 댓글의 대댓글 목록
+     * @param i_idx 게시글 번호
+     * @param c_idx 댓글 번호
+     * @return 해당 댓글의 대댓글 목록
+     * @throws Exception
+     */
     @ResponseBody
     @GetMapping("/inquiry/{i_idx}/comment/{c_idx}")
     public List<CommentDTO> showSubComment(@PathVariable int i_idx, @PathVariable int c_idx) throws Exception{
         return commentService.showSubComment(c_idx);
     }
 
+    /**
+     * 댓글 / 대댓글 추가
+     * @param memberDTO 세션 내 로그인 정보
+     * @param i_idx 게시글 번호
+     * @param commentDTO 댓글 내용[, (대댓글의 경우) 상위 댓글 번호]
+     * @return 성공 1, 실패 0
+     * @throws Exception
+     */
     @ResponseBody
-    @PutMapping("/inquiry/{i_idx}/comment/{m_idx}")
-    public int updateComment(@PathVariable int i_idx,
-                            @PathVariable int m_idx,
+    @PostMapping("/inquiry/{i_idx}/comment")
+    public int writeComment(@Login MemberDTO memberDTO,
+                            @PathVariable int i_idx,
                             CommentDTO commentDTO) throws Exception {
-        System.out.println("i_idx = " + i_idx + ", m_idx = " + m_idx + ", commentDTO = " + commentDTO);
-        int result = commentService.updateComment(commentDTO);
-        System.out.println("result = " + result);
+        commentDTO.setM_idx(memberDTO.getM_idx());
+        commentDTO.setI_idx(i_idx);
 
+        // TODO: mapper 확인하여 i_idx에 대한 조건 추가 고려해보자.
+        int result = commentService.writeComment(commentDTO);
         return result;
     }
 
+    /**
+     * 댓글 / 대댓글 수정
+     * @param memberDTO 세션 내 로그인 정보
+     * @param i_idx 게시글 번호
+     * @param c_idx 댓글 번호
+     * @param commentDTO 댓글 내용[, (대댓글의 경우) 상위 댓글 번호]
+     * @return 성공 1, 실패 0
+     * @throws Exception
+     */
+    @ResponseBody
+    @PutMapping("/inquiry/{i_idx}/comment/{c_idx}")
+    public int updateComment(@Login MemberDTO memberDTO,
+                             @PathVariable int i_idx,
+                             @PathVariable int c_idx,
+                             CommentDTO commentDTO) throws Exception {
+
+        commentDTO.setM_idx(memberDTO.getM_idx());
+        commentDTO.setI_idx(i_idx);
+        commentDTO.setC_idx(c_idx);
+
+        // TODO: mapper 확인하여 i_idx에 대한 조건 추가 고려해보자.
+        int result = commentService.updateComment(commentDTO);
+        return result;
+    }
+
+    /**
+     * 댓글 / 대댓글 삭제
+     * @param memberDTO 세션 내 로그인 정보
+     * @param i_idx 게시글 번호
+     * @param c_idx 댓글 번호
+     * @return 성공 1, 실패 0
+     * @throws Exception
+     */
     @ResponseBody
     @DeleteMapping("/inquiry/{i_idx}/comment/{c_idx}")
-    public int deleteComment(@PathVariable int i_idx, @PathVariable int c_idx) throws Exception {
+    public int deleteComment(@Login MemberDTO memberDTO,
+                             @PathVariable int i_idx,
+                             @PathVariable int c_idx) throws Exception {
+
+//        CommentDTO commentDTO = new CommentDTO();
+//        commentDTO.setM_idx(memberDTO.getM_idx());
+//        commentDTO.setI_idx(i_idx);
+//        commentDTO.setC_idx(c_idx);
+
+        // TODO: mapper 확인하여 m_idx, i_idx에 대한 조건 추가 고려해보자. (위 생성한 dto 이용)
         int result = commentService.deleteComment(c_idx);
-        System.out.println("result = " + result);
         return result;
     }
 

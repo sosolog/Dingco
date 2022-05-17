@@ -103,7 +103,7 @@
     </insert>
 
     <select id="selectByKakaoId" parameterType="string" resultType="MemberDTO">
-        select m_idx, kakao_idx, userid, username, joindate
+        select m_idx, kakao_idx, userid, username, joindate, authorities
         from MEMBER
         where kakao_idx = #{kakao_idx}
     </select>
@@ -115,7 +115,7 @@
     </insert>
 
     <select id="selectByGoogleIdx" parameterType="string" resultType="MemberDTO">
-        select m_idx, google_idx,userid, username,joindate
+        select m_idx, google_idx,userid, username,joindate, authorities
         from MEMBER
         where google_idx = #{google_idx}
     </select>

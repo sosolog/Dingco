@@ -29,7 +29,7 @@
             <button onclick="showReCommentForm(\${c_idx})">대댓글 작성</button>
         </div>
         <div id="btn-\${c_idx}-update" class="writeComment" style="display: none">
-            <a onclick="updateComment(\${c_idx}, ${memberDTO.m_idx})"><span>수정</span></a>
+            <a onclick="updateComment(\${c_idx})"><span>수정</span></a>
             <div class="reset"></div>
         </div>
         {{if count_sub > 0}}
@@ -39,7 +39,7 @@
         {{/if}}
         <div id="form-\${c_idx}-recomment" class="writeComment" style="display:none;">
             <textarea id="recomment_\${c_idx}"></textarea>
-            <a onclick="createReComment(\${c_idx}, ${memberDTO.m_idx})"><span>등록</span></a>
+            <a onclick="createReComment(\${c_idx})"><span>등록</span></a>
             <div class="reset"></div>
         </div>
     </div>
@@ -67,7 +67,7 @@
             <button onclick="deleteComment(\${c_idx})">삭제</button>
         </div>
         <div id="btn-\${c_idx}-update" style="display: none">
-        <button onclick="updateComment(\${c_idx}, ${memberDTO.m_idx})">확인</button>
+        <button onclick="updateComment(\${c_idx})">확인</button>
     </div>
     </div>
 </script>
@@ -84,7 +84,7 @@
             <a class="headerLogo"><span>1:1문의</span></a>
         </div>
         <div class="ico_rt">
-            <c:if test="${dto.status == 'YET'}"><a class="rewrite" href="${dto.i_idx}/update"><span>수정</span></a></c:if>
+            <c:if test="${dto.status == 'YET'}"><a class="rewrite" href="${dto.i_idx}/edit"><span>수정</span></a></c:if>
         </div>
     </c:if>
 </header>
@@ -122,7 +122,6 @@
         <div class="whitegrayLine"></div>
     </c:if>
 
-    <!-- TODO: 'USER'일 때, authorities가 null로 들어온다..? 왜지? -->
     <c:if test="${memberDTO.authorities != 'ADMIN'}">
         <c:if test="${dto.status == 'IN_PROCESS'}">
             <button type="button" onclick="terminateInquiry()">문의 종료하기</button>
@@ -139,6 +138,6 @@
     <div class="grayLine"></div>
     <div class="writeComment">
         <textarea id="comment" placeholder="댓글을 입력해주세요"></textarea>
-        <a href="javascript:createNewComment(${memberDTO.m_idx})"><span>등록</span></a>
+        <a href="javascript:createNewComment()"><span>등록</span></a>
     </div>
 </div>
