@@ -395,7 +395,6 @@
                     data:dutchObj,
                     success:function (data){
                         console.log(data);
-                        // showDutchPayInfo(dp_idx);
                     },
                     error:function (x,i,e){
                         console.log(e);
@@ -421,7 +420,6 @@
                     data:dutchObj,
                     success:function (data){
                         console.log(data);
-                        // showDutchPayInfo(dp_idx);
                     },
                     error:function (x,i,e){
                         console.log(e);
@@ -442,7 +440,6 @@
                     },
                     success:function (data){
                         console.log(data);
-                        // showDutchPayInfo(dp_idx);
                     },
                     error:function (x,i,e){
                         console.log(e);
