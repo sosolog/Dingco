@@ -220,12 +220,21 @@ function deleteComment(c_idx) {
 
 // END : InquiryRetrieve
 
-// START : InquiryWrite
-// 업로드 대기중인(미리보기) 이미지 삭제
+// START : InquiryWrite(Update)
+
+// 이미지 삭제
 function deleteImage(btn) {
-    var idx = $(btn).parent().attr("data-idx");
-    $(btn).parent().remove();
-    $(`input[data-idx='\${idx}']`).parent().remove();
+    var li = $(btn).parent();
+    var idx = li.attr("data-idx");
+    var filePath = li.attr("data-filePath");
+
+    if(filePath){ // DB에 저장된 이미지 중 삭제할 이미지 목록에 넣기
+        deleteImgIdx.push(idx);
+        deleteImgName.push(filePath);
+    } else { // 업로드 대기중인(미리보기) 이미지 삭제
+        $(`input[data-idx='${idx}']`).parent().remove();
+    }
+    li.remove();
 }
 
 // 파일이 등록되지 않은 파일 태그 삭제하기
@@ -249,7 +258,7 @@ function addImage(){
     }
 }
 
-// 이미지 폼태그에 저장하기
+// 폼태그에 저장된 이미지 -> 미리보기
 function readInputFile(input){
     var file = input.files[0];
 
@@ -271,8 +280,46 @@ function readInputFile(input){
     };
     reader.readAsDataURL(file);
 }
-function submitInquiryForm(f){
+
+// 글 등록/수정 폼 제출
+function submitInquiryForm(f, i_idx){
     deleteEmptyFileForm();
+
+    // 유효성 체크
+    if ($("#title").val().trim().length < 2) {
+        alert("제목을 2자 이상 입력해주세요.");
+        return false;
+    } else if ($("#content").val().trim().length < 2) {
+        alert("내용을 2자 이상 입력해주세요.");
+        return false;
+    }
+
+    // 수정후, 저장시 삭제할 이미지 목록 삭제하기
+    if (deleteImgName.length > 0 && deleteImgIdx.length > 0) {
+        $.ajax({
+            type: 'DELETE',
+            url: `/inquiry/${i_idx}/image`,
+            data: {
+                pathList: deleteImgName,
+                idxList: deleteImgIdx
+            },
+            dataType: 'json',
+            async: true,
+            success: function (result) {
+                console.log(result)
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            }
+        });
+    }
+
+    // 폼 새로 등록/수정 에 따라 action값 변경
+    if(i_idx) {
+        f.action = `/inquiry/${i_idx}`;
+    } else {
+        f.action = `/inquiry`;
+    }
     f.submit();
 }
-// END : InquiryWrite
+// END : InquiryWrite(Update)

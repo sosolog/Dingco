@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -80,18 +81,25 @@ public class InquiryController {
     }
 
     @GetMapping("/inquiry/{idx}/update")
-    public ModelAndView updateUserInquiryUI(@Login MemberDTO memberDTO,
-                                            @PathVariable("idx") int i_idx) throws Exception {
-        InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
-        if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
-            throw new NotMatchedException("유효하지 않은 접근입니다.");
-        }
-        logger.debug("result = "+inquiryDTO);
+//    public ModelAndView updateUserInquiryUI(@Login MemberDTO memberDTO,
+    public String updateUserInquiryUI(@Login MemberDTO memberDTO,
+                                            @PathVariable("idx") int i_idx,
+                                            @ModelAttribute("inquiryDTO") InquiryDTO dto,
+                                      Model model) throws Exception {
+//        InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
+//        if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
+//            throw new NotMatchedException("유효하지 않은 접근입니다.");
+//        }
+//        logger.debug("result = "+inquiryDTO);
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("board/InquiryUpdate");
-        modelAndView.addObject("inquiryDTO", inquiryDTO);
-        return modelAndView;
+        dto = inquiryService.showOneUserInquiry(i_idx);
+        model.addAttribute("inquiryDTO", dto);
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("board/InquiryUpdate");
+//        modelAndView.setViewName("InquiryWrite");
+//        modelAndView.addObject("inquiryDTO", inquiryDTO);
+//        return modelAndView;
+        return "InquiryWrite";
     }
 
     @PostMapping("/inquiry/{idx}")
@@ -149,16 +157,35 @@ public class InquiryController {
         return result;
     }
 
+//    더이상 사용 안함
+//    @ResponseBody
+//    @DeleteMapping("/image/{img_idx}")
+//    public int deleteImage(@PathVariable int img_idx, @RequestBody String filePath) throws Exception {
+//        System.out.println("img_idx = " + img_idx + ", filePath = " + filePath.replace('/', '\\'));
+//        System.out.println(baseDir+filePath);
+//        File file = new File(baseDir+filePath.replace('/', '\\'));
+//        if (file.exists()){
+//            int result = inquiryService.deleteImage(img_idx);
+//            file.delete();
+//            return 1;
+//        }
+//        return 0;
+//    }
+
     @ResponseBody
-    @DeleteMapping("/image/{img_idx}")
-    public int deleteImage(@PathVariable int img_idx, @RequestBody String filePath) throws Exception {
-        System.out.println("img_idx = " + img_idx + ", filePath = " + filePath);
-        System.out.println(baseDir+filePath);
-        File file = new File(baseDir+filePath);
-        if (file.exists()){
-            int result = inquiryService.deleteImage(img_idx);
-            file.delete();
-            return 1;
+    @DeleteMapping("/inquiry/{i_idx}/image")
+    public int deleteImage(@PathVariable int i_idx,
+                           @RequestParam("pathList[]") List<String> filePath,
+                           @RequestParam("idxList[]") List<Integer> idxList) throws Exception {
+        System.out.println("i_idx = " + i_idx + ", filePath = " + filePath + ", idxList = " + idxList);
+        for (int i = 0; i < idxList.size(); i++) {
+            String path = filePath.get(i).replace('/', '\\');
+            File file = new File(baseDir+path);
+            if (file.exists()){
+                // TODO: 가능하면 한번에 모든 img 삭제할 수 있도록 수정!
+                int result = inquiryService.deleteImage(idxList.get(i));
+                file.delete();
+            }
         }
         return 0;
     }
