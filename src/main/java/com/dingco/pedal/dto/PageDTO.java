@@ -11,15 +11,15 @@ import java.util.List;
 @ToString
 @RequiredArgsConstructor
 public class PageDTO<T> {
-    private final List<T> dtoList;  // curpage 내의 reocord 집합
-    private final int totalRecord;  // board 전체 레코드 갯수
-    private final int curPage;     // 현재 페이지
-    private final int perPage;     // 한 페이지의 몇개의 레코드
-    private int pagesPerBlock;      // 하단의 링크 몇개까지 보여줄것인지
-    private Integer firstPageInNextBlock;   // 다음 블럭의 첫번째 보여줄 페이지 블럭
-    private Integer lastPageInPrevBlock;    // 현재 블럭의 이전 블럭중 제일 마지막에 보여줄 페이지 블럭
-    private Integer curBlock;    // 현제 페이지가 들어가 있는 블럭 
-    private List<Integer> pageListInBlock;  // 현재 블럭에 있는 페이지 블럭 나열
+    private final List<T> dtoList;
+    private final int totalRecord;
+    private final int curPage;
+    private final int perPage;
+    private int pagesPerBlock;
+    private Integer firstPageInNextBlock;
+    private Integer lastPageInPrevBlock;
+    private Integer curBlock;
+    private List<Integer> pageListInBlock;
 
     // - int와 integer의 차이
     // 리스트에 넣기 위해 wrapper class 이용

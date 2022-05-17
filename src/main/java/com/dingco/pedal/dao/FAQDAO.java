@@ -22,6 +22,22 @@ public class FAQDAO {
     SqlSession session;
     //SqlSessionTemplate session;
 
+    public PageDTO<FAQDTO> selectAllPage(int curPage, int category_idx) throws Exception {
+        int totalRecord = totalRecordAll();    //전체 레코드 갯수
+//        int perPage = pageDTO.getPerPage();
+        int offset = (curPage - 1) * perPage;      // select시 시작점
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("perPage", perPage);
+        map.put("offset", offset);
+        map.put("category_idx", category_idx);
+        List<FAQDTO> list = session.selectList("com.config.FAQMapper.selectAllPage", map);
+        PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(list, totalRecord, curPage, perPage); // pageDTO 저장
+        pageDTO.setPageBlock(pagesPerBlock);
+
+        return pageDTO;
+    }
+
+
     //페이징
     public PageDTO<FAQDTO> selectNoticePage(int curPage, int category_idx) throws Exception {
         int totalRecord = totalRecordNotice();    //전체 레코드 갯수
@@ -38,7 +54,7 @@ public class FAQDAO {
         return pageDTO;
     }
 
-    public PageDTO<FAQDTO> selectFAQPage(int curPage, int category_idx) throws Exception {
+      public PageDTO<FAQDTO> selectFAQPage(int curPage) throws Exception {
         int totalRecord = totalRecordFaq();    //전체 레코드 갯수
         int offset = (curPage - 1) * perPage;      // select시 시작점
         HashMap<String, Integer> map = new HashMap<>();
@@ -51,6 +67,12 @@ public class FAQDAO {
 
         return pageDTO;
     }
+
+    // 전체 레코드
+    public int totalRecordAll() {
+        return session.selectOne("com.config.FAQMapper.totalRecordAll");
+    }
+
 
     //Notice 전체 레코드
     public int totalRecordNotice() {

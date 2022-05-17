@@ -4,6 +4,25 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.config.FAQMapper">
 
+    <select id="selectAllPage" resultType="FAQDTO" parameterType="HashMap">
+	<![CDATA[
+        select f.number_idx,
+               m.userid,
+               m.username,
+               f.title,
+               f.content,
+               date_format(f.writeday, '%Y-%m-%d') writeday,
+               f.readcnt,
+               c.category_name
+        from FAQ f
+                 join CATEGORY c on f.category_idx = c.CATEGORY_IDX
+                 join MEMBER m on f.m_idx = m.m_idx
+        where f.category_idx = #{category_idx}
+        order by f.number_idx desc
+            limit ${perPage} offset ${offset}
+        ]]>
+	</select>
+
     <select id="selectNoticePage" resultType="FAQDTO" parameterType="HashMap">
 	<![CDATA[
         select f.number_idx,
@@ -111,6 +130,11 @@
         where number_idx = #{number_idx}
     </update>
 
+    <select id="totalRecordAll" resultType="int">
+        select count(*)
+        from FAQ
+        where CATEGORY_IDX = #{category_idx}
+    </select>
 
     <select id="totalRecordNotice" resultType="int">
         select count(*)

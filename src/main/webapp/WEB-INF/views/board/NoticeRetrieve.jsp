@@ -16,7 +16,7 @@
                     url: `/notice/${faqDTO.number_idx}`,
                     datatype: "json",
                     success: function (result) {
-                        confirm("수정되었습니다.")
+                        confirm("삭제되었습니다.")
                         console.log("success")
                         console.log(result)
                         if(result) {
