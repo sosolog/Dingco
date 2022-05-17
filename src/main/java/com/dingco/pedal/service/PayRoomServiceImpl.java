@@ -134,6 +134,22 @@ public class PayRoomServiceImpl implements PayRoomService {
     }
 
     @Override
+    @Transactional
+    public int updateDutchPay(List<PayDTO> insertPayList, List<PayDTO> updatePayList, List<Integer> deletePayList, DutchPayDTO dutchPayDTO) throws Exception {
+        for (PayDTO dto : insertPayList) {
+            dao.insertPayIntoDutch(dto);
+        }
+        for (PayDTO dto : updatePayList) {
+            dao.updateOnePayInDutchpay(dto);
+        }
+        for (Integer p_idx: deletePayList) {
+            dao.deleteOnePayInDutchpay(p_idx);
+        }
+        int result = dao.updateDutchPay(dutchPayDTO);
+        return result;
+    }
+
+    @Override
     public int updateDutchPay(DutchPayDTO dutchPayDTO) throws Exception {
         return dao.updateDutchPay(dutchPayDTO);
     }
@@ -142,6 +158,7 @@ public class PayRoomServiceImpl implements PayRoomService {
     public PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception {
         return dao.selectAccount(prgm_idx);
     }
+
 
 
 }
