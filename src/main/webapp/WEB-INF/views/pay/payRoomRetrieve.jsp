@@ -377,85 +377,69 @@
             saveNewDutchPayInfo();
 
         } else { // TODO: retrieve한 내용 수정 한 이후, 닫기
+            var dp_idx = getDp_idx();
+            var pArr = [];
+            payArr.forEach(p => pArr.push(parsePayForAjax(p, dp_idx)));
 
-            // 추가할 데이터
-            // TODO: 넘어가는 것 확인
-            console.log(1);
-            if (payArr.length > 0) {
-                var dutchObj = {
-                    "pr_idx": pr_idx,
-                    "dp_idx": getDp_idx()
+            var uArr = [];
+            savedPayArr.forEach(p => {
+                if (updatedPayArr.has(p.p_idx)){
+                    uArr.push(parsePayForAjax(p, dp_idx))
                 }
-                getNewPayListFromForm(dutchObj);
+            });
 
-                console.log("insert:", dutchObj);
-                $.ajax({
-                    url:`/pay/RetrieveInfo`,
-                    type:"POST",
-                    data:dutchObj,
-                    success:function (data){
-                        console.log(data);
-                        // showDutchPayInfo(dp_idx);
-                    },
-                    error:function (x,i,e){
-                        console.log(e);
-                    }
-                })
-            }
+            // console.log("insert", pArr, "updated", uArr, "delete", deletedPayArr);
 
-            console.log("updatedPayArr:"+updatedPayArr)
-            // 수정할 데이터(update 할 데이터)
-            // TODO: 넘어가는 것 확인
+            $.ajax({
+                url:`/pay/RetrieveInfo`,
+                type:"POST",
+                data: {
+                    iArr:JSON.stringify(pArr),
+                    uArr:JSON.stringify(uArr),
+                    dArr:JSON.stringify(deletedPayArr),
+                    dutchInfo:JSON.stringify(getDutchPayInfoFromForm())
+                },
+                success:function (data){
+                    console.log(data);
+                    // 현재까지 저장되어있던 정보 삭제 및 정보 reload
+                    clearDutchPayForm();
+                    showDutchPayInfo(dp_idx);
+                },
+                error:function (x,i,e){
+                    console.log(e);
+                }
+            });
+        }
+    }
 
-            console.log(2);
-            if(updatedPayArr.size > 0) {
-                var dutchObj = getDutchPayInfoFromForm();
-                var updatePayList = savedPayArr.filter(p => updatedPayArr.has(p.p_idx));
-                updatePayList.forEach((v, index) => {
-                    mappingPay(dutchObj, v, 'payList['+index+'].' );
-                });
-                console.log("update:", dutchObj, updatePayList);
-                $.ajax({
-                    url:`/pay/RetrieveInfo`,
-                    type:"PUT",
-                    data:dutchObj,
-                    success:function (data){
-                        console.log(data);
-                        // showDutchPayInfo(dp_idx);
-                    },
-                    error:function (x,i,e){
-                        console.log(e);
-                    }
-                })
-            }
-
-            // 삭제할 데이터
-            // TODO: 넘어가는 것 확인
-            console.log(3);
-            if(deletedPayArr.length > 0){
-                console.log("delete:", deletedPayArr);
-                $.ajax({
-                    url:`/pay/RetrieveInfo`,
-                    type:"DELETE",
-                    data:{
-                        "deleteArr":deletedPayArr
-                    },
-                    success:function (data){
-                        console.log(data);
-                        // showDutchPayInfo(dp_idx);
-                    },
-                    error:function (x,i,e){
-                        console.log(e);
-                    }
-                })
-            }
+    function parsePayForAjax(payObj, dp_idx){
+        var pay = {
+            p_name: payObj.payName,
+            price: uncomma(payObj.payPrice) * 1,
+            dp_idx: dp_idx,
+            payMember: parsePayMemberForAjax(payObj.payPayer)
         }
 
-        // 현재까지 저장되어있던 정보 삭제
-          /*  console.log(4);
-        clearDutchPayForm();
-        showDutchPayInfo(dp_idx);
-            console.log(5);*/
+        if (payObj.p_idx) {
+            pay.p_idx = payObj.p_idx;
+        }
+
+        var participants = [];
+        payObj.payParticipants.forEach(m => participants.push(parsePayMemberForAjax(m)));
+
+        if (participants) {
+            pay.participants = participants;
+        }
+        return pay;
+    }
+
+    function parsePayMemberForAjax(m){
+        var member = {
+            pr_idx: pr_idx,
+            prgm_idx: m.prgm_idx,
+            payMember_name: m.payMember_name
+        }
+        return member;
     }
 
 </script>

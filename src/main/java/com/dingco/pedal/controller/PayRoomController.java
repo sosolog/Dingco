@@ -4,10 +4,9 @@ import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.*;
 import com.dingco.pedal.service.PayRoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonArray;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -206,14 +205,18 @@ public class PayRoomController {
 
     @PostMapping("/pay/RetrieveInfo")
     @ResponseBody
-        public int postRetrieveInfo(DutchPayDTO insertDTO) throws Exception {
-        System.out.println("insertDTO = " + insertDTO);
-        if(insertDTO.getPayList()!=null){
-            for (PayDTO paydto: insertDTO.getPayList()) {
-                payRoomService.insertPayIntoDutch(paydto);
-            }
-        }
-        return 1;
+    public int postRetrieveInfo(@RequestParam String iArr,
+                                @RequestParam String uArr,
+                                @RequestParam String dArr,
+                                @RequestParam String dutchInfo) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<PayDTO> insertPayList = objectMapper.readValue(iArr, new TypeReference<List<PayDTO>>() { });
+        List<PayDTO> updatePayList = objectMapper.readValue(uArr, new TypeReference<List<PayDTO>>() { });
+        List<Integer> deletePayIdxList = objectMapper.readValue(dArr, new TypeReference<List<Integer>>() { });
+        DutchPayDTO dutchPayDTO = objectMapper.readValue(dutchInfo, new TypeReference<DutchPayDTO>() { });
+
+        return payRoomService.updateDutchPay(insertPayList, updatePayList, deletePayIdxList, dutchPayDTO);
     }
 
     @PutMapping("/pay/RetrieveInfo")
