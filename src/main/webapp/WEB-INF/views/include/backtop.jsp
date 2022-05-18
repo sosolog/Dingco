@@ -54,7 +54,7 @@
                 <a href="javascript:history.back()"><img src="/images/ico_back_01.png"></a>
             </div>
             <div class="title">
-                <a class="headerLogo"><span>FAQ</span></a>
+                <a class="headerLogo" href="/faq"><span>FAQ</span></a>
             </div>
         </c:if>
         <c:if test="${fn:contains(url, 'notice')}">

@@ -23,10 +23,11 @@
             </tr>
             </thead>
             <tbody>
+            <c:set var="totalRecord" value="${pageDTO.totalRecord}"/>
             <c:set var="pageDTO" value="${pageDTO}"/>
             <c:forEach var="dto" items="${pageDTO.dtoList}" varStatus="status">
                 <tr id="flipFAQ${dto.number_idx}" class="flipFAQ">
-                    <td class="idx"><span> ${status.count} </span></td>
+                    <td class="idx"><span>${totalRecord - (pageDTO.curPage-1) * pageDTO.criteriaOfPage - status.index}</span></td>
                     <td class="title"><span> ${dto.title} </span></td>
                     <td class="btn_openFAQ"><a onclick="openFAQ(${dto.number_idx})"><img src="/images/openFAQ.png"></a></td>
                     <td class="btn_flipFAQ"><a onclick="flipFAQ(${dto.number_idx})"><img src="/images/flipFAQ.png"></a></td>
@@ -42,7 +43,8 @@
                             <span>${dto.content}</span>
                         </div>
                         <div class="open_writeday">
-                            <span>${dto.writeday}</span>
+                            <span>${dto.writeday}</span><br>
+                            <span><a href="notice/${dto.number_idx}">자세히 보기</a></span>
                         </div>
                     </td>
                 </tr>
@@ -54,6 +56,6 @@
     <%@ include file="../page.jsp" %>
     <br>
     <!-- 페이지 번호 출력 -->
-    <a href="/faq/write">글쓰기</a>
+    <a href="/notice/write">글쓰기</a>
 </div>
 

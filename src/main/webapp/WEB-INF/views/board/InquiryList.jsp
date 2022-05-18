@@ -17,7 +17,7 @@
 <script type="text/html" id="inquiry-list-tmpl">
     {{each(index, dto) dtoList}}
     <tr class="list">
-        <td class="idx"><span>{{= totalRecord - (curPage-1) * perPage - index}}</span></td>
+        <td class="idx"><span>{{= totalRecord - (curPage-1) * criteriaOfPage - index}}</span></td>
         <td class="title">
             <a href="inquiry/\${dto.i_idx}">
                 <span> \${dto.title} </span>
