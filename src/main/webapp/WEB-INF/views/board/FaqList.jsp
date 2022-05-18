@@ -9,7 +9,8 @@
                        placeholder="검색어를 입력하세요" onkeydown="if(event.keyCode === 13) $(this).submit();">
             </div>
             <div class="sch_ico_rt">
-                <input type="submit"><img src="/images/ico_search_02.png"></a>
+                <a onclick="$(this).submit()"><img src="/images/ico_search_02.png"></a>
+                <input type="image" src="/images/ico_search_02.png" alt="submit">
             </div>
         </div>
     </form>

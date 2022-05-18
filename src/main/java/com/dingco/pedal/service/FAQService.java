@@ -11,7 +11,6 @@ public interface FAQService {
    //글 생성
    public int writeUserFaq(FAQDTO dto) throws Exception;
 
-
    // Notice 전체 조회
    public PageDTO selectNOTICERecordPaging(int curPage)throws Exception;
 

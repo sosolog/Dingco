@@ -62,7 +62,7 @@
                 <a href="javascript:history.back()"><img src="/images/ico_back_01.png"></a>
             </div>
             <div class="title">
-                <a class="headerLogo"><span>NOTICE</span></a>
+                <a class="headerLogo" href="/notice"><span>NOTICE</span></a>
             </div>
         </c:if>
         <c:if test="${url == '/inquiry'}">
