@@ -15,28 +15,51 @@ public class FAQServiceImpl implements FAQService {
     @Autowired
     FAQDAO dao;
 
+    // NOTICE 전체 조회
     @Override
-    public PageDTO selectNoticePage(int curPage, int category_idx) throws Exception {
-        PageDTO pageDTO = dao.selectNoticePage(curPage, category_idx);
+    public PageDTO selectNOTICERecordPaging(int curPage) throws Exception {
+        PageDTO pageDTO = dao.selectNOTICERecordPaging(curPage);
         return pageDTO;
     }
 
+    // NOTICE 부분 조회(searchKey = 검색 조건 문자열)
     @Override
-    public PageDTO selectFAQPage(int curPage, int category_idx) throws Exception {
-        PageDTO pageDTO = dao.selectFAQPage(curPage, category_idx);
+    public PageDTO selectNOTICESearchRecordPaging(int curPage, String searchKey) throws Exception {
+        PageDTO pageDTO = dao.selectNOTICESearchRecordPaging(curPage, searchKey);
         return pageDTO;
     }
 
+    // FAQ 전체 조회
     @Override
-    public List<HashMap<String, String>> category() throws Exception {
-        List<HashMap<String, String>> list = dao.category();
+    public PageDTO selectFAQRecordPaging(int curPage) throws Exception {
+        PageDTO pageDTO = dao.selectFAQRecordPaging(curPage);
+        return pageDTO;
+    }
+
+    // FAQ 부분 조회(searchKey = 검색 조건 문자열)
+    @Override
+    public PageDTO selectFAQSearchRecordPaging(int curPage, String searchKey) throws Exception {
+        PageDTO pageDTO = dao.selectFAQSearchRecordPaging(curPage, searchKey);
+        return pageDTO;
+    }
+
+
+    @Override
+    public List<HashMap<String, String>> categoryBoardNotice() throws Exception {
+        List<HashMap<String, String>> list = dao.categoryBoardNotice();
         return list;
     }
 
     @Override
-    public int boardWrite(FAQDTO dto) throws Exception {
+    public List<HashMap<String, String>> categoryBoardFaq() throws Exception {
+        List<HashMap<String, String>> list = dao.categoryBoardFaq();
+        return list;
+    }
+
+    @Override
+    public int writeUserFaq(FAQDTO dto) throws Exception {
         System.out.println(dto);
-        int num = dao.boardWrite(dto);
+        int num = dao.writeUserFaq(dto);
         return num;
     }
 
@@ -47,14 +70,15 @@ public class FAQServiceImpl implements FAQService {
     }
 
     @Override
-    public int update(FAQDTO dto) throws Exception {
-        int num = dao.update(dto);
+    public int updateUserBoard(FAQDTO dto) throws Exception {
+        int num = dao.updateUserBoard(dto);
         return num;
     }
 
     @Override
-    public int delete(int number_idx) {
-        int num = dao.delete(number_idx);
+    public int deleteUserBoard(int number_idx) {
+        int num = dao.deleteUserBoard(number_idx);
         return num;
+
     }
 }

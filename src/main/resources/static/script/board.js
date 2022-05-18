@@ -336,6 +336,7 @@ function submitInquiryForm(f, i_idx){
     }
     f.submit();
 }
+
 // END : InquiryWrite(Update)
 
 // START : InquiryList
@@ -404,3 +405,4 @@ function appendList(data) {
 // END: AJAX 성공시, 실행되는 함수
 
 // START : InquiryList
+

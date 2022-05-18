@@ -1,6 +1,5 @@
 package com.dingco.pedal.dao;
 
-import com.dingco.pedal.util.FileName;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
@@ -43,7 +42,8 @@ public class InquiryDAO {
         map.put("searchKey", searchKey);
         List<InquiryDTO> inquiryList = session.selectList("com.config.InquiryMapper.showUserInquiry", map, new RowBounds(offset, limit));
         PageDTO<InquiryDTO> pageDTO = new PageDTO<>(inquiryList, totalRecord, curPage, perPage);
-        pageDTO.setPageBlock(pagesPerBlock);
+
+        pageDTO.setPageListInBlock(pagesPerBlock);
         return pageDTO;
     }
 

@@ -1,15 +1,15 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div id="faqList">
-    <form class="sch" method="get" action="/faq/search" name="searchForm">
+    <form class="sch" method="get" action="/notice/search" id = "searchForm" name="searchForm">
         <div class="sch_wrap">
             <div class="sch_input_wrap">
                 <input type="text" data-role="none" class="sch_input" id = "searchKey" name="searchKey"
                        placeholder="검색어를 입력하세요" onkeydown="if(event.keyCode === 13) $(this).submit();">
             </div>
             <div class="sch_ico_rt">
-                <input type="image" src="/images/ico_search_02.png" alt="submit">
+                <input type="submit"><img src="/images/ico_search_02.png"></a>
             </div>
         </div>
     </form>
@@ -53,10 +53,10 @@
         </table>
     </div>
     <!-- 페이지 번호 출력 -->
-    <%@ include file="../page.jsp" %>
+    <%@ include file="../searchPage.jsp" %>
     <br>
 
-    <a href="/faq/write">글쓰기</a>
+    <a href="/notice/write">글쓰기</a>
 </div>
 
 

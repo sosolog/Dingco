@@ -9,7 +9,6 @@
         from MEMBER
     </select>
 
-
     <!-- 민욱: 회원가입_회원 추가 -->
     <insert id="memberAdd" parameterType="MemberDTO">
         INSERT	INTO MEMBER (userid, passwd, username, email1, email2, uploadfilename, storefilename)
@@ -38,7 +37,7 @@
 
     <!-- 민욱: 소셜 로그인_네이버 고유 id 회원정보 들고 오기 -->
     <select id="selectByNaverIdx" resultType="MemberDTO" parameterType="String">
-        select *
+        select m_idx, naver_idx, userid, username, joindate, authorities
         from MEMBER
         where naver_idx=#{naver_idx}
     </select>
