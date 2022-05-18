@@ -73,14 +73,18 @@ function changeInqStatus(v_status, success_fn=function (result) {
 }
 
 // 현재 글 댓글 가져오기
-function getComments(){
+function getComments(recomment=false, c_idx=0){
     $.ajax({
         type: 'get',
         url: `/inquiry/${i_idx}/comment`,
         success: function (result) {
             console.log(result);
+            result.forEach(c => c.auth = auth);
             $('#comment-list').empty();
             $("#comment-list-tmpl").tmpl(result).appendTo( "#comment-list" );
+            if(recomment){
+                $(`#commentOne${c_idx} > .show-re-comment`).click();
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.status + ' ' + jqXHR.responseText);
@@ -104,7 +108,7 @@ function createNewComment() {
 
 // 대댓글 폼 보여주기
 function showReCommentForm(c_idx) {
-    $(`#form-${c_idx}-recomment`).show();
+    $(`#form-${c_idx}-recomment`).toggle();
 }
 
 // 대댓글 작성하기 : 대댓글 폼 -> 확인 버튼 클릭
@@ -116,7 +120,7 @@ function createReComment(c_idx){
             comment: comment,
             c_idx2: c_idx
         }
-        writeComments(comment_data);
+        writeComments(comment_data, true);
     } else {
         alert("2자 이상 입력해주세요!")
     }
@@ -124,14 +128,17 @@ function createReComment(c_idx){
 }
 
 // 댓글/대댓글 작성 -> Ajax 작업
-function writeComments(comment_data){
+function writeComments(comment_data, recomment=false){
     $.ajax({
         type: 'POST',
         url: `/inquiry/${i_idx}/comment`,
         data: comment_data,
         success: function (result) {
             console.log(result)
-            if(result) {
+            if(recomment) {
+                var idx = $(`#btn-${comment_data.c_idx2}-default`).parents(".commentOne").attr("id").substr(10);
+                getComments(recomment, Number.parseInt(idx));
+            } else{
                 getComments();
             }
         },
@@ -143,6 +150,7 @@ function writeComments(comment_data){
 
 // 대댓글 보여주기 - 토글
 function toggleShowReCommentList(btn, c_idx) {
+    $(`#form-${c_idx}-recomment`).hide();
     var status = $(btn).attr("data-status");
     console.log(status)
     if(status == 0) {
@@ -153,6 +161,7 @@ function toggleShowReCommentList(btn, c_idx) {
             url: `/inquiry/${i_idx}/comment/${c_idx}`,
             success: function (result) {
                 console.log(result);
+                result.forEach(c => c.auth = auth);
                 $("#comment-recomment-list-tmpl").tmpl(result).appendTo( `#recomment-list-${c_idx}` );
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -179,7 +188,7 @@ function showUpdateCommentForm(c_idx) {
 
 
 // 댓글/대댓글 수정 -> Ajax 작업
-function updateComment(c_idx){
+function updateComment(c_idx, recomment=false){
     var comment_data = $(`#comment_input_${c_idx}`).val();
     $(`#btn-${c_idx}-update`).hide();
     $.ajax({
@@ -190,7 +199,12 @@ function updateComment(c_idx){
         },
         success: function (result) {
             console.log(result)
-            getComments();
+            if(recomment) {
+                var idx = $(`#btn-${c_idx}-default`).parents(".commentOne").attr("id").substr(10);
+                getComments(recomment, Number.parseInt(idx));
+            } else{
+                getComments();
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.status + ' ' + jqXHR.responseText);
@@ -199,15 +213,18 @@ function updateComment(c_idx){
 }
 
 // 댓글 삭제하기
-// TODO: 현재 접속중인 사용자의 댓글인 경우에만 수정/삭제 버튼 생기도록 변경해야 함.
-// TODO: 다른 사람의 댓글도 현제 삭제 가능...
-function deleteComment(c_idx) {
+function deleteComment(c_idx, recomment=false) {
     $.ajax({
         type: 'DELETE',
         url: `/inquiry/${i_idx}/comment/${c_idx}`,
         success: function (result) {
             console.log(result)
-            getComments();
+            if(recomment) {
+                var idx = $(`#btn-${c_idx}-default`).parents(".commentOne").attr("id").substr(10);
+                getComments(recomment, Number.parseInt(idx));
+            } else{
+                getComments();
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.status + ' ' + jqXHR.responseText);

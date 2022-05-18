@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
+import java.lang.reflect.Member;
 import java.util.List;
 
 @Controller
@@ -185,8 +186,8 @@ public class InquiryController {
      */
     @ResponseBody
     @GetMapping("/inquiry/{i_idx}/comment")
-    public List<CommentDTO> showAllComment(@PathVariable int i_idx) throws Exception{
-        return commentService.showAllComment(i_idx);
+    public List<CommentDTO> showAllComment(@Login MemberDTO memberDTO, @PathVariable int i_idx) throws Exception{
+        return commentService.showAllComment(i_idx, memberDTO);
     }
 
     /**
@@ -198,8 +199,8 @@ public class InquiryController {
      */
     @ResponseBody
     @GetMapping("/inquiry/{i_idx}/comment/{c_idx}")
-    public List<CommentDTO> showSubComment(@PathVariable int i_idx, @PathVariable int c_idx) throws Exception{
-        return commentService.showSubComment(c_idx);
+    public List<CommentDTO> showSubComment(@Login MemberDTO memberDTO, @PathVariable int i_idx, @PathVariable int c_idx) throws Exception{
+        return commentService.showSubComment(c_idx, memberDTO);
     }
 
     /**
@@ -218,7 +219,6 @@ public class InquiryController {
         commentDTO.setM_idx(memberDTO.getM_idx());
         commentDTO.setI_idx(i_idx);
 
-        // TODO: mapper 확인하여 i_idx에 대한 조건 추가 고려해보자.
         int result = commentService.writeComment(commentDTO);
         return result;
     }
@@ -243,7 +243,6 @@ public class InquiryController {
         commentDTO.setI_idx(i_idx);
         commentDTO.setC_idx(c_idx);
 
-        // TODO: mapper 확인하여 i_idx에 대한 조건 추가 고려해보자.
         int result = commentService.updateComment(commentDTO);
         return result;
     }
@@ -262,13 +261,13 @@ public class InquiryController {
                              @PathVariable int i_idx,
                              @PathVariable int c_idx) throws Exception {
 
-//        CommentDTO commentDTO = new CommentDTO();
-//        commentDTO.setM_idx(memberDTO.getM_idx());
-//        commentDTO.setI_idx(i_idx);
-//        commentDTO.setC_idx(c_idx);
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setM_idx(memberDTO.getM_idx());
+        commentDTO.setI_idx(i_idx);
+        commentDTO.setC_idx(c_idx);
 
         // TODO: mapper 확인하여 m_idx, i_idx에 대한 조건 추가 고려해보자. (위 생성한 dto 이용)
-        int result = commentService.deleteComment(c_idx);
+        int result = commentService.deleteComment(commentDTO);
         return result;
     }
 

@@ -22,7 +22,20 @@
     <select id="showAllComment" parameterType="int" resultType="CommentDTO">
         select c1.comment_idx as c_idx,
                c1.i_idx,
-               c1.m_idx,
+               <choose>
+                    <when test="authorities == 'USER'">
+                        case c1.m_idx
+                        when #{m_idx} then c1.m_idx
+                        else '0'
+                        end m_idx,
+                    </when>
+                    <otherwise>
+                        case c1.m_idx
+                        when #{m_idx} then '0'
+                        else c1.m_idx
+                        end m_idx,
+                    </otherwise>
+               </choose>
                c1.comment,
                date_format(c1.post_date, "%Y/%m/%d %H:%i") as post_date,
                c2.count_sub
@@ -34,7 +47,20 @@
     <select id="showSubComment" parameterType="int" resultType="CommentDTO">
         select comment_idx as c_idx,
                i_idx,
-               m_idx,
+                <choose>
+                    <when test="authorities == 'USER'">
+                        case m_idx
+                            when #{m_idx} then m_idx
+                            else '0'
+                        end m_idx,
+                    </when>
+                    <otherwise>
+                        case m_idx
+                            when #{m_idx} then '0'
+                            else m_idx
+                        end m_idx,
+                    </otherwise>
+                </choose>
                comment,
                date_format(post_date, "%Y/%m/%d %H:%i") as post_date,
                comment_idx2 as c_idx2
@@ -46,9 +72,9 @@
         set comment = #{comment}
         where comment_idx = #{c_idx} and m_idx = #{m_idx}
     </update>
-    <delete id="deleteComment" parameterType="int">
+    <delete id="deleteComment" parameterType="CommentDTO">
         delete from COMMENT
-        where comment_idx = #{c_idx}
+        where comment_idx = #{c_idx} and m_idx = #{m_idx}
     </delete>
     <delete id="deleteAllComments" parameterType="int">
         delete from COMMENT
@@ -56,9 +82,8 @@
     </delete>
     <update id="updateStatusDeleted">
         update COMMENT
-        set comment = '(삭제된 댓글)',
-            m_idx = '0'
-        where comment_idx = #{c_idx}
+        set comment = ''
+        where comment_idx = #{c_idx} and m_idx = #{m_idx}
     </update>
     <select id="countReComments" parameterType="int" resultType="int">
         select count(*)
