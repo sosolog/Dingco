@@ -3,13 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.config.InquiryMapper">
-    <select id="countTotalInquiries" resultType="int" parameterType="MemberDTO">
+    <select id="countTotalInquiries" resultType="int" parameterType="hashmap">
         select count(*) from INQUIRY
-        <if test="authorities == 'USER'">
-            where m_idx = #{m_idx}
-        </if>
+        <choose>
+            <when test="authorities == 'ADMIN'">
+                <if test="searchKey != null">
+                    where title like concat('%', #{searchKey}, '%')
+                </if>
+            </when>
+            <otherwise>
+                where m_idx = #{m_idx}
+                <if test="searchKey != null">
+                    and title like concat('%', #{searchKey}, '%')
+                </if>
+            </otherwise>
+        </choose>
     </select>
-    <select id="showUserInquiry" resultType="InquiryDTO" parameterType="MemberDTO">
+    <select id="showUserInquiry" resultType="InquiryDTO" parameterType="hashmap">
         select t.i_idx, t.m_idx, t.category_id, t.title, t.content, t.upload_date, t.last_updated_date, t.i_idx2, t.status
         from (
             select
@@ -28,9 +38,21 @@
                 i_status as status
             from INQUIRY
         ) t
-        <if test="authorities == 'USER'">
-            where m_idx = #{m_idx}
-        </if>
+        <choose>
+            <when test="authorities == 'ADMIN'">
+                <if test="searchKey != null">
+                    where title like concat('%', #{searchKey}, '%')
+                </if>
+            </when>
+            <otherwise>
+                where m_idx = #{m_idx}
+                <if test="searchKey != null">
+                    and title like concat('%', #{searchKey}, '%')
+                </if>
+            </otherwise>
+        </choose>
+
+
         order by inq_group desc, i_idx
     </select>
     <select id="showOneUserInquiry" resultType="InquiryDTO" parameterType="int">
