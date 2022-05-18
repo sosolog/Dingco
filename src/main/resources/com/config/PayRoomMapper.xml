@@ -51,13 +51,13 @@
         where prgm_idx = #{prgm_idx}
     </update>
 
-    <delete id="accountNull" parameterType="int">
+    <update id="accountNull" parameterType="int">
         UPDATE PAYGROUPMEMBER
         SET
             paymember_account = NULL,
             paymember_bank = NULL
         where prgm_idx = #{prgm_idx}
-    </delete>
+    </update>
     <insert id="insertDutchPay" parameterType="DutchPayDTO" useGeneratedKeys="true" keyProperty="dp_idx">
         insert into DUTCHPAYLIST (pr_idx,dp_name, cut_option
             <if test="createDate != null">
@@ -76,6 +76,18 @@
             </if>
         )
     </insert>
+    <insert id="updateDutchPay" parameterType="DutchPayDTO">
+        update DUTCHPAYLIST
+            set dp_name = #{dutchPayName},
+                cut_option = #{option}
+        <if test="createDate != null">
+            , create_date = #{createDate}
+        </if>
+        <if test="dueDate != null">
+            , due_date = #{dueDate}
+        </if>
+        where dp_idx = #{dp_idx}
+    </insert>
     <insert id="insertPayList" parameterType="PayDTO" useGeneratedKeys="true" keyProperty="p_idx">
         insert into PAYLIST(dp_idx, pay_name, payer, price)
         values(#{dp_idx}, #{p_name}, #{payMember.prgm_idx}, #{price})
@@ -88,9 +100,9 @@
         </foreach>
     </insert>
     <select id="dutchpayListInfo" parameterType="int" resultType="DutchPayDTO">
-        select dp.dp_idx, dp.dp_name dutchPayName, dp.create_date createDate, dp.due_date dueDate, t.totalPay
+        select dp.dp_idx, dp.dp_name dutchPayName, date_format(dp.create_date,'%Y-%m-%d') createDate, dp.due_date dueDate, t.totalPay
         from (select sum(price) totalPay, dp_idx from PAYLIST group by dp_idx) t
-            join DUTCHPAYLIST dp on dp.dp_idx = t.dp_idx
+            right outer join DUTCHPAYLIST dp on dp.dp_idx = t.dp_idx
         where dp.pr_idx = #{pr_idx};
     </select>
 
@@ -115,14 +127,91 @@
         </collection>
     </resultMap>
     <select id="dutchpayInfo" parameterType="hashmap" resultMap="dutchPay">
-        select dp.dp_idx, dp.dp_name, dp.cut_option, dp.create_date, dp.due_date,
+        select dp.dp_idx, dp.dp_name, dp.cut_option, date_format(dp.create_date,'%Y-%m-%d') create_date, dp.due_date,
                p.p_idx, p.pay_name, p.price, p.payer, pg2.paymember_name,
                pp.prgm_idx p_prgm_idx, pg.paymember_name p_payMember_name
         from DUTCHPAYLIST dp
                  left outer join PAYLIST p on dp.dp_idx = p.dp_idx
                  left outer join PAYPARTICIPANTS pp on p.p_idx = pp.p_idx
-                 join PAYGROUPMEMBER pg on pp.prgm_idx = pg.prgm_idx
-                 join PAYGROUPMEMBER pg2 on p.payer = pg2.prgm_idx
+                 left outer join PAYGROUPMEMBER pg on pp.prgm_idx = pg.prgm_idx
+                 left outer join PAYGROUPMEMBER pg2 on p.payer = pg2.prgm_idx
         where dp.pr_idx = #{pr_idx} and dp.dp_idx = #{dp_idx};
     </select>
+
+    <select id="memberCheck" parameterType="hashmap" resultType="boolean">
+        select count(*) from (
+                    select DISTINCT prgm_idx from
+                         (select payer as prgm_idx, p_idx from PAYLIST
+                            union
+                            select prgm_idx, p_idx from PAYPARTICIPANTS) A
+                    where p_idx in (
+                                select p_idx from PAYLIST
+                                where dp_idx in (
+                                    select dp_idx from DUTCHPAYLIST where pr_idx = #{pr_idx}))) B
+        where prgm_idx = #{prgm_idx}
+    </select>
+
+    <delete id="memberDelete" parameterType="int">
+        delete from PAYGROUPMEMBER
+        where prgm_idx = #{prgm_idx}
+    </delete>
+
+    <insert id="memberAdd" parameterType="PayGroupMemberDTO" useGeneratedKeys="true" keyProperty="prgm_idx">
+        insert into PAYGROUPMEMBER (pr_idx,paymember_name)
+        values (#{pr_idx},#{payMember_name})
+    </insert>
+
+    <delete id="deleteOnePayInDutchpay">
+        delete from PAYLIST where p_idx = #{p_idx}
+    </delete>
+    <delete id="deleteParticipantsInOnePay">
+        delete from PAYPARTICIPANTS where p_idx = #{p_idx}
+    </delete>
+    <delete id="deleteOneDutpay">
+        delete from DUTCHPAYLIST where dp_idx = #{dp_idx}
+    </delete>
+    <delete id="deleteParticipantsInAllPayInOneDutch">
+        delete from PAYPARTICIPANTS
+        where p_idx in (select p_idx from PAYLIST where dp_idx = #{dp_idx})
+    </delete>
+    <delete id="deleteAllPayInDutchpay">
+        delete from PAYLIST where dp_idx = #{dp_idx}
+    </delete>
+    <resultMap id="payInfo" type="PayDTO">
+        <id property="p_idx" column="p_idx"></id>
+        <result property="p_name" column="pay_name"></result>
+        <result property="price" column="price"></result>
+        <association property="payMember" javaType="PayGroupMemberDTO">
+            <id property="prgm_idx" column="payer"/>
+            <result property="payMember_name" column="paymember_name"/>
+        </association>
+        <collection property="participants" ofType="PayGroupMemberDTO">
+            <id property="prgm_idx" column="p_prgm_idx"/>
+            <result property="payMember_name" column="p_paymember_name"/>
+        </collection>
+    </resultMap>
+    <select id="showOnePayInfo"  parameterType="int" resultMap="payInfo">
+        select p.p_idx, p.pay_name, p.price, p.payer, pg2.paymember_name,
+               pp.prgm_idx p_prgm_idx, pg.paymember_name p_payMember_name
+        from PAYLIST p
+                 left outer join PAYPARTICIPANTS pp on p.p_idx = pp.p_idx
+                 left outer join PAYGROUPMEMBER pg on pp.prgm_idx = pg.prgm_idx
+                 left outer join PAYGROUPMEMBER pg2 on p.payer = pg2.prgm_idx
+        where p.p_idx = #{p_idx};
+    </select>
+    <update id="updateOnePayInDutchpay" parameterType="PayDTO">
+        update PAYLIST
+        set
+            pay_name = #{p_name},
+            price = #{price},
+            payer = #{payMember.prgm_idx}
+        where p_idx = #{p_idx}
+    </update>
+
+    <select id="selectAccount" parameterType="int" resultType="PayGroupMemberDTO">
+        select * from PAYGROUPMEMBER where prgm_idx = #{prgm_idx}
+    </select>
+
+
+
 </mapper>
