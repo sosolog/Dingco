@@ -51,7 +51,7 @@
                        placeholder="검색어를 입력하세요" onkeyup="searchFormValidation(event.keyCode)">
             </div>
             <div class="sch_ico_rt">
-                <a onclick="go_search(searchForm)"><img src="/images/ico_search_02.png"></a>
+                <a onclick="go_search()"><img src="/images/ico_search_02.png"></a>
             </div>
         </div>
     </div>
