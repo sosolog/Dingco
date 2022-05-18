@@ -22,7 +22,19 @@ public class FAQController {
 
     private final FAQService service;
 
+    @GetMapping("/test")
+    public String test(@RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,
+                       HttpServletRequest request,
+                       Model model) throws Exception {
 
+        PageDTO<FAQDTO> pageDTO = service.selectFAQRecordPaging(Integer.parseInt(curPage));
+
+            model.addAttribute("pageDTO", pageDTO);
+            model.addAttribute("requestMapping", request.getServletPath());
+            return "test";
+
+
+    }
     /**
      * FAQ 전체 조회(페이징)
      * @param curPage : 현재 페이지(쿼리 스트링으로 들고 옴)
@@ -40,7 +52,7 @@ public class FAQController {
         // 검색되는 값이 존재하지 않는 값이 있더라도 조회가 될 수 있도록 먼저 조건문 배치
         if(Integer.parseInt(curPage) == 1 && pageDTO.getTotalPage() == 0){
             model.addAttribute("pageDTO", pageDTO);
-            model.addAttribute("requestMapping", request.getServletPath());
+//            model.addAttribute("requestMapping", request.getServletPath());
             return "FaqList";
         }
         // 조건(2) : 전체 페이지 범위를 초과해서 조회할 경우에는 redirect:/faq를 통해서 FAQ로 돌아가게끔 세팅
@@ -49,7 +61,7 @@ public class FAQController {
         }
         else {
             model.addAttribute("pageDTO", pageDTO);
-            model.addAttribute("requestMapping", request.getServletPath());
+//            model.addAttribute("requestMapping", request.getServletPath());
             return "FaqList";
         }
     }
@@ -75,7 +87,7 @@ public class FAQController {
         if(Integer.parseInt(curPage) == 1 && pageDTO.getTotalPage() == 0){
             model.addAttribute("pageDTO", pageDTO);
             model.addAttribute("searchKey", searchKey);
-            model.addAttribute("requestMapping", request.getServletPath());
+//            model.addAttribute("requestMapping", request.getServletPath());
             return "FaqSearchList";
         }
         // 조건(2) : 전체 페이지 범위를 초과해서 조회할 경우에는 redirect:/faq를 통해서 FAQ로 돌아가게끔 세팅
@@ -85,7 +97,7 @@ public class FAQController {
         else {
             model.addAttribute("pageDTO", pageDTO);
             model.addAttribute("searchKey", searchKey);
-            model.addAttribute("requestMapping", request.getServletPath());
+//            model.addAttribute("requestMapping", request.getServletPath());
             return "FaqSearchList";
         }
     }

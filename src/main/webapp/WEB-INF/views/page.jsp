@@ -12,24 +12,19 @@
 <c:set var="totalPage" value="${dto.totalPage}"></c:set>
 
 <c:set var="path" value="${requestMapping}"></c:set>
-
+<script>console.log(${path})</script>
 
 <!-- 현재 블럭의 페이지 리스트의 길이가 0일 경우 -->
 <c:if test="${pageListInBlock.size() == 0}">
-	<script>console.log("현재 블럭의 페이지 리스트의 길이가 0일 경우")</script>
 
-	<c:if test="${totalRecord%perPage != 0}">
-		<c:set var="totalPage" value="${totalPage+1}" ></c:set>
-	</c:if>
-	<!-- 레코드가 없을 경우 나오는 경우는 아래의 경우 밖에 없는거 같습니다 ,,, -->
+	<!-- 레코드가 없을 경우 나오는 경우 => totalPage = 0 -> totalPage = 0이면 빈 리스트라서 페이지 번호가 뜨지 않는다.
+	=> 빈 리스트에 totalPage + 1(=1)을 넣어주어서 레코드가 없는 경우에도 페이지 번호가 뜰 수 있게끔 작업
+	-->
 	<c:forEach var="i" begin="1" end="${totalPage+1}">
 		<c:if test="${i==pg}">
 			${i}
 		</c:if>
-	<!-- 끝 -->
-		<c:if test="${i!=pg}">
-			<a href="${path}?pg=${i}">${i}</a>
-		</c:if>
+		<!-- 끝 -->
 	</c:forEach>
 </c:if>
 

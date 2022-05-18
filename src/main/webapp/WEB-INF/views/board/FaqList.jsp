@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <div id="faqList">
     <form class="sch" method="get" action="/faq/search" name="searchForm">
@@ -9,7 +9,7 @@
                        placeholder="검색어를 입력하세요" onkeydown="if(event.keyCode === 13) $(this).submit();">
             </div>
             <div class="sch_ico_rt">
-                <input type="submit"><img src="/images/ico_search_02.png"></a>
+                <input type="image" src="/images/ico_search_02.png" alt="submit">
             </div>
         </div>
     </form>
