@@ -18,82 +18,66 @@
 
 <%------ End : JSTL 변수 설정 ------%>
 
-<div id="wrap_editUser">
-    <div id="main">
-        <div class="title">
-			<h2> 사용자 정보 수정 </h2>
-        </div>
-        <form action="/editMypage.action" id="editUser_form" name="editUserForm" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="snslogin" value="${passwd}"/>
-            <table class="editUser_table">
-                <tr>
-                    <td class="item_th">
-                        <div><span>회원 번호</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input readonly id="m_idx" name="m_idx" value="${m_idx}"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_th">
-                        <div><span>이름</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input readonly="readonly" id="username" name="username" value="${username}"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_th">
-                        <div><span>아이디</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input readonly id="userid" name="userid" value="${userid}"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_box">
-                        <div><input type="hidden" id="passwd" name="passwd" value="pedal1234" onkeyup="passwd_check('wrap_editUser')"
-                                    placeholder="비밀번호를 입력하세요" autocomplete="off"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <input type="hidden" id="chk_pw" name="chk_pw" value="true">
-                    <td><span class="pw_check"></span></td>
-                </tr>
-                <tr>
-                    <td class="item_th"><div>프로필 사진 업로드</div></td>
-                    <td>
-                        <input type="hidden" name="oUploadFileName" value="${uploadFileName}">
-                        <input type="hidden" name="oStoreFileName" value="${storeFileName}">
-                        <input id="file" name="file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="checkFileSize()"/>
-                        <div>기존 사진 : ${uploadFileName} </div>
-                        <div><img src="/files/member/${storeFileName}" style="width:100px; height:100px; overflow: hidden; object-fit: cover;"></div>
-                        <div>프로필 사진 업로드(크기:2MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)</div>
-                        <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="td_email">
-                        <input type="hidden" name="email1" id="email1" value="pedalemail" autocomplete="off">
-                        <input type="hidden" name="email2" id="email2" value="pedalemail" autocomplete="off">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="item_th">
-                        <div><span>가입일</span></div>
-                    </td>
-                    <td class="item_box">
-                        <div><input readonly id="joindate" name="joindate" value="${joindate}"></div>
-                    </td>
-                </tr>
-            </table>
-            <div class="wrap_btn" style="width: 100px; height: 40px; background-color: #888; text-align: center; margin-top:10px;">
-                <a class="submit_box" onclick="editUserForm_submit(editUserForm)" style="cursor:pointer; display: inline-block; margin-top:10px; color:#fff;">수정하기</a>
-            </div>
-        </form>
-    </div>
+<div id="mypage">
+    <form action="/editMypage.action" id="editMypage" name="editUserForm" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="snslogin" value="${passwd}"/>
+        <table class="join_table">
+            <tr style="display: none;">
+                <td class="item_th"><span>회원 번호</span></td>
+                <td class="item_box">
+                    <div><input readonly id="m_idx" name="m_idx" value="${m_idx}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="item_th"><span>이름</span></td>
+                <td class="item_box">
+                    <div><input readonly="readonly" id="username" name="username" value="${username}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="item_th"><span>아이디</span></td>
+                <td class="item_box">
+                    <div><input readonly="readonly" id="userid" name="userid" value="${userid}"></div>
+                </td>
+            </tr>
+            <tr style="display: none;">
+                <td class="item_box">
+                    <div><input type="hidden" id="passwd" name="passwd" value="pedal1234" onkeyup="passwd_check('wrap_editUser')"
+                                placeholder="비밀번호를 입력하세요" autocomplete="off"></div>
+                </td>
+            </tr>
+            <tr style="display: none;">
+                <td></td>
+                <input type="hidden" id="chk_pw" name="chk_pw" value="true">
+                <td><span class="pw_check"></span></td>
+            </tr>
+            <tr style="display: none;">
+                <td class="item_th"><div>프로필 사진 업로드</div></td>
+                <td>
+                    <input type="hidden" name="oUploadFileName" value="${uploadFileName}">
+                    <input type="hidden" name="oStoreFileName" value="${storeFileName}">
+                    <input id="file" name="file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="checkFileSize()"/>
+                    <div>기존 사진 : ${uploadFileName} </div>
+                    <div><img src="/files/member/${storeFileName}" style="width:100px; height:100px; overflow: hidden; object-fit: cover;"></div>
+                    <div>프로필 사진 업로드(크기:2MB 이내, 확장자:gif,jpg,png,bmp,jpeg,heic)</div>
+                    <!-- accept: 지정한 확장자 이외에는 클릭 자체가 안됨-->
+                </td>
+            </tr>
+            <tr style="display: none;">
+                <td class="td_email">
+                    <input type="hidden" name="email1" id="email1" value="pedalemail" autocomplete="off">
+                    <input type="hidden" name="email2" id="email2" value="pedalemail" autocomplete="off">
+                </td>
+            </tr>
+            <tr>
+                <td class="item_th"><span>가입일</span></td>
+                <td class="item_box">
+                    <div><input readonly="readonly" id="joindate" name="joindate" value="${joindate}"></div>
+                </td>
+            </tr>
+        </table>
+<%--        <a class="btn_login" onclick="editUserForm_submit(editUserForm)"><span>수정하기</span></a>--%>
+    </form>
 </div>
 
 <%------ End : HTML ------%>
