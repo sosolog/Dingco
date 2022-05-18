@@ -4,6 +4,8 @@ import com.dingco.pedal.dto.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,14 +70,74 @@ public class PayRoomDAO {
         session.insert("com.config.PayRoomMapper.insertPayParticipants", payAndParticipants);
     }
 
-    public List<DutchPayDTO> dutchpayListInfo(int pr_idx) {
+    public List<DutchPayDTO> dutchpayListInfo(int pr_idx) throws Exception{
         return session.selectList("com.config.PayRoomMapper.dutchpayListInfo", pr_idx);
     }
 
-    public DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) {
+    public DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) throws Exception{
         HashMap<String, Integer> map = new HashMap<>();
         map.put("pr_idx", pr_idx);
         map.put("dp_idx", dp_idx);
         return session.selectOne("com.config.PayRoomMapper.dutchpayInfo", map);
     }
+
+    public boolean memberCheck(HashMap<String,Integer> map) throws Exception{
+        return session.selectOne("com.config.PayRoomMapper.memberCheck",map);
+    }
+    public int memberDelete(int prgm_idx) throws Exception{
+        return session.delete("com.config.PayRoomMapper.memberDelete",prgm_idx);
+    }
+
+
+    public PayGroupMemberDTO memberAdd(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
+        session.insert("com.config.PayRoomMapper.memberAdd",payGroupMemberDTO);
+        System.out.println(payGroupMemberDTO.getPrgm_idx());
+        return payGroupMemberDTO;
+    }
+
+    public PayDTO showOnePayInfo(int p_idx) {
+        return session.selectOne("com.config.PayRoomMapper.showOnePayInfo", p_idx);
+    }
+
+    public int deleteOneDutpay(int dp_idx){
+        return session.delete("com.config.PayRoomMapper.deleteOneDutpay", dp_idx);
+    }
+    public int deleteOnePayInDutchpay(int p_idx) {
+        return session.delete("com.config.PayRoomMapper.deleteOnePayInDutchpay", p_idx);
+    }
+
+    public int deleteAllPayInDutchpay(int dp_idx) {
+        return session.delete("com.config.PayRoomMapper.deleteAllPayInDutchpay", dp_idx);
+    }
+
+    public int deleteParticipantsInOnePay(int p_idx){
+        return session.delete("com.config.PayRoomMapper.deleteParticipantsInOnePay", p_idx);
+    }
+    public int deleteParticipantsInAllPayInOneDutch(int dp_idx){
+        return session.delete("com.config.PayRoomMapper.deleteParticipantsInAllPayInOneDutch", dp_idx);
+    }
+
+    public List<PayGroupMemberDTO> showPayRoomGroupMember(int pr_idx) {
+        return session.selectList("com.config.PayRoomMapper.selectPayRoomGroupMember", pr_idx);
+    }
+
+    @Transactional
+    public int updateOnePayInDutchpay(PayDTO payDTO){
+        deleteParticipantsInOnePay(payDTO.getP_idx());
+        PayAndParticipants payAndParticipants = new PayAndParticipants();
+        payAndParticipants.setP_idx(payDTO.getP_idx());
+        payAndParticipants.setParticipants(payDTO.getParticipants());
+        session.insert("com.config.PayRoomMapper.insertPayParticipants", payAndParticipants);
+        return session.update("com.config.PayRoomMapper.updateOnePayInDutchpay", payDTO);
+    }
+
+    public int updateDutchPay(DutchPayDTO dutchPayDTO)  {
+        return session.update("com.config.PayRoomMapper.updateDutchPay", dutchPayDTO);
+    }
+
+    public PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception{
+        return session.selectOne("com.config.PayRoomMapper.selectAccount",prgm_idx);
+    }
+
+
 }

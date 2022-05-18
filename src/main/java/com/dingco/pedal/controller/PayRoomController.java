@@ -4,6 +4,7 @@ import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.*;
 import com.dingco.pedal.service.PayRoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -39,7 +41,7 @@ public class PayRoomController {
             ObjectMapper mapper = new ObjectMapper();
             String payRoomJson = mapper.writeValueAsString(payRoomDTO);
             model.addAttribute("payRoom",payRoomJson);
-            next = "pay/payRoomRetrieve";
+            next = "payRoomRetrieve";
         }
         return next;
     }
@@ -52,7 +54,7 @@ public class PayRoomController {
         String payRoomJson = mapper.writeValueAsString(list);
         model.addAttribute("payRoomList",payRoomJson);
 
-        return "pay/payRoomList";
+        return "payRoomList";
     }
 
     @PostMapping("/pay/room")
@@ -103,6 +105,12 @@ public class PayRoomController {
         return payRoomService.dutchPayInfo(pr_idx, dp_idx);
     }
 
+    @GetMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
+    @ResponseBody
+    public PayDTO showOnePayInfo(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx) throws Exception {
+        return payRoomService.showOnePayInfo(p_idx);
+    }
+
     @PostMapping("/pay/{pr_idx}/dutch/{dp_idx}")
     @ResponseBody
     public String addPayIntoDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, PayDTO payDTO) throws Exception {
@@ -110,11 +118,16 @@ public class PayRoomController {
         return payDTO.toString();
     }
 
-    @GetMapping("/pay/newtest/{name}")
-    public String dutchPay(@PathVariable String name,Model model) {
+    @DeleteMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
+    @ResponseBody
+    public int deleteOnePayInDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx) throws Exception {
+        return payRoomService.deleteOnePayInDutchpay(p_idx);
+    }
 
-        model.addAttribute("name",name);
-        return "pay/pay";
+    @PutMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
+    @ResponseBody
+    public int updateOnePayInDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx, PayDTO payDTO) throws Exception {
+        return payRoomService.updateOnePayInDutchpay(payDTO);
     }
 
     @PostMapping("/pay/payInfo")
@@ -125,16 +138,23 @@ public class PayRoomController {
         JsonNode obj = mapper.readTree(map.get("payArr"));
 
         System.out.println(map.get("allPrice").replace(",",""));
-
-
         return obj;
     }
 
     @PutMapping("/pay/accountInfo")
     @ResponseBody
-    public void PutaccountInfo(@RequestParam HashMap<String,String> map) throws Exception {
+    public void putAccountInfo(@RequestParam HashMap<String,String> map) throws Exception {
 
        int num = payRoomService.updateAccount(map);
+    }
+
+    @GetMapping("/pay/accountInfo/{prgm_idx}")
+    @ResponseBody
+    public String getAccountInfo(@PathVariable int prgm_idx) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println(prgm_idx);
+        String payMemberJson = mapper.writeValueAsString(payRoomService.selectAccount(prgm_idx));
+       return payMemberJson;
     }
 
     @PutMapping("/pay/accountNull")
@@ -142,6 +162,87 @@ public class PayRoomController {
     public void accountNull(@RequestParam int prgm_idx) throws Exception {
 
        int num = payRoomService.accountNull(prgm_idx);
+    }
+
+    @GetMapping("/pay/membercheck")
+    @ResponseBody
+    public boolean memberCheck(@RequestParam HashMap<String,Integer> map) throws Exception{
+        return payRoomService.memberCheck(map);
+    }
+
+    @PostMapping("/pay/membercheck")
+    @ResponseBody
+    public String memberCheck(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
+
+        ObjectMapper mapper = new ObjectMapper();
+        String payMemberJson = mapper.writeValueAsString(payRoomService.memberAdd(payGroupMemberDTO));
+        return payMemberJson;
+    }
+
+    @DeleteMapping("/pay/membercheck")
+    @ResponseBody
+    public int memberCheck(@RequestParam int prgm_idx) throws Exception{
+        return payRoomService.memberDelete(prgm_idx);
+    }
+
+    @DeleteMapping("/pay/{pr_idx}/dutch/{dp_idx}")
+    @ResponseBody
+    public int deleteOneDutpay(@PathVariable int pr_idx, @PathVariable int dp_idx) throws Exception{
+        return payRoomService.deleteOneDutchpay(dp_idx);
+    }
+
+    @GetMapping("/pay/{pr_idx}/member")
+    @ResponseBody
+    public List<PayGroupMemberDTO> showPayRoomGroupMember(@PathVariable int pr_idx) throws Exception{
+        return payRoomService.showPayRoomGroupMember(pr_idx);
+    }
+
+    @PutMapping("/pay/{pr_idx}/dutch/{dp_idx}")
+    @ResponseBody
+    public int updateDutchPay(@PathVariable int pr_idx, @PathVariable int dp_idx, DutchPayDTO dutchPayDTO) throws Exception{
+        return payRoomService.updateDutchPay(dutchPayDTO);
+    }
+
+    @PostMapping("/pay/RetrieveInfo")
+    @ResponseBody
+    public int postRetrieveInfo(@RequestParam String iArr,
+                                @RequestParam String uArr,
+                                @RequestParam String dArr,
+                                @RequestParam String dutchInfo) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<PayDTO> insertPayList = objectMapper.readValue(iArr, new TypeReference<List<PayDTO>>() { });
+        List<PayDTO> updatePayList = objectMapper.readValue(uArr, new TypeReference<List<PayDTO>>() { });
+        List<Integer> deletePayIdxList = objectMapper.readValue(dArr, new TypeReference<List<Integer>>() { });
+        DutchPayDTO dutchPayDTO = objectMapper.readValue(dutchInfo, new TypeReference<DutchPayDTO>() { });
+
+        return payRoomService.updateDutchPay(insertPayList, updatePayList, deletePayIdxList, dutchPayDTO);
+    }
+
+    @PutMapping("/pay/RetrieveInfo")
+    @ResponseBody
+        public int putRetrieveInfo(DutchPayDTO updateDTO) throws Exception {
+        System.out.println("updateDTO = " + updateDTO);
+        if(updateDTO.getPayList()!=null){
+            for (PayDTO paydto: updateDTO.getPayList()) {
+                payRoomService.updateOnePayInDutchpay(paydto);
+            }
+        }
+        return 1;
+    }
+
+    @DeleteMapping("/pay/RetrieveInfo")
+    @ResponseBody
+    public int deleteRetrieveInfo(@RequestParam("deleteArr[]") List<Integer> deleteArr) throws Exception {
+        System.out.println("deleteArr = " + deleteArr);
+        int num = 0;
+        if(deleteArr.size()!=0){
+            for (int delete:deleteArr) {
+                num = payRoomService.deleteOnePayInDutchpay(delete);
+            }
+        }
+
+        return num;
     }
 
 }
