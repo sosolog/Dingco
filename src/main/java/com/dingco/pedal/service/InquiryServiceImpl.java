@@ -27,8 +27,8 @@ public class InquiryServiceImpl implements InquiryService {
 //    }
 
     @Override
-    public PageDTO<InquiryDTO> showUserInquiry(MemberDTO dto, int curPage) throws Exception {
-        return inquiryDAO.showUserInquiry(dto, curPage);
+    public PageDTO<InquiryDTO> showUserInquiry(MemberDTO dto, int curPage, String searchKey) throws Exception {
+        return inquiryDAO.showUserInquiry(dto, curPage, searchKey);
     }
 
     @Override
