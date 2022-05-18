@@ -427,15 +427,17 @@ function isPayFormOpened() {
 }
 
 // 새 pay 입력시, 폼 탬플릿 보여주기/없애기 토글
-function togglePayForm(){
+function togglePayForm(btn){
     if(!isPayFormOpened()){
         $("#btn-pay-plus").text("-");
         $("#pay-form-tmpl").tmpl({groupMember:groupMemberArr, pay: null, participants_prgm_idx:null}).appendTo("#payList");
         $("#is-pay-form-opened").val("true");
+        btnDisabled(btn);
     }else{
         $("#btn-pay-plus").text("+");
         $("#pay-form:last").remove();
         $("#is-pay-form-opened").val("");
+        btnAbled();
     }
     return false;
 }
@@ -601,22 +603,20 @@ function saveNewPay() {
 
 
 //새로운 계좌 템플릿 테이블에 넣는 함수
-function createNewAccount() {
-    if ($("#btn-updated-account").length != 0) {
-    } else {
+function createNewAccount(btn) {
         if(groupMemberArr.filter(gm => gm.payMember_account == null).length == 0){
             alert("추가할 인원이 없습니다.");
         }else{
             var tmplInfo = {pr: groupMemberArr,accountInfo:null, accountIdx:0};
             var idInfoArr = ["#btn-update-account", "#btn-account-plus", "#account-form-tmpl", tmplInfo,
                 "#accountList", "#btn-account-plus", "#accountList:last"]
-            plusMinus(idInfoArr);
+            plusMinus(idInfoArr,btn);
         }
-    }
 }
 
 //적은 계좌 텍스트로 저장해주고 PayGroupMember DB에 update 해주는 함수
 function saveNewAccount(btn) {
+    btnAbled();
     var savebank = $("#new-account-bank").val();
     var saveNumber = $("#new-account-number").val();
     if (savebank.length > 0 && saveNumber.length > 0) {
@@ -633,11 +633,13 @@ function saveNewAccount(btn) {
     }
 }
 
-function plusMinus(idInfoArr) {
+function plusMinus(idInfoArr,btn) {
     if ($(idInfoArr[0]).length == 0) {
+        btnDisabled(btn);
         $(idInfoArr[1]).text("-");
         $(idInfoArr[2]).tmpl(idInfoArr[3]).appendTo(idInfoArr[4]);
     } else {
+        btnAbled();
         $(idInfoArr[5]).text("+");
         $("#accountList").html($("#account-form-tmpl").tmpl({pSave: groupMemberArr, accountIdx: 1}));
     }
@@ -673,10 +675,8 @@ function plusMinus(idInfoArr) {
     }
 
     function updateSaveAccount(btn) {
-
+        btnDisabled(btn);
         var plusValid = $("#btn-account-plus").text();
-        if (plusValid == "-" || $("#btn-updated-account").length != 0) {
-        } else {
 
             var prgm_idx = btn.parents("tr").find("#prgm_idx").val();
             console.log(prgm_idx);
@@ -694,10 +694,10 @@ function plusMinus(idInfoArr) {
                     console.log(e);
                 }
             })
-        }
     }
 
     function updateSavedAccount(btn) {
+        btnAbled();
         var savebank = $("#new-account-bank").val();
         var saveNumber = $("#new-account-number").val();
         var gm_idx = $("#saved-account-prgm_idx").val();
@@ -790,6 +790,217 @@ function plusMinus(idInfoArr) {
             }
         })
     }
+
+//5.18
+//저장된 결제 삭제하는 함수
+function deleteSavePay(tr) {
+    let index = Number.parseInt($(tr).attr("data-idx"));
+
+    if (!isRetrievedDutchInfo()) {
+        payArr.splice(index, 1);
+        $("#payList").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
+        $("#allPrice").val(comma(calculateTotalPay(payArr)));
+    } else {
+        var position = $(tr).parent().parent().parent().attr("id");
+        if(position == 'payList2') {
+            var payObj = payArr[index];
+            payArr.splice(index, 1);
+            console.log(payArr);
+
+            $("#payList2").html($("#pay-list-tmpl").tmpl({pSave: payArr}));
+        } else {
+            var p_idx = index;
+            deletedPayArr.push(p_idx);
+            if(updatedPayArr.has(p_idx)){
+                updatedPayArr.delete(p_idx);
+            }
+            $(tr).parent().parent().remove();
+
+            var idx = 0;
+            savedPayArr.forEach((p, i) => {
+                if(p.p_idx == p_idx) {
+                    idx = i;
+                }
+            });
+            savedPayArr.splice(idx, 1);
+
+        }
+        $("#allPrice").val(comma(calculateTotalPay(payArr)+calculateTotalPay(savedPayArr)));
+    }
+}
+
+
+// pay 수정 폼 보여주기
+function showUpdatePayForm(btn){
+
+    var index = Number.parseInt($(btn).attr("data-idx"));
+    if (!isRetrievedDutchInfo()) {
+        var data = payArr[index];
+        data.p_idx = index;
+
+        mapInfoToUpdatePayForm(data, btn);
+    } else {
+        var position = $(btn).parent().parent().parent().attr("id");
+
+        if(position == 'payList2') {
+            var data = payArr[index];
+            data.p_idx = index;
+            mapInfoToUpdatePayForm(data, btn);
+        } else {
+            var p_idx = index;
+            var findPay = savedPayArr.filter(p => p.p_idx == p_idx);
+            mapInfoToUpdatePayForm(findPay[0], btn);
+        }
+    }
+    btnDisabled(btn);
+}
+
+function saveUpdatedPay(p_idx, btn) {
+    var payObj = getPayInfoFromForm();
+
+    if (!isRetrievedDutchInfo()) {
+        payArr[p_idx] = payObj;
+        $("#pay-form").remove();
+
+        $("#payList").html($("#pay-list-tmpl").tmpl({pSave:payArr}));
+        $("#allPrice").val(comma(calculateTotalPay(payArr)));
+    } else {
+        var position = $(btn).parent().parent().parent().attr("id");
+        if(position == 'payList2') {
+            payArr[p_idx] = payObj;
+            $("#pay-form").remove();
+            $("#payList2").html($("#pay-list-tmpl").tmpl({pSave:payArr}));
+        } else {
+            payObj.p_idx = p_idx;
+            var findPay = savedPayArr.filter(p => p.p_idx == p_idx);
+            updatedPayArr.add(p_idx);
+
+            findPay[0].payName = payObj.payName;
+            findPay[0].payPrice = payObj.payPrice;
+            findPay[0].payPayer = payObj.payPayer;
+            findPay[0].payParticipants = payObj.payParticipants;
+
+            $("#pay-form").remove();
+            $("#payList").html($("#pay-list-tmpl").tmpl({pSave:savedPayArr}));
+        }
+        $("#allPrice").val(comma(calculateTotalPay(payArr)+calculateTotalPay(savedPayArr)));
+    }
+    btnAbled();
+}
+
+// 더치페이 폼 닫기
+function closeDutchPayForm() {
+    // modal 안보이도록 css 변경
+    $(".modal").removeClass("show");
+
+    // 현재까지 저장되어있던 정보 삭제
+    clearDutchPayForm();
+}
+
+function saveDutchPayForm() {
+    var dp_idx = getDp_idx();
+    // TODO: 저장시, 유효성 검사 조건 및 저장 조건 확정하여 변경!
+    // 저장된 결제 목록이 있으면 저장! (이름 없으면 임의 생성)
+    if(!isRetrievedDutchInfo()){
+        // 유효성 검사 (결제목록도 없고, 이름도 없을 시 생성 안됨)
+        if( payArr.length <= 0 && $("#pay_name").val().trim().length <= 0) {
+            alert("생성할 페이목록의 이름을 작성하거나, 결제목록을 추가하세요.");
+            return false;
+        }
+
+        // 더치페이 이름 정보 없을 시, 임의로 이름 생성(현재 날짜 & 시간 기준)
+        if($("#pay_name").val().trim().length <= 0){
+            $("#pay_name").val(createArbitraryName());
+        }
+
+        // 더치페이 폼에서 정보 가져와서 데이터 저장
+        saveNewDutchPayInfo();
+
+    } else { // TODO: retrieve한 내용 수정 한 이후, 닫기
+        var dp_idx = getDp_idx();
+        var pArr = [];
+        payArr.forEach(p => pArr.push(parsePayForAjax(p, dp_idx)));
+
+        var uArr = [];
+        savedPayArr.forEach(p => {
+            if (updatedPayArr.has(p.p_idx)){
+                uArr.push(parsePayForAjax(p, dp_idx))
+            }
+        });
+
+        // console.log("insert", pArr, "updated", uArr, "delete", deletedPayArr);
+
+        $.ajax({
+            url:`/pay/RetrieveInfo`,
+            type:"POST",
+            data: {
+                iArr:JSON.stringify(pArr),
+                uArr:JSON.stringify(uArr),
+                dArr:JSON.stringify(deletedPayArr),
+                dutchInfo:JSON.stringify(getDutchPayInfoFromForm())
+            },
+            success:function (data){
+                console.log(data);
+                // 현재까지 저장되어있던 정보 삭제 및 정보 reload
+                clearDutchPayForm();
+                showDutchPayInfo(dp_idx);
+            },
+            error:function (x,i,e){
+                console.log(e);
+            }
+        });
+    }
+}
+
+function parsePayForAjax(payObj, dp_idx){
+    var pay = {
+        p_name: payObj.payName,
+        price: uncomma(payObj.payPrice) * 1,
+        dp_idx: dp_idx,
+        payMember: parsePayMemberForAjax(payObj.payPayer)
+    }
+
+    if (payObj.p_idx) {
+        pay.p_idx = payObj.p_idx;
+    }
+
+    var participants = [];
+    payObj.payParticipants.forEach(m => participants.push(parsePayMemberForAjax(m)));
+
+    if (participants) {
+        pay.participants = participants;
+    }
+    return pay;
+}
+
+function parsePayMemberForAjax(m){
+    var member = {
+        pr_idx: pr_idx,
+        prgm_idx: m.prgm_idx,
+        payMember_name: m.payMember_name
+    }
+    return member;
+}
+
+function btnDisabled(btn){
+    for (var i = 0; i < $("button").length; i++) {
+        console.log($($("button")[i]).prop("disabled",true));
+    }
+    if($("#btn-updated-pay").length!=0){
+        $("#btn-updated-pay").prop("disabled",false);
+        $("#form-pay-participants").prop("disabled",false);
+        $("#btn-participants").prop("disabled",false);
+    }
+    btn.prop("disabled",false);
+
+}
+
+function btnAbled(){
+    for (var i = 0; i < $("button").length; i++) {
+        console.log($($("button")[i]).prop("disabled",false));
+    }
+}
+//5.18
 
 //ajaxfind - ajax 함수 모음
 
