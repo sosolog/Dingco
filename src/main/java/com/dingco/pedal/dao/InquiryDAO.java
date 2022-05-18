@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -17,22 +18,30 @@ public class InquiryDAO {
 
     private final SqlSession session;
 
-    private final int perPage = 3;
+    private final int perPage = 10;
     private final int pagesPerBlock = 2;
 
 //    public List<InquiryDTO> showUserInquiry(MemberDTO dto) throws Exception {
 //        return session.selectList("com.config.InquiryMapper.showUserInquiry", dto, new RowBounds(2, 2));
 //    }
 
-    private int countTotalInquiries(MemberDTO dto) throws Exception {
-        return session.selectOne("com.config.InquiryMapper.countTotalInquiries", dto);
+    private int countTotalInquiries(MemberDTO dto, String searchKey) throws Exception {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("m_idx", dto.getM_idx());
+        map.put("authorities", dto.getAuthorities());
+        map.put("searchKey", searchKey);
+        return session.selectOne("com.config.InquiryMapper.countTotalInquiries", map);
     }
 
-    public PageDTO<InquiryDTO> showUserInquiry(MemberDTO dto, int curPage) throws Exception {
+    public PageDTO<InquiryDTO> showUserInquiry(MemberDTO dto, int curPage, String searchKey) throws Exception {
         int limit = perPage;
         int offset = (curPage - 1) * perPage;
-        int totalRecord = countTotalInquiries(dto);
-        List<InquiryDTO> inquiryList = session.selectList("com.config.InquiryMapper.showUserInquiry", dto, new RowBounds(offset, limit));
+        int totalRecord = countTotalInquiries(dto, searchKey);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("m_idx", dto.getM_idx());
+        map.put("authorities", dto.getAuthorities());
+        map.put("searchKey", searchKey);
+        List<InquiryDTO> inquiryList = session.selectList("com.config.InquiryMapper.showUserInquiry", map, new RowBounds(offset, limit));
         PageDTO<InquiryDTO> pageDTO = new PageDTO<>(inquiryList, totalRecord, curPage, perPage);
         pageDTO.setPageBlock(pagesPerBlock);
         return pageDTO;

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
 
@@ -37,18 +36,22 @@ public class InquiryController {
     private String baseDir;
 
     @GetMapping("/inquiry")
-    public ModelAndView showUserInquiry(
-            @Login MemberDTO memberDTO,
-            @RequestParam(value = "pg", required = false, defaultValue = "1") int curPage,
-            @RequestParam(value = "sch", required = false) String searchWord
-    ) throws Exception {
-        PageDTO<InquiryDTO> pageDTO = inquiryService.showUserInquiry(memberDTO, curPage);
-
+    public ModelAndView showUserInquiry(@Login MemberDTO memberDTO) throws Exception {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("InquiryList");
-        mav.addObject("pageDTO", pageDTO);
         mav.addObject("memberDTO", memberDTO);
         return mav;
+    }
+
+    @GetMapping("/inquiry/list")
+    @ResponseBody
+    public PageDTO<InquiryDTO> showUserInquiry(
+            @Login MemberDTO memberDTO,
+            @RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,
+            @RequestParam(value = "sch", required = false) String searchWord
+    ) throws Exception {
+        PageDTO<InquiryDTO> pageDTO = inquiryService.showUserInquiry(memberDTO, Integer.parseInt(curPage), searchWord);
+        return pageDTO;
     }
 
     @GetMapping("/inquiry/write")

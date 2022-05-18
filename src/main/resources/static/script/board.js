@@ -320,3 +320,70 @@ function submitInquiryForm(f, i_idx){
     f.submit();
 }
 // END : InquiryWrite(Update)
+
+// START : InquiryList
+// 검색어 입력 후, 검색하기
+function go_search(){
+    searchWord = $("#searchKey").val().trim();
+    if(searchWord.length <= 0){
+        searchWord = null;
+    }
+    getInquiryList(1, searchWord);
+}
+
+// 검색창 유효성 검사
+function searchFormValidation(keyCode) {
+    searchWord = $("#searchKey").val().trim();
+    // 엔터키 누르면, 검색 로직 실행
+    if(keyCode === 13) {
+        go_search()
+    } else if (searchWord.length <= 0 && keyCode == 32) {
+        // 첫번째 입력하는 키가 스페이스키면, 해당 내용 삭제
+        $("#searchKey").val('');
+    }
+}
+
+// 문의글 정보 가져오기
+function getInquiryList(page = 1, searchKey, success_fn = resetList){
+    // 전체 페이지보다 넘어가면, 더이상 데이터 가져오지 않는다.
+    if (page > totalPage) {
+        curPage = page--;
+        return false;
+    }
+
+    var sendData = {
+        pg : page
+    };
+
+    // 검색어가 존재하지 않으면 Ajax 시 쿼리스트링으로 넘기지 않음.
+    if(searchKey) {
+        sendData.sch = searchKey;
+    }
+
+    $.ajax({
+        url:"/inquiry/list",
+        type:"GET",
+        data:sendData,
+        success:success_fn,
+        error:function (xhr,sta,error){
+            console.log(error);
+        }
+    })
+}
+
+// START: AJAX 성공시, 실행되는 함수
+// 처음 화면 랜더링 & 검색어 입력 후, 처음으로 리스트 가져올 시
+function resetList(data) {
+    console.log()
+    curPage = 1;
+    totalPage = Math.ceil(data.totalRecord / data.perPage);
+    $("#inqList").html($("#inquiry-list-tmpl").tmpl(data));
+}
+
+// 스크롤하여 추가로 데이터 가져올 시
+function appendList(data) {
+    $("#inquiry-list-tmpl").tmpl(data).appendTo("#inqList");
+}
+// END: AJAX 성공시, 실행되는 함수
+
+// START : InquiryList
