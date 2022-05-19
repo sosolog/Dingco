@@ -24,4 +24,14 @@ public class DutchPayDTO {
     private String dueDate; // 정산 마감일
 
     private List<MultipartFile> imageFile;
+
+    public List<DutchPayResultDTO> calculateDutchPay() {
+        List<PayDTO> payList = this.getPayList();
+        System.out.println("payList = " + payList);
+
+        // TODO: 여기서 payList로 지지고 볶고 해서 로직 완성해주세욤 ㅎㅎㅎ
+
+
+        return null;
+    }
 }
