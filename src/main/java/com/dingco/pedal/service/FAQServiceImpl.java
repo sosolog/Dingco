@@ -15,34 +15,15 @@ public class FAQServiceImpl implements FAQService {
     @Autowired
     FAQDAO dao;
 
-    // NOTICE 전체 조회
+    /**
+     * 검색 조건에 맞는 레코드 들고오기(+페이징)
+     * dao.selectFAQSearchRecordPaging(curPage, searchKey)
+     */
     @Override
-    public PageDTO selectNOTICERecordPaging(int curPage) throws Exception {
-        PageDTO pageDTO = dao.selectNOTICERecordPaging(curPage);
-        return pageDTO;
-    }
-
-    // NOTICE 부분 조회(searchKey = 검색 조건 문자열)
-    @Override
-    public PageDTO selectNOTICESearchRecordPaging(int curPage, String searchKey) throws Exception {
-        PageDTO pageDTO = dao.selectNOTICESearchRecordPaging(curPage, searchKey);
-        return pageDTO;
-    }
-
-    // FAQ 전체 조회
-    @Override
-    public PageDTO selectFAQRecordPaging(int curPage) throws Exception {
-        PageDTO pageDTO = dao.selectFAQRecordPaging(curPage);
-        return pageDTO;
-    }
-
-    // FAQ 부분 조회(searchKey = 검색 조건 문자열)
-    @Override
-    public PageDTO selectFAQSearchRecordPaging(int curPage, String searchKey) throws Exception {
+    public PageDTO<FAQDTO> selectFAQSearchRecord(int curPage, String searchKey) throws Exception {
         PageDTO pageDTO = dao.selectFAQSearchRecordPaging(curPage, searchKey);
         return pageDTO;
     }
-
 
     @Override
     public List<HashMap<String, String>> categoryBoardNotice() throws Exception {
@@ -63,6 +44,7 @@ public class FAQServiceImpl implements FAQService {
         return num;
     }
 
+
     @Override
     public FAQDTO retrieve(int number_idx) throws Exception {
         FAQDTO faqDTO = dao.retrieve(number_idx);
@@ -80,5 +62,37 @@ public class FAQServiceImpl implements FAQService {
         int num = dao.deleteUserBoard(number_idx);
         return num;
 
+    }
+
+    /**
+     * 기본 페이징 처리(관리자 페이지에서 이용)
+     */
+
+    // NOTICE 전체 조회
+    @Override
+    public PageDTO selectNOTICERecordPaging(int curPage) throws Exception {
+        PageDTO pageDTO = dao.selectNOTICERecordPaging(curPage);
+        return pageDTO;
+    }
+
+    // NOTICE 부분 조회(searchKey = 검색 조건 문자열)
+    @Override
+    public PageDTO selectNOTICESearchRecordPaging(int curPage, String searchKey) throws Exception {
+        PageDTO pageDTO = dao.selectNOTICESearchRecordPaging(curPage, searchKey);
+        return pageDTO;
+    }
+
+    // FAQ 전체 조회_기본 페이징
+    @Override
+    public PageDTO selectFAQRecordPaging(int curPage) throws Exception {
+        PageDTO pageDTO = dao.selectFAQRecordPaging(curPage);
+        return pageDTO;
+    }
+
+    // FAQ 부분 조회(searchKey = 검색 조건 문자열)_기본 페이징
+    @Override
+    public PageDTO selectFAQSearchRecordPaging(int curPage, String searchKey) throws Exception {
+        PageDTO pageDTO = dao.selectFAQSearchRecordPaging(curPage, searchKey);
+        return pageDTO;
     }
 }
