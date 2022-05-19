@@ -2,6 +2,7 @@ package com.dingco.pedal.controller;
 
 import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.FAQDTO;
+import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
 import com.dingco.pedal.service.FAQService;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -22,26 +24,33 @@ public class FAQController {
 
     private final FAQService service;
 
-    @GetMapping("/test")
-    public String test(@RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,
-                       HttpServletRequest request,
-                       Model model) throws Exception {
-
-        PageDTO<FAQDTO> pageDTO = service.selectFAQRecordPaging(Integer.parseInt(curPage));
-
-            model.addAttribute("pageDTO", pageDTO);
-            model.addAttribute("requestMapping", request.getServletPath());
-            return "test";
-
-
+    @GetMapping("/faq")
+    public String showFAQListScroll() throws Exception {
+        return "faqList";
     }
+
+    @GetMapping("/faq/search")
+    @ResponseBody
+    public PageDTO<FAQDTO> showUserFAQ(@RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,
+                                       @RequestParam(value = "sch", required = false, defaultValue = "") String searchKey) throws Exception {
+
+        PageDTO<FAQDTO> pageDTO = service.showUserFAQList(Integer.parseInt(curPage), searchKey);
+
+        return pageDTO;
+    }
+
+
+
+
+
+
     /**
      * FAQ 전체 조회(페이징)
      * @param curPage : 현재 페이지(쿼리 스트링으로 들고 옴)
      * @param request : page.jsp에서 <a> 태그를 사용하여 이동할 때 참고하는 현재 위치의 절대 주소값(request.getServletPath())
      * @return FaqList로 이동
      */
-    @GetMapping("/faq")
+    @GetMapping("/faq_admin")
     public String faq(@RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,
                       HttpServletRequest request,
                       Model model) throws Exception {
@@ -73,9 +82,9 @@ public class FAQController {
      * @param request : searchPage.jsp에서 <a> 태그를 사용하여 이동할 때 참고하는 현재 위치의 절대 주소값(request.getServletPath())
      * @return FaqSearchList로 이동(path)
      */
-    @GetMapping("/faq/search")
+    @GetMapping("/faq_admin/search")
     public String faqSearch(@RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,
-                            @RequestParam(value = "searchKey", required = false) String searchKey,
+                            @RequestParam(value = "sch", required = false) String searchKey,
                             HttpServletRequest request,
                             Model model) throws Exception {
 
@@ -121,6 +130,18 @@ public class FAQController {
     }
 
     @GetMapping("/faq/{idx}")
+    public String faqRetrieveForm(@PathVariable("idx") int number_idx,
+                                  Model m) throws Exception {
+
+        FAQDTO faqDTO = service.retrieve(number_idx);
+        List<HashMap<String, String>> category = service.categoryBoardFaq();
+
+        m.addAttribute("faqDTO", faqDTO);
+        m.addAttribute("category", category);
+
+        return "FaqRetrieve";
+    }
+    @GetMapping("/faq/retrieve/{idx}")
     public String faqRetrieve(@PathVariable("idx") int number_idx, @Login MemberDTO memberDTO, Model m) throws Exception {
 
         FAQDTO faqDTO = service.retrieve(number_idx);
@@ -136,7 +157,7 @@ public class FAQController {
     @PutMapping("/faq/{idx}")
     public int update(@PathVariable("idx") int number_idx, FAQDTO dto) throws Exception {
         int result = service.updateUserBoard(dto);
-        System.out.println(result);
+
         return result;
     }
 

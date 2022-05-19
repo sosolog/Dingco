@@ -82,4 +82,10 @@ public class FAQServiceImpl implements FAQService {
         return num;
 
     }
+
+    @Override
+    public PageDTO<FAQDTO> showUserFAQList(int curPage, String searchKey) throws Exception {
+        PageDTO pageDTO = dao.selectFAQSearchRecordPaging(curPage, searchKey);
+        return pageDTO;
+    }
 }

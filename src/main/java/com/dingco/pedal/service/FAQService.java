@@ -37,4 +37,6 @@ public interface FAQService {
 
    // 글 삭제
    public int deleteUserBoard(int number_idx);
+
+    public PageDTO<FAQDTO> showUserFAQList(int curPage, String searchKey) throws Exception;
 }
