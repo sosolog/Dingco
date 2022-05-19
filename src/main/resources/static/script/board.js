@@ -408,50 +408,57 @@ function appendList(data) {
 // START : InquiryList
 
 
-
-// FAQ 정보 가져오기
+/**
+ * 첫 화면 렌더링 -> FAQ  가져오기
+ * @param page : 현재 페이지 (default 값 = 1)
+ * @param searchKey : 찾을 문자열(검색 조건)
+ * @param success_fn : 성공했을 때 실행되는 함수(첫 화면 랜더링 세팅[tmpl 사용])
+ */
 function getFAQList(page = 1, searchKey, success_fn = resetfaqList){
     // 전체 페이지보다 넘어가면, 더이상 데이터 가져오지 않는다.
-    if (page > totalPage) {
+
+    if (page > curPage) {
         curPage = page--;
         return false;
     }
-
     var sendData = {
-        pg : page
+        pg : page,
+        sch : searchKey
     };
-
-    // 검색어가 존재하지 않으면 Ajax 시 쿼리스트링으로 넘기지 않음.
-    if(searchKey) {
-        sendData.sch = searchKey;
-    }
-
     $.ajax({
-        url:"/faq/search",
-        type:"GET",
-        data:sendData,
-        success:success_fn,
-        error:function (xhr,sta,error){
-            console.log(error);
+        url: "/faq/search",
+        type: "GET",
+        data: sendData,
+        success: success_fn,
+        error: function (xhr, sta, error) {
         }
-    })
+    });
 }
 
-// START: AJAX 성공시, 실행되는 함수
-// 처음 화면 랜더링 & 검색어 입력 후, 처음으로 리스트 가져올 시
+
+/**
+ * 첫 화면 랜더링 -> 페이징 처리된 레코드를 조회
+ * @param data : 비동기 통신 ajax를 통해서 페이징 처리된 레코드 데이터
+ */
 function resetfaqList(data) {
 
-    curPage = 1;
-    totalPage = Math.ceil(data.totalRecord / data.perPage);
     $("#faqList").html($("#faq-list-tmpl").tmpl(data));
 }
 
-// 스크롤하여 추가로 데이터 가져올 시
+//
+/**
+ * 기존의 렌더링 페이지에서 추가 레코드 데이터 추가
+ * @param data : 비동기 통신 ajax를 통해서 추가 레코드 데이터
+ */
 function appendfaqList(data) {
     $("#faq-list-tmpl").tmpl(data).appendTo("#faqList");
+
 }
 
-function go_search_faq(){
+/**
+ * 마우스(Click)로 검색
+ */
+function go_search_faq_click(){
     searchKey = $("#searchKey").val().trim();
 
     if(searchKey.length <= 0){
@@ -459,12 +466,20 @@ function go_search_faq(){
     }
     getFAQList(1, searchKey);
 }
-function searchFormValidationFAQ(keyCode) {
+
+/**
+ * 키보드(Enter)로 검색
+ */
+function go_search_faq_enter(keyCode) {
 
     searchKey = $("#searchKey").val().trim();
 
     // 엔터키 누르면, 검색 로직 실행
     if(keyCode === 13) {
-        go_search_faq()
+
+        if(searchKey.length <= 0){
+            searchKey = null;
+        }
+        getFAQList(1, searchKey);
     }
 }
