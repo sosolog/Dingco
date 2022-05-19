@@ -1,14 +1,14 @@
 
 function openFAQ(idx) {
     $('#openFAQ'+idx).css("display", "");
-    $('#flipFAQ'+idx+' .btn_openFAQ').css("display", "none");
-    $('#flipFAQ'+idx+' .btn_flipFAQ').css("display", "block");
+    $('#btn_openFAQ'+idx).css("display", "none");
+    $('#btn_flipFAQ'+idx).css("display", "");
 }
 
 function flipFAQ(idx) {
     $('#openFAQ'+idx).css("display", "none");
-    $('#flipFAQ'+idx+' .btn_openFAQ').css("display", "block");
-    $('#flipFAQ'+idx+' .btn_flipFAQ').css("display", "none");
+    $('#btn_openFAQ'+idx).css("display", "");
+    $('#btn_flipFAQ'+idx).css("display", "none");
 }
 
 
@@ -351,6 +351,7 @@ function go_search(){
 
 // 검색창 유효성 검사
 function searchFormValidation(keyCode) {
+
     searchWord = $("#searchKey").val().trim();
     // 엔터키 누르면, 검색 로직 실행
     if(keyCode === 13) {
@@ -369,11 +370,11 @@ function getInquiryList(page = 1, searchKey, success_fn = resetList){
         return false;
     }
 
+    // 검색어가 존재하지 않으면 Ajax 시 쿼리스트링으로 넘기지 않음.
+
     var sendData = {
         pg : page
     };
-
-    // 검색어가 존재하지 않으면 Ajax 시 쿼리스트링으로 넘기지 않음.
     if(searchKey) {
         sendData.sch = searchKey;
     }
@@ -406,3 +407,64 @@ function appendList(data) {
 
 // START : InquiryList
 
+
+
+// FAQ 정보 가져오기
+function getFAQList(page = 1, searchKey, success_fn = resetfaqList){
+    // 전체 페이지보다 넘어가면, 더이상 데이터 가져오지 않는다.
+    if (page > totalPage) {
+        curPage = page--;
+        return false;
+    }
+
+    var sendData = {
+        pg : page
+    };
+
+    // 검색어가 존재하지 않으면 Ajax 시 쿼리스트링으로 넘기지 않음.
+    if(searchKey) {
+        sendData.sch = searchKey;
+    }
+
+    $.ajax({
+        url:"/faq/search",
+        type:"GET",
+        data:sendData,
+        success:success_fn,
+        error:function (xhr,sta,error){
+            console.log(error);
+        }
+    })
+}
+
+// START: AJAX 성공시, 실행되는 함수
+// 처음 화면 랜더링 & 검색어 입력 후, 처음으로 리스트 가져올 시
+function resetfaqList(data) {
+
+    curPage = 1;
+    totalPage = Math.ceil(data.totalRecord / data.perPage);
+    $("#faqList").html($("#faq-list-tmpl").tmpl(data));
+}
+
+// 스크롤하여 추가로 데이터 가져올 시
+function appendfaqList(data) {
+    $("#faq-list-tmpl").tmpl(data).appendTo("#faqList");
+}
+
+function go_search_faq(){
+    searchKey = $("#searchKey").val().trim();
+
+    if(searchKey.length <= 0){
+        searchKey = null;
+    }
+    getFAQList(1, searchKey);
+}
+function searchFormValidationFAQ(keyCode) {
+
+    searchKey = $("#searchKey").val().trim();
+
+    // 엔터키 누르면, 검색 로직 실행
+    if(keyCode === 13) {
+        go_search_faq()
+    }
+}
