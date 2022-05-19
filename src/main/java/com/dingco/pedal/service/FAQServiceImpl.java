@@ -63,6 +63,7 @@ public class FAQServiceImpl implements FAQService {
         return num;
     }
 
+
     @Override
     public FAQDTO retrieve(int number_idx) throws Exception {
         FAQDTO faqDTO = dao.retrieve(number_idx);

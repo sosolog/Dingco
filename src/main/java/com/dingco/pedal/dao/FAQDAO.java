@@ -65,7 +65,7 @@ public class FAQDAO {
         map.put("offset", offset);
         map.put("searchKey", searchKey);
 
-        List<FAQDTO> dtolist = session.selectList("com.config.FAQMapper.selectNoticeRecordPaging", map);
+        List<FAQDTO> dtolist = session.selectList("com.config.FAQMapper.selectNOTICESearchRecordPaging", map);
 
         PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(dtolist, criteriaOfPage, totalRecord, curPage); // pageDTO 객체 생성(파라미터 : final 변수) + 순서 중요(PageDTO final 변수 순서와 동일하게 세팅 필수)
         pageDTO.setPageListInBlock(criteriaOfBlock); // 위에서 생성된 pageDTO 객체에 현재 블럭의 페이지 리스트 세팅 및 fianl 변수를 제외한 모든 기본 변수 대입
@@ -115,7 +115,7 @@ public class FAQDAO {
         List<FAQDTO> dtolist = session.selectList("com.config.FAQMapper.selectFAQSearchRecordPaging", map);
 
         PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(dtolist, criteriaOfPage, totalRecord, curPage); // pageDTO 객체 생성(파라미터 : final 변수) + 순서 중요(PageDTO final 변수 순서와 동일하게 세팅 필수)
-        pageDTO.setPageListInBlock(criteriaOfBlock); // 위에서 생성된 pageDTO 객체에 현재 블럭의 페이지 리스트 세팅 및 fianl 변수를 제외한 모든 기본 변수 대입
+        pageDTO.setPageListInBlock(criteriaOfBlock); // 위에서 생성된 pageDTO 객체에 현재 블럭의 페이지 리스트 세팅 및 final 변수를 제외한 모든 기본 변수 대입
 
         return pageDTO;
 

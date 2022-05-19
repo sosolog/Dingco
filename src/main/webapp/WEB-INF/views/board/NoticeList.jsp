@@ -2,14 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div id="faqList">
-    <form class="sch" method="get" name="searchForm">
+    <form class="sch" method="get" action="/notice/search" name="searchForm">
         <div class="sch_wrap">
             <div class="sch_input_wrap">
                 <input type="text" data-role="none" name="searchKey" class="sch_input"
-                       placeholder="검색어를 입력하세요" onkeydown="if(event.keyCode === 13) go_search(searchForm);">
+                       placeholder="검색어를 입력하세요" onkeydown="if(event.keyCode === 13) $(this).submit();">
             </div>
             <div class="sch_ico_rt">
-                <a onclick="go_search(searchForm)"><img src="/images/ico_search_02.png"></a>
+                <input type="image" src="/images/ico_search_02.png" alt="submit">
             </div>
         </div>
     </form>
