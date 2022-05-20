@@ -164,8 +164,7 @@ public class DutchPayDTO {
             System.out.println(d.getSender().getPayMember_name()+" to "+d.getRecipient().getPayMember_name()+" 가격: "+d.getAmount());
         }
             return dutchPayResultDTOList;
-        }
-}
+    }
 
 
     private int adjustCuttingOption(int amount){

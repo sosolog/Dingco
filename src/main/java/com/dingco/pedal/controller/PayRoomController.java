@@ -254,9 +254,9 @@ public class PayRoomController {
         DutchPayDTO dutchPayDTO = payRoomService.dutchPayInfo(32, dp_idx);
         List<PayGroupMemberDTO> payGroupMemberDTOS = payRoomService.showPayRoomGroupMember(32);
 
-//         List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
+        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
 
-      List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
+//        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
         dutchPayResult.stream().forEach(d -> {
             System.out.println(d.getSender().getPayMember_name() + " -> " + d.getRecipient().getPayMember_name() + " = " + d.getAmount());
         });
