@@ -252,11 +252,16 @@ public class PayRoomController {
     @ResponseBody
     public String showDutchPayResult(@PathVariable int dp_idx) throws Exception{
         DutchPayDTO dutchPayDTO = payRoomService.dutchPayInfo(32, dp_idx);
+        List<PayGroupMemberDTO> payGroupMemberDTOS = payRoomService.showPayRoomGroupMember(32);
 
-        // 아래 변경가능!
-        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
+//         List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
 
-        return "hi, "+dp_idx+"번("+dutchPayDTO.getDutchPayName()+") 더치페이 계산 결과에욤. ";
+      List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
+        dutchPayResult.stream().forEach(d -> {
+            System.out.println(d.getSender().getPayMember_name() + " -> " + d.getRecipient().getPayMember_name() + " = " + d.getAmount());
+        });
+
+        return "hi, "+dp_idx+"번("+dutchPayDTO.getDutchPayName()+") 더치페이 계산 결과에욤. "+dutchPayResult;
     }
 
 }
