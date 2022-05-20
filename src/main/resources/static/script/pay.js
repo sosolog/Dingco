@@ -984,7 +984,7 @@ function parsePayMemberForAjax(m){
 
 function btnDisabled(btn){
     for (var i = 0; i < $("button").length; i++) {
-        console.log($($("button")[i]).prop("disabled",true));
+        $($("button")[i]).prop("disabled",true);
     }
     if($("#btn-updated-pay").length!=0){
         $("#btn-updated-pay").prop("disabled",false);
@@ -997,7 +997,7 @@ function btnDisabled(btn){
 
 function btnAbled(){
     for (var i = 0; i < $("button").length; i++) {
-        console.log($($("button")[i]).prop("disabled",false));
+        $($("button")[i]).prop("disabled",false);
     }
 }
 //5.18
@@ -1014,7 +1014,7 @@ function postMemberCheckAjax(member){
             // console.log(data); PayGroupMemberDTO를 가져옴
             groupMemberArr.push(JSON.parse(data));
             $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr}));
-            console.log(groupMemberArr);
+            // console.log(groupMemberArr);
         },
         error:function (x,i,e){
             console.log(e);
@@ -1031,22 +1031,22 @@ function getMemberCheckAjax(prgm_idx,self){
             "prgm_idx": prgm_idx
         },
         success:function (data){
-            console.log(data);
+            // console.log(data);
             if(data){
                 alert("결제참여자인지 확인해주십시오.");
             }else{
-                console.log("memberList에서 member 삭제")
+                // console.log("memberList에서 member 삭제")
                 let index = self.attr("data-idx");
                 groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
                 self.parent().remove(); // html에서 해당 member span 태그 삭제
                 $("#accountList").html($("#save-account-tmpl").tmpl({pSave: groupMemberArr})); // 계좌정보에 삭제된 멤버 없애기
-                console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
+                // console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
                 $.ajax({
                     url: "/pay/membercheck",
                     type: "DELETE",
                     data: {"prgm_idx": prgm_idx},
                     success:function (data){
-                        console.log("성공한 ajax"+data);
+                        // console.log("성공한 ajax"+data);
                     },
                     error(x,i,e){
                         console.log(e);
@@ -1071,7 +1071,7 @@ function postRoomAjax(roomName){
         },
         success:function(data){
             //data = pr_idx
-            console.log(data);
+            // console.log(data);
 
             location.href = "/pay/"+data;
         },
@@ -1091,7 +1091,7 @@ function putAccountAjax(prgm_idx, payMember_bank, payMember_account) {
             "prgm_idx": prgm_idx
         },
         success: function (data) {
-            console.log(data);
+            // console.log(data);
         },
         error: function (x, i, e) {
             console.log(e);

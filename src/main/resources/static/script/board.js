@@ -1,14 +1,14 @@
 
 function openFAQ(idx) {
     $('#openFAQ'+idx).css("display", "");
-    $('#flipFAQ'+idx+' .btn_openFAQ').css("display", "none");
-    $('#flipFAQ'+idx+' .btn_flipFAQ').css("display", "block");
+    $('#btn_openFAQ'+idx).css("display", "none");
+    $('#btn_flipFAQ'+idx).css("display", "");
 }
 
 function flipFAQ(idx) {
     $('#openFAQ'+idx).css("display", "none");
-    $('#flipFAQ'+idx+' .btn_openFAQ').css("display", "block");
-    $('#flipFAQ'+idx+' .btn_flipFAQ').css("display", "none");
+    $('#btn_openFAQ'+idx).css("display", "");
+    $('#btn_flipFAQ'+idx).css("display", "none");
 }
 
 
@@ -351,6 +351,7 @@ function go_search(){
 
 // 검색창 유효성 검사
 function searchFormValidation(keyCode) {
+
     searchWord = $("#searchKey").val().trim();
     // 엔터키 누르면, 검색 로직 실행
     if(keyCode === 13) {
@@ -369,11 +370,11 @@ function getInquiryList(page = 1, searchKey, success_fn = resetList){
         return false;
     }
 
+    // 검색어가 존재하지 않으면 Ajax 시 쿼리스트링으로 넘기지 않음.
+
     var sendData = {
         pg : page
     };
-
-    // 검색어가 존재하지 않으면 Ajax 시 쿼리스트링으로 넘기지 않음.
     if(searchKey) {
         sendData.sch = searchKey;
     }
@@ -406,3 +407,79 @@ function appendList(data) {
 
 // START : InquiryList
 
+
+/**
+ * 첫 화면 렌더링 -> FAQ  가져오기
+ * @param page : 현재 페이지 (default 값 = 1)
+ * @param searchKey : 찾을 문자열(검색 조건)
+ * @param success_fn : 성공했을 때 실행되는 함수(첫 화면 랜더링 세팅[tmpl 사용])
+ */
+function getFAQList(page = 1, searchKey, success_fn = resetfaqList){
+    // 전체 페이지보다 넘어가면, 더이상 데이터 가져오지 않는다.
+
+    if (page > curPage) {
+        curPage = page--;
+        return false;
+    }
+    var sendData = {
+        pg : page,
+        sch : searchKey
+    };
+    $.ajax({
+        url: "/faq/search",
+        type: "GET",
+        data: sendData,
+        success: success_fn,
+        error: function (xhr, sta, error) {
+        }
+    });
+}
+
+
+/**
+ * 첫 화면 랜더링 -> 페이징 처리된 레코드를 조회
+ * @param data : 비동기 통신 ajax를 통해서 페이징 처리된 레코드 데이터
+ */
+function resetfaqList(data) {
+
+    $("#faqList").html($("#faq-list-tmpl").tmpl(data));
+}
+
+//
+/**
+ * 기존의 렌더링 페이지에서 추가 레코드 데이터 추가
+ * @param data : 비동기 통신 ajax를 통해서 추가 레코드 데이터
+ */
+function appendfaqList(data) {
+    $("#faq-list-tmpl").tmpl(data).appendTo("#faqList");
+
+}
+
+/**
+ * 마우스(Click)로 검색
+ */
+function go_search_faq_click(){
+    searchKey = $("#searchKey").val().trim();
+
+    if(searchKey.length <= 0){
+        searchKey = null;
+    }
+    getFAQList(1, searchKey);
+}
+
+/**
+ * 키보드(Enter)로 검색
+ */
+function go_search_faq_enter(keyCode) {
+
+    searchKey = $("#searchKey").val().trim();
+
+    // 엔터키 누르면, 검색 로직 실행
+    if(keyCode === 13) {
+
+        if(searchKey.length <= 0){
+            searchKey = null;
+        }
+        getFAQList(1, searchKey);
+    }
+}
