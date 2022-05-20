@@ -254,7 +254,7 @@ public class PayRoomController {
         DutchPayDTO dutchPayDTO = payRoomService.dutchPayInfo(32, dp_idx);
 
         // 아래 변경가능!
-        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay();
+        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
 
         return "hi, "+dp_idx+"번("+dutchPayDTO.getDutchPayName()+") 더치페이 계산 결과에욤. ";
     }
