@@ -9,7 +9,7 @@
     --c-white : #ffffff;
     --c-gray-title : #303030;
     --c-gray-light : #909090;
-    --c-red : #E74133;
+    --c-red : #FF4040;
     --f-pointFont : Jalnan;
     --f-basicFont : NanumSquare;
     --f-inputFont : NanumSquareRound;
@@ -227,7 +227,7 @@ textarea {
 }
 
 .on {
-    font-weight: 800;
+    font-weight: var(--w-bold);
     color: #88AEFF !important;
 }
 
@@ -303,7 +303,6 @@ textarea {
     border-top: 1.5px solid #6C6C6C;
 }
 
-
 #list-table thead {
     font-size: 17px;
     font-weight: var(--w-bold);
@@ -318,11 +317,26 @@ textarea {
 }
 
 #list-table td {
-    padding: 10px 0px;
     border-bottom: 1px solid #DBDFE3;
 }
 
-#list-table td a {
+#list-table .thead-line td {
+    padding: 15px 0px;
+}
+
+#list-table .faq-line td, .notice-line td {
+    padding: 10px 0px;
+}
+
+#list-table .inquiry-line td {
+    padding: 20px 0px;
+}
+
+#list-table td span {
+    color: var(--c-gray-title);
+}
+
+#list-table td .edit {
     display: inline-block;
     width: 35px;
 }

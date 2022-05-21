@@ -51,20 +51,4 @@ public class AdminMemberController {
         String next = "/ADMIN/adminList";
         return next;
     }
-
-    /**
-     * 1:1 문의 리스트 페이지 (inquiryList)
-     * @author 명지
-     * @param cp : 현재 페이지 / defaultValue = 1
-     * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
-     */
-    @GetMapping("admin/inquiryList")
-    public String adminInquiry(@RequestParam(value="pg", required = false, defaultValue = "1") String cp,
-                                 @RequestParam(value="sch", required = false, defaultValue = "") String sch,
-                                 HttpServletRequest request, Model model) throws Exception {
-        String next = "/ADMIN/inquiryList";
-        return next;
-    }
-
-
 }

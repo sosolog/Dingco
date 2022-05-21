@@ -3,5 +3,40 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="admin.InquiryMapper">
-    
+
+    <select id="cntAllInquiry" resultType="int" parameterType="hashmap">
+        select count(*)
+        from INQUIRY
+        where m_idx = #{m_idx}
+        <if test="sch != null">
+        and title like concat('%', #{sch}, '%')
+        </if>
+        limit ${perPage} offset ${offset}
+    </select>
+
+    <select id="selectAllInquiry" resultType="InquiryDTO" parameterType="hashmap">
+        select t.i_idx, t.m_idx, t.category_id, t.title, t.content, t.upload_date, t.last_updated_date, t.i_idx2, t.status
+        from (
+        select
+        inquiry_idx as i_idx,
+        m_idx,
+        category_id,
+        title,
+        content,
+        date_format(upload_date, "%m/%d") as upload_date,
+        date_format(last_updated_date, "%m/%d") as last_updated_date,
+        inquiry_idx2 as i_idx2,
+        case
+        when inquiry_idx2 is null then inquiry_idx
+        else inquiry_idx2
+        end as inq_group,
+        i_status as status
+        from INQUIRY
+        ) t
+        <if test="sch != null">
+            where title like concat('%', #{sch}, '%')
+        </if>
+        order by inq_group desc, i_idx
+        limit ${perPage} offset ${offset}
+    </select>
 </mapper>

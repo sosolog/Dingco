@@ -3,8 +3,8 @@
 
 <div id="main-box">
     <div id="top-menu">
-        <span class="title">공지사항</span>
-        <a class="btn-add" href="/admin/notice/edit"><span>글 추가</span></a>
+        <span class="title">FAQ</span>
+        <a class="btn-add" href="/admin/faq/edit"><span>글 추가</span></a>
     </div>
     <div id="search">
         <form>
@@ -14,8 +14,8 @@
     </div>
     <div id="list-table">
         <table>
-            <thead class="thead-line">
-            <tr>
+            <thead>
+            <tr class="thead-line">
                 <td>글 번호</td>
                 <td>제목</td>
                 <td>작성자</td>
@@ -25,7 +25,7 @@
             </thead>
             <tbody>
             <c:forEach var="dto" items="${pageDTO.dtoList}" varStatus="status">
-                <tr class="notice-line">
+                <tr class="faq-line">
                     <td style="width: 10%">${dto.number_idx}</td>
                     <td style="width: 60%">${dto.title}</td>
                     <td style="width: 10%">${dto.userid}</td>
@@ -40,7 +40,4 @@
     <!-- 페이징 -->
     <!-- 페이지 번호 출력 -->
     <%@ include file="../page.jsp" %>
-    <%--criteriaOfPage=10, criteriaOfBlock=5, totalRecord=13, totalPage=2, totalBlock=1, curPage=1, curBlock=1,
-    firstPageInNextBlock=null, lastPageInPrevBlock=null, firstPageInCurBlock=1, lastPageInCurBlock=2,
-    pageListInBlock=[1, 2]--%>
 </div>
