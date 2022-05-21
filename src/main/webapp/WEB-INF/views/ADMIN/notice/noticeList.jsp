@@ -40,7 +40,4 @@
     <!-- 페이징 -->
     <!-- 페이지 번호 출력 -->
     <%@ include file="../page.jsp" %>
-    <%--criteriaOfPage=10, criteriaOfBlock=5, totalRecord=13, totalPage=2, totalBlock=1, curPage=1, curBlock=1,
-    firstPageInNextBlock=null, lastPageInPrevBlock=null, firstPageInCurBlock=1, lastPageInCurBlock=2,
-    pageListInBlock=[1, 2]--%>
 </div>

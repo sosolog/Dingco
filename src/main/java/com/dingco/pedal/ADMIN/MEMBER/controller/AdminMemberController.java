@@ -1,6 +1,7 @@
 package com.dingco.pedal.ADMIN.MEMBER.controller;
 
 import com.dingco.pedal.ADMIN.MEMBER.sevice.AdminMemberService;
+import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class AdminMemberController {
 
-    private final AdminMemberService mService;
+    private final AdminMemberService adminMemberService;
 
     /**
-     * 사용자 리스트 페이지 (userList)
+     * 사용자 리스트 페이지
      * @author 명지
      * @param cp : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
@@ -31,9 +32,8 @@ public class AdminMemberController {
                              HttpServletRequest request, Model model) throws Exception {
         String next = "/ADMIN/userList";
 
-        PageDTO<MemberDTO> userList = mService.selectUserPaging(Integer.parseInt(cp), sch);
-
-        model.addAttribute("userList", userList);
+        PageDTO<MemberDTO> pageDTO = adminMemberService.selectAllUser(Integer.parseInt(cp), sch);
+        model.addAttribute("pageDTO", pageDTO);
 
         return next;
     }

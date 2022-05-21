@@ -3,11 +3,31 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="admin.MemberMapper">
-    <select id="selectAllUser" parameterType="int" resultType="hashmap">
-        select *
-        from member
+    <!--USER 전체 사용자 수 조회-->
+    <select id="cntAllUser" parameterType="hashmap" resultType="int">
+        select count(*)
+        from MEMBER
         where authorities = 'USER'
+        <if test='sch != null'> and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%')) </if>
         order by m_idx desc
-        limit ${perPage} offset ${offSet}
+        <!--limit #{perPage} offset #{offSet}-->
+    </select>
+
+    <!--USER 전체 사용자 가져오기-->
+    <select id="selectAllUser" parameterType="hashmap" resultType="MemberDTO">
+        select m_idx,
+               userid,
+               username,
+               email1,
+               email2,
+               date_format(joindate, '%Y-%m-%d') joindate,
+               kakao_idx,
+               naver_idx,
+               google_idx
+        from MEMBER
+        where authorities = 'USER'
+        <if test='sch != null'> and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%')) </if>
+        order by m_idx desc
+        <!--limit #{perPage} offset #{offSet}-->
     </select>
 </mapper>

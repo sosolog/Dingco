@@ -1,5 +1,6 @@
 package com.dingco.pedal.ADMIN.MEMBER.dao;
 
+import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +8,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Repository("AdminMemberDAO")
 public class AdminMemberDAO {
 
     @Autowired
-    SqlSession sqlSession;
+    SqlSession session;
 
-    public PageDTO selectUserPaging(HashMap<String, Object> map) throws Exception {
-        return sqlSession.selectOne("admin.MemberMapper.selectUserPaging", map);
+    public int cntAllUser(HashMap<String, Object> map) throws Exception {
+        return session.selectOne("admin.MemberMapper.cntAllUser", map);
+    }
+
+    public List<MemberDTO> selectAllUser(HashMap<String, Object> map) throws Exception {
+        return session.selectList("admin.MemberMapper.selectAllUser", map);
     }
 }

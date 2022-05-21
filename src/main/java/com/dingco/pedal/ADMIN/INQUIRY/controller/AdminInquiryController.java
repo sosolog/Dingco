@@ -23,7 +23,7 @@ public class AdminInquiryController {
     AdminInquiryService adminInquiryService;
 
     /**
-     * Inquiry 리스트 페이지 (faqList)
+     * Inquiry 리스트 페이지
      * @author 명지
      * @param cp : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""

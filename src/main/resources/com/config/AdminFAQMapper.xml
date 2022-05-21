@@ -10,6 +10,7 @@
         where category_idx = 2
         <if test='sch != null'> and (title like CONCAT('%',#{sch},'%') or content like CONCAT('%',#{sch},'%')) </if>
         order by number_idx desc
+        limit ${perPage} offset ${offset}
     </select>
 
     <!--FAQ 전체 게시글 가져오기-->
