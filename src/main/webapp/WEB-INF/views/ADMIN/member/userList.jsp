@@ -9,7 +9,7 @@
     <div id="search">
         <form>
             <a class="icon" href=""><img src="/images/admin/search.png"></a>
-            <input id="" name="" placeholder="제목 또는 내용을 입력하세요" value="">
+            <input id="" name="" placeholder="아이디 또는 이름을 입력하세요" value="">
         </form>
     </div>
     <div id="list-table">

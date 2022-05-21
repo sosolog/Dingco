@@ -30,4 +30,29 @@
         order by m_idx desc
         <!--limit #{perPage} offset #{offSet}-->
     </select>
+
+    <!--ADMIN 전체 사용자 수 조회-->
+    <select id="cntAllAdmin" parameterType="hashmap" resultType="int">
+        select count(*)
+        from MEMBER
+        where authorities = 'ADMIN'
+        <if test='sch != null'> and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%')) </if>
+        order by m_idx desc
+        <!--limit #{perPage} offset #{offSet}-->
+    </select>
+
+    <!--ADMIN 전체 사용자 가져오기-->
+    <select id="selectAllAdmin" parameterType="hashmap" resultType="MemberDTO">
+        select m_idx,
+        userid,
+        username,
+        email1,
+        email2,
+        date_format(joindate, '%Y-%m-%d') joindate
+        from MEMBER
+        where authorities = 'ADMIN'
+        <if test='sch != null'> and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%')) </if>
+        order by m_idx desc
+        <!--limit #{perPage} offset #{offSet}-->
+    </select>
 </mapper>

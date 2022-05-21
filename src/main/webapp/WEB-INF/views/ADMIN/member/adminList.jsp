@@ -3,13 +3,13 @@
 
 <div id="main-box">
     <div id="top-menu">
-        <span class="title">사용자</span>
-        <a class="btn-add" href="/admin/notice/edit"><span>사용자 추가</span></a>
+        <span class="title">관리자</span>
+        <a class="btn-add" href="/admin/notice/edit"><span>관리자 추가</span></a>
     </div>
     <div id="search">
         <form>
             <a class="icon" href=""><img src="/images/admin/search.png"></a>
-            <input id="" name="" placeholder="제목 또는 내용을 입력하세요" value="">
+            <input id="" name="" placeholder="아이디 또는 이름을 입력하세요" value="">
         </form>
     </div>
     <div id="list-table">
@@ -21,7 +21,6 @@
                 <td>아이디</td>
                 <td>이메일</td>
                 <td>가입일</td>
-                <td>SNS 회원</td>
                 <td>edit</td>
             </tr>
             </thead>
@@ -39,13 +38,7 @@
                         <c:if test="${empty dto.email1}">-</c:if>
                     </td>
                     <td style="width: 10%">${dto.joindate}</td>
-                    <td style="width: 10%">
-                        <c:if test="${not empty dto.kakao_idx}">카카오</c:if>
-                        <c:if test="${not empty dto.naver_idx}">네이버</c:if>
-                        <c:if test="${not empty dto.google_idx}">구글</c:if>
-                        <c:if test="${not empty dto.email1}">-</c:if>
-                    </td>
-                    <td style="width: 10%"><a class="edit" href="/admin/user/edit?${dto.m_idx}"><img src="/images/admin/edit.png"></a></td>
+                    <td style="width: 10%"><a class="edit" href="/admin/admin/edit?${dto.m_idx}"><img src="/images/admin/edit.png"></a></td>
                 </tr>
             </c:forEach>
             </tbody>

@@ -49,6 +49,10 @@ public class AdminMemberController {
                                  @RequestParam(value="sch", required = false, defaultValue = "") String sch,
                                  HttpServletRequest request, Model model) throws Exception {
         String next = "/ADMIN/adminList";
+
+        PageDTO<MemberDTO> pageDTO = adminMemberService.selectAllAdmin(Integer.parseInt(cp), sch);
+        model.addAttribute("pageDTO", pageDTO);
+
         return next;
     }
 }

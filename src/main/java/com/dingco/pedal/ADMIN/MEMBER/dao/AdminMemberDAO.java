@@ -23,4 +23,12 @@ public class AdminMemberDAO {
     public List<MemberDTO> selectAllUser(HashMap<String, Object> map) throws Exception {
         return session.selectList("admin.MemberMapper.selectAllUser", map);
     }
+
+    public int cntAllAdmin(HashMap<String, Object> map) throws Exception {
+        return session.selectOne("admin.MemberMapper.cntAllAdmin", map);
+    }
+
+    public List<MemberDTO> selectAllAdmin(HashMap<String, Object> map) throws Exception {
+        return session.selectList("admin.MemberMapper.selectAllAdmin", map);
+    }
 }
