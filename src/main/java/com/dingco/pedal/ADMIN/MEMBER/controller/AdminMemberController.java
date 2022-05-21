@@ -19,6 +19,12 @@ public class AdminMemberController {
 
     private final AdminMemberService mService;
 
+    /**
+     * 사용자 리스트 페이지 (userList)
+     * @author 명지
+     * @param cp : 현재 페이지 / defaultValue = 1
+     * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
+     */
     @GetMapping("/admin/member/userList")
     public String adminUser(@RequestParam(value = "pg", required = false, defaultValue = "1") String cp,
                              @RequestParam(value = "sch", required = false, defaultValue= "") String sch,
@@ -32,6 +38,12 @@ public class AdminMemberController {
         return next;
     }
 
+    /**
+     * 관리자 리스트 페이지 (adminList)
+     * @author 명지
+     * @param cp : 현재 페이지 / defaultValue = 1
+     * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
+     */
     @GetMapping("admin/member/adminList")
     public String adminAdmin(@RequestParam(value="pg", required = false, defaultValue = "1") String cp,
                                  @RequestParam(value="sch", required = false, defaultValue = "") String sch,
@@ -40,6 +52,12 @@ public class AdminMemberController {
         return next;
     }
 
+    /**
+     * 1:1 문의 리스트 페이지 (inquiryList)
+     * @author 명지
+     * @param cp : 현재 페이지 / defaultValue = 1
+     * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
+     */
     @GetMapping("admin/inquiryList")
     public String adminInquiry(@RequestParam(value="pg", required = false, defaultValue = "1") String cp,
                                  @RequestParam(value="sch", required = false, defaultValue = "") String sch,

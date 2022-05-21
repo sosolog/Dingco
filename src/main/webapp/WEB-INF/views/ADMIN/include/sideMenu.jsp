@@ -3,7 +3,7 @@
 
 <!-- Start: #sideMenu -->
 <div id="sideMenu">
-    <table>
+    <table class="side-table">
         <tr>
             <td class="box-logo">
                 <span>Pedal</span>

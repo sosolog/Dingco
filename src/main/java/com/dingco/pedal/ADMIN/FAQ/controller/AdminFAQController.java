@@ -13,6 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @Controller
 public class AdminFAQController {
+
+    /**
+     * FAQ 리스트 페이지 (faqList)
+     * @author 명지
+     * @param cp : 현재 페이지 / defaultValue = 1
+     * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
+     */
     @GetMapping("admin/faqList")
     public String adminFAQ(@RequestParam(value="pg", required = false, defaultValue = "1") String cp,
                            @RequestParam(value="sch", required = false, defaultValue = "") String sch,

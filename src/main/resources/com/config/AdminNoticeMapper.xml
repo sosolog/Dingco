@@ -2,6 +2,31 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.config.ADMIN.NoticeMapper">
-    
+<mapper namespace="admin.NoticeMapper">
+
+    <!--NOTICE 전체 게시글 수 조회-->
+    <select id="cntAllNotice" parameterType="hashmap" resultType="int">
+        select count(*)
+        from FAQ
+        where category_idx = 1
+        <if test='sch != null'> and (title like CONCAT('%',#{sch},'%') or content like CONCAT('%',#{sch},'%')) </if>
+        order by number_idx desc
+    </select>
+
+    <!--NOTICE 전체 게시글 가져오기-->
+    <select id="selectAllNotice" parameterType="hashmap" resultType="FAQDTO">
+        select f.number_idx,
+               f.m_idx,
+               f.title,
+               f.content,
+               f.readcnt,
+               date_format(f.writeday, '%Y-%m-%d') writeday,
+               m.userid
+        from FAQ f
+        left outer join MEMBER m on f.m_idx = m.m_idx
+        where f.category_idx = 1
+            <if test='sch != null'> and (f.title like CONCAT('%',#{sch},'%') or f.content like CONCAT('%',#{sch},'%')) </if>
+        order by f.number_idx desc
+        limit ${perPage} offset ${offset}
+    </select>
 </mapper>

@@ -7,9 +7,18 @@
 :root {
     --c-blue : #4677DE;
     --c-white : #ffffff;
-    --f-Jalnan : Jalnan;
-    --f-NanumSquare : NanumSquare;
-    --f-NanumSquareRound : NanumSquareRound;
+    --c-gray-title : #303030;
+    --c-gray-light : #909090;
+    --c-red : #E74133;
+    --f-pointFont : Jalnan;
+    --f-basicFont : NanumSquare;
+    --f-inputFont : NanumSquareRound;
+    --s-title : 30px;
+    --w-extraBold : 900;
+    --w-bold : 700;
+    --w-medium : 500;
+    --w-light : 300;
+    --bg-gray-basic : #444444;
 }
 
 a { text-decoration: none; cursor: pointer; }
@@ -24,7 +33,7 @@ input { font-style: normal; border: none; }
 
 input:focus { outline: none; }
 
-input[type=password] { font-family: var(--f-NanumSquareRound); }
+input[type=password] { font-family: var(--f-inputFont); }
 
 .reset { padding:0px; margin:0px; clear: both; }
 
@@ -34,7 +43,7 @@ select{
     margin-top: 16px;
     padding: 22px 29px;
     font-size: 24px !important;
-    font-family: var(--f-NanumSquare); !important;
+    font-family: var(--f-basicFont); !important;
     font-weight: 500;
     color: #333333;
     background-color: #ffffff;
@@ -69,14 +78,14 @@ textarea {
     font-size: 55px;
     margin-bottom: 15px;
     color: #fff;
-    font-family: var(--f-Jalnan) !important;
+    font-family: var(--f-pointFont) !important;
 }
 
 .wrap_loginBox .subtitle {
     font-size: 25px;
     margin-bottom: 50px;
     color: #959595;
-    font-family: var(--f-Jalnan) !important;
+    font-family: var(--f-pointFont) !important;
 }
 
 .wrap_loginBox .loginBox {
@@ -85,7 +94,7 @@ textarea {
     background-color: #fff;
     overflow: hidden;
     margin: auto;
-    font-family: var(--f-NanumSquareRound); !important;
+    font-family: var(--f-inputFont); !important;
     margin-bottom: 30px;
 }
 
@@ -112,7 +121,7 @@ textarea {
     padding: 13px;
     width: 80%;
     float: left;
-    font-family: var(--f-NanumSquareRound);
+    font-family: var(--f-inputFont);
     font-size: 15px;
 }
 
@@ -125,7 +134,7 @@ textarea {
 
 .wrap_loginBox .btn_login span {
     display: inline-block;
-    font-family: var(--f-Jalnan) !important;
+    font-family: var(--f-pointFont) !important;
     padding: 15px 178px;
     color: #fff;
     font-size: 18px;
@@ -136,18 +145,17 @@ textarea {
     position: absolute;
     padding: 25px;
     height: 100%;
-    background: #444444;
-    font-family: var(--f-NanumSquare);
+    background: var(--bg-gray-basic);
+    font-family: var(--f-basicFont);
 }
 
-#sideMenu table {
+#sideMenu .side-table {
     display: inline-block;
     width: 220px;
     height: 100%;
 }
 
-
-#sideMenu table .box-logo {
+#sideMenu .side-table .box-logo {
     display: block;
     width: 220px;
     text-align: center;
@@ -157,24 +165,24 @@ textarea {
     margin-bottom: 25px;
 }
 
-#sideMenu table .box-logo span {
+#sideMenu .side-table .box-logo span {
     display: block;
 }
 
-#sideMenu table .box-logo span:nth-child(1) {
-    font-family: var(--f-Jalnan);
+#sideMenu .side-table .box-logo span:nth-child(1) {
+    font-family: var(--f-pointFont);
     font-size: 30px;
     color: var(--c-white);
 }
 
-#sideMenu table .box-logo span:nth-child(2) {
-    font-family: var(--f-NanumSquare);
+#sideMenu .side-table .box-logo span:nth-child(2) {
+    font-family: var(--f-basicFont);
     font-size: 18px;
     color: #C4C4C4;
     margin-top: 10px;
 }
 
-#sideMenu table .box-logininfo {
+#sideMenu .side-table .box-logininfo {
     display: block;
     border-top: 1px solid #E5E5E5;
     width: 220px;
@@ -185,23 +193,24 @@ textarea {
     text-align: center;
 }
 
-#sideMenu table .box-logininfo span {
-    font-family: var(--f-NanumSquare);
+#sideMenu .side-table .box-logininfo span {
+    font-family: var(--f-basicFont);
     font-size: 15px;
     color: var(--c-white);
     font-weight: 500;
 }
 
-#sideMenu table .box {
+#sideMenu .side-table .box {
     display: block;
     border-top: 1px solid #E5E5E5;
     width: 220px;
     margin-top : 25px;
     margin-bottom : 15px;
     padding-top:16px;
+    text-align: left;
 }
 
-#sideMenu table .box .category {
+#sideMenu .side-table .box .category {
     display: block;
     font-weight: 700;
     font-size: 18px;
@@ -209,7 +218,7 @@ textarea {
     color: var(--c-white);
 }
 
-#sideMenu table .box .option {
+#sideMenu .side-table .box .option {
     display: block;
     font-weight: 300;
     font-size:   18px;
@@ -220,4 +229,116 @@ textarea {
 .on {
     font-weight: 800;
     color: #88AEFF !important;
+}
+
+/**** main-box ****/
+#main-box {
+    padding-left: 270px;
+}
+
+/**** top-menu ****/
+#top-menu {
+    padding: 40px 26px 25px 45px;
+}
+
+#top-menu .title {
+    display:inline-block;
+    font-family: var(--f-basicFont);
+    font-size: var(--s-title);
+    color: var(--c-gray-title);
+    font-weight: var(--w-extraBold);
+}
+
+#top-menu .btn-add {
+    display:inline-block;
+    float:right;
+    padding: 13px 51px;
+    background-color: var(--bg-gray-basic);
+    text-align: center;
+}
+
+#top-menu .btn-add span {
+    font-family: var(--f-basicFont);
+    color: var(--c-white);
+    font-weight: var(--w-medium);
+    font-size: 18px;
+}
+
+/**** search ****/
+#search {
+    padding: 0px 26px 20px 31px;
+    position: relative;
+
+}
+
+#search .icon {
+    position: absolute;
+    top: 14px;
+    left: 45px;
+}
+
+#search input {
+    display: block;
+    width: 93.5%;
+    padding: 20px 40px 20px 63px;
+    color: var(--c-gray-title);
+    font-size: 20px;
+    font-weight: var(--w-medium);
+    border-radius: 8px;
+    border: 1px solid #CCCCCC;
+    background-color: #F4F4F4;
+    font-family: var(--f-basicFont);
+}
+
+
+/**** list-table ****/
+#list-table table, thead, tbody {
+    width: 100%;
+    font-family: var(--f-basicFont);
+    font-size: 15px;
+    text-align: center;
+}
+
+#list-table table {
+    border-top: 1.5px solid #6C6C6C;
+}
+
+
+#list-table thead {
+    font-size: 17px;
+    font-weight: var(--w-bold);
+    color: var(--c-gray-light);
+    background-color: #FCFCFC;
+    padding: 20px 0px;
+}
+
+#list-table tbody {
+    font-weight: var(--w-medium);
+    color: var(--c-gray-title);
+}
+
+#list-table td {
+    padding: 10px 0px;
+    border-bottom: 1px solid #DBDFE3;
+}
+
+#list-table td a {
+    display: inline-block;
+    width: 35px;
+}
+
+#list-table td a img {
+    width: 100%;
+}
+
+/**** paging ****/
+#paging {
+    padding: 20px;
+    text-align: center;
+    color: var(--c-gray-title);
+}
+
+#paging .curPage {
+    text-decoration: underline;
+    color: var(--c-red);
 }
