@@ -38,9 +38,9 @@ public class LoginController {
 
     //주황 - 로그인폼(로그인, 회원가입, 계정찾기, SNS API 로그인)
     @GetMapping("/login")
-    public String loginForm(){
+    public String loginForm() {
 
-            return "loginForm";
+        return "loginForm";
 
     }
 
@@ -48,28 +48,29 @@ public class LoginController {
     //주황 - 로그인(아이디, 비밀번호에 입력된 값을 HashMap으로 가져와서 DB와 비교)
     @PostMapping("/login.action")
     public String login(LoginDTO loginDTO
-                        ,@RequestParam(defaultValue = "/main") String redirectURL
-                        ,HttpServletRequest request) throws Exception {
+            , @RequestParam(defaultValue = "/main") String redirectURL
+            , HttpServletRequest request) throws Exception {
 
         MemberDTO loginMember = mService.selectByLoginId(loginDTO.getUserid(), loginDTO.getPasswd());
 
 
         HttpSession session = request.getSession();
         //세션에 회원정보 보관
-        session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-        return "redirect:"+redirectURL;
+        return "redirect:" + redirectURL;
 
     }
 
 
     @GetMapping("/login/check")
-    public @ResponseBody boolean loginCheck(@RequestParam(value = "userid",required = false) String userid,
-                                            @RequestParam(value = "passwd",required = false) String passwd) throws Exception {
+    public @ResponseBody
+    boolean loginCheck(@RequestParam(value = "userid", required = false) String userid,
+                       @RequestParam(value = "passwd", required = false) String passwd) throws Exception {
 
         MemberDTO loginMember = mService.selectByLoginId(userid, passwd);
 
-        if(loginMember==null){
+        if (loginMember == null) {
             return false;
         }
 
@@ -79,16 +80,22 @@ public class LoginController {
 
     //주황 - 로그아웃
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request){
+    public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session!=null){
+        if (session != null) {
             session.invalidate();
         }
         return "redirect:main";
     }
 
-    // 명지 - 카카오 로그인 페이지
-    @RequestMapping(value="/login/kakao", method = RequestMethod.GET)
+    /**
+     * 카카오 로그인 페이지
+     *
+     * @return 카카오 로그인 페이지 / 메인 페이지
+     * @throws Exception
+     * @author 명지
+     */
+    @RequestMapping(value = "/login/kakao", method = RequestMethod.GET)
     public String kakaologin(@RequestParam("code") String code, HttpServletRequest request, Model model) throws Exception {
 
         String access_Token = mService.getKaKaoAccessToken(code);
@@ -108,10 +115,54 @@ public class LoginController {
         }
     }
 
-    // 명지 - 카카오 로그인 action
-    @RequestMapping(value="/login/kakao.action", method = RequestMethod.POST)
+    /**
+     * 카카오 로그인 action
+     *
+     * @return 로그인 페이지
+     * @throws Exception
+     * @author 명지
+     */
+    @RequestMapping(value = "/login/kakao.action", method = RequestMethod.POST)
     public String kakaologinaction(@RequestParam Map<String, Object> memberDTO) throws Exception {
         mService.memberKakaoAdd(memberDTO);
         return "redirect:login";
+    }
+
+    // 민욱 - 네이버 콜백
+    @GetMapping("/callback")
+    public String naverCallback() {
+        return "naverLoginForm";
+    }
+
+    /**
+     * 아이디 찾기 페이지
+     *
+     * @return 아이디 찾기 페이지 jsp
+     * @throws Exception
+     * @author 명지
+     */
+    @GetMapping("/find/userid")
+    public String find_ID() {
+        return "findUserid";
+    }
+
+    /**
+     * 아이디 찾기 action
+     *
+     * @return 아이디 정보(String)
+     * @throws Exception
+     * @author 명지
+     */
+    @GetMapping("/find/userid.action")
+    public @ResponseBody
+    String findIdAction(@RequestParam Map<String, Object> map) throws Exception {
+        String json = mService.findUserId(map);
+        return json;
+    }
+
+    //주황 - 아이디/비밀번호 찾기
+    @GetMapping("/find/passwd")
+    public String find_PW() {
+        return "findPasswd";
     }
 }

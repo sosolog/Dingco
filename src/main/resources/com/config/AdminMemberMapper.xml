@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.MemberMapper">
+    <select id="selectUserPaging" parameterType="int" resultType="hashmap">
+        select *
+        from member
+        where authorities = 'USER'
+        order by m_idx desc
+        limit ${perPage} offset ${offSet}
+    </select>
+</mapper>

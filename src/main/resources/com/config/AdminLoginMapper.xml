@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.LoginMapper">
+
+    <!-- ajxa 아이디/비밀번호 일치 여부 확인 -->
+    <select id="selectByLoginId" resultType="MemberDTO" parameterType="string">
+        select *
+        from MEMBER
+        where userid = #{userid} and authorities = 'ADMIN'
+    </select>
+</mapper>

@@ -13,8 +13,11 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Component("interceptor")
 public class LoginCheckInterceptor implements HandlerInterceptor {
-
-
+    /**
+     * 사용자 페이지 로그인 체크 인터셉터
+     * @author 주황
+     * @return false / true
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();

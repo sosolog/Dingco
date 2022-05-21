@@ -1,0 +1,223 @@
+@charset "UTF-8";
+@import url('NanumSquare.css');
+@import url('NanumSquareRound.css');
+@import url('TmoneyRoundWind.css');
+@import url('Jalnan.css');
+
+:root {
+    --c-blue : #4677DE;
+    --c-white : #ffffff;
+    --f-Jalnan : Jalnan;
+    --f-NanumSquare : NanumSquare;
+    --f-NanumSquareRound : NanumSquareRound;
+}
+
+a { text-decoration: none; cursor: pointer; }
+
+body { margin: 0; padding: 0; height: 100%; }
+
+ul { list-style:none; margin: 0px auto; padding-inline-start: 0px; }
+
+li { display: inline-block; }
+
+input { font-style: normal; border: none; }
+
+input:focus { outline: none; }
+
+input[type=password] { font-family: var(--f-NanumSquareRound); }
+
+.reset { padding:0px; margin:0px; clear: both; }
+
+select{
+    width: 100%;
+    border: 0.5px solid #818386;
+    margin-top: 16px;
+    padding: 22px 29px;
+    font-size: 24px !important;
+    font-family: var(--f-NanumSquare); !important;
+    font-weight: 500;
+    color: #333333;
+    background-color: #ffffff;
+    background: url(../images/openSelect.png) 95.5% center no-repeat;
+    appearance: none;
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none; /* Safari and Chrome */
+    outline: none;
+}
+
+/* IE 기본 스타일 제거 */
+select::-ms-expand{
+    display: none; /* IE 10, 11 */
+}
+
+textarea {
+    outline: none;
+}
+
+/**** Login 페이지 ****/
+#login {
+    text-align: center;
+}
+
+.wrap_loginBox {
+    width:   430px;
+    margin : auto;
+    padding: 200px 0px;
+}
+
+.wrap_loginBox .title {
+    font-size: 55px;
+    margin-bottom: 15px;
+    color: #fff;
+    font-family: var(--f-Jalnan) !important;
+}
+
+.wrap_loginBox .subtitle {
+    font-size: 25px;
+    margin-bottom: 50px;
+    color: #959595;
+    font-family: var(--f-Jalnan) !important;
+}
+
+.wrap_loginBox .loginBox {
+    border-radius: 10px;
+    border-collapse:collapse;
+    background-color: #fff;
+    overflow: hidden;
+    margin: auto;
+    font-family: var(--f-NanumSquareRound); !important;
+    margin-bottom: 30px;
+}
+
+.loginBox td {
+    border-bottom :1px solid #909090;
+}
+
+
+.wrap_loginBox .loginBox tr td:first-child{
+    background-color: #F2F2F2;
+}
+
+.wrap_loginBox .loginBox tr td:nth-child(2){
+    width: 350px;
+}
+
+.wrap_loginBox .loginBox span {
+    padding: 20px 17px;
+    display: inline-block;
+    color: #878787;
+}
+
+.wrap_loginBox .loginBox input {
+    padding: 13px;
+    width: 80%;
+    float: left;
+    font-family: var(--f-NanumSquareRound);
+    font-size: 15px;
+}
+
+.wrap_loginBox .btn_login {
+    background-color: var(--c-blue);
+    text-align: center;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.wrap_loginBox .btn_login span {
+    display: inline-block;
+    font-family: var(--f-Jalnan) !important;
+    padding: 15px 178px;
+    color: #fff;
+    font-size: 18px;
+}
+
+/**** SideMenu ****/
+#sideMenu {
+    position: absolute;
+    padding: 25px;
+    height: 100%;
+    background: #444444;
+    font-family: var(--f-NanumSquare);
+}
+
+#sideMenu table {
+    display: inline-block;
+    width: 220px;
+    height: 100%;
+}
+
+
+#sideMenu table .box-logo {
+    display: block;
+    width: 220px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--c-white);
+    margin-bottom: 25px;
+}
+
+#sideMenu table .box-logo span {
+    display: block;
+}
+
+#sideMenu table .box-logo span:nth-child(1) {
+    font-family: var(--f-Jalnan);
+    font-size: 30px;
+    color: var(--c-white);
+}
+
+#sideMenu table .box-logo span:nth-child(2) {
+    font-family: var(--f-NanumSquare);
+    font-size: 18px;
+    color: #C4C4C4;
+    margin-top: 10px;
+}
+
+#sideMenu table .box-logininfo {
+    display: block;
+    border-top: 1px solid #E5E5E5;
+    width: 220px;
+    margin-top : 20px;
+    margin-bottom : 20px;
+    padding-top: 24px;
+    border-top: 1px solid #E5E5E5;
+    text-align: center;
+}
+
+#sideMenu table .box-logininfo span {
+    font-family: var(--f-NanumSquare);
+    font-size: 15px;
+    color: var(--c-white);
+    font-weight: 500;
+}
+
+#sideMenu table .box {
+    display: block;
+    border-top: 1px solid #E5E5E5;
+    width: 220px;
+    margin-top : 25px;
+    margin-bottom : 15px;
+    padding-top:16px;
+}
+
+#sideMenu table .box .category {
+    display: block;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 43px;
+    color: var(--c-white);
+}
+
+#sideMenu table .box .option {
+    display: block;
+    font-weight: 300;
+    font-size:   18px;
+    line-height: 32px;
+    color: var(--c-white);
+}
+
+.on {
+    font-weight: 800;
+    color: #88AEFF !important;
+}
