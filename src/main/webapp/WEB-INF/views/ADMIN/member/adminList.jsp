@@ -7,9 +7,10 @@
         <a class="btn-add" href="/admin/notice/edit"><span>관리자 추가</span></a>
     </div>
     <div id="search">
-        <form>
-            <a class="icon" href=""><img src="/images/admin/search.png"></a>
-            <input id="" name="" placeholder="아이디 또는 이름을 입력하세요" value="">
+        <form action="/admin/member/adminList" method="get" name="searchForm">
+            <a class="icon" onclick="adminSearch(searchForm)"><img src="/images/admin/search.png"></a>
+            <input id="sch" name="sch" placeholder="이름 또는 아이디를 입력하세요" value="${sch}"
+                   onKeypress="javascript:if(event.keyCode==13) {adminSearch(searchForm)}" autocomplete="off">
         </form>
     </div>
     <div id="list-table">

@@ -36,6 +36,7 @@ public class AdminNoticeController {
 
         PageDTO<FAQDTO> pageDTO = adminNoticeService.selectAllNotice(Integer.parseInt(cp), sch);
         model.addAttribute("pageDTO", pageDTO);
+        model.addAttribute("sch", sch);
 
         return next;
     }

@@ -34,6 +34,7 @@ public class AdminMemberController {
 
         PageDTO<MemberDTO> pageDTO = adminMemberService.selectAllUser(Integer.parseInt(cp), sch);
         model.addAttribute("pageDTO", pageDTO);
+        model.addAttribute("sch", sch);
 
         return next;
     }
@@ -52,6 +53,7 @@ public class AdminMemberController {
 
         PageDTO<MemberDTO> pageDTO = adminMemberService.selectAllAdmin(Integer.parseInt(cp), sch);
         model.addAttribute("pageDTO", pageDTO);
+        model.addAttribute("sch", sch);
 
         return next;
     }

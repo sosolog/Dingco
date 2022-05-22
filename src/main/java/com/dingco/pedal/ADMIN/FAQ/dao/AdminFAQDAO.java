@@ -1,6 +1,7 @@
 package com.dingco.pedal.ADMIN.FAQ.dao;
 
 import com.dingco.pedal.dto.FAQDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Repository("AdminFAQDAO")
 public class AdminFAQDAO {
 
@@ -20,6 +22,7 @@ public class AdminFAQDAO {
      * @param map : perPage(시작 게시글), sch(검색어)
      */
     public int cntAllFAQ (HashMap<String, Object> map) {
+        // [ERROR] 2페이지부터 ...
         return session.selectOne("admin.FAQMapper.cntAllFAQ", map);
     }
 

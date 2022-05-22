@@ -7,9 +7,10 @@
         <a class="btn-add" href="/admin/notice/edit"><span>글 추가</span></a>
     </div>
     <div id="search">
-        <form>
-            <a class="icon" href=""><img src="/images/admin/search.png"></a>
-            <input id="" name="" placeholder="제목 또는 내용을 입력하세요" value="">
+        <form action="/admin/noticeList" method="get" name="searchForm">
+            <a class="icon" onclick="adminSearch(searchForm)"><img src="/images/admin/search.png"></a>
+            <input id="sch" name="sch" placeholder="제목 또는 내용을 입력하세요" value="${sch}"
+                   onKeypress="javascript:if(event.keyCode==13) {adminSearch(searchForm)}" autocomplete="off">
         </form>
     </div>
     <div id="list-table">
@@ -30,7 +31,8 @@
                     <td style="width: 60%">${dto.title}</td>
                     <td style="width: 10%">${dto.userid}</td>
                     <td style="width: 15%">${dto.writeday}</td>
-                    <td style="width: 5%"><a class="edit" href="/admin/notice/edit?${dto.number_idx}"><img src="/images/admin/edit.png"></a></td>
+                    <td style="width: 5%"><a class="edit" href="/admin/notice/edit?${dto.number_idx}"><img
+                            src="/images/admin/edit.png"></a></td>
                 </tr>
             </c:forEach>
             </tbody>

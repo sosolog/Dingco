@@ -35,6 +35,7 @@ public class AdminFAQController {
 
         PageDTO<FAQDTO> pageDTO = adminFAQService.selectAllFAQ(Integer.parseInt(cp), sch);
         model.addAttribute("pageDTO", pageDTO);
+        model.addAttribute("sch", sch);
 
         return next;
     }

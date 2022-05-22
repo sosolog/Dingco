@@ -36,6 +36,7 @@ public class AdminInquiryController {
 
         PageDTO<InquiryDTO> pageDTO = adminInquiryService.selectAllInquiry(Integer.parseInt(cp), sch);
         model.addAttribute("pageDTO", pageDTO);
+        model.addAttribute("sch", sch);
 
         return next;
     }
