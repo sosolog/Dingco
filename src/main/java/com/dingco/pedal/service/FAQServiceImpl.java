@@ -65,7 +65,7 @@ public class FAQServiceImpl implements FAQService {
     }
 
     /**
-     * 기본 페이징 처리(관리자 페이지에서 이용)
+     * 영준님 지워주세요.
      */
 
     // NOTICE 전체 조회
@@ -82,17 +82,4 @@ public class FAQServiceImpl implements FAQService {
         return pageDTO;
     }
 
-    // FAQ 전체 조회_기본 페이징
-    @Override
-    public PageDTO selectFAQRecordPaging(int curPage) throws Exception {
-        PageDTO pageDTO = dao.selectFAQRecordPaging(curPage);
-        return pageDTO;
-    }
-
-    // FAQ 부분 조회(searchKey = 검색 조건 문자열)_기본 페이징
-    @Override
-    public PageDTO selectFAQSearchRecordPaging(int curPage, String searchKey) throws Exception {
-        PageDTO pageDTO = dao.selectFAQSearchRecordPaging(curPage, searchKey);
-        return pageDTO;
-    }
 }
