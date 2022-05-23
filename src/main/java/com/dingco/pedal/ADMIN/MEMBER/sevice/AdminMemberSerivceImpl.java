@@ -31,10 +31,11 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
 
     /**
      * 사용자 회원 목록 가져오기
-     * @author 명지
-     * @param cp : curPage, 현재 페이지
+     *
+     * @param cp  : curPage, 현재 페이지
      * @param sch : searchKey, 검색어
      * @return 사용자 회원 목록 리스트
+     * @author 명지
      */
     @Override
     public PageDTO selectAllUser(int cp, String sch) throws Exception {
@@ -59,10 +60,11 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
 
     /**
      * 관리자 회원 목록 가져오기
-     * @author 명지
-     * @param cp : curPage, 현재 페이지
+     *
+     * @param cp  : curPage, 현재 페이지
      * @param sch : searchKey, 검색어
      * @return 사용자 회원 목록 리스트
+     * @author 명지
      */
     @Override
     public PageDTO selectAllAdmin(int cp, String sch) throws Exception {
@@ -87,8 +89,9 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
 
     /**
      * Member 특정 사용자 정보 가져오기
-     * @author 명지
+     *
      * @param idx : 회원번호
+     * @author 명지
      */
     @Override
     public MemberDTO selectOneUser(int idx) throws Exception {
@@ -97,11 +100,23 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
 
     /**
      * Member 특정 관리자 정보 가져오기
-     * @author 명지
+     *
      * @param idx : 회원번호
+     * @author 명지
      */
     @Override
     public MemberDTO selectOneAdmin(int idx) throws Exception {
         return adminMemberDAO.selectOneAdmin(idx);
+    }
+
+    /**
+     * Member 특정 회원 삭제
+     * @author 명지
+     * @param idx : 회원 번호
+     * @throws Exception
+     */
+    @Override
+    public int deleteOneMember(int idx) throws Exception {
+        return adminMemberDAO.deleteOneMember(idx);
     }
 }

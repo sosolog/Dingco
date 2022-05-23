@@ -20,8 +20,9 @@ public class AdminFAQDAO {
      * FAQ 전체 게시글 수 조회
      * @author 명지
      * @param map : perPage(시작 게시글), sch(검색어)
+     * @throws Exception
      */
-    public int cntAllFAQ (HashMap<String, Object> map) {
+    public int cntAllFAQ (HashMap<String, Object> map) throws Exception {
         // [ERROR] 2페이지부터 ...
         return session.selectOne("admin.FAQMapper.cntAllFAQ", map);
     }
@@ -30,8 +31,9 @@ public class AdminFAQDAO {
      * FAQ 전체 게시글 가져오기
      * @author 명지
      * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
+     * @throws Exception
      */
-    public List<FAQDTO> selectAllFAQ (HashMap<String, Object> map) {
+    public List<FAQDTO> selectAllFAQ (HashMap<String, Object> map) throws Exception {
         return session.selectList("admin.FAQMapper.selectAllFAQ", map);
     }
 
@@ -39,9 +41,19 @@ public class AdminFAQDAO {
      * FAQ 특정 게시글 가져오기
      * @author 명지
      * @param idx : 게시글 번호
+     * @throws Exception
      */
-    public FAQDTO selectOneFAQ(int idx) {
+    public FAQDTO selectOneFAQ(int idx) throws Exception {
         return session.selectOne("admin.FAQMapper.selectOneFAQ", idx);
     }
 
+    /**
+     * FAQ 특정 게시글 삭제
+     * @author 명지
+     * @param idx : 게시글 번호
+     * @throws Exception
+     */
+    public int deleteOneFAQ(int idx) throws Exception {
+        return session.delete("admin.FAQMapper.deleteOneFAQ", idx);
+    }
 }

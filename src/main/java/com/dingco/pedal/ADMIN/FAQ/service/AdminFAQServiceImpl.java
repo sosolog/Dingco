@@ -61,4 +61,15 @@ public class AdminFAQServiceImpl implements AdminFAQService {
     public FAQDTO selectOneFAQ(int idx) throws Exception {
         return adminFAQDAO.selectOneFAQ(idx);
     }
+
+    /**
+     * FAQ 특정 게시글 삭제
+     * @author 명지
+     * @param idx : 게시글 번호
+     * @throws Exception
+     */
+    @Override
+    public int deleteOneFAQ(int idx) throws Exception {
+        return adminFAQDAO.deleteOneFAQ(idx);
+    }
 }

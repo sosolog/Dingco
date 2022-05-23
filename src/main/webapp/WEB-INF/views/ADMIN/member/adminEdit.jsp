@@ -66,3 +66,8 @@
     </div>
 </div>
 </form>
+
+<!--삭제 버튼-->
+<c:if test="${mode == '수정'}">
+    <a id="btn-delete" href="/admin/member/delete?idx=${m_idx}&role=ADMIN"><img src="/images/admin/remove.png"></a>
+</c:if>

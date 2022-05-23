@@ -42,4 +42,10 @@
             left outer join MEMBER m on f.m_idx = m.m_idx
         where f.number_idx = #{idx}
     </select>
+
+    <!--NOTICE 특정 게시글 삭제하기-->
+    <delete id="deleteOneNotice" parameterType="int">
+        delete from FAQ
+        where number_idx = #{idx};
+    </delete>
 </mapper>

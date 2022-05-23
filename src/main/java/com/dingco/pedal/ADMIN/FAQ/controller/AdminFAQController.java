@@ -8,9 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -61,4 +59,20 @@ public class AdminFAQController {
 
         return next;
     }
+
+    /**
+     * FAQ 특정 게시글 삭제
+     * @author 명지
+     * @param idx : 게시글 번호
+     * @throws Exception
+     */
+    @GetMapping("/admin/faq/delete")
+    public String adminFAQDelete(@RequestParam(value="idx", required = true) String idx) throws Exception {
+        String next = "/admin/faq";
+
+        adminFAQService.deleteOneFAQ(Integer.parseInt(idx));
+
+        return "redirect:" + next;
+    }
+
 }

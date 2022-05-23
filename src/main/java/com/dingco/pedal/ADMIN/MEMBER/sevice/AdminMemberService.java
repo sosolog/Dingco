@@ -8,4 +8,5 @@ public interface AdminMemberService {
     public PageDTO selectAllAdmin(int cp, String sch) throws Exception;
     public MemberDTO selectOneUser(int m_idx) throws Exception;
     public MemberDTO selectOneAdmin(int m_idx) throws Exception;
+    public int deleteOneMember(int idx) throws Exception;
 }

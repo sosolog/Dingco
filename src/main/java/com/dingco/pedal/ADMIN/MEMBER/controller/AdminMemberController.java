@@ -101,4 +101,21 @@ public class AdminMemberController {
 
         return next;
     }
+
+    /**
+     * Member 특정 회원 삭제
+     * @author 명지
+     * @param idx : 회원 번호
+     * @throws Exception
+     */
+    @GetMapping("/admin/member/delete")
+    public String adminMemberDelete(@RequestParam(value="idx", required = true) String idx,
+                                    @RequestParam(value="role", required = true) String role) throws Exception {
+        String next = "/admin/member/";
+        next += role.equals("ADMIN") ? "admin" : "user";
+
+        adminMemberService.deleteOneMember(Integer.parseInt(idx));
+
+        return "redirect:" + next;
+    }
 }

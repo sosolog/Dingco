@@ -69,4 +69,14 @@ public class AdminMemberDAO {
     public MemberDTO selectOneAdmin(int idx) throws Exception {
         return session.selectOne("admin.MemberMapper.selectOneAdmin", idx);
     }
+
+    /**
+     * Member 특정 회원 삭제
+     * @author 명지
+     * @param idx : 회원 번호
+     * @throws Exception
+     */
+    public int deleteOneMember(int idx) throws Exception {
+        return session.delete("admin.MemberMapper.deleteOneMember", idx);
+    }
 }

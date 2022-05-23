@@ -65,4 +65,19 @@ public class AdminNoticeController {
         return next;
     }
 
+    /**
+     * NOTICE 특정 게시글 삭제
+     * @author 명지
+     * @param idx : 게시글 번호
+     * @throws Exception
+     */
+    @GetMapping("/admin/notice/delete")
+    public String adminNoticeDelete(@RequestParam(value="idx", required = true) String idx) throws Exception {
+        String next = "/admin/notice";
+
+        adminNoticeService.deleteOneNotice(Integer.parseInt(idx));
+
+        return "redirect:" + next;
+    }
+
 }

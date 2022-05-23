@@ -82,4 +82,10 @@
         from MEMBER
         WHERE m_idx=#{idx}
     </select>
+
+    <!--USER/ADMIN 특정 사용자/관리자 삭제하기-->
+    <delete id="deleteOneMember" parameterType="int">
+        delete from MEMBER
+        where m_idx = #{idx};
+    </delete>
 </mapper>

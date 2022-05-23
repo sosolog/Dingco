@@ -42,4 +42,13 @@ public class AdminNoticeDAO {
         return session.selectOne("admin.NoticeMapper.selectOneNotice", idx);
     }
 
+    /**
+     * NOTICE 특정 게시글 삭제
+     * @author 명지
+     * @param idx : 게시글 번호
+     * @throws Exception
+     */
+    public int deleteOneNotice(int idx) throws Exception {
+        return session.delete("admin.NoticeMapper.deleteOneNotice", idx);
+    }
 }

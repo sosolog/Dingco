@@ -60,4 +60,15 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
     public FAQDTO selectOneNotice(int idx) throws Exception {
         return adminNoticeDAO.selectOneNotice(idx);
     }
+
+    /**
+     * NOTICE 특정 게시글 삭제
+     * @author 명지
+     * @param idx : 게시글 번호
+     * @throws Exception
+     */
+    @Override
+    public int deleteOneNotice(int idx) throws Exception {
+        return adminNoticeDAO.deleteOneNotice(idx);
+    }
 }
