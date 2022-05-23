@@ -31,7 +31,7 @@
                     <td style="width: 60%">${dto.title}</td>
                     <td style="width: 10%">${dto.userid}</td>
                     <td style="width: 15%">${dto.writeday}</td>
-                    <td style="width: 5%"><a class="edit" href="/admin/notice/edit?${dto.number_idx}"><img src="/images/admin/edit.png"></a></td>
+                    <td style="width: 5%"><a class="edit" href="/admin/faq/edit?idx=${dto.number_idx}"><img src="/images/admin/edit.png"></a></td>
                 </tr>
             </c:forEach>
             </tbody>

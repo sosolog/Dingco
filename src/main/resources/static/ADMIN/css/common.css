@@ -10,6 +10,7 @@
     --c-gray-title : #303030;
     --c-gray-light : #909090;
     --c-red : #FF4040;
+    --c-gray-readonly : #777777;
     --f-pointFont : Jalnan;
     --f-basicFont : NanumSquare;
     --f-inputFont : NanumSquareRound;
@@ -19,6 +20,7 @@
     --w-medium : 500;
     --w-light : 300;
     --bg-gray-basic : #444444;
+    --bg-gray-light : #FCFCFC;
 }
 
 a { text-decoration: none; cursor: pointer; }
@@ -29,11 +31,15 @@ ul { list-style:none; margin: 0px auto; padding-inline-start: 0px; }
 
 li { display: inline-block; }
 
-input { font-style: normal; border: none; }
+input { font-family: var(--f-inputFont); font-style: normal; border: none; }
 
 input:focus { outline: none; }
 
+input[readonly=readonly] { color: var(--c-gray-readonly) !important; }
+
 input[type=password] { font-family: var(--f-inputFont); }
+
+textarea { font-family: var(--f-inputFont); }
 
 .reset { padding:0px; margin:0px; clear: both; }
 
@@ -43,7 +49,7 @@ select{
     margin-top: 16px;
     padding: 22px 29px;
     font-size: 24px !important;
-    font-family: var(--f-basicFont); !important;
+    font-family: var(--f-basicFont) !important;
     font-weight: 500;
     color: #333333;
     background-color: #ffffff;
@@ -264,6 +270,39 @@ textarea {
     font-size: 18px;
 }
 
+#top-menu .btn-save {
+    display:inline-block;
+    float:right;
+    padding: 13px 38px;
+    background-color: var(--bg-gray-basic);
+    text-align: center;
+    border: 1px solid var(--bg-gray-basic);
+}
+
+#top-menu .btn-save span {
+    font-family: var(--f-basicFont);
+    color: var(--c-white);
+    font-weight: var(--w-bold);
+    font-size: 18px;
+}
+
+#top-menu .btn-cancel {
+    display:inline-block;
+    float:right;
+    padding: 13px 38px;
+    background-color: var(--c-white);
+    text-align: center;
+    margin-right: 6px;
+    border: 1px solid var(--bg-gray-basic);
+}
+
+#top-menu .btn-cancel span {
+    font-family: var(--f-basicFont);
+    color: var(--bg-gray-basic);
+    font-weight: var(--w-bold);
+    font-size: 18px;
+}
+
 /**** search ****/
 #search {
     padding: 0px 26px 20px 31px;
@@ -307,7 +346,7 @@ textarea {
     font-size: 17px;
     font-weight: var(--w-bold);
     color: var(--c-gray-light);
-    background-color: #FCFCFC;
+    background-color: var(--bg-gray-light);
     padding: 20px 0px;
 }
 
@@ -355,4 +394,83 @@ textarea {
 #paging .curPage {
     text-decoration: underline;
     color: var(--c-red);
+}
+
+/**** edit-table ****/
+#edit-table table, thead, tbody {
+    width: 100%;
+    font-family: var(--f-basicFont);
+    font-size: 15px;
+}
+
+#edit-table table {
+    border-top: 1.5px solid #6C6C6C;
+}
+
+#edit-table tbody {
+    font-weight: var(--w-medium);
+    color: var(--c-gray-title);
+}
+
+#edit-table td {
+    border-bottom: 1px solid #DBDFE3;
+}
+
+#edit-table tr td {
+    padding: 15px;
+}
+
+#edit-table input {
+    width: 100%;
+    color: var(--c-gray-title);
+    font-size: 17px;
+    font-width: var(--w-medium);
+}
+
+#edit-table textarea {
+    width: 100%;
+    height: 300px;
+    line-height: 23px;
+    outline: none;
+    border: none;
+    color: var(--c-gray-title);
+    font-size: 17px;
+    font-width: var(--w-medium);
+    resize: vertical;
+}
+
+#edit-table textarea:focus {
+    outline: none;
+    border: none;
+}
+
+#edit-table tr td:nth-child(1) {
+    width: 10%;
+    font-size: 17px;
+    font-weight: var(--w-bold);
+    color: var(--c-gray-light);
+    background-color: var(--bg-gray-light);
+    text-align: center;
+}
+
+#edit-table tr td:nth-child(2) {
+    text-align: left;
+}
+
+#edit-table .short-line td:nth-child(1) {
+    padding: 20px 0px;
+}
+
+
+/**** btn-delete ****/
+#btn-delete {
+    position: fixed;
+    display: inline-block;
+    bottom: 20px;
+    right: 25px;
+    width: 90px;
+}
+
+#btn-delete img {
+    width: 100%;
 }

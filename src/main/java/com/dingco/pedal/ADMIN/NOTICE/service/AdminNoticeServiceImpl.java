@@ -30,9 +30,8 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
      * @param cp : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
      */
-
     @Override
-    public PageDTO selectAllNotice(int cp, String sch) {
+    public PageDTO selectAllNotice(int cp, String sch) throws Exception {
         int offset = (cp - 1) * perPage; // 페이징 시작점(페이징 블럭에 따라서 동적으로 값 설정)
 
         HashMap<String, Object> map = new HashMap<>();
@@ -50,5 +49,15 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
         pageDTO.setPageListInBlock(pagesPerBlock);
 
         return pageDTO;
+    }
+
+    /**
+     * NOTICE 특정 게시글 가져오기
+     * @author 명지
+     * @param idx : 게시글 번호
+     */
+    @Override
+    public FAQDTO selectOneNotice(int idx) throws Exception {
+        return adminNoticeDAO.selectOneNotice(idx);
     }
 }

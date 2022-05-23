@@ -55,4 +55,31 @@
         order by m_idx desc
         <!--limit #{perPage} offset #{offSet}-->
     </select>
+
+    <!--USER 특정 사용자 정보 가져오기-->
+    <select id="selectOneUser" parameterType="int" resultType="MemberDTO">
+        select m_idx, kakao_idx, naver_idx, google_idx,
+               username,
+               userid,
+               passwd,
+               email1, email2,
+               uploadfilename, storefilename,
+               DATE_FORMAT(joindate, '%Y-%m-%d') joindate,
+               authorities
+        from MEMBER
+        WHERE m_idx=#{idx}
+    </select>
+
+    <!--ADMIN 특정 관리자 정보 가져오기-->
+    <select id="selectOneAdmin" parameterType="int" resultType="MemberDTO">
+        select m_idx,
+               username,
+               userid,
+               passwd,
+               email1, email2,
+               DATE_FORMAT(joindate, '%Y-%m-%d') joindate,
+               authorities
+        from MEMBER
+        WHERE m_idx=#{idx}
+    </select>
 </mapper>

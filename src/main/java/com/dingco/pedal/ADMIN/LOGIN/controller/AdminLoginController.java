@@ -23,15 +23,25 @@ public class AdminLoginController {
     @Autowired
     AdminLoginService loginService;
 
+    /**
+     * 로그인 페이지
+     * @author 명지
+     * @throws Exception
+     */
     @GetMapping("/admin/login")
     public String adminLogin() throws Exception {
         String next = "/ADMIN/login";
         return next;
     }
 
+    /**
+     * 로그인 action
+     * @author 명지
+     * @throws Exception
+     */
     @PostMapping("/admin/login.action")
     public String adminLoginAction(LoginDTO loginDTO, HttpServletRequest request) throws Exception {
-        String next = "/admin/member/userList";
+        String next = "/admin/member/user";
         MemberDTO loginMember = loginService.selectByLoginId(loginDTO.getUserid(), loginDTO.getPasswd());
 
         log.info("로그인 정보 저장 완료");
@@ -41,6 +51,13 @@ public class AdminLoginController {
         return "redirect:" + next;
     }
 
+    /**
+     * 비동기 로그인 체크
+     * 입력한 아이디, 패스워드가 DB에 존재하는지 체크
+     * @author 명지
+     * @throws Exception
+     * @return true/false
+     */
     @GetMapping("/admin/login/check")
     public @ResponseBody
     boolean loginCheck(@RequestParam(value = "userid", required = false) String userid,
@@ -49,7 +66,10 @@ public class AdminLoginController {
         return loginMember == null ? false : true;
     }
 
-    // 로그아웃
+    /**
+     * 로그아웃
+     * @author 명지
+     */
     @GetMapping("/admin/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);

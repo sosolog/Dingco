@@ -84,4 +84,24 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
         pageDTO.setPageListInBlock(pagesPerBlock);
         return pageDTO;
     }
+
+    /**
+     * Member 특정 사용자 정보 가져오기
+     * @author 명지
+     * @param idx : 회원번호
+     */
+    @Override
+    public MemberDTO selectOneUser(int idx) throws Exception {
+        return adminMemberDAO.selectOneUser(idx);
+    }
+
+    /**
+     * Member 특정 관리자 정보 가져오기
+     * @author 명지
+     * @param idx : 회원번호
+     */
+    @Override
+    public MemberDTO selectOneAdmin(int idx) throws Exception {
+        return adminMemberDAO.selectOneAdmin(idx);
+    }
 }

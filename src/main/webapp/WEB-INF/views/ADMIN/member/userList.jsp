@@ -4,7 +4,7 @@
 <div id="main-box">
     <div id="top-menu">
         <span class="title">사용자</span>
-        <a class="btn-add" href="/admin/notice/edit"><span>사용자 추가</span></a>
+        <a class="btn-add" href="/admin/member/user/edit"><span>사용자 추가</span></a>
     </div>
     <div id="search">
         <form action="/admin/member/userList" method="get" name="searchForm">
@@ -27,9 +27,6 @@
             </tr>
             </thead>
             <tbody>
-            <%--dtoList=[MemberDTO(m_idx=118, kakao_idx=null, naver_idx=null, google_idx=110402302331587180464,
-            username=김영준, userid=96youngjun, passwd=null, email1=null, email2=null, uploadFileName=null,
-            storeFileName=null, authorities=null, joindate=2022-05-10),--%>
             <c:forEach var="dto" items="${pageDTO.dtoList}" varStatus="status">
                 <tr class="notice-line">
                     <td style="width: 10%">${dto.m_idx}</td>
@@ -46,7 +43,7 @@
                         <c:if test="${not empty dto.google_idx}">구글</c:if>
                         <c:if test="${not empty dto.email1}">-</c:if>
                     </td>
-                    <td style="width: 10%"><a class="edit" href="/admin/user/edit?${dto.m_idx}"><img src="/images/admin/edit.png"></a></td>
+                    <td style="width: 10%"><a class="edit" href="/admin/member/user/edit?idx=${dto.m_idx}"><img src="/images/admin/edit.png"></a></td>
                 </tr>
             </c:forEach>
             </tbody>

@@ -16,19 +16,57 @@ public class AdminMemberDAO {
     @Autowired
     SqlSession session;
 
+    /**
+     * Member 전체 사용자 수
+     * @author 명지
+     * @param map : sch(검색어)
+     */
     public int cntAllUser(HashMap<String, Object> map) throws Exception {
         return session.selectOne("admin.MemberMapper.cntAllUser", map);
     }
 
+    /**
+     * Member 전체 사용자 가져오기
+     * @author 명지
+     * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
+     */
     public List<MemberDTO> selectAllUser(HashMap<String, Object> map) throws Exception {
         return session.selectList("admin.MemberMapper.selectAllUser", map);
     }
 
+    /**
+     * Member 전체 관리자 수
+     * @author 명지
+     * @param map : sch(검색어)
+     */
     public int cntAllAdmin(HashMap<String, Object> map) throws Exception {
         return session.selectOne("admin.MemberMapper.cntAllAdmin", map);
     }
 
+    /**
+     * Member 전체 관리자 가져오기
+     * @author 명지
+     * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
+     */
     public List<MemberDTO> selectAllAdmin(HashMap<String, Object> map) throws Exception {
         return session.selectList("admin.MemberMapper.selectAllAdmin", map);
+    }
+
+    /**
+     * Member 특정 사용자 정보 가져오기
+     * @author 명지
+     * @param idx : 회원번호
+     */
+    public MemberDTO selectOneUser(int idx) throws Exception {
+        return session.selectOne("admin.MemberMapper.selectOneUser", idx);
+    }
+
+    /**
+     * Member 특정 관리자 정보 가져오기
+     * @author 명지
+     * @param idx : 회원번호
+     */
+    public MemberDTO selectOneAdmin(int idx) throws Exception {
+        return session.selectOne("admin.MemberMapper.selectOneAdmin", idx);
     }
 }

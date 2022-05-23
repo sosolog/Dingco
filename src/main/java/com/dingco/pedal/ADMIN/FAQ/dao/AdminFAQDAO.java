@@ -34,4 +34,14 @@ public class AdminFAQDAO {
     public List<FAQDTO> selectAllFAQ (HashMap<String, Object> map) {
         return session.selectList("admin.FAQMapper.selectAllFAQ", map);
     }
+
+    /**
+     * FAQ 특정 게시글 가져오기
+     * @author 명지
+     * @param idx : 게시글 번호
+     */
+    public FAQDTO selectOneFAQ(int idx) {
+        return session.selectOne("admin.FAQMapper.selectOneFAQ", idx);
+    }
+
 }

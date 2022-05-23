@@ -29,4 +29,18 @@
         order by f.number_idx desc
         limit ${perPage} offset ${offset}
     </select>
+
+    <!--FAQ 특정 게시글 가져오기-->
+    <select id="selectOneFAQ" parameterType="int" resultType="FAQDTO">
+        select f.number_idx,
+        f.m_idx,
+        f.title,
+        f.content,
+        f.readcnt,
+        date_format(f.writeday, '%Y-%m-%d') writeday,
+        m.userid
+        from FAQ f
+        left outer join MEMBER m on f.m_idx = m.m_idx
+        where f.number_idx = #{idx}
+    </select>
 </mapper>

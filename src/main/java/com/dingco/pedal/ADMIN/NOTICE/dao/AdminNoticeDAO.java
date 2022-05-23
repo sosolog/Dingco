@@ -33,5 +33,13 @@ public class AdminNoticeDAO {
         return session.selectList("admin.NoticeMapper.selectAllNotice", map);
     }
 
+    /**
+     * NOTICE 특정 게시글 가져오기
+     * @author 명지
+     * @param idx : 게시글 번호
+     */
+    public FAQDTO selectOneNotice(int idx) {
+        return session.selectOne("admin.NoticeMapper.selectOneNotice", idx);
+    }
 
 }

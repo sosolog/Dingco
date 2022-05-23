@@ -23,10 +23,23 @@
                date_format(f.writeday, '%Y-%m-%d') writeday,
                m.userid
         from FAQ f
-        left outer join MEMBER m on f.m_idx = m.m_idx
+            left outer join MEMBER m on f.m_idx = m.m_idx
         where f.category_idx = 1
             <if test='sch != null'> and (f.title like CONCAT('%',#{sch},'%') or f.content like CONCAT('%',#{sch},'%')) </if>
         order by f.number_idx desc
         limit ${perPage} offset ${offset}
+    </select>
+
+    <!--NOTICE 특정 게시글 가져오기-->
+    <select id="selectOneNotice" parameterType="int" resultType="FAQDTO">
+        select f.number_idx,
+               m.userid,
+               f.title,
+               f.content,
+               date_format(f.writeday, '%Y-%m-%d') writeday,
+               f.readcnt
+        from FAQ f
+            left outer join MEMBER m on f.m_idx = m.m_idx
+        where f.number_idx = #{idx}
     </select>
 </mapper>

@@ -28,7 +28,7 @@ public class AdminInquiryController {
      * @param cp : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
      */
-    @GetMapping("/admin/inquiryList")
+    @GetMapping("/admin/inquiry")
     public String adminInquiry(@RequestParam(value="pg", required = false, defaultValue = "1") String cp,
                                @RequestParam(value="sch", required = false, defaultValue = "") String sch,
                                Model model, HttpServletRequest request) throws Exception {
