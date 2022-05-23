@@ -429,7 +429,7 @@ textarea {
 
 #edit-table textarea {
     width: 100%;
-    height: 300px;
+    height: 100px;
     line-height: 23px;
     outline: none;
     border: none;
@@ -445,7 +445,7 @@ textarea {
 }
 
 #edit-table tr td:nth-child(1) {
-    width: 10%;
+    width: 13%;
     font-size: 17px;
     font-weight: var(--w-bold);
     color: var(--c-gray-light);

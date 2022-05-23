@@ -26,18 +26,12 @@
             </tr>
             </thead>
             <tbody>
-            <%--[InquiryDTO(fileNames=[], i_idx=64, m_idx=117, category_id=건의사항, title=2345, content=2345,
-            upload_date=05/18, last_updated_date=05/18, files=null, i_idx2=0, status=YET)--%>
-
-            <%--criteriaOfPage=10, criteriaOfBlock=5, totalRecord=0, totalPage=0, totalBlock=0, curPage=1, curBlock=1,
-            firstPageInNextBlock=null, lastPageInPrevBlock=null, firstPageInCurBlock=null, lastPageInCurBlock=null,
-            pageListInBlock=[]--%>
 
             <c:forEach var="dto" items="${pageDTO.dtoList}" varStatus="status">
                 <tr class="inquiry-line">
                     <td style="width: 10%">${dto.i_idx}</td>
                     <td style="width: 10%">${dto.m_idx}</td>
-                    <td style="width: 50%"><a href="/admin/inquiry/edit?${dto.i_idx}"><span>${dto.title}</span></a></td>
+                    <td style="width: 50%"><a href="/admin/inquiry/edit?idx=${dto.i_idx}"><span>${dto.title}</span></a></td>
                     <td style="width: 10%">${dto.upload_date}</td>
                     <td style="width: 10%">${dto.category_id}</td>
                     <td style="width: 10%">${dto.status}</td>

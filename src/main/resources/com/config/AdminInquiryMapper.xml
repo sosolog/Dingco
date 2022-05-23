@@ -39,4 +39,18 @@
         order by inq_group desc, i_idx
         limit ${perPage} offset ${offset}
     </select>
+
+    <select id="selectOneInquiry" resultType="InquiryDTO" parameterType="int">
+        select inquiry_idx as i_idx,
+               m_idx,
+               category_id,
+               title,
+               content,
+               date_format(upload_date, "%Y-%m-%d %H:%i") as upload_date,
+               date_format(last_updated_date, "%Y-%m-%d %H:%i") as last_updated_date,
+               inquiry_idx2 as i_idx2,
+               i_status as status
+        from INQUIRY
+        where inquiry_idx = #{idx}
+    </select>
 </mapper>

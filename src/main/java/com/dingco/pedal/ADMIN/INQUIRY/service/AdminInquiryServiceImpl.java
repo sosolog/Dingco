@@ -28,14 +28,14 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
     AdminInquiryDAO adminInquiryDAO;
 
     /**
-     * Inquiry 전체 게시글 가져오기
+     * Inquiry 전체 문의 가져오기
      * DB에서 데이터 가져온 다음 PageDTO 객체를 이용하여 페이징 처리
      * @author 명지
      * @param cp : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
      */
     @Override
-    public PageDTO<InquiryDTO> selectAllInquiry(int cp, String sch) {
+    public PageDTO<InquiryDTO> selectAllInquiry(int cp, String sch) throws Exception {
 
         int offset = (cp - 1) * perPage; // 페이징 시작점(페이징 블럭에 따라서 동적으로 값 설정)
 
@@ -53,6 +53,18 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
         // 위에서 생성된 pageDTO 객체에 현재 블럭의 페이지 리스트 세팅 및 final 변수를 제외한 모든 기본 변수 대입
         pageDTO.setPageListInBlock(pagesPerBlock);
         return pageDTO;
+    }
+
+    /**
+     * Inquiry 특정 문의 가져오기
+     * @author 명지
+     * @param idx : 문의번호
+     * @throws Exception
+     */
+    @Override
+    public InquiryDTO selectOneInquiry(int idx) throws Exception {
+        InquiryDTO inquiryDTO = adminInquiryDAO.selectOneInquiry(idx);
+        return inquiryDTO;
     }
 
 }
