@@ -83,17 +83,4 @@ public class FAQServiceImpl implements FAQService {
      */
 
 
-    // FAQ 전체 조회_기본 페이징
-    @Override
-    public PageDTO selectFAQRecordPaging(int curPage) throws Exception {
-        PageDTO pageDTO = dao.selectFAQRecordPaging(curPage);
-        return pageDTO;
-    }
-
-    // FAQ 부분 조회(searchKey = 검색 조건 문자열)_기본 페이징
-    @Override
-    public PageDTO selectFAQSearchRecordPaging(int curPage, String searchKey) throws Exception {
-        PageDTO pageDTO = dao.selectFAQSearchRecordPaging(curPage, searchKey);
-        return pageDTO;
-    }
 }

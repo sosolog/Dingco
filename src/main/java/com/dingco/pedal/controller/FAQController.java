@@ -140,7 +140,7 @@ public class FAQController {
         else {
             model.addAttribute("pageDTO", pageDTO);
 
-            return "FaqList_admin";
+            return "FaqList";
         }
     }
 

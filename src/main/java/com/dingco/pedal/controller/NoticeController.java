@@ -45,7 +45,7 @@ public class NoticeController {
         int curPage = Integer.parseInt(cp);
 
         // 검색 조건에 맞는 데이터 조회(+페이징)
-        PageDTO<FAQDTO> pageDTO = service.selectFAQSearchRecord(curPage, searchKey);
+        PageDTO<FAQDTO> pageDTO = service.selectNOTICESearchRecord(curPage, searchKey);
 
         return pageDTO;
     }
