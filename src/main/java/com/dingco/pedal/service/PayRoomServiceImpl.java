@@ -1,10 +1,7 @@
 package com.dingco.pedal.service;
 
 import com.dingco.pedal.dao.PayRoomDAO;
-import com.dingco.pedal.dto.DutchPayDTO;
-import com.dingco.pedal.dto.PayDTO;
-import com.dingco.pedal.dto.PayGroupMemberDTO;
-import com.dingco.pedal.dto.PayRoomDTO;
+import com.dingco.pedal.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,6 +156,15 @@ public class PayRoomServiceImpl implements PayRoomService {
         return dao.selectAccount(prgm_idx);
     }
 
+    @Override
+    public int saveDutchPayResult(int dp_idx, List<DutchPayResultDTO> dutchPayResultDTOList) throws Exception {
+        return dao.saveDutchPayResult(dp_idx, dutchPayResultDTOList);
+    }
+
+    @Override
+    public DutchPayDTO showDutchPayResultInfo(int pr_idx, int dp_idx) throws Exception {
+        return dao.showDutchPayResultInfo(pr_idx, dp_idx);
+    }
 
 
 }

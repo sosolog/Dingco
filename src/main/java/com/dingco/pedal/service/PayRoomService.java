@@ -1,10 +1,8 @@
 package com.dingco.pedal.service;
 
 
-import com.dingco.pedal.dto.DutchPayDTO;
-import com.dingco.pedal.dto.PayDTO;
-import com.dingco.pedal.dto.PayGroupMemberDTO;
-import com.dingco.pedal.dto.PayRoomDTO;
+import com.dingco.pedal.dto.*;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +31,7 @@ public interface PayRoomService {
     int updateDutchPay(DutchPayDTO dutchPayDTO) throws Exception;
     int updateDutchPay(List<PayDTO> insertPayList, List<PayDTO> updatePayList, List<Integer> deletePayList, DutchPayDTO dutchPayDTO) throws Exception;
     PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception;
-
+    int saveDutchPayResult(int dp_idx, List<DutchPayResultDTO> dutchPayResultDTOList) throws Exception;
+    DutchPayDTO showDutchPayResultInfo(int pr_idx, int dp_idx) throws Exception;
 
 }

@@ -31,20 +31,19 @@ public class DutchPayDTO {
 
     public List<DutchPayResultDTO> calculateDutchPay(List<PayGroupMemberDTO> payRoomMembers) {
         List<PayDTO> payList = this.getPayList();
-        // TODO: 여기서 payList로 지지고 볶고 해서 로직 완성해주세욤 ㅎㅎㅎ
 
-        List<DutchPayResultDTO> dutchPayResultList = calculateDutchPay_PSH(payRoomMembers);
+        // TODO: 아래 메소드들을 주석처리/해제 해서 알고리즘 결과 확인하세요!
+        List<DutchPayResultDTO> dutchPayResultList = calculateDutchPay_PSH(payRoomMembers); // 소현 계산 알고리즘
+//        List<DutchPayResultDTO> dutchPayResultList = calculateDutchPay_WJH(); // 주황 계산 알고리즘
         setDutchpayResultList(dutchPayResultList);
         return dutchPayResultList;
     
 
     }
 
-    public List<DutchPayResultDTO> calculateDutchPay_WJH() {
+    private List<DutchPayResultDTO> calculateDutchPay_WJH() {
             List<PayDTO> payList = this.getPayList();
 //            System.out.println("payList = " + payList);
-
-            // TODO: 여기서 payList로 지지고 볶고 해서 로직 완성해주세욤 ㅎㅎㅎ
 
             /*
             calcMap : {a(주는 사람)={b(받는 사람)=1000(가격)} ...} 형식으로 설계
