@@ -31,7 +31,8 @@ public class PayRoomController {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("pr_idx", pr_idx);
         map.put("m_idx", memberDTO.getM_idx());
-        PayRoomDTO payRoomDTO = payRoomService.selectPayRoomRetrieve(map);
+        PayRoomDTO payRoomDTO = payRoomService.selectPayRoomRetrieve
+                (map);
         System.out.println(payRoomDTO);
 
         String next = "";

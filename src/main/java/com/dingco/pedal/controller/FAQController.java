@@ -45,7 +45,7 @@ public class FAQController {
         int curPage = Integer.parseInt(cp);
 
         // 검색 조건에 맞는 데이터 조회(+페이징)
-        PageDTO<FAQDTO> pageDTO = faqService.selectFAQSearchRecord(curPage, searchKey);
+        PageDTO<FAQDTO> pageDTO = faqService.selectNOTICESearchRecord(curPage, searchKey);
 
         return pageDTO;
     }
@@ -140,7 +140,7 @@ public class FAQController {
         else {
             model.addAttribute("pageDTO", pageDTO);
 
-            return "FaqList";
+            return "FaqList_admin";
         }
     }
 

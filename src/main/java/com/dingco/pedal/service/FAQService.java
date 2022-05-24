@@ -15,6 +15,7 @@ public interface FAQService {
     */
    public PageDTO<FAQDTO> selectFAQSearchRecord(int curPage, String searchKey) throws Exception;
 
+   public PageDTO<FAQDTO> selectNOTICESearchRecord(int curPage, String searchKey) throws Exception;
 
    /**
     * CRUD
@@ -41,12 +42,6 @@ public interface FAQService {
    /**
     * 기본 페이징 처리(관리자 페이지에서 이용)
     */
-
-   // Notice 전체 조회
-   public PageDTO selectNOTICERecordPaging(int curPage)throws Exception;
-
-   // Notice 부분 조회(searchKey = 검색 조건 문자열)
-   public PageDTO selectNOTICESearchRecordPaging(int curPage, String searchKey)throws Exception;
 
    // FAQ 전체 조회_기본 페이징
    public PageDTO selectFAQRecordPaging(int curPage)throws Exception;

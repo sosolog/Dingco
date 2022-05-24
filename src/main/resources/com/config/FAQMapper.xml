@@ -4,22 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.config.FAQMapper">
 
-    <!-- NOTICE 전체 조회(페이징) -->
-    <select id="selectNOTICERecordPaging" resultType="FAQDTO" parameterType="HashMap">
-	<![CDATA[
-        select f.number_idx,
-               f.title,
-               f.content,
-               f.readcnt,
-               date_format(f.writeday, '%Y-%m-%d') writeday,
-               c.category_name
-        from FAQ f
-                 join CATEGORY c on f.category_idx = c.CATEGORY_IDX
-        where f.category_idx = 1
-        order by f.number_idx desc
-            limit ${perPage} offset ${offset}
-        ]]>
-	</select>
 
     <!-- 검색 조건에 맞는 NOTICE 부분 조회(페이징) -->
     <select id="selectNOTICESearchRecordPaging" resultType="FAQDTO" parameterType="HashMap">
