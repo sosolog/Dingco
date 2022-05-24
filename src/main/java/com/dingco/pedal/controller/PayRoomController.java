@@ -254,16 +254,13 @@ public class PayRoomController {
         DutchPayDTO dutchPayDTO = payRoomService.dutchPayInfo(32, dp_idx);
         List<PayGroupMemberDTO> payGroupMemberDTOS = payRoomService.showPayRoomGroupMember(32);
 
-//        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
         List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
         dutchPayDTO.setDutchpayResultList(dutchPayResult);
         StringBuilder sb = new StringBuilder();
-
         dutchPayResult.stream().forEach(d -> {
             sb.append(d.getSender().getPayMember_name() + " -> " + d.getRecipient().getPayMember_name() + " = " + d.getAmount());
             sb.append("<br>");
         });
-
         return sb.toString();
     }
 
@@ -273,7 +270,6 @@ public class PayRoomController {
         DutchPayDTO dutchPayDTO = payRoomService.dutchPayInfo(pr_idx, dp_idx);
         List<PayGroupMemberDTO> payGroupMemberDTOS = payRoomService.showPayRoomGroupMember(pr_idx);
 
-//        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
         List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
         dutchPayDTO.setDutchpayResultList(dutchPayResult);
 
