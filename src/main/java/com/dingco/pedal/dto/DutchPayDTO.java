@@ -45,85 +45,122 @@ public class DutchPayDTO {
             List<PayDTO> payList = this.getPayList();
 //            System.out.println("payList = " + payList);
 
+            /*
+            calcMap : {a(주는 사람)={b(받는 사람)=1000(가격)} ...} 형식으로 설계
+            dutchPayResultDTOList : calcMap의 정보를 이용해서 리스트로 만든 다음 리턴
+             */
             Map<PayGroupMemberDTO, Map<PayGroupMemberDTO, Float>> calcMap = new HashMap<>();
             List<DutchPayResultDTO> dutchPayResultDTOList = new ArrayList<>();
 
+            /*
+            maxPayGroupMember : 보내야 할 사람이 가장 많은 사람의 정보
+            max : 보내야 할 사람(=calcMap.size())
+             */
             PayGroupMemberDTO maxPayGroupMember = null;
             int max = 0;
 
+            /*
+            결제 목록에 있는 payDTO들을 하나씩 꺼내서 정보를 calcMap에다 담기위한 과정
+             */
             for (PayDTO paydto: payList) {
-                boolean check = false;
+
+                /*
+                price : 하나의 결제에 가격과 참여한 인원을 나눈 값을 float으로 저장해둔다
+                payer : 결제를 한 사람
+                 */
                 float price = paydto.getPrice()/paydto.getParticipants().size();
                 PayGroupMemberDTO payer = paydto.getPayMember();
 
 //                System.out.println(paydto.getPrice());
 //                System.out.println(payer);
 
-                if(paydto.getParticipants().contains(paydto.getPayMember())){
-                    check = true;
-                }
-
-                for (PayGroupMemberDTO nameDTO: paydto.getParticipants()) {
-
-                    PayGroupMemberDTO parname = nameDTO;
+                /*
+                하나의 결제에 있는 결제참여자들의 정보를 하나씩 빼서 payer에게 price를 줘야한다는 정보를 calcMap에다 넣는 과정
+                 */
+                for (PayGroupMemberDTO parname: paydto.getParticipants()) {
 
 //                    System.out.println(parname);
 
-                    if(parname.getPrgm_idx()!=payer.getPrgm_idx()){
 
-                        if(calcMap.get(parname)==null){
 
-                            Map<PayGroupMemberDTO,Float> map = new HashMap<>();
-                            map.put(payer,price);
-                            calcMap.put(parname,map);
+                     /*
+                            결제 참여자가 payer일 수도 있을 경우를 염두하기
+                            같을 경우 자기자신한테 돈을 보내지 않아도 됨
+                            */
+                    if (parname.getPrgm_idx() != payer.getPrgm_idx()) {
 
-                        }else{
+                            /*
+                            한 사람의 결제 참여자(parname)가 calcMap에 없는 경우 (payer,price)로 map을 만들어서
+                            (parname,map)으로 calcMap에 넣고,
+                            있는 경우 map에서 받을 사람이 있는지 확인하고, 있으면 price를 더하고, 없으면 (payer,price)를 새로 만들어서 put한다.
+                             */
 
-                            if(calcMap.get(parname).get(payer)==null){
-                                calcMap.get(parname).put(payer,price);
+                        // calcMap에 parname이 없는 경우
+                        if (calcMap.get(parname) == null) {
 
-                            }else{
+                            Map<PayGroupMemberDTO, Float> map = new HashMap<>();
+                            map.put(payer, price);
+                            calcMap.put(parname, map);
 
-                                calcMap.get(parname).put(payer,calcMap.get(parname).get(payer)+price);
+                            // calcMap에 parname이 있는 경우
+                        } else {
+                            // map에 payer가 없는 경우
+                            if (calcMap.get(parname).get(payer) == null) {
+                                calcMap.get(parname).put(payer, price);
+
+                                // map에 payer가 있는 경우
+                            } else {
+
+                                calcMap.get(parname).put(payer, calcMap.get(parname).get(payer) + price);
 
                             }
 
                         }
 
-                        if(calcMap.get(payer)!=null){
-                            if(calcMap.get(payer).get(parname)!=null){
+                      /*
+                        calcMap에 parname에 대한 정보를 넣기 전 결제 참여자(parname)가 payer였을 때,
+                        기존 payer가 결제 참여자였을 때 지불해야 할 가격과 비교하는 과정
+                         */
+                        if (calcMap.get(payer) != null) {
+                            if (calcMap.get(payer).get(parname) != null) {
 
-                                if(calcMap.get(payer).get(parname)<calcMap.get(parname).get(payer)){
-                                    calcMap.get(parname).put(payer,calcMap.get(parname).get(payer)-calcMap.get(payer).get(parname));
+                                if (calcMap.get(payer).get(parname) < price) {
+                                    calcMap.get(parname).put(payer, price - calcMap.get(payer).get(parname));
                                     calcMap.get(payer).remove(parname);
-                                }else if(calcMap.get(payer).get(parname)>calcMap.get(parname).get(payer)){
-                                    calcMap.get(payer).put(parname,calcMap.get(payer).get(parname)-calcMap.get(parname).get(payer));
-                                    calcMap.get(parname).remove(payer);
-                                }else{
-                                    calcMap.get(parname).remove(payer);
+                                } else if (calcMap.get(payer).get(parname) > price) {
+                                    calcMap.get(payer).put(parname, calcMap.get(payer).get(parname) - price);
+                                } else {
                                     calcMap.get(payer).remove(parname);
                                 }
                             }
+
                         }
-                        if(calcMap.get(parname).size()>max){
+
+                        //보내야 할 횟수가 가장 많은 사람을 구하는 함수
+                        if (calcMap.get(parname).size() > max) {
                             maxPayGroupMember = parname;
                             max = calcMap.get(parname).size();
                         }
                     }
 
 
-                }
+                }//end : 결제목록 하나
 
 //                System.out.println(check);
 //                System.out.println(price);
 //                System.out.println("---------------------------------------");
-            }
+
+            }//end : 결제목록 전체
+
+
+            // 자기가 여러 사람에게 보내야 할 총금액을 보내야 할 횟수가 가장 많은 사람에게 보내주고 그 사람이 보내야 할 돈을 합산시키는 코드
 
             for (PayGroupMemberDTO key: calcMap.keySet()) {
 
                 if(key.getPrgm_idx()!=maxPayGroupMember.getPrgm_idx()){
-
+                    //자기가 여러 사람에게 보내야 할 총금액
                     float allCost = 0;
+
                     for (PayGroupMemberDTO paykey: calcMap.get(key).keySet()){
                         allCost += calcMap.get(key).get(paykey);
                         if(paykey.getPrgm_idx()!=maxPayGroupMember.getPrgm_idx()){
@@ -136,6 +173,8 @@ public class DutchPayDTO {
                         }
 //                        calcMap.get(key).remove(paykey);
                     }
+
+                    //리턴해야 할 DutchPayResultDTO에 정보 넣는 코드
                     if(allCost!=0){
                     calcMap.get(key).put(maxPayGroupMember,allCost);
 
@@ -150,6 +189,8 @@ public class DutchPayDTO {
                 }
             }
 
+
+        //리턴해야 할 List<DutchPayResultDTO>에 정보 넣는 코드
         for (PayGroupMemberDTO payMember: calcMap.get(maxPayGroupMember).keySet()) {
             DutchPayResultDTO dto = new DutchPayResultDTO();
             dto.setPaid(false);
@@ -159,10 +200,8 @@ public class DutchPayDTO {
             dto.setAmount(Math.round(cc));
             dutchPayResultDTOList.add(dto);
         }
-//            System.out.println(calcMap);
-        for (DutchPayResultDTO d:dutchPayResultDTOList) {
-            System.out.println(d.getSender().getPayMember_name()+" to "+d.getRecipient().getPayMember_name()+" 가격: "+d.getAmount());
-        }
+            System.out.println(calcMap);
+
             return dutchPayResultDTOList;
     }
 
