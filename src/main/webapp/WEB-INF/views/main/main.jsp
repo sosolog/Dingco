@@ -38,7 +38,7 @@
 <script type="text/html" id="payRoom-list-tmpl">
     {{each(index, p) pList}}
     <div>
-        <a id="pList_\${index}" href="\${p.pr_idx}">
+        <a id="pList_\${index}" href="/pay/\${p.pr_idx}">
             \${p.room_name}
         </a>
         <span>
