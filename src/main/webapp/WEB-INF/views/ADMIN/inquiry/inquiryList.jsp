@@ -7,7 +7,7 @@
         <a class="btn-add" href="/admin/faq/edit"><span>글 추가</span></a>
     </div>
     <div id="search">
-        <form action="/admin/inquiryList" method="get" name="searchForm">
+        <form action="/admin/inquiry" method="get" name="searchForm">
             <a class="icon" onclick="adminSearch(searchForm)"><img src="/images/admin/search.png"></a>
             <input id="sch" name="sch" placeholder="제목 또는 내용을 입력하세요" value="${sch}"
                    onKeypress="javascript:if(event.keyCode==13) {adminSearch(searchForm)}" autocomplete="off">

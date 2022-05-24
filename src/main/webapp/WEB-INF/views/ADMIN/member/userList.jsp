@@ -7,7 +7,7 @@
         <a class="btn-add" href="/admin/member/user/edit"><span>사용자 추가</span></a>
     </div>
     <div id="search">
-        <form action="/admin/member/userList" method="get" name="searchForm">
+        <form action="/admin/member/user" method="get" name="searchForm">
             <a class="icon" onclick="adminSearch(searchForm)"><img src="/images/admin/search.png"></a>
             <input id="sch" name="sch" placeholder="이름 또는 아이디를 입력하세요" value="${sch}"
                    onKeypress="javascript:if(event.keyCode==13) {adminSearch(searchForm)}" autocomplete="off">
