@@ -245,4 +245,23 @@ public class PayRoomController {
         return num;
     }
 
+    // TODO: 더치페이 계산부터 ~ 이후 로직 개발
+
+    // test용 endpoint
+    @GetMapping("/calc/{dp_idx}")
+    @ResponseBody
+    public String showDutchPayResult(@PathVariable int dp_idx) throws Exception{
+        DutchPayDTO dutchPayDTO = payRoomService.dutchPayInfo(32, dp_idx);
+        List<PayGroupMemberDTO> payGroupMemberDTOS = payRoomService.showPayRoomGroupMember(32);
+
+        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
+
+//        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
+        dutchPayResult.stream().forEach(d -> {
+            System.out.println(d.getSender().getPayMember_name() + " -> " + d.getRecipient().getPayMember_name() + " = " + d.getAmount());
+        });
+
+        return "hi, "+dp_idx+"번("+dutchPayDTO.getDutchPayName()+") 더치페이 계산 결과에욤. "+dutchPayResult;
+    }
+
 }
