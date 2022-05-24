@@ -275,7 +275,7 @@ function findpasswd(f){
     });
 }
 
-//비동기 로그인 체크
+// 비동기 로그인 체크
 function loginValidCheck(f){
     var userid = $("#userid").val();
     var passwd = $("#passwd").val();

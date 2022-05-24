@@ -1,4 +1,4 @@
-package com.dingco.pedal.interceptor;
+package com.dingco.pedal.ADMIN.LOGIN.interceptor;
 
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.session.SessionConst;
@@ -12,15 +12,19 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Component
-public class SessionCheckInterceptor implements HandlerInterceptor {
+public class AdminLoginCheckInterceptor implements HandlerInterceptor {
+    /**
+     * 관리자 페이지 로그인 체크 인터셉터
+     * @author 명지
+     * @return false / true
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
         MemberDTO memberDTO = (MemberDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        // 세션 정보 있을 때
-        if(memberDTO!=null) {
-            log.info("로그인 확인");
-            response.sendRedirect("/main");
+        if(memberDTO==null) {
+            log.info("미인증 관리자 요청");
+            response.sendRedirect("/admin/login");
             return false;
         }
         return true;
