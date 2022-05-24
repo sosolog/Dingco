@@ -15,7 +15,7 @@ public interface FAQService {
     */
    public PageDTO<FAQDTO> selectFAQSearchRecord(int curPage, String searchKey) throws Exception;
 
-
+   public PageDTO<FAQDTO> selectNOTICESearchRecord(int curPage, String searchKey) throws Exception;
    /**
     * CRUD
     */

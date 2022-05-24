@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-
 <script type="text/javascript"  src="/script/jquery.tmpl.js"></script>
 <script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
+
 
 <style>
     .modal {
@@ -25,46 +25,51 @@
     let payRoomArr = ${payRoomList};
 
     $(document).ready(function() {
-        $("#payRoomList").html($("#payRoom-list-tmpl").tmpl({pList:payRoomArr}));
+        $("#payRoomList_data").html($("#payRoom-list-tmpl").tmpl({pList:payRoomArr}));
     });
 </script>
 <!-- 방생성 modal member 명단 template-->
 <script type="text/html" id="member-list-tmpl">
     {{each(index, m) mList}}
-   <span id="mList_\${index}">
+    <span id="mList_\${index}">
         \${m}<button data-idx="\${index}" onclick="deleteMemberDuringCreatingPayRoom(this)">X</button>
    </span>
     {{/each}}
 </script>
 <script type="text/html" id="payRoom-list-tmpl">
     {{each(index, p) pList}}
-   <div>
-    <a id="pList_\${index}" href="\${p.pr_idx}">
-        \${p.room_name}
-   </a>
-    <span>
+    <div>
+        <a id="pList_\${index}" href="\${p.pr_idx}">
+            \${p.room_name}
+        </a>
+        <span>
         \${p.create_date}
    </span>
-   </div>
+    </div>
     {{/each}}
 </script>
-<hr>
-<h1>진행 중인 더치페이</h1>
-<button onclick="openPayRoomForm()">방생성</button>
-<hr>
-<div id="payRoomList"></div>
 
 
 
-
-<div class="modal">
-    <div class="modal_body">
-        <button onclick="closePayRoomForm()">X</button>
-        <hr>
-        방이름 : <input type="text" name="room_name" id="room_name"><br>
-        방멤버 : <input type="text" name="groupMember" id="groupMember"><button onclick="memberList()">추가</button><br>
-        <div id="memberList"></div>
-        <span id="result_payRoom" style="color: red"></span><br>
-        <button onclick="payRoomInfo()">방생성</button>
+<div id="payRoomList">
+    <div class="processList">
+        <div class="info">
+            <div>진행 중인 더치페이</div>
+            <button onclick="openPayRoomForm()">방생성</button>
+            <hr>
+            <div id="payRoomList_data"></div>
+            <div class="modal">
+                <div class="modal_body">
+                    <button onclick="closePayRoomForm()">X</button>
+                    <hr>
+                    방이름 : <input type="text" name="room_name" id="room_name"><br>
+                    방멤버 : <input type="text" name="groupMember" id="groupMember"><button onclick="memberList()">추가</button><br>
+                    <div id="memberList"></div>
+                    <span id="result_payRoom" style="color: red"></span><br>
+                    <button onclick="payRoomInfo()">방생성</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
