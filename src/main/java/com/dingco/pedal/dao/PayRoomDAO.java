@@ -131,12 +131,30 @@ public class PayRoomDAO {
         return session.update("com.config.PayRoomMapper.updateOnePayInDutchpay", payDTO);
     }
 
+    @Transactional
     public int updateDutchPay(DutchPayDTO dutchPayDTO)  {
+        session.delete("com.config.PayRoomMapper.deleteDutchPayResult", dutchPayDTO.getDp_idx());
         return session.update("com.config.PayRoomMapper.updateDutchPay", dutchPayDTO);
     }
 
     public PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception{
         return session.selectOne("com.config.PayRoomMapper.selectAccount",prgm_idx);
+    }
+
+    @Transactional
+    public int saveDutchPayResult(int dp_idx, List<DutchPayResultDTO> dutchPayResultDTOList) throws Exception {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("dp_idx", dp_idx);
+        map.put("result", dutchPayResultDTOList);
+        session.delete("com.config.PayRoomMapper.deleteDutchPayResult", dp_idx);
+        return session.insert("com.config.PayRoomMapper.saveDutchPayResult", map);
+    }
+
+    public DutchPayDTO showDutchPayResultInfo(int pr_idx, int dp_idx) throws Exception {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("pr_idx", pr_idx);
+        map.put("dp_idx", dp_idx);
+        return session.selectOne("com.config.PayRoomMapper.showDutchPayResultInDB", map);
     }
 
 

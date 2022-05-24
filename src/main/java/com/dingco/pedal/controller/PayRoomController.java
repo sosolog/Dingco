@@ -254,14 +254,48 @@ public class PayRoomController {
         DutchPayDTO dutchPayDTO = payRoomService.dutchPayInfo(32, dp_idx);
         List<PayGroupMemberDTO> payGroupMemberDTOS = payRoomService.showPayRoomGroupMember(32);
 
-        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
+//        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
+        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
+        dutchPayDTO.setDutchpayResultList(dutchPayResult);
+        StringBuilder sb = new StringBuilder();
 
-//        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
+        dutchPayResult.stream().forEach(d -> {
+            sb.append(d.getSender().getPayMember_name() + " -> " + d.getRecipient().getPayMember_name() + " = " + d.getAmount());
+            sb.append("<br>");
+        });
+
+        return sb.toString();
+    }
+
+    @GetMapping("/pay/{pr_idx}/dutch/{dp_idx}/result")
+    @ResponseBody
+    public DutchPayDTO getDutchPayResult(@PathVariable int pr_idx, @PathVariable int dp_idx) throws Exception{
+        DutchPayDTO dutchPayDTO = payRoomService.dutchPayInfo(pr_idx, dp_idx);
+        List<PayGroupMemberDTO> payGroupMemberDTOS = payRoomService.showPayRoomGroupMember(pr_idx);
+
+//        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay_WJH();
+        List<DutchPayResultDTO> dutchPayResult = dutchPayDTO.calculateDutchPay(payGroupMemberDTOS);
+        dutchPayDTO.setDutchpayResultList(dutchPayResult);
+
         dutchPayResult.stream().forEach(d -> {
             System.out.println(d.getSender().getPayMember_name() + " -> " + d.getRecipient().getPayMember_name() + " = " + d.getAmount());
         });
 
-        return "hi, "+dp_idx+"번("+dutchPayDTO.getDutchPayName()+") 더치페이 계산 결과에욤. "+dutchPayResult;
+        return dutchPayDTO;
     }
 
+    @PostMapping("/pay/{pr_idx}/dutch/{dp_idx}/result")
+    @ResponseBody
+    public int saveDutchPayResult(@PathVariable int pr_idx, @PathVariable int dp_idx, @RequestParam String resultList) throws Exception{
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<DutchPayResultDTO> dutchPayResultDTOList = objectMapper.readValue(resultList, new TypeReference<List<DutchPayResultDTO>>() { });
+        return payRoomService.saveDutchPayResult(dp_idx, dutchPayResultDTOList);
+    }
+
+    @GetMapping("/pay/{pr_idx}/dutch/{dp_idx}/result/chk")
+    @ResponseBody
+    public DutchPayDTO hasDutchPayResult(@PathVariable int pr_idx, @PathVariable int dp_idx) throws Exception{
+        DutchPayDTO dutchPayDTO = payRoomService.showDutchPayResultInfo(pr_idx, dp_idx);
+        return dutchPayDTO;
+    }
 }

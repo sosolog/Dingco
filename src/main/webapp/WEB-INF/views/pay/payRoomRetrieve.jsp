@@ -5,11 +5,11 @@
 <script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
 
     <style>
-        .modal {
+        .modal, .second_modal {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; background-color: rgba(0, 0, 0, 0.4);
         }
-        .modal.show { display: block; }
+        .modal.show, .second_modal.show { display: block; }
         .modal_body {
             position: absolute; top: 50%; left: 50%; width: 400px; height: 600px;
             padding: 40px; text-align: center; background-color: rgb(255, 255, 255);
@@ -24,10 +24,11 @@
         let room_name = payRoom.room_name;
         let groupMemberArr = payRoom.groupMemberList;
         // console.log("페이방 멤버 목록:", groupMemberArr);
-
         // 기타 로직을 위한 정보
+
         let payArr = []; // 새로 더치페이 생성시, 추가하는 결제 목록 리스트
         let tempObj = null;
+        let resultList = null;
 
         let savedPayArr = [];
         let updatedPayArr = new Set();
@@ -258,6 +259,77 @@
         결제일<input type="date" name="pay-date" id="pay-date"><br>
         마감일<input type="date" name="due-date" id="due-date"><br>
         영수증<input type="text" name="bill" id="bill"><br>
-        <input type="button" onclick="alert('여기에 뭐 넣지')">결과 미리보기(정산하기)</input>
+        <button type="button" onclick="showDutchPayResult()">결과 미리보기(정산하기)</button>
     </div>
 </div>
+<div class="second_modal">
+    <div class="modal_body">
+        <button type="button" onclick="closeDutchPayForm()">X</button>
+        <hr>
+        <span>결과보기</span><br>
+        <span><input type="text" id="pay-name-last" name="pay_name" readonly></span>
+        <!-- 정렬 하기 관련 ㅎㅎㅎ-->
+        <table>
+            <thead>
+            <tr>
+                <th>누가</th>
+                <th>누구에게</th>
+                <th>얼마를?</th>
+                <th>정산 여부</th>
+            </tr>
+            </thead>
+            <tbody id="payResultList">
+
+            </tbody>
+        </table>
+
+        <span>계좌 정보</span>
+        <table>
+            <thead>
+            <tr>
+                <th>은행</th>
+                <th>계좌번호</th>
+                <th>이름</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="accountList2">
+            </tbody>
+        </table>
+
+        결제일<input type="date" name="pay-date" id="pay-date-last" readonly><br>
+        마감일<input type="date" name="due-date" id="due-date-last" readonly><br>
+        <button type="button" onclick="alert('공유 로직??')">공유</button>
+        <button type="button" onclick="getDutchPayInfo(getDp_idx())">수정하기</button><br>
+        <button type="button" onclick="saveDutchPayResult()">저장하기</button>
+    </div>
+</div>
+<script type="text/html" id="pay-result-tmpl">
+    {{each(index, result) resultList}}
+    <tr>
+        <td>
+            <input type="text" id="pay-result-sender" style="width: 80px" value="{{= sender.payMember_name }}" readonly>
+        </td>
+        <td>
+            <input type="text" id="pay-result-recipient" style="width: 80px" value="{{= recipient.payMember_name }}" readonly>
+        </td>
+        <td>
+            <input type="text" id="pay-result-amount" value="{{= comma(amount)}}" readonly>
+        </td>
+        <td>
+            <input type="checkbox" id="pay-result-paid" onchange="changePaidStatus(this, {{= index}})" {{= paid ? 'checked' : ''}} >
+        </td>
+    </tr>
+    {{/each}}
+</script>
+<script type="text/html" id="account-form-tmpl2">
+    {{each(index, p) pSave}}
+    {{if p.payMember_account != null}}
+    <tr style="color: #888888">
+        <td>\${p.payMember_bank}</td>
+        <td>\${p.payMember_account}</td>
+        <td>\${p.payMember_name}</td>
+    </tr>
+    {{/if}}
+    {{/each}}
+</script>

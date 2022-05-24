@@ -211,7 +211,58 @@
     <select id="selectAccount" parameterType="int" resultType="PayGroupMemberDTO">
         select * from PAYGROUPMEMBER where prgm_idx = #{prgm_idx}
     </select>
-
-
+    <insert id="saveDutchPayResult" parameterType="hashmap">
+        insert into DUTCHPAYRESULT(dp_idx, sender, recipient, amount, paid)
+        values
+        <foreach collection="result" index="index" item="item" separator=",">
+            (#{dp_idx}, #{item.sender.prgm_idx}, #{item.recipient.prgm_idx}, #{item.amount},
+             <if test="item.isPaid == true">
+                 'Y'
+             </if>
+             <if test="item.isPaid == false">
+                 'N'
+             </if>
+             )
+        </foreach>
+    </insert>
+    <delete id="deleteDutchPayResult" parameterType="int">
+        delete from DUTCHPAYRESULT
+        where dp_idx = #{dp_idx}
+    </delete>
+    <select id="showDutchPayResultInDB" resultMap="dutchPayForDutchPayResult" parameterType="hashmap">
+        select d.dp_idx, d.pr_idx, d.dp_name,
+               DATE_FORMAT(d.create_date, '%Y-%m-%d') create_date,
+               DATE_FORMAT(d.due_date, '%Y-%m-%d') due_date,
+               r.sender, pg1.paymember_name sender_name,
+               r.recipient, pg2.paymember_name recipient_name,
+               r.amount,
+               case r.paid
+                   when 'Y' then true
+                   else false
+                   end paid
+        from DUTCHPAYLIST d
+                 right outer join DUTCHPAYRESULT r on d.dp_idx = r.dp_idx
+                 join PAYGROUPMEMBER pg1 on r.sender = pg1.prgm_idx
+                 join PAYGROUPMEMBER pg2 on r.recipient = pg2.prgm_idx
+        where d.dp_idx = #{dp_idx} and d.pr_idx = #{pr_idx};
+    </select>
+    <resultMap id="dutchPayForDutchPayResult" type="DutchPayDTO">
+        <id property="dp_idx" column="dp_idx"></id>
+        <result property="dutchPayName" column="dp_name"></result>
+        <result property="createDate" column="create_date"></result>
+        <result property="dueDate" column="due_date"></result>
+        <collection property="dutchpayResultList" ofType="DutchPayResultDTO">
+            <result property="amount" column="amount"></result>
+            <result property="isPaid" column="paid"></result>
+            <association property="recipient" javaType="PayGroupMemberDTO">
+                <id property="prgm_idx" column="recipient"/>
+                <result property="payMember_name" column="recipient_name"/>
+            </association>
+            <association property="sender" javaType="PayGroupMemberDTO">
+                <id property="prgm_idx" column="sender"/>
+                <result property="payMember_name" column="sender_name"/>
+            </association>
+        </collection>
+    </resultMap>
 
 </mapper>
