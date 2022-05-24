@@ -78,9 +78,5 @@ public class FAQServiceImpl implements FAQService {
 
     }
 
-    /**
-     * 기본 페이징 처리(관리자 페이지에서 이용)
-     */
-
 
 }
