@@ -43,11 +43,17 @@
         where PR_IDX = #{pr_idx} and m_idx = #{m_idx}
     </select>
 
-    <update id="updateAccount" parameterType="map">
+    <update id="updateAccount" parameterType="PayGroupMemberDTO">
         UPDATE PAYGROUPMEMBER
         SET
-            paymember_account = #{payMember_account},
-            paymember_bank = #{payMember_bank}
+            <if test="payMember_account != null">
+                paymember_account = #{payMember_account},
+                paymember_bank = #{payMember_bank}
+            </if>
+            <if test="payMember_account == null">
+                paymember_account = NULL,
+                paymember_bank = NULL
+            </if>
         where prgm_idx = #{prgm_idx}
     </update>
 
@@ -138,7 +144,7 @@
         where dp.pr_idx = #{pr_idx} and dp.dp_idx = #{dp_idx};
     </select>
 
-    <select id="memberCheck" parameterType="hashmap" resultType="boolean">
+    <select id="memberCheck" parameterType="PayGroupMemberDTO" resultType="boolean">
         select count(*) from (
                     select DISTINCT prgm_idx from
                          (select payer as prgm_idx, p_idx from PAYLIST

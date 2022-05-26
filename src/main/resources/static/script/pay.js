@@ -50,6 +50,7 @@ function memberListOne(){
 
 // 방생성 이후 삭제할 멤버가 결제목록에서 결제자이거나 결제 참여자인지 확인하고 없으면 삭제, 있으면 alert
 function memberCheck(self){
+    console.log("call memberCheck");
     var prgm_idx = self.parent().attr("data-idx");
     getMemberCheckAjax(prgm_idx,self);
 }
@@ -108,19 +109,21 @@ function openDutchPayForm() {
 
 // 새로 생성한 더치페이 정보 저장
 function saveNewDutchPayInfo(success_fn=function (data){
-    console.log(data);
     showDutchPayList(pr_idx);
 }) {
     // 더치페이 폼에서 정보 가져오기
     var dutchObj = getDutchPayInfoFromForm();
-    getNewPayListFromForm(dutchObj);
+    payArr.forEach(pay => pay.price = uncomma(pay.price) * 1);
+    dutchObj.pay_list = payArr;
+
     console.log(dutchObj);
 
     // 가져온 정보 Ajax로 저장
     $.ajax({
         url:"/pay/new",
         type:"POST",
-        data: dutchObj,
+        data: JSON.stringify(dutchObj),
+        contentType: "application/json; charset=UTF-8",
         success:success_fn,
         error:function (x,i,e){
             console.log(e);
@@ -134,11 +137,11 @@ function getDutchPayInfoFromForm() {
     var dutchPayObj = {
         "pr_idx": pr_idx,
         "dp_idx": getDp_idx(),
-        "dutchPayName": $("#pay_name").val().trim() ? $("#pay_name").val().trim() : null,
-        "totalPay": uncomma($("#allPrice").val()) * 1,
+        "name": $("#pay_name").val().trim() ? $("#pay_name").val().trim() : null,
+        "pay": uncomma($("#allPrice").val()) * 1,
         "option": $("#cutPrice").val(),
-        "createDate": $("#pay-date").val() ? $("#pay-date").val() : null,
-        "dueDate": $("#due-date").val() ? $("#due-date").val() : null,
+        "total_date": $("#pay-date").val() ? $("#pay-date").val() : null,
+        "due_date": $("#due-date").val() ? $("#due-date").val() : null,
     }
 
     // 유효하지 않은 값이 들어간 키의 경우 삭제
@@ -188,7 +191,7 @@ function clearDutchPayForm() {
 function calculateTotalPay(payList) {
     var total = 0;
     payList.forEach(pay => {
-        total += uncomma(pay.payPrice) * 1;
+        total += uncomma(pay.price) * 1;
     });
     return total;
 }
@@ -272,7 +275,7 @@ function mapInfoToUpdatePayForm(pay, btn){
     var payObj = {
         "groupMember": groupMemberArr,
         "pay": pay,
-        "participants_prgm_idx":makeParticipantsIdxList(pay.payParticipants)
+        "participants_prgm_idx":makeParticipantsIdxList(pay.participants)
     }
     $("#pay-form-tmpl").template("pay-form"); // 템플릿 소스를 가진 객체를 지정해 템플릿 이름을 부여
     $.tmpl("pay-form", payObj).insertAfter($(btn).parents("tr"));
@@ -285,24 +288,24 @@ function parsePayIntoPayObj(dtoObj) {
 
     dtoObj.participants.forEach( p => Member(p.prgm_idx, p.payMember_name) );
     var participants = dtoObj.participants;
-    return PayObjForPayArr(dtoObj.p_name, dtoObj.price, payMember, participants, dtoObj.p_idx);
+    return PayObj(dtoObj.p_name, dtoObj.price, payMember, participants, dtoObj.p_idx);
 }
 
-function PayObjForPayArr(payName = null, payPrice = null, payPayer = null, payParticipants = null, p_idx = null) {
-    var payObj = {
-        "payName": payName,
-        "payPrice": payPrice,
-        "payPayer": payPayer,
-        "payParticipants": payParticipants,
+function PayObj(name = null, price = null, payer = null, participants = null, p_idx = null) {
+    var pay = {
+        "name": name,
+        "price": price,
+        "payer": payer,
+        "participants": participants,
         "p_idx": p_idx ? Number.parseInt(p_idx) : null
     }
-    return payObj;
+    return pay;
 }
 
-function Member(prgm_idx = null, payMember_name = null) {
+function Member(prgm_idx = null, name = null) {
     var member = {
         "prgm_idx": prgm_idx ? Number.parseInt(prgm_idx) : null,
-        "payMember_name": payMember_name
+        "name": name
     }
     return member;
 }
@@ -334,7 +337,7 @@ function getPayInfoFromForm() {
     var payPrice = $("#form-pay-price").val();
     var payPayer = Member(
         prgm_idx = Number.parseInt($(".form-pay-selector:selected").val()),
-        payMember_name = $(".form-pay-selector:selected").text().trim()
+        name = $(".form-pay-selector:selected").text().trim()
     );
     var payParticipants = [];
     $(".form-pay-participants-check:checked")
@@ -342,10 +345,10 @@ function getPayInfoFromForm() {
             (idx, chked) =>
                 payParticipants.push(Member(
                     prgm_idx = Number.parseInt(chked.value),
-                    payMember_name = $(chked).attr("data-prgm-name")
+                    name = $(chked).attr("data-prgm-name")
                 ))
         );
-    return PayObjForPayArr(payName, payPrice, payPayer, payParticipants);
+    return PayObj(payName, payPrice, payPayer, payParticipants);
 }
 
 // 결제내역 폼에 작성된 정보 저장해주는 함수
@@ -356,13 +359,13 @@ function saveNewPay() {
     // console.log(payObj);
 
     // 저장전 유효성 검사
-    if(payObj.payName.length <= 0){ // payName 유효성 체크
+    if(payObj.name.length <= 0){ // payName 유효성 체크
         alert("결제 내역 이름을 입력하세요.");
         return false;
-    } else if(payObj.payPrice <= 0) { // payName 유효성 체크
+    } else if(payObj.price <= 0) { // payName 유효성 체크
         alert("결제 금액을 입력하세요.");
         return false;
-    } else if(payObj.payParticipants.length < 1){ // payParticipants 유효성 체크
+    } else if(payObj.participants.length < 1){ // payParticipants 유효성 체크
         alert("참여인원은 1명 이상이어야 합니다.");
         return false;
     }
@@ -390,10 +393,10 @@ function saveNewPay() {
 
 //새로운 계좌 템플릿 테이블에 넣는 함수
 function createNewAccount(btn) {
-        if(groupMemberArr.filter(gm => gm.payMember_account == null).length == 0){
+        if(groupMemberArr.filter(gm => gm.account == null).length == 0){
             alert("추가할 인원이 없습니다.");
         }else{
-            var tmplInfo = {pr: groupMemberArr,accountInfo:null, accountIdx:0};
+            var tmplInfo = {pr: groupMemberArr, accountInfo:null, accountIdx:0};
             var idInfoArr = ["#btn-update-account", "#btn-account-plus", "#account-form-tmpl", tmplInfo,
                 "#accountList", "#btn-account-plus", "#accountList:last"]
             plusMinus(idInfoArr,btn);
@@ -402,20 +405,20 @@ function createNewAccount(btn) {
 
 //적은 계좌 텍스트로 저장해주고 PayGroupMember DB에 update 해주는 함수
 function saveNewAccount(btn) {
+    console.log("call saveNewAccount");
+
     btnAbled();
     var savebank = $("#new-account-bank").val();
     var saveNumber = $("#new-account-number").val();
+    var gm_idx = $("#new-account-owner").val();
+
     if (savebank.length > 0 && saveNumber.length > 0) {
         $("#btn-account-plus").text("+");
 
-        var gm_idx = $("#new-account-owner").val();
-
-        groupMemberArrRefresh(btn, gm_idx, savebank, saveNumber);
-        putAccountAjax(gm_idx, savebank, saveNumber);
-
-        // $("#accountList").html($("#save-account-tmpl").tmpl({pSave: groupMemberArr}));
+        var updatedMember = groupMemberArrRefresh(btn, gm_idx, savebank, saveNumber);
         $("#accountList").html($("#account-form-tmpl").tmpl({pSave: groupMemberArr, accountIdx: 1}));
 
+        putAccountAjax(updatedMember);
     }
 }
 
@@ -433,79 +436,80 @@ function plusMinus(idInfoArr,btn) {
 
 //저장된 계좌 삭제하는 함수
     function deleteSaveAccount(btn) {
+        console.log("call deleteSaveAccount");
 
         var plusValid = $("#btn-account-plus").text();
         if (plusValid == "-" || $("#btn-updated-account").length != 0) {
+            // pass
         } else {
+            let prgm_idx = $(btn).parent().find("#prgm_idx").val();
+            console.log(`prgm_idx = ${prgm_idx}`);
+            var updatedMember = groupMemberArrRefresh(btn, prgm_idx);
 
-        let prgm_idx = $(btn).parent().find("#prgm_idx").val();
-        console.log(prgm_idx);
+            putAccountAjax(updatedMember);
+            // TODO: /accountNull 을 안 쓰고 /accountInfo 에서 account 정보 삭제 로직도 처리하도록 mapper 수정함.
+            // 왜나면,,, account 정보를 삭제한다고 표현했지만, 실제로는 account 정보만 null 로 update 하는 것과 다름 없기 때문임.
 
-        groupMemberArrRefresh(btn, prgm_idx);
+            // $.ajax({
+            //     url: "/pay/accountNull",
+            //     type: "PUT",
+            //     data: {
+            //         "prgm_idx": prgm_idx
+            //     },
+            //     success: function (data) {
+            //         console.log(data);
+            //     },
+            //     error: function (x, i, e) {
+            //         console.log(e);
+            //     }
+            // })
+        }
+    }
+
+    function updateSaveAccount(btn) {
+        console.log("call updateSaveAccount");
+
+        btnDisabled(btn);
+        var prgm_idx = btn.parents("tr").find("#prgm_idx").val(); // .find() : 어떤 요소의 하위 요소 중 특정 요소를 찾을 때 사용
+        console.log(`prgm_idx = ${prgm_idx}`);
 
         $.ajax({
-            url: "/pay/accountNull",
-            type: "PUT",
-            data: {
-                "prgm_idx": prgm_idx
-            },
+            url: `/pay/accountInfo/${prgm_idx}`,
+            type: "GET",
             success: function (data) {
-                console.log(data);
+                console.log("after ajax succces : data = ", data);
+                btn.parents("tr").html($("#account-form-tmpl").tmpl({accountInfo:data,accountIdx:0}));
             },
             error: function (x, i, e) {
                 console.log(e);
             }
         })
-        }
-
-    }
-
-    function updateSaveAccount(btn) {
-        btnDisabled(btn);
-        var plusValid = $("#btn-account-plus").text();
-
-            var prgm_idx = btn.parents("tr").find("#prgm_idx").val();
-            console.log(prgm_idx);
-
-            $.ajax({
-                url: `/pay/accountInfo/${prgm_idx}`,
-                type: "GET",
-                success: function (data) {
-                    console.log(data);
-                    var accountInfo = JSON.parse(data);
-                    console.log(accountInfo);
-                    btn.parents("tr").html($("#account-form-tmpl").tmpl({accountInfo:accountInfo,accountIdx:0}));
-                },
-                error: function (x, i, e) {
-                    console.log(e);
-                }
-            })
     }
 
     function updateSavedAccount(btn) {
+        console.log("call updateSavedAccount");
         btnAbled();
         var savebank = $("#new-account-bank").val();
         var saveNumber = $("#new-account-number").val();
         var gm_idx = $("#saved-account-prgm_idx").val();
 
         if (savebank.length > 0 && saveNumber.length > 0) {
-
-            console.log(groupMemberArr);
-            groupMemberArrRefresh(btn, gm_idx, savebank, saveNumber);
-            console.log(groupMemberArr);
+            var updatedMember = groupMemberArrRefresh(btn, gm_idx, savebank, saveNumber);
             $("#accountList").html($("#account-form-tmpl").tmpl({pSave: groupMemberArr,accountIdx:1}));
 
-            putAccountAjax(gm_idx, savebank, saveNumber);
+            console.log(groupMemberArr, updatedMember);
 
+            putAccountAjax(updatedMember);
         }
     }
 
     //계좌번호 수정 및 삭제시 groupMemberArr를 수정하는 함수
     function groupMemberArrRefresh(btn, gm_idx, savebank=null, saveNumber=null) {
         var findMember = groupMemberArr.filter(gm => gm.prgm_idx == gm_idx);
-        findMember[0].payMember_bank = savebank;
-        findMember[0].payMember_account = saveNumber;
+        findMember[0].bank = savebank;
+        findMember[0].account = saveNumber;
         btn.parents("tr").remove();
+        return findMember[0];
     }
 
     /* END : PAYGROUPMEMBER 계좌정보 UPDATE */
@@ -532,7 +536,7 @@ function plusMinus(idInfoArr,btn) {
 
     function showDutchPayList(pr_idx) {
         $.ajax({
-            url: "/pay/" + pr_idx + "/dutch/list",
+            url: `/pay/${pr_idx}/dutch/list`,
             type: "GET",
             dataType: "json",
             traditional: "true",
@@ -556,19 +560,16 @@ function plusMinus(idInfoArr,btn) {
             success: function (data) {
                 console.log(data);
 
-                var payList = [];
-                data.payList.forEach(p => payList.push(parsePayIntoPayObj(p)));
-                payList.forEach(p => p.payPrice = comma(p.payPrice));
-                console.log(payList)
-                savedPayArr = payList;
+                data.pay_list.forEach(p => p.price = comma(p.price));
+                savedPayArr = data.pay_list;
 
                 $(".modal").addClass("show");
-                $("#payList").html($("#pay-list-tmpl").tmpl({pSave: payList}));
-                $("#pay_name").val(data.dutchPayName);
-                $("#allPrice").val(comma(data.totalPay));
+                $("#payList").html($("#pay-list-tmpl").tmpl({pSave: savedPayArr}));
+                $("#pay_name").val(data.name);
+                $("#allPrice").val(comma(data.total));
                 $("#cutPrice").val(data.option);
-                $("#pay-date").val(data.createDate);
-                $("#due-date").val(data.dueDate);
+                $("#pay-date").val(data.create_date);
+                $("#due-date").val(data.due_date);
                 $("#bill").val("");
                 $("#retrieve-pay-id").val(data.dp_idx);
             },
@@ -662,10 +663,10 @@ function saveUpdatedPay(p_idx, btn) {
             var findPay = savedPayArr.filter(p => p.p_idx == p_idx);
             updatedPayArr.add(p_idx);
 
-            findPay[0].payName = payObj.payName;
-            findPay[0].payPrice = payObj.payPrice;
-            findPay[0].payPayer = payObj.payPayer;
-            findPay[0].payParticipants = payObj.payParticipants;
+            findPay[0].name = payObj.name;
+            findPay[0].price = payObj.price;
+            findPay[0].payer = payObj.payer;
+            findPay[0].participants = payObj.participants;
 
             $("#pay-form").remove();
             $("#payList").html($("#pay-list-tmpl").tmpl({pSave:savedPayArr}));
@@ -708,7 +709,7 @@ function saveDutchPayForm(success_fn) {
             saveNewDutchPayInfo(success_fn);
         }
 
-    } else { // TODO: retrieve한 내용 수정 한 이후, 닫기
+    } else { // retrieve한 내용 수정 한 이후, 닫기
         if(!success_fn) {
             saveDutchPayForRetrievedInfo();
         } else {
@@ -724,63 +725,30 @@ function saveDutchPayForRetrievedInfo(success_fn = function (data){
     clearDutchPayForm();
     showDutchPayInfo(dp_idx);
 }) {
+
     var dp_idx = getDp_idx();
-    var pArr = [];
-    payArr.forEach(p => pArr.push(parsePayForAjax(p, dp_idx)));
+    payArr.forEach(p => {p.price = uncomma(p.price) * 1});
 
-    var uArr = [];
-    savedPayArr.forEach(p => {
-        if (updatedPayArr.has(p.p_idx)){
-            uArr.push(parsePayForAjax(p, dp_idx))
-        }
-    });
+    var uArr = savedPayArr.filter(p => updatedPayArr.has(p.p_idx));
+    uArr.forEach(p => p.price = uncomma(p.price) * 1);
 
-    // console.log("insert", pArr, "updated", uArr, "delete", deletedPayArr);
-
+    var obj = {
+        dutch_info:getDutchPayInfoFromForm(),
+        insert_list: payArr,
+        update_list: uArr,
+        delete_list: deletedPayArr
+    };
+    console.log(obj)
     $.ajax({
         url:`/pay/RetrieveInfo`,
         type:"POST",
-        data: {
-            iArr:JSON.stringify(pArr),
-            uArr:JSON.stringify(uArr),
-            dArr:JSON.stringify(deletedPayArr),
-            dutchInfo:JSON.stringify(getDutchPayInfoFromForm())
-        },
+        data: JSON.stringify(obj),
+        contentType: "application/json; charset=UTF-8",
         success:success_fn,
         error:function (x,i,e){
             console.log(e);
         }
     });
-}
-
-function parsePayForAjax(payObj, dp_idx){
-    var pay = {
-        p_name: payObj.payName,
-        price: uncomma(payObj.payPrice) * 1,
-        dp_idx: dp_idx,
-        payMember: parsePayMemberForAjax(payObj.payPayer)
-    }
-
-    if (payObj.p_idx) {
-        pay.p_idx = payObj.p_idx;
-    }
-
-    var participants = [];
-    payObj.payParticipants.forEach(m => participants.push(parsePayMemberForAjax(m)));
-
-    if (participants) {
-        pay.participants = participants;
-    }
-    return pay;
-}
-
-function parsePayMemberForAjax(m){
-    var member = {
-        pr_idx: pr_idx,
-        prgm_idx: m.prgm_idx,
-        payMember_name: m.payMember_name
-    }
-    return member;
 }
 
 function btnDisabled(btn){
@@ -806,16 +774,19 @@ function btnAbled(){
 //ajaxfind - ajax 함수 모음
 
 function postMemberCheckAjax(member){
+    console.log("call postMemberCheckAjax");
     $.ajax({
         url:"/pay/membercheck",
         type:"POST",
-        data:{"payMember_name":member,
-            "pr_idx":pr_idx},
+        data:{
+            "payMember_name":member,
+            "pr_idx":pr_idx
+        },
         success:function (data){
-            // console.log(data); PayGroupMemberDTO를 가져옴
-            groupMemberArr.push(JSON.parse(data));
+            console.log("after success : data = ", data); // PayGroupMemberDTO를 가져옴
+            groupMemberArr.push(data);
             $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr}));
-            // console.log(groupMemberArr);
+            console.log(groupMemberArr);
         },
         error:function (x,i,e){
             console.log(e);
@@ -824,6 +795,7 @@ function postMemberCheckAjax(member){
 }
 
 function getMemberCheckAjax(prgm_idx,self){
+    console.log("call getMemberCheckAjax");
     $.ajax({
         url: "/pay/membercheck",
         type: "GET",
@@ -840,7 +812,7 @@ function getMemberCheckAjax(prgm_idx,self){
                 let index = self.attr("data-idx");
                 groupMemberArr.splice(index,1); // groupMemberArr 에서 member 삭제
                 self.parent().remove(); // html에서 해당 member span 태그 삭제
-                $("#accountList").html($("#save-account-tmpl").tmpl({pSave: groupMemberArr})); // 계좌정보에 삭제된 멤버 없애기
+                $("#accountList").html($("#account-form-tmpl").tmpl({pSave:groupMemberArr, accountIdx:1})); // 계좌정보에 삭제된 멤버 없애기
                 // console.log("[END] index:", index, ", groupMemberArr:", groupMemberArr);
                 $.ajax({
                     url: "/pay/membercheck",
@@ -882,17 +854,15 @@ function postRoomAjax(roomName){
     })
 }
 
-function putAccountAjax(prgm_idx, payMember_bank, payMember_account) {
+function putAccountAjax(member) {
+    console.log("call putAccountAjax")
     $.ajax({
         url: "/pay/accountInfo",
         type: "PUT",
-        data: {
-            "payMember_account": payMember_account,
-            "payMember_bank": payMember_bank,
-            "prgm_idx": prgm_idx
-        },
+        data: JSON.stringify(member),
+        contentType: "application/json; charset=UTF-8",
         success: function (data) {
-            // console.log(data);
+            console.log("success : return void"); // return 타입 void
         },
         error: function (x, i, e) {
             console.log(e);
@@ -924,16 +894,16 @@ function calculateDutchPayResult(dp_idx){
 
 function showDutchPayResultInfoToModal(data){
     console.log(data);
-    console.log(data.dutchpayResultList);
-    resultList = data.dutchpayResultList;
+    console.log(data.result_list);
+    resultList = data.result_list;
 
     $(".modal").removeClass("show");
     $(".second_modal").addClass("show");
-    $("#payResultList").html($("#pay-result-tmpl").tmpl({resultList:data.dutchpayResultList}));
+    $("#payResultList").html($("#pay-result-tmpl").tmpl({resultList:data.result_list}));
 
-    $("#pay-name-last").val(data.dutchPayName);
-    $("#pay-date-last").val(data.createDate);
-    $("#due-date-last").val(data.dueDate);
+    $("#pay-name-last").val(data.name);
+    $("#pay-date-last").val(data.create_date);
+    $("#due-date-last").val(data.due_date);
     $("#retrieve-pay-id").val(data.dp_idx);
 
 
@@ -945,10 +915,12 @@ function showDutchPayInfo(dp_idx){
         url: `/pay/${pr_idx}/dutch/${dp_idx}/result/chk`,
         type: "GET",
         success: function (data) {
-            console.log(data);
+            console.log(data); // dutch-pay dto 인데, result_list 가진 dto 반환
             if(data){
+                // dutch-pay result 있으면, result 보여주는 화면
                 showDutchPayResultInfoToModal(data);
             } else {
+                // result 없으면, 결제 목록 보여주는 화면
                 getDutchPayInfo(dp_idx);
             }
         },
@@ -963,9 +935,8 @@ function saveDutchPayResult(){
     $.ajax({
         url: `/pay/${pr_idx}/dutch/${dp_idx}/result`,
         type: "POST",
-        data: {
-            resultList: JSON.stringify(resultList)
-        },
+        data: JSON.stringify(resultList),
+        contentType: "application/json; charset=UTF-8",
         success: function (data) {
             console.log(data)
         },

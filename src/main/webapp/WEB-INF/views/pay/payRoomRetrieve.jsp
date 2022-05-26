@@ -39,6 +39,7 @@
         groupMemberArr.forEach( x => memberArr.push(x.payMeber_name));
 
         $(document).ready(function(){
+            console.log({pSave:groupMemberArr, accountIdx:1});
             // 페이방 정보 보여주기
             $("#room_name").val(room_name); // 페이방 이름
             $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr})); // 방 멤버 목록
@@ -61,7 +62,7 @@
     <script type="text/html" id="member-list-tmpl">
         {{each(index, m) mList}}
             <span id="mList_\${index}" class="mList_\${index}" data-idx="\${m.prgm_idx}">
-            \${m.payMember_name}<button type="button" class="btn-member-delete" data-idx="\${index}" onclick="memberCheck($(this))">X</button>
+            \${m.name}<button type="button" class="btn-member-delete" data-idx="\${index}" onclick="memberCheck($(this))">X</button>
             </span>
         {{/each}}
     </script>
@@ -69,15 +70,15 @@
     <script type="text/html" id="pay-form-tmpl">
         <tr id="pay-form">
             <td>
-                <input type="text" id="form-pay-name" style="width: 50px" value="{{= pay ? pay.payName : ''}}">
+                <input type="text" id="form-pay-name" style="width: 50px" value="{{= pay ? pay.name : ''}}">
             </td>
-            <td><input type="text" id="form-pay-price" onkeyup="inputNumberFormat(this)" style="width: 100px" value="{{= pay ? pay.payPrice : ''}}"></td>
+            <td><input type="text" id="form-pay-price" onkeyup="inputNumberFormat(this)" style="width: 100px" value="{{= pay ? pay.price : ''}}"></td>
             <td>
                 <select id="form-pay-payer">
                         {{each(index,p) groupMember}}
                             <option class="form-pay-selector" value="\${p.prgm_idx}"
-                                    {{= pay && (p.prgm_idx == pay.payPayer.prgm_idx) ? 'selected' : null}}>
-                                \${p.payMember_name}
+                                    {{= pay && (p.prgm_idx == pay.payer.prgm_idx) ? 'selected' : null}}>
+                                \${p.name}
                             </option>
                         {{/each}}
                 </select>
@@ -89,9 +90,9 @@
                 <div id="form-pay-participants-list" style="display: none">
                     {{each(index, p) groupMember}}
                         <input type="checkbox" class="form-pay-participants-check" value="\${p.prgm_idx}"
-                               data-prgm-name="\${p.payMember_name}"
+                               data-prgm-name="\${p.name}"
                                {{= participants_prgm_idx && !participants_prgm_idx.includes(p.prgm_idx) ? null : 'checked'}}>
-                        \${p.payMember_name}
+                        \${p.name}
                     {{/each}}
                     <button type="button" id="btn-participants" onclick="changeParticipantsNumber()">OK</button>
                 </div>
@@ -104,13 +105,13 @@
     <script type="text/html" id="pay-list-tmpl">
         {{each(index, p) pSave}}
         <tr style="color: #888888" class="save-pay-form\${index}">
-            <td id="save-name">\${p.payName}</td>
-            <td id="save-price">\${p.payPrice}</td>
-            <td id="save-payer">\${p.payPayer.payMember_name}</td>
+            <td id="save-name">\${p.name}</td>
+            <td id="save-price">\${p.price}</td>
+            <td id="save-payer">\${p.payer.name}</td>
             <td id="save-participants">
-                \${p.payParticipants.length}명
+                \${p.participants.length}명
             </td>
-            <td> <!-- DB에 저장된 더치페이 내 결제 내역 -- 수정/삭제 -- DB단으로 바로 갔다와요...-->
+            <td>
                 <!-- DB 저장된 더치페이 -- 결제 목록 -- 1. DB에서 가져올때 같이 가져온 결제 목록 2. 새로 추가한 결제 목록 -->
                 <button type="button" class="btn-delete-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="deleteSavePay(this)">삭제</button>
                 <button type="button" class="btn-update-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="showUpdatePayForm(this)">수정</button>
@@ -122,9 +123,9 @@
     <script type="text/html" id="show-dutch-list-tmpl">
         {{each(index, p) dList}}
         <tr>
-            <td>\${p.createDate}</td>
-            <td><a href="javascript:showDutchPayInfo(\${p.dp_idx})"> \${p.dutchPayName}</a></td>
-            <td>\${p.totalPay}</td>
+            <td>\${p.create_date}</td>
+            <td><a href="javascript:showDutchPayInfo(\${p.dp_idx})"> \${p.name}</a></td>
+            <td>\${p.total}</td>
             <td>정산현황</td>
             <td><button type="button" onclick="deleteOneDutchPay(\${p.dp_idx})">삭제</button></td>
         </tr>
@@ -133,52 +134,53 @@
 
     <!-- 계좌번호 template-->
     <script type="text/html" id="account-form-tmpl">
-
-
+        <!-- 추가/수정 폼 -->
         {{if accountIdx == 0}}
-            <td><input type="hidden" value="{{= accountInfo ? accountInfo.prgm_idx : ''}}" id="saved-account-prgm_idx">
-            <input type="text" id="new-account-bank" style="width: 50px" value="{{= accountInfo ? accountInfo.payMember_bank : ''}}"></td>
-            <td><input type="text" id="new-account-number" style="width: 100px" value="{{= accountInfo ? accountInfo.payMember_account : ''}}"></td>
             <td>
-                {{if accountInfo == null}}
-                <select id="new-account-owner">
-                    {{each(index,p) pr}}
-                    {{if p.payMember_account == null}}
-                    <option class="new-account-selector" value="\${p.prgm_idx}">\${p.payMember_name}</option>
-                    {{/if}}
-                    {{/each}}
-                </select>
+                <input type="hidden" value="{{= accountInfo ? accountInfo.prgm_idx : ''}}" id="saved-account-prgm_idx">
+                <input type="text" id="new-account-bank" style="width: 50px" value="{{= accountInfo ? accountInfo.bank : ''}}">
             </td>
-            <td>
-                <button type="button" id="btn-update-account" onclick="saveNewAccount($(this))">저장</button>
-            </td>
-            <td>
-                {{/if}}
-                {{if accountInfo != null}}
-                    <input readonly value="\${accountInfo.payMember_name}">
-            </td>
-            <td>
-                <button type="button" id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button>
-            </td>
-                {{/if}}
+            <td><input type="text" id="new-account-number" style="width: 100px" value="{{= accountInfo ? accountInfo.account : ''}}"></td>
+            {{if accountInfo == null}} <!-- 추가 -->
+                <td>
+                    <select id="new-account-owner">
+                        {{each(index,p) pr}}
+                            {{if p.account == null}}
+                                <option class="new-account-selector" value="\${p.prgm_idx}">\${p.name}</option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
+                </td>
+                <td>
+                    <button type="button" id="btn-update-account" onclick="saveNewAccount($(this))">저장</button>
+                </td>
+            {{/if}}
+            {{if accountInfo != null}} <!-- 수정 -->
+                <td>
+                    <input readonly value="\${accountInfo.name}">
+                </td>
+                <td>
+                    <button type="button" id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button>
+                </td>
+            {{/if}}
         {{/if}}
-
+        <!-- 계좌번호 목록 -->
         {{if accountIdx == 1}}
-        {{each(index, p) pSave}}
-        {{if p.payMember_account != null}}
-        <tr style="color: #888888" class="save-account-form\${index}">
+            {{each(index, p) pSave}}
+                {{if p.account != null}}
+                    <tr style="color: #888888" class="save-account-form\${index}">
 
-            <td id="save-bank">\${p.payMember_bank}</td>
-            <td id="save-number">\${p.payMember_account}</td>
-            <td id="save-owner">\${p.payMember_name}</td>
-            <td>
-                <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
-                <button type="button" id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
-                <button type="button" id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>
-            </td>
-        </tr>
-        {{/if}}
-        {{/each}}
+                        <td id="save-bank">\${p.bank}</td>
+                        <td id="save-number">\${p.account}</td>
+                        <td id="save-owner">\${p.name}</td>
+                        <td>
+                            <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
+                            <button type="button" id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
+                            <button type="button" id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>
+                        </td>
+                    </tr>
+                {{/if}}
+            {{/each}}
         {{/if}}
     </script>
 
@@ -308,10 +310,10 @@
     {{each(index, result) resultList}}
     <tr>
         <td>
-            <input type="text" id="pay-result-sender" style="width: 80px" value="{{= sender.payMember_name }}" readonly>
+            <input type="text" id="pay-result-sender" style="width: 80px" value="{{= sender.name }}" readonly>
         </td>
         <td>
-            <input type="text" id="pay-result-recipient" style="width: 80px" value="{{= recipient.payMember_name }}" readonly>
+            <input type="text" id="pay-result-recipient" style="width: 80px" value="{{= recipient.name }}" readonly>
         </td>
         <td>
             <input type="text" id="pay-result-amount" value="{{= comma(amount)}}" readonly>
@@ -324,11 +326,11 @@
 </script>
 <script type="text/html" id="account-form-tmpl2">
     {{each(index, p) pSave}}
-    {{if p.payMember_account != null}}
+    {{if p.account != null}}
     <tr style="color: #888888">
-        <td>\${p.payMember_bank}</td>
-        <td>\${p.payMember_account}</td>
-        <td>\${p.payMember_name}</td>
+        <td>\${p.bank}</td>
+        <td>\${p.account}</td>
+        <td>\${p.name}</td>
     </tr>
     {{/if}}
     {{/each}}

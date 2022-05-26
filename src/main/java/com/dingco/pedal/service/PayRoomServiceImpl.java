@@ -33,9 +33,9 @@ public class PayRoomServiceImpl implements PayRoomService {
     }
 
     @Override
-    public int updateAccount(HashMap<String, String> map) throws Exception {
+    public int updateAccount(PayGroupMemberDTO groupMemberDTO) throws Exception {
 
-        return dao.updateAccount(map);
+        return dao.updateAccount(groupMemberDTO);
     }
 
     @Override
@@ -83,8 +83,8 @@ public class PayRoomServiceImpl implements PayRoomService {
     }
 
     @Override
-    public boolean memberCheck(HashMap<String, Integer> map) throws Exception {
-        return dao.memberCheck(map);
+    public boolean memberCheck(PayGroupMemberDTO payGroupMemberDTO) throws Exception {
+        return dao.memberCheck(payGroupMemberDTO);
     }
 
     @Override

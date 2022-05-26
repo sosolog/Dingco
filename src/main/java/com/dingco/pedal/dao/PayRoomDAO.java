@@ -34,8 +34,8 @@ public class PayRoomDAO {
         return session.selectOne("com.config.PayRoomMapper.selectPayRoomRetrieve",map);
     }
 
-    public int updateAccount(HashMap<String, String> map) throws Exception{
-        return session.update("com.config.PayRoomMapper.updateAccount",map);
+    public int updateAccount(PayGroupMemberDTO groupMemberDTO) throws Exception{
+        return session.update("com.config.PayRoomMapper.updateAccount",groupMemberDTO);
     }
 
     public int accountNull(int prgm_idx) throws Exception{
@@ -81,8 +81,8 @@ public class PayRoomDAO {
         return session.selectOne("com.config.PayRoomMapper.dutchpayInfo", map);
     }
 
-    public boolean memberCheck(HashMap<String,Integer> map) throws Exception{
-        return session.selectOne("com.config.PayRoomMapper.memberCheck",map);
+    public boolean memberCheck(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
+        return session.selectOne("com.config.PayRoomMapper.memberCheck",payGroupMemberDTO);
     }
     public int memberDelete(int prgm_idx) throws Exception{
         return session.delete("com.config.PayRoomMapper.memberDelete",prgm_idx);

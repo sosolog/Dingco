@@ -88,10 +88,8 @@ public class PayRoomController {
 
     @PostMapping("/pay/new")
     @ResponseBody
-    public String makeDutchpay(DutchPayDTO dutchPayDTO) throws Exception {
-        System.out.println("dutchPayDTO = " + dutchPayDTO);
-        int dp_idx = payRoomService.insertDutchPay(dutchPayDTO);
-        return dutchPayDTO.toString();
+    public int makeDutchpay(@RequestBody DutchPayDTO dutchPayDTO) throws Exception {
+        return payRoomService.insertDutchPay(dutchPayDTO);
     }
 
     @GetMapping("/pay/{pr_idx}/dutch/list")
@@ -144,45 +142,39 @@ public class PayRoomController {
 
     @PutMapping("/pay/accountInfo")
     @ResponseBody
-    public void putAccountInfo(@RequestParam HashMap<String,String> map) throws Exception {
-
-       int num = payRoomService.updateAccount(map);
+    public void putAccountInfo(@RequestBody PayGroupMemberDTO groupMemberDTO) throws Exception {
+        log.debug("groupMemberDTO = {}", groupMemberDTO);
+        int num = payRoomService.updateAccount(groupMemberDTO);
     }
 
     @GetMapping("/pay/accountInfo/{prgm_idx}")
     @ResponseBody
-    public String getAccountInfo(@PathVariable int prgm_idx) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println(prgm_idx);
-        String payMemberJson = mapper.writeValueAsString(payRoomService.selectAccount(prgm_idx));
-       return payMemberJson;
+    public PayGroupMemberDTO getAccountInfo(@PathVariable int prgm_idx) throws Exception {
+        return payRoomService.selectAccount(prgm_idx);
     }
 
-    @PutMapping("/pay/accountNull")
-    @ResponseBody
-    public void accountNull(@RequestParam int prgm_idx) throws Exception {
-
-       int num = payRoomService.accountNull(prgm_idx);
-    }
+//    @PutMapping("/pay/accountNull")
+//    @ResponseBody
+//    public void accountNull(@RequestParam int prgm_idx) throws Exception {
+//
+//       int num = payRoomService.accountNull(prgm_idx);
+//    }
 
     @GetMapping("/pay/membercheck")
     @ResponseBody
-    public boolean memberCheck(@RequestParam HashMap<String,Integer> map) throws Exception{
-        return payRoomService.memberCheck(map);
+    public boolean memberCheck(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
+        return payRoomService.memberCheck(payGroupMemberDTO);
     }
 
     @PostMapping("/pay/membercheck")
     @ResponseBody
-    public String memberCheck(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
-
-        ObjectMapper mapper = new ObjectMapper();
-        String payMemberJson = mapper.writeValueAsString(payRoomService.memberAdd(payGroupMemberDTO));
-        return payMemberJson;
+    public PayGroupMemberDTO memberAdd(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
+        return payRoomService.memberAdd(payGroupMemberDTO);
     }
 
     @DeleteMapping("/pay/membercheck")
     @ResponseBody
-    public int memberCheck(@RequestParam int prgm_idx) throws Exception{
+    public int memberDelete(@RequestParam int prgm_idx) throws Exception{
         return payRoomService.memberDelete(prgm_idx);
     }
 
@@ -206,18 +198,8 @@ public class PayRoomController {
 
     @PostMapping("/pay/RetrieveInfo")
     @ResponseBody
-    public int postRetrieveInfo(@RequestParam String iArr,
-                                @RequestParam String uArr,
-                                @RequestParam String dArr,
-                                @RequestParam String dutchInfo) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        List<PayDTO> insertPayList = objectMapper.readValue(iArr, new TypeReference<List<PayDTO>>() { });
-        List<PayDTO> updatePayList = objectMapper.readValue(uArr, new TypeReference<List<PayDTO>>() { });
-        List<Integer> deletePayIdxList = objectMapper.readValue(dArr, new TypeReference<List<Integer>>() { });
-        DutchPayDTO dutchPayDTO = objectMapper.readValue(dutchInfo, new TypeReference<DutchPayDTO>() { });
-
-        return payRoomService.updateDutchPay(insertPayList, updatePayList, deletePayIdxList, dutchPayDTO);
+    public int postRetrieveInfo(@RequestBody DutchPayChangesDTO changes) throws Exception {
+        return payRoomService.updateDutchPay(changes.getInsertPayList(), changes.getUpdatePayList(), changes.getDeletePayList(), changes.getDutchInfo());
     }
 
     @PutMapping("/pay/RetrieveInfo")
@@ -283,16 +265,13 @@ public class PayRoomController {
 
     @PostMapping("/pay/{pr_idx}/dutch/{dp_idx}/result")
     @ResponseBody
-    public int saveDutchPayResult(@PathVariable int pr_idx, @PathVariable int dp_idx, @RequestParam String resultList) throws Exception{
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<DutchPayResultDTO> dutchPayResultDTOList = objectMapper.readValue(resultList, new TypeReference<List<DutchPayResultDTO>>() { });
-        return payRoomService.saveDutchPayResult(dp_idx, dutchPayResultDTOList);
+    public int saveDutchPayResult(@PathVariable int pr_idx, @PathVariable int dp_idx, @RequestBody List<DutchPayResultDTO> resultList) throws Exception{
+        return payRoomService.saveDutchPayResult(dp_idx, resultList);
     }
 
     @GetMapping("/pay/{pr_idx}/dutch/{dp_idx}/result/chk")
     @ResponseBody
     public DutchPayDTO hasDutchPayResult(@PathVariable int pr_idx, @PathVariable int dp_idx) throws Exception{
-        DutchPayDTO dutchPayDTO = payRoomService.showDutchPayResultInfo(pr_idx, dp_idx);
-        return dutchPayDTO;
+        return payRoomService.showDutchPayResultInfo(pr_idx, dp_idx);
     }
 }
