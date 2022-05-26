@@ -12,8 +12,7 @@ import com.dingco.pedal.util.FileName;
 import com.dingco.pedal.util.FileUploadUtils;
 import com.dingco.pedal.util.TableDir;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,47 +21,64 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
-import java.lang.reflect.Member;
 import java.util.List;
 
-@Controller
+@Slf4j
 @RequiredArgsConstructor
+@Controller
 public class InquiryController {
 
-    private static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
     private final InquiryService inquiryService;
     private final CommentService commentService;
 
     @Value("${file.base}")
     private String baseDir;
 
+    /**
+     * 사용자 문의글 목록 화면 (화면 내 목록 정보는 모두 비동기로 받아옴 )
+     * @param memberDTO : 세션에 저장된 로그인한 멤버 정보
+     * @return 사용자 문의글 목록 화면 jsp 이름
+     */
     @GetMapping("/inquiry")
-    public ModelAndView showUserInquiry(@Login MemberDTO memberDTO) throws Exception {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("InquiryList");
-        mav.addObject("memberDTO", memberDTO);
-        return mav;
+    public String showUserInquiryUI(@Login MemberDTO memberDTO, Model model) {
+        model.addAttribute("memberDTO", memberDTO);
+        return "InquiryList";
     }
 
+    /**
+     *
+     * @param dto
+     * @param i_idx2
+     * @return
+     */
+    @GetMapping("/inquiry/write")
+    public String writeUserInquiryUI(@ModelAttribute("inquiryDTO") InquiryDTO dto,
+                                     @RequestParam(name = "idx", required = false) String i_idx2){
+        return "InquiryWrite";
+    }
+
+    /**
+     * 사용자 문의글 목록 가져오기
+     * @param memberDTO : 세션에 저장된 로그인한 멤버 정보
+     * @param curPage : 현재 페이지
+     * @param searchWord : 검색어
+     * @return : 현재 페이지의 문의글 목록(검색어 존재시, 검색 결과) 보기
+     * @throws Exception
+     */
     @GetMapping("/inquiry/list")
     @ResponseBody
     public PageDTO<InquiryDTO> showUserInquiry(
             @Login MemberDTO memberDTO,
             @RequestParam(value = "pg", required = false, defaultValue = "1") String curPage,
-            @RequestParam(value = "sch", required = false) String searchWord
-    ) throws Exception {
+            @RequestParam(value = "sch", required = false) String searchWord) throws Exception {
         PageDTO<InquiryDTO> pageDTO = inquiryService.showUserInquiry(memberDTO, Integer.parseInt(curPage), searchWord);
         return pageDTO;
     }
 
-    @GetMapping("/inquiry/write")
-    public String writeUserInquiryUI(@ModelAttribute("inquiryDTO") InquiryDTO dto, @RequestParam(name = "idx", required = false) String i_idx2){
-        return "InquiryWrite";
-    }
-
     @PostMapping("/inquiry")
-    public String writeUserInquiry(@Login MemberDTO memberDTO, @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO) throws Exception {
-        System.out.println("memberDTO = " + memberDTO + ", inquiryDTO = " + inquiryDTO);
+    public String writeUserInquiry(@Login MemberDTO memberDTO,
+                                   @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO) throws Exception {
+        log.info("memberDTO = {}, inquiryDTO = {}", memberDTO, inquiryDTO);
         inquiryDTO.setM_idx(memberDTO.getM_idx());
         List<MultipartFile> files = inquiryDTO.getFiles();
         List<FileName> fileNames = inquiryDTO.getFileNames();
@@ -72,8 +88,8 @@ public class InquiryController {
         }
         int result = inquiryService.writeUserInquiry(inquiryDTO);
 
-        System.out.println("memberDTO = " + memberDTO + ", inquiryDTO = " + inquiryDTO);
-        logger.debug("result = "+result);
+        log.info("memberDTO = {}, inquiryDTO = {}", memberDTO, inquiryDTO);
+        log.info("result = {}", result);
         return "redirect:inquiry";
     }
 
@@ -103,7 +119,7 @@ public class InquiryController {
             uploadUtils.uploadFiles(files, fileNames);
         }
         int result = inquiryService.updateUserInquiry(inquiryDTO);
-        logger.debug("result = "+result);
+        log.debug("result = "+result);
         return "redirect:/inquiry/"+i_idx;
     }
 
@@ -113,7 +129,7 @@ public class InquiryController {
         inquiryDTO.setI_idx(i_idx);
         System.out.println("i_idx = " + i_idx + ", inquiryDTO = " + inquiryDTO);
         int result = inquiryService.updateUserInquiryStatus(inquiryDTO);
-        logger.debug("result = "+result);
+        log.debug("result = "+result);
         return result;
     }
     @GetMapping("/inquiry/{idx}")
@@ -122,7 +138,7 @@ public class InquiryController {
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
         }
-        logger.debug("result = "+inquiryDTO);
+        log.debug("result = "+inquiryDTO);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("InquiryRetrieve");
@@ -139,9 +155,11 @@ public class InquiryController {
         if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
             throw new NotMatchedException("유효하지 않은 접근입니다.");
         }
+        // TODO: 다른 Service의 메소드를 한 컨트롤러에서 사용할 경우, 트랜잭션 처리를 어떻게 해야하는가?
+        // 하나의 서비스에서 다른 서비스 또는 DAO를 @Autowired 하여 하나의 서비스 안에서 트랜잭션 처리 하는 것이 맞는가?
         result = commentService.deleteAllComments(i_idx);
         result = inquiryService.deleteUserInquiry(i_idx);
-        logger.debug("result = "+result);
+        log.debug("result = "+result);
         return result;
     }
 
@@ -171,6 +189,8 @@ public class InquiryController {
             File file = new File(baseDir+path);
             if (file.exists()){
                 // TODO: 가능하면 한번에 모든 img 삭제할 수 있도록 수정!
+                // TODO: 컨트롤러에서 루프 돌면서 서비스 호출하는 것이 좋은가? 아님 한번의 서비스 호출 안에서 DAO 루프 도는 것이 좋은가?
+                // 것도 아님, 가능하면 한번에 dao에서 db 접근하는 것이 좋은가?
                 int result = inquiryService.deleteImage(idxList.get(i));
                 file.delete();
             }
@@ -180,7 +200,7 @@ public class InquiryController {
 
     /**
      * 해당 게시글 댓글 목록
-     * @param i_idx 게시글 번호
+     * @param i_idx : 게시글 번호
      * @return 해당 게시글 내 댓글 목록
      * @throws Exception
      */
@@ -219,8 +239,7 @@ public class InquiryController {
         commentDTO.setM_idx(memberDTO.getM_idx());
         commentDTO.setI_idx(i_idx);
 
-        int result = commentService.writeComment(commentDTO);
-        return result;
+        return commentService.writeComment(commentDTO);
     }
 
     /**
@@ -243,8 +262,7 @@ public class InquiryController {
         commentDTO.setI_idx(i_idx);
         commentDTO.setC_idx(c_idx);
 
-        int result = commentService.updateComment(commentDTO);
-        return result;
+        return commentService.updateComment(commentDTO);
     }
 
     /**
@@ -266,9 +284,7 @@ public class InquiryController {
         commentDTO.setI_idx(i_idx);
         commentDTO.setC_idx(c_idx);
 
-        // TODO: mapper 확인하여 m_idx, i_idx에 대한 조건 추가 고려해보자. (위 생성한 dto 이용)
-        int result = commentService.deleteComment(commentDTO);
-        return result;
+        return commentService.deleteComment(commentDTO);
     }
 
 }
