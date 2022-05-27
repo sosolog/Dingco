@@ -25,8 +25,9 @@ public class AdminLoginController {
 
     /**
      * 로그인 페이지
-     * @author 명지
+     *
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/login")
     public String adminLogin() throws Exception {
@@ -36,8 +37,9 @@ public class AdminLoginController {
 
     /**
      * 로그인 action
-     * @author 명지
+     *
      * @throws Exception
+     * @author 명지
      */
     @PostMapping("/admin/login.action")
     public String adminLoginAction(LoginDTO loginDTO, HttpServletRequest request) throws Exception {
@@ -54,9 +56,10 @@ public class AdminLoginController {
     /**
      * 비동기 로그인 체크
      * 입력한 아이디, 패스워드가 DB에 존재하는지 체크
-     * @author 명지
-     * @throws Exception
+     *
      * @return true/false
+     * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/login/check")
     public @ResponseBody
@@ -68,6 +71,7 @@ public class AdminLoginController {
 
     /**
      * 로그아웃
+     *
      * @author 명지
      */
     @GetMapping("/admin/logout")

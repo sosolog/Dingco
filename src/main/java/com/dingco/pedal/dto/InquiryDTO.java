@@ -17,6 +17,8 @@ public class InquiryDTO {
 
     private int i_idx;          // 문의 고유번호
     private int m_idx;          // 작성자 고유번호
+    private String userid;      // 작성자 아이디
+    private String username;    // 작성자 이름
     private String category_id; // 카테고리
     private String title;       // 제목
     private String content;     // 내용

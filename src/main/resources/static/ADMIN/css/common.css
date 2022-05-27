@@ -44,16 +44,12 @@ textarea { font-family: var(--f-inputFont); }
 .reset { padding:0px; margin:0px; clear: both; }
 
 select{
-    width: 100%;
     border: 0.5px solid #818386;
-    margin-top: 16px;
-    padding: 22px 29px;
-    font-size: 24px !important;
+    font-size: 20px !important;
     font-family: var(--f-basicFont) !important;
     font-weight: 500;
-    color: #333333;
-    background-color: #ffffff;
-    background: url(../images/openSelect.png) 95.5% center no-repeat;
+    color: var(--c-gray-title);
+    background: url(../images/openSelect.png) 95% center no-repeat;
     appearance: none;
     -moz-appearance: none; /* Firefox */
     -webkit-appearance: none; /* Safari and Chrome */
@@ -303,6 +299,40 @@ textarea {
     font-size: 18px;
 }
 
+#top-menu .cate-inquiry-o {
+    display:inline-block;
+    float:right;
+    padding: 13px 38px;
+    background-color: var(--c-white);
+    text-align: center;
+    margin-right: 6px;
+    border: 1px solid var(--bg-gray-basic);
+}
+
+#top-menu .cate-inquiry-o span {
+    font-family: var(--f-basicFont);
+    color: var(--bg-gray-basic);
+    font-weight: var(--w-bold);
+    font-size: 18px;
+}
+
+#top-menu .cate-inquiry-on {
+    display:inline-block;
+    float:right;
+    padding: 13px 38px;
+    background-color: var(--bg-gray-basic);
+    text-align: center;
+    margin-right: 6px;
+    border: 1px solid var(--bg-gray-basic);
+}
+
+#top-menu .cate-inquiry-on span {
+    font-family: var(--f-basicFont);
+    color: var(--c-white);
+    font-weight: var(--w-medium);
+    font-size: 18px;
+}
+
 /**** search ****/
 #search {
     padding: 0px 26px 20px 31px;
@@ -329,6 +359,37 @@ textarea {
     font-family: var(--f-basicFont);
 }
 
+/**** search-inquiry ****/
+#search-inquiry {
+    padding: 0px 26px 20px 31px;
+    position: relative;
+
+}
+
+#search-inquiry .icon {
+    position: absolute;
+    top: 14px;
+    left: 45px;
+}
+
+#search-inquiry input {
+    display: inline-block;
+    width: 81%;
+    padding: 20px 40px 20px 63px;
+    color: var(--c-gray-title);
+    font-size: 20px;
+    font-weight: var(--w-medium);
+    border-radius: 8px;
+    border: 1px solid #CCCCCC;
+    background-color: #F4F4F4;
+    font-family: var(--f-basicFont);
+}
+
+.search-inquiry-select {
+    padding: 20px 0px 20px 15px;
+    width: 190px;
+    float: right;
+}
 
 /**** list-table ****/
 #list-table table, thead, tbody {

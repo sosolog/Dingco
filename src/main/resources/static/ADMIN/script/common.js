@@ -7,3 +7,7 @@ function adminSearch(f){
 function saveEditForm(f){
     f.submit();
 }
+
+function submitSearchForm(f){
+    f.submit();
+}

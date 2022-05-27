@@ -111,9 +111,10 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
 
     /**
      * Member 특정 회원 삭제
-     * @author 명지
+     *
      * @param idx : 회원 번호
      * @throws Exception
+     * @author 명지
      */
     @Override
     public int deleteOneMember(int idx) throws Exception {

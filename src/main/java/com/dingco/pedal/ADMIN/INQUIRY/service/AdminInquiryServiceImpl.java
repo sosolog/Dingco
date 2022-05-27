@@ -30,18 +30,23 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
     /**
      * Inquiry 전체 문의 가져오기
      * DB에서 데이터 가져온 다음 PageDTO 객체를 이용하여 페이징 처리
+     *
+     * @param cp       : 현재 페이지 / defaultValue = 1
+     * @param sch      : 찾을 문자열(검색 조건) / defaultValue = ""
+     * @param status   : 답변 여부 / defaultValue = ""
+     * @param category : 카테고리 / defaultValue = ""
      * @author 명지
-     * @param cp : 현재 페이지 / defaultValue = 1
-     * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
      */
     @Override
-    public PageDTO<InquiryDTO> selectAllInquiry(int cp, String sch) throws Exception {
+    public PageDTO<InquiryDTO> selectAllInquiry(int cp, String sch, String status, String category) throws Exception {
 
         int offset = (cp - 1) * perPage; // 페이징 시작점(페이징 블럭에 따라서 동적으로 값 설정)
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("perPage", perPage);
         map.put("sch", sch);
+        map.put("status", status);
+        map.put("category", category);
         map.put("offset", offset);
 
         int totalRecord = adminInquiryDAO.cntAllInquiry(map); // Notice 전체 레코드 개수 조회
@@ -57,9 +62,10 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
 
     /**
      * Inquiry 특정 문의 가져오기
-     * @author 명지
+     *
      * @param idx : 문의번호
      * @throws Exception
+     * @author 명지
      */
     @Override
     public InquiryDTO selectOneInquiry(int idx) throws Exception {
