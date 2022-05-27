@@ -48,12 +48,34 @@ public class AdminFAQDAO {
     }
 
     /**
-     * FAQ 특정 게시글 삭제
+     * FAQ 특정 게시글 삭제 (DELETE)
      * @author 명지
      * @param idx : 게시글 번호
      * @throws Exception
      */
     public int deleteOneFAQ(int idx) throws Exception {
         return session.delete("admin.FAQMapper.deleteOneFAQ", idx);
+    }
+
+    /**
+     * FAQ 특정 게시글 수정 (UPDATE)
+     *
+     * @param dto : 게시글 dto
+     * @throws Exception
+     * @author 명지
+     */
+    public int updateOneFAQ(FAQDTO dto) throws Exception {
+        return session.update("admin.FAQMapper.updateOneFAQ", dto);
+    }
+
+    /**
+     * FAQ 특정 게시글 등록 (INSERT)
+     *
+     * @param dto : 게시글 dto
+     * @throws Exception
+     * @author 명지
+     */
+    public int insertOneFAQ(FAQDTO dto) throws Exception {
+        return session.insert("admin.FAQMapper.insertOneFAQ", dto);
     }
 }

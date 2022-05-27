@@ -75,4 +75,26 @@ public class AdminFAQController {
         return "redirect:" + next;
     }
 
+    /**
+     * FAQ 특정 게시글 등록/수정 (INSERT/UPDATE)
+     *
+     * @param mode : edit 모드 (insert/update)
+     * @param dto  : 게시글 정보 dto
+     * @throws Exception
+     * @author 명지
+     */
+    @PostMapping("/admin/faq/edit.action")
+    public String adminFAQEditAction(@RequestParam(value = "mode", required = true) String mode, FAQDTO dto) throws Exception {
+        String next = "";
+
+        if (mode.equals("update")) {
+            adminFAQService.updateOneFAQ(dto);
+            next = "/admin/faq/edit" + "?idx=" + dto.getNumber_idx();
+        } else if (mode.equals("insert")) {
+            adminFAQService.insertOneFAQ(dto);
+            next = "/admin/faq";
+        }
+
+        return "redirect:" + next;
+    }
 }

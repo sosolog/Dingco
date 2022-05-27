@@ -85,7 +85,7 @@ public class AdminNoticeController {
     }
 
     /**
-     * NOTICE 특정 게시글 수정 (UPDATE)
+     * NOTICE 특정 게시글 등록/수정 (INSERT/UPDATE)
      *
      * @param mode : edit 모드 (insert/update)
      * @param dto  : 게시글 정보 dto
@@ -95,11 +95,6 @@ public class AdminNoticeController {
     @PostMapping("/admin/notice/edit.action")
     public String adminNoticeEditAction(@RequestParam(value = "mode", required = true) String mode, FAQDTO dto) throws Exception {
         String next = "";
-
-        log.info("-------------------------------");
-        log.info(mode);
-        log.info(dto.toString());
-        log.info("-------------------------------");
 
         if (mode.equals("update")) {
             adminNoticeService.updateOneNotice(dto);
