@@ -75,5 +75,5 @@
 
 <!--삭제 버튼-->
 <c:if test="${mode == '수정'}">
-    <a id="btn-delete" href="/admin/notice/delete?idx=${number_idx}"><img src="/images/admin/remove.png"></a>
+    <a id="btn-delete" href="/admin/notice/delete?idx=${number_idx}"><img src="/static/ADMIN/images/remove.png"></a>
 </c:if>
