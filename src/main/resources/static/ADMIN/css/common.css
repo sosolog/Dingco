@@ -25,7 +25,7 @@
 
 a { text-decoration: none; cursor: pointer; }
 
-body { margin: 0; padding: 0; height: 100%; }
+body { margin: 0; padding: 0; height: 100%; min-width: 1600px;}
 
 ul { list-style:none; margin: 0px auto; padding-inline-start: 0px; }
 
@@ -45,7 +45,7 @@ textarea { font-family: var(--f-inputFont); }
 
 select{
     border: 0.5px solid #818386;
-    font-size: 20px !important;
+    font-size: 18px !important;
     font-family: var(--f-basicFont) !important;
     font-weight: 500;
     color: var(--c-gray-title);
@@ -374,7 +374,7 @@ textarea {
 
 #search-inquiry input {
     display: inline-block;
-    width: 81%;
+    width: 75%;
     padding: 20px 40px 20px 63px;
     color: var(--c-gray-title);
     font-size: 20px;
@@ -520,6 +520,45 @@ textarea {
 
 #edit-table .short-line td:nth-child(1) {
     padding: 20px 0px;
+}
+
+/**** profile ****/
+#edit-table .profile {
+    float: right;
+    text-align: right;
+}
+
+#edit-table .profile .imagebox {
+    display: inline-block;
+    float: right;
+    width:50px;
+    height:50px;
+    overflow: hidden;
+}
+
+#edit-table .profile .imagebox img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+#edit-table .profile input[type=file] { display: none; }
+
+#edit-table .profile label { float: right; }
+
+#edit-table .profile .info {
+    margin-top: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #787878;
+}
+
+#edit-table .profile .btn-file-upload {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 16.5px 20px;
+    background-color: var(--bg-gray-basic);
+    color: #FFFFFF;
 }
 
 
