@@ -7,4 +7,6 @@ public interface AdminFAQService {
     public PageDTO<FAQDTO> selectAllFAQ(int cp, String sch) throws Exception;
     public FAQDTO selectOneFAQ(int idx) throws Exception;
     public int deleteOneFAQ(int idx) throws Exception;
+    public int updateOneFAQ(FAQDTO dto) throws Exception;
+    public int insertOneFAQ(FAQDTO dto) throws Exception;
 }

@@ -49,4 +49,19 @@
         delete from FAQ
         where number_idx = #{idx};
     </delete>
+
+    <!--FAQ 특정 게시글 수정하기-->
+    <update id="updateOneFAQ" parameterType="FAQDTO">
+        update FAQ
+        set title   = #{title},
+            content = #{content},
+            m_idx   = #{m_idx}
+        where number_idx = #{number_idx}
+    </update>
+
+    <!--FAQ 특정 게시글 등록하기-->
+    <insert id="insertOneFAQ" parameterType="FAQDTO">
+        insert into FAQ (title, content, m_idx, category_idx)
+            value (#{title}, #{content}, #{m_idx}, #{category_idx});
+    </insert>
 </mapper>

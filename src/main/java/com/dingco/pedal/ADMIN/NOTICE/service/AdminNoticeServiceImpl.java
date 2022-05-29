@@ -62,7 +62,7 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
     }
 
     /**
-     * NOTICE 특정 게시글 삭제
+     * NOTICE 특정 게시글 삭제 (DELETE)
      * @author 명지
      * @param idx : 게시글 번호
      * @throws Exception
@@ -70,5 +70,28 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
     @Override
     public int deleteOneNotice(int idx) throws Exception {
         return adminNoticeDAO.deleteOneNotice(idx);
+    }
+
+    /**
+     * NOTICE 특정 게시글 수정 (UPDATE)
+     * @author 명지
+     * @param dto : 게시글 dto
+     * @throws Exception
+     */
+    @Override
+    public int updateOneNotice(FAQDTO dto) throws Exception {
+        return adminNoticeDAO.updateOneNotice(dto);
+    }
+
+    /**
+     * NOTICE 특정 게시글 등록 (INSERT)
+     *
+     * @param dto : 게시글 dto
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int insertOneNotice(FAQDTO dto) throws Exception {
+        return adminNoticeDAO.insertOneNotice(dto);
     }
 }

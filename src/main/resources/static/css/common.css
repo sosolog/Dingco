@@ -3,25 +3,50 @@
 @import url('NanumSquareRound.css');
 @import url('TmoneyRoundWind.css');
 
-* {font-family: NanumSquare;}
+* {
+    font-family: NanumSquare;
+}
 
-a { text-decoration: none; cursor: pointer; }
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
 
-body { margin: 0; padding: 0; }
+body {
+    margin: 0;
+    padding: 0;
+}
 
-ul { list-style:none; margin: 0px auto; padding-inline-start: 0px; }
+ul {
+    list-style: none;
+    margin: 0px auto;
+    padding-inline-start: 0px;
+}
 
-li { display: inline-block; }
+li {
+    display: inline-block;
+}
 
-input { font-style: normal; border: none; }
+input {
+    font-style: normal;
+    border: none;
+}
 
-input:focus { outline: none; }
+input:focus {
+    outline: none;
+}
 
-input[type=password] { font-family: NanumSquareRound; }
+input[type=password] {
+    font-family: NanumSquareRound;
+}
 
-.reset { padding:0px; margin:0px; clear: both; }
+.reset {
+    padding: 0px;
+    margin: 0px;
+    clear: both;
+}
 
-select{
+select {
     width: 100%;
     border: 0.5px solid #818386;
     margin-top: 16px;
@@ -39,7 +64,7 @@ select{
 }
 
 /* IE 기본 스타일 제거 */
-select::-ms-expand{
+select::-ms-expand {
     display: none; /* IE 10, 11 */
 }
 
@@ -84,9 +109,13 @@ header .ico_lt .cancel span {
     display: inline-block;
 }
 
-header .ico_lt { left: 30px; }
+header .ico_lt {
+    left: 30px;
+}
 
-header .ico_rt { right: 40px; }
+header .ico_rt {
+    right: 40px;
+}
 
 header .ico_rt .write {
     display: inline-block;
@@ -131,9 +160,13 @@ header .ico_rt .save span {
 }
 
 
-header .title { text-align: center; }
+header .title {
+    text-align: center;
+}
 
-header .title .headerLogo { display: inline-block; }
+header .title .headerLogo {
+    display: inline-block;
+}
 
 header .title .headerLogo span {
     font-family: TmoneyRoundWind;
@@ -143,7 +176,9 @@ header .title .headerLogo span {
     letter-spacing: -3px;
 }
 
-header .title .headerText { display: inline-block; }
+header .title .headerText {
+    display: inline-block;
+}
 
 header .title .headerText span {
     display: block;
@@ -156,8 +191,12 @@ header .title .headerText span {
 
 /* main */
 #main {
-    padding: 600px 0px;
+    padding: 95px 0px;
     text-align: center;
+}
+
+#main .unlogin {
+    padding-top: 505px;
 }
 
 #main .unlogin .info {
@@ -176,11 +215,555 @@ header .title .headerText span {
 }
 
 #main .unlogin a span {
-    display:inline-block;
+    display: inline-block;
     color: #ffffff;
     font-weight: 700;
     font-size: 20px;
     letter-spacing: 0.2px;
+}
+
+#main #payRoomList {
+    padding: 70px 45px;
+    text-align: left;
+}
+
+#main #payRoomList .list_top {
+    padding: 20px 15px;
+    border-bottom: 5px solid #4677DE;
+}
+
+#main #payRoomList .list_top .tit {
+    font-size: 25px;
+    font-weight: 900;
+    color: #4677DE;
+}
+
+#main #payRoomList .list_top .btn-add-room {
+    float: right;
+}
+
+#main #payRoomList .wrap_payRoom {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(210, 210, 210, 0.8);
+}
+
+#main #payRoomList .wrap_payRoom .box {
+    display: block;
+}
+
+#main #payRoomList .wrap_payRoom .tit {
+    font-size: 24px;
+    color: #4E4E4E;
+}
+
+#main #payRoomList .wrap_payRoom .date {
+    font-size: 20px;
+    color: #7D7D7D;
+    float: right;
+}
+
+#main #payRoomList .list_bottom {
+    border-top: 2px solid #717274;
+    padding: 15px 10px;
+}
+
+#main #payRoomList .list_bottom a {
+    float: right;
+}
+
+#main #payRoomList .list_bottom span {
+    text-decoration: underline;
+    font-weight: 900;
+    font-size: 24px;
+    color: #444444;
+}
+
+/**** modal (초기 방 생성 팝업창) ****/
+
+.modal {
+    z-index: 150;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal.show {
+    display: block;
+}
+
+.modal_body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    padding: 30px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+
+.modal .modal_body .top {
+    padding-bottom: 20px;
+}
+
+.modal .modal_body .top .tit {
+    display: inline-block;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.modal .modal_body .top a {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 50px;
+    height: 50px;
+}
+
+.modal .modal_body .top img {
+    width: 100%;
+}
+
+.modal .modal_body .input_box .one_box {
+    padding: 15px 0px;
+}
+
+.modal .modal_body .input_box span {
+    display: inline-block;
+    margin-right: 10px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 500;
+    color: #414142;
+}
+
+.modal .modal_body .input_box input {
+    border-bottom: 1px solid #4E4E4E;
+    font-size: 18px;
+    padding: 0px 10px 10px;
+}
+
+.modal .modal_body .input_box .room_name {
+    width: 80%;
+}
+
+.modal .modal_body .input_box .room_member {
+    width: 73%;
+}
+
+.modal .modal_body .input_box .one_box a {
+    position: absolute;
+    margin-left: 10px;
+    width: 26px;
+    height: 26px;
+}
+
+.modal .modal_body .input_box .one_box a img {
+    width: 100%;
+}
+
+.modal .modal_body .input_box .memberList {
+    padding: 20px 0px;
+}
+
+.modal .modal_body .result_payRoom {
+    display: inline-block;
+    padding-bottom: 15px;
+    color: #E74133;
+    font-size: 17px;
+}
+
+.modal .modal_body .btn-create-room {
+    display: block;
+    border: 1px solid #4677DE;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.modal .modal_body .btn-create-room span {
+    font-size: 20px;
+    color: #4677DE;
+    display: inline-block;
+}
+
+/* 결제목록 추가 modal */
+.modal .modal_body .room_tit {
+    padding: 10px 0px;
+}
+
+.modal .modal_body .room_tit input {
+    font-size: 22px;
+    font-weight: 700;
+    color: #646464;
+    padding: 5px 0px;
+    width: 93%;
+}
+
+.modal .modal_body .room_tit a {
+    position: absolute;
+}
+
+.modal .modal_body table, thead, tbody {
+    width: 100%;
+    text-align: center;
+    border-top: 5px solid #646464;
+}
+
+.modal .modal_body thead th {
+    padding: 10px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.modal .modal_body thead th span {
+    font-size: 20px;
+    color: #646464;
+    font-weight: 500;
+}
+
+.modal .modal_body tbody td {
+    padding: 10px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.modal .modal_body tbody td span {
+    font-size: 20px;
+    color: #646464;
+    font-weight: 500;
+}
+
+.modal .modal_body table select {
+    padding: 10px;
+    font-size: 17px !important;
+    width: 80%;
+    margin-top: 0px;
+}
+
+.modal .modal_body table input {
+    font-size: 18px;
+    padding: 10px 0px;
+    border-bottom: 1px solid rgba(210, 210, 210, 0.5);
+}
+
+.modal .modal_body .calInfo {
+    padding: 10px 0px;
+}
+
+.modal .modal_body .calInfo input {
+    width: 80.5%;
+    border-bottom: 1px solid #4E4E4E;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.modal .modal_body .box {
+    margin: 10px 0px;
+}
+
+.modal .modal_body .box span {
+    display: inline-block;
+    font-weight: 500;
+    font-size: 20px;
+    color: #4E4E4E;
+    padding: 15px 0px;
+    width: 90px;
+}
+
+.modal .modal_body .btn-save {
+    margin: 10px 0px;
+    display: block;
+    padding: 20px;
+    border: 1px solid #4677DE;
+    text-align: center;
+}
+
+.modal .modal_body .btn-save {
+    font-size: 20px;
+    color: #4677DE;
+}
+
+.modal .modal_body .btn-show-result {
+    margin: 10px 0px;
+    display: block;
+    padding: 20px;
+    background-color: #4677DE;
+    border: 1px solid #4677DE;
+    text-align: center;
+}
+
+.modal .modal_body .btn-show-result {
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+.modal .modal_body .box select {
+    width: 84%;
+    padding: 10px;
+    font-size: 18px !important;
+}
+
+
+/**** second_modal ****/
+.second_modal {
+    z-index: 150;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.second_modal.show {
+    display: block;
+}
+
+.second_modal .modal_body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    padding: 30px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.second_modal .modal_body .top {
+    padding-bottom: 20px;
+}
+
+.second_modal .modal_body .top .tit {
+    display: inline-block;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.second_modal .modal_body .top a {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 50px;
+    height: 50px;
+}
+
+.second_modal .modal_body .top img {
+    width: 100%;
+}
+
+.second_modal .modal_body .room_tit {
+    padding: 10px 0px;
+}
+
+.second_modal .modal_body .room_tit input {
+    font-size: 22px;
+    font-weight: 700;
+    color: #646464;
+    padding: 5px 0px;
+    width: 93%;
+}
+
+.second_modal .modal_body .room_tit a {
+    position: absolute;
+}
+
+.second_modal .modal_body table, thead, tbody {
+    width: 100%;
+    text-align: center;
+    border-top: 5px solid #646464;
+}
+
+.second_modal .modal_body thead th {
+    padding: 10px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.second_modal .modal_body thead th span {
+    font-size: 20px;
+    color: #646464;
+    font-weight: 500;
+}
+
+.second_modal .modal_body tbody td {
+    padding: 10px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.second_modal .modal_body tbody td span {
+    font-size: 20px;
+    color: #646464;
+    font-weight: 500;
+}
+
+.second_modal .modal_body .calInfo {
+    padding: 10px 0px;
+}
+
+.second_modal .modal_body .calInfo input {
+    width: 80.5%;
+    border-bottom: 1px solid #4E4E4E;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.second_modal .modal_body .box {
+    margin: 10px 0px;
+}
+
+.second_modal .modal_body .box span {
+    display: inline-block;
+    font-weight: 500;
+    font-size: 20px;
+    color: #4E4E4E;
+    padding: 15px 0px;
+    width: 90px;
+}
+
+.second_modal .modal_body .btn-edit {
+    margin: 10px 0px;
+    display: block;
+    padding: 20px;
+    border: 1px solid #4677DE;
+    text-align: center;
+}
+
+.second_modal .modal_body .btn-edit span {
+    font-size: 20px;
+    color: #4677DE;
+}
+
+.second_modal .modal_body .btn-save {
+    margin: 10px 0px;
+    display: block;
+    padding: 20px;
+    background-color: #4677DE;
+    border: 1px solid #4677DE;
+    text-align: center;
+}
+
+.second_modal .modal_body .btn-save span {
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+
+/**** payRoom ****/
+#payRoom {
+    padding: 95px 45px;
+}
+
+#payRoom .roomInfo {
+    padding: 20px 0px;
+}
+
+#payRoom .roomInfo .room_tit {
+    border-bottom: 1px solid #C7C7C7;
+    padding: 20px 15px;
+}
+
+#payRoom .roomInfo .room_tit input {
+    font-size: 28px;
+    color: #646464;
+}
+
+#payRoom .roomInfo .room_member {
+    padding: 30px 0px 0px;
+}
+
+#payRoom .roomInfo .room_member span {
+    display: inline-block;
+    margin-right: 25px;
+    padding: 20px 0px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #646464;
+}
+
+#payRoom .roomInfo .room_member input {
+    width: 75%;
+    border-bottom: 1px solid #4E4E4E;
+    font-size: 20px;
+    padding: 15px;
+}
+
+#payRoom .roomInfo .room_member a {
+    position: absolute;
+    display: inline-block;
+    margin: 15px 15px 10px;
+}
+
+#payRoom .roomInfo .memberBox {
+    display: inline-block;
+    padding: 10px 10px 10px 90px;
+}
+
+#payRoom .roomInfo .memberBox span {
+    display: inline-block;
+    font-size: 18px;
+    color: #646464;
+    font-weight: 500;
+    padding: 0px 15px 0px 0px;
+}
+
+#payRoom .roomInfo .memberBox a {
+    display: inline-block;
+    position: absolute;
+    margin: -4px 0px 0px 4px;
+}
+
+#payRoom .payRoomList {
+    text-align: left;
+    padding-bottom: 50px;
+}
+
+#payRoom .payRoomList .list_top {
+    padding: 20px 15px;
+    border-bottom: 5px solid #646464;
+}
+
+#payRoom .payRoomList .list_top .tit {
+    font-size: 23px;
+    font-weight: 900;
+    color: #646464;
+}
+
+#payRoom .payRoomList .list_top .btn-add-room {
+    float: right;
+}
+
+#payRoom .payRoomList table, thead, tbody {
+    width: 100%;
+    text-align: center;
+}
+
+#payRoom .payRoomList thead th {
+    padding: 10px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+#payRoom .payRoomList thead th span {
+    font-size: 20px;
+    color: #646464;
+    font-weight: 500;
+}
+
+#payRoom .payRoomList tbody td {
+    padding: 10px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+#payRoom .payRoomList tbody td span {
+    font-size: 20px;
+    color: #646464;
+    font-weight: 500;
 }
 
 
@@ -197,7 +780,7 @@ header .title .headerText span {
 }
 
 #aside {
-    position:fixed;
+    position: fixed;
     left: -1000px;
     width: 80%;
     height: 1920px;
@@ -240,7 +823,7 @@ header .title .headerText span {
 }
 
 #aside .pro_box .text_box .top {
-    padding-top:12px;
+    padding-top: 12px;
 }
 
 #aside .pro_box .text_box .top span {
@@ -305,7 +888,9 @@ header .title .headerText span {
 }
 
 /* login */
-#login { padding-top:95px; }
+#login {
+    padding-top: 95px;
+}
 
 #login .logo {
     font-family: TmoneyRoundWind;
@@ -322,7 +907,7 @@ header .title .headerText span {
     padding: 30px 60px;
 }
 
-#login .loginForm .input_wrap input[type=text], input[type=password]{
+#login .loginForm .input_wrap input[type=text], input[type=password] {
     display: block;
     width: 90%;
     margin: 0px auto 30px;
@@ -340,7 +925,6 @@ header .title .headerText span {
     text-align: right;
     padding-bottom: 30px;
 }
-
 
 
 #login .options {
@@ -394,8 +978,8 @@ header .title .headerText span {
 }
 
 #mypage .profile .image {
-    width:210px;
-    height:210px;
+    width: 210px;
+    height: 210px;
     display: inline-block;
     overflow: hidden;
     border-radius: 100px;
@@ -407,9 +991,13 @@ header .title .headerText span {
     height: 100%;
 }
 
-#mypage .profile input[type=file] { display: none; }
+#mypage .profile input[type=file] {
+    display: none;
+}
 
-#mypage .profile label { display: block; }
+#mypage .profile label {
+    display: block;
+}
 
 #mypage .profile .tit {
     display: block;
@@ -459,17 +1047,17 @@ header .title .headerText span {
 }
 
 #mypage .join_table .item_box input[type=text] {
-     display: block;
-     overflow: hidden;
-     width: 90%;
-     height: 69px;
-     padding: 0 3%;
-     margin: 20px 0px;
-     font-size: 26px;
-     font-weight: 500;
-     color: #646464;
-     border-bottom: none;
- }
+    display: block;
+    overflow: hidden;
+    width: 90%;
+    height: 69px;
+    padding: 0 3%;
+    margin: 20px 0px;
+    font-size: 26px;
+    font-weight: 500;
+    color: #646464;
+    border-bottom: none;
+}
 
 #mypage .join_table .item_box input[type=password] {
     display: block;
@@ -501,7 +1089,7 @@ header .title .headerText span {
     color: #888888;
 }
 
-#mypage .join_table .td_email input[readonly=readonly]{
+#mypage .join_table .td_email input[readonly=readonly] {
     height: 69px;
     margin: 20px 0px;
     font-size: 26px;
@@ -523,7 +1111,7 @@ header .title .headerText span {
     font-size: 24px !important;
 }
 
-#mypage .join_table .td_email input[readonly=readonly]{
+#mypage .join_table .td_email input[readonly=readonly] {
     display: inline-block;
     width: 39% !important;
     overflow: hidden !important;
@@ -559,8 +1147,8 @@ header .title .headerText span {
 }
 
 #join .profile .image {
-    width:210px;
-    height:210px;
+    width: 210px;
+    height: 210px;
     display: inline-block;
     overflow: hidden;
     border-radius: 100px;
@@ -572,9 +1160,13 @@ header .title .headerText span {
     height: 100%;
 }
 
-#join .profile input[type=file] { display: none; }
+#join .profile input[type=file] {
+    display: none;
+}
 
-#join .profile label { display: block; }
+#join .profile label {
+    display: block;
+}
 
 #join .profile .tit {
     display: block;
@@ -685,7 +1277,7 @@ header .title .headerText span {
     color: #507FE2;
 }
 
-#join .join_table .td_email input[type=text]{
+#join .join_table .td_email input[type=text] {
     height: 69px;
     margin: 20px 0px 0px;
     font-size: 26px;
@@ -767,7 +1359,7 @@ header .title .headerText span {
     font-size: 24px !important;
 }
 
-#findUserid .join_table .td_email input[type=text]{
+#findUserid .join_table .td_email input[type=text] {
     height: 69px;
     margin: 0px;
     font-size: 26px;
@@ -864,7 +1456,7 @@ header .title .headerText span {
     border-bottom: none;
 }
 
-#findPasswd .join_table .td_email input[type=text]{
+#findPasswd .join_table .td_email input[type=text] {
     height: 69px;
     margin: 20px 0px 0px;
     font-size: 26px;
@@ -936,7 +1528,7 @@ header .title .headerText span {
     position: absolute;
     top: 10px;
     right: 20px;
-    background:url("/static/images/ico_search_02.png");
+    background: url("/static/images/ico_search_02.png");
 }
 
 #faqList .wrap_table {
@@ -1229,7 +1821,7 @@ header .title .headerText span {
 }
 
 #inquiryRetrieve .show-re-comment {
-    display:inline-block;
+    display: inline-block;
     padding: 10px 0px;
 }
 
@@ -1301,7 +1893,7 @@ header .title .headerText span {
 }
 
 
-    /* inquiryWrite */
+/* inquiryWrite */
 #inquiryWrite {
     padding: 120px 50px;
 }
@@ -1379,12 +1971,6 @@ header .title .headerText span {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-/* payRoomList */
-#payRoomList {
-    position: fixed;
-    padding: 100px 100px;
 }
 
 

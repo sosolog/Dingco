@@ -25,13 +25,13 @@
     <link rel="stylesheet" type="text/css" href="/ADMIN/css/common.css" />
     <%--<link rel="preconnect" href="https://fonts.gstatic.com">--%>
 
-    <script type="text/javascript" src="/ADMIN/script/jquery-3.6.0.js"></script>
+    <script type="text/javascript" src="/script/jquery-3.6.0.js"></script>
 
     <script type="text/javascript" src="/ADMIN/script/common.js"></script>
     <script type="text/javascript" src="/ADMIN/script/login.js"></script>
-    <script type="text/javascript" src="/ADMIN/script/member.js"></script>
+    <%--<script type="text/javascript" src="/ADMIN/script/member.js"></script>
     <script type="text/javascript" src="/ADMIN/script/board.js"></script>
-    <script type="text/javascript" src="/ADMIN/script/pay.js"></script>
+    <script type="text/javascript" src="/ADMIN/script/pay.js"></script>--%>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 

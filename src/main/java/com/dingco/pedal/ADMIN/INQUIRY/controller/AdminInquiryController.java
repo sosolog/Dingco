@@ -26,31 +26,47 @@ public class AdminInquiryController {
 
     /**
      * Inquiry 리스트 페이지
+     *
+     * @param cp       : 현재 페이지 / defaultValue = 1
+     * @param sch      : 찾을 문자열(검색 조건) / defaultValue = ""
+     * @param status   : 답변 여부 / defaultValue = ""
+     * @param category : 카테고리 / defaultValue = ""
      * @author 명지
-     * @param cp : 현재 페이지 / defaultValue = 1
-     * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
      */
     @GetMapping("/admin/inquiry")
-    public String adminInquiry(@RequestParam(value="pg", required = false, defaultValue = "1") String cp,
-                               @RequestParam(value="sch", required = false, defaultValue = "") String sch,
+    public String adminInquiry(@RequestParam(value = "pg", required = false, defaultValue = "1") String cp,
+                               @RequestParam(value = "sch", required = false, defaultValue = "") String sch,
+                               @RequestParam(value = "status", required = false, defaultValue = "") String status,
+                               @RequestParam(value = "category", required = false, defaultValue = "") String category,
                                Model model, HttpServletRequest request) throws Exception {
         String next = "/ADMIN/inquiryList";
 
-        PageDTO<InquiryDTO> pageDTO = adminInquiryService.selectAllInquiry(Integer.parseInt(cp), sch);
+        if (status.equals("Y")) {
+            status = "YET";
+        } else if (status.equals("D")) {
+            status = "DONE";
+        } else if (status.equals("R")) {
+            status = "RE_INQUIRY";
+        }
+
+        PageDTO<InquiryDTO> pageDTO = adminInquiryService.selectAllInquiry(Integer.parseInt(cp), sch, status, category);
         model.addAttribute("pageDTO", pageDTO);
         model.addAttribute("sch", sch);
+        model.addAttribute("status", status);
+        model.addAttribute("category", category);
 
         return next;
     }
 
     /**
      * Inquiry 답변 페이지
-     * @author 명지
+     *
      * @param idx : 문의번호
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/inquiry/edit")
-    public String adminUserEdit(@RequestParam(value="idx", required = true) String idx,
+    public String adminUserEdit(@RequestParam(value = "idx", required = true) String idx,
                                 @ModelAttribute("InquiryDTO") InquiryDTO dto, Model model) throws Exception {
         String next = "/ADMIN/inquiryEdit";
 

@@ -15,26 +15,22 @@
     </select>
 
     <select id="selectAllInquiry" resultType="InquiryDTO" parameterType="hashmap">
-        select t.i_idx, t.m_idx, t.category_id, t.title, t.content, t.upload_date, t.last_updated_date, t.i_idx2, t.status
+        select t.i_idx, t.m_idx, t.category_id, t.title, t.content, t.upload_date, t.last_updated_date, t.i_idx2, t.status, m.userid, m.username
         from (
-        select
-        inquiry_idx as i_idx,
-        m_idx,
-        category_id,
-        title,
-        content,
-        date_format(upload_date, "%m/%d") as upload_date,
-        date_format(last_updated_date, "%m/%d") as last_updated_date,
-        inquiry_idx2 as i_idx2,
-        case
-        when inquiry_idx2 is null then inquiry_idx
-        else inquiry_idx2
-        end as inq_group,
-        i_status as status
-        from INQUIRY
+            select inquiry_idx as i_idx, m_idx, category_id, title, content,
+            date_format(upload_date, "%m/%d") as upload_date, date_format(last_updated_date, "%m/%d") as last_updated_date, inquiry_idx2 as i_idx2,
+            case
+            when inquiry_idx2 is null then inquiry_idx
+            else inquiry_idx2
+            end as inq_group,
+            i_status as status
+            from INQUIRY
         ) t
+        left outer join MEMBER m on t.m_idx = m.m_idx
+        where t.status like concat('%', #{status}, '%')
+            and category_id like concat('%', #{category}, '%')
         <if test="sch != null">
-            where title like concat('%', #{sch}, '%')
+            and title like concat('%', #{sch}, '%')
         </if>
         order by inq_group desc, i_idx
         limit ${perPage} offset ${offset}

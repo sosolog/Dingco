@@ -15,9 +15,11 @@ public class AdminLoginDAO {
 
     /**
      * 로그인 - 비동기 정보 유무 체크
+     *
      * @param userid
      * @return 정보 null에 대한 true/false
      * @throws Exception
+     * @author 명지
      */
     public Optional<MemberDTO> selectByLoginId(String userid) throws Exception {
         return Optional.ofNullable(session.selectOne("admin.LoginMapper.selectByLoginId", userid));
