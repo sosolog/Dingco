@@ -419,6 +419,7 @@ function saveNewAccount(btn) {
     }
 }
 
+//+버튼을 누르면 입력행이 추가되고, 버튼은 -로 바뀜. 다시 누르면 입력행은 사라지고 +로 바뀜.
 function plusMinus(idInfoArr,btn) {
     if ($(idInfoArr[0]).length == 0) {
         btnDisabled(btn);
@@ -460,22 +461,27 @@ function plusMinus(idInfoArr,btn) {
 
     }
 
+    //계좌정보 수정버튼을 눌렀을 때 해당 부분에 속한 멤버 idx 를 ajax로 보내서 정보를 가져온 뒤 input text에 넣기
     function updateSaveAccount(btn) {
-        btnDisabled(btn);
-        var plusValid = $("#btn-account-plus").text();
+            btnDisabled(btn);
 
-            var prgm_idx = btn.parents("tr").find("#prgm_idx").val();
-            console.log(prgm_idx);
+            var prgm_idx = btn.parents("tr").find("#prgm_idx").val(); // btn의 조상 중 tr에 속한 멤버 idx
+            // console.log(prgm_idx);
+
 
             $.ajax({
-                url: `/pay/accountInfo/${prgm_idx}`,
+                url: `/pay/accountInfo/${prgm_idx}`, // PathVariable을 통해 idx를 전달할 예정
                 type: "GET",
                 success: function (data) {
-                    console.log(data);
-                    var accountInfo = JSON.parse(data);
-                    console.log(accountInfo);
+                    // console.log(data); // data = PayGroupMember에 있는 정보(account,bank 등)
+
+                    var accountInfo = JSON.parse(data); // PayRoomController에서 Json형태의 String으로 보내서 parse
+
+                    // console.log(accountInfo);
+
                     btn.parents("tr").html($("#account-form-tmpl").tmpl({accountInfo:accountInfo,accountIdx:0}));
-                },
+                    //account-form-tmpl에 정보를 보내고 accountIdx는 입력란으로 바꿔주는 0으로 설정
+                    },
                 error: function (x, i, e) {
                     console.log(e);
                 }
@@ -899,6 +905,7 @@ function putAccountAjax(prgm_idx, payMember_bank, payMember_account) {
         }
     })
 }
+//ajaxfind - ajax 함수 모음
 
 function showDutchPayResult() {
     saveDutchPayForm(success_fn=function(data){

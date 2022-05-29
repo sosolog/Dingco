@@ -45,14 +45,16 @@
             $("#accountList").html($("#account-form-tmpl").tmpl({pSave:groupMemberArr, accountIdx:1})); // 계좌번호 목록
             showDutchPayList(pr_idx) // 더치페이 목록
 
+            //esc 버튼 활성화 - 결제목록 닫기
+            $(document).keydown(function(event) {
+                if ( event.keyCode == 27 || event.which == 27 ) {
+                    closeDutchPayForm()
+                }
+            });
 
         });
 
-        $(document).keydown(function(event) {
-            if ( event.keyCode == 27 || event.which == 27 ) {
-                closeDutchPayForm()
-            }
-        });
+
 
 
     </script>
