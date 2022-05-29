@@ -24,12 +24,10 @@
   <tr class="list">
     <td class="idx"><span>{{= totalRecord - (curPage-1) * criteriaOfPage - index}}</span></td>
     <td class="title">
-      <a href="faq/\${dto.number_idx}">
         <span> \${dto.title} </span>
       </a>
     </td>
     <td class="writeday">
-      <a href="faq/\${dto.number_idx}">
         <span> \${dto.writeday} </span>
       </a>
     </td>
