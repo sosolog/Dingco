@@ -31,8 +31,7 @@ public class PayRoomController {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("pr_idx", pr_idx);
         map.put("m_idx", memberDTO.getM_idx());
-        PayRoomDTO payRoomDTO = payRoomService.selectPayRoomRetrieve
-                (map);
+        PayRoomDTO payRoomDTO = payRoomService.selectPayRoomRetrieve(map);
         System.out.println(payRoomDTO);
 
         String next = "";
@@ -51,8 +50,13 @@ public class PayRoomController {
     public String payRoomList(Model model,@Login MemberDTO memberDTO) throws Exception {
         int m_idx = memberDTO.getM_idx();
         List<PayRoomDTO> list = payRoomService.selectPayRoom(m_idx);
+        log.info("payRoomService.selectPayRoom(m_idx) = " + payRoomService.selectPayRoom(m_idx));
+
         ObjectMapper mapper = new ObjectMapper();
+
+        log.info("mapper = " + mapper);
         String payRoomJson = mapper.writeValueAsString(list);
+        log.info("payRoomJson = " + payRoomJson);
         model.addAttribute("payRoomList",payRoomJson);
 
         return "payRoomList";

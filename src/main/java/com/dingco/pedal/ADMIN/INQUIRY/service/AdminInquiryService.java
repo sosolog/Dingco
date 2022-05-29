@@ -7,6 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface AdminInquiryService {
-    public PageDTO<InquiryDTO> selectAllInquiry(int cp, String sch) throws Exception;
+    public PageDTO<InquiryDTO> selectAllInquiry(int cp, String sch, String status, String category) throws Exception;
     public InquiryDTO selectOneInquiry(int idx) throws Exception;
 }

@@ -47,6 +47,8 @@ public class FAQController {
         // 검색 조건에 맞는 데이터 조회(+페이징)
         PageDTO<FAQDTO> pageDTO = faqService.selectFAQSearchRecord(curPage, searchKey);
 
+        log.info("pageDTO = " + pageDTO);
+
         return pageDTO;
     }
 

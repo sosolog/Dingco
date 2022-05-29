@@ -22,15 +22,16 @@ public class AdminMemberController {
 
     /**
      * 사용자 리스트 페이지
-     * @author 명지
-     * @param cp : 현재 페이지 / defaultValue = 1
+     *
+     * @param cp  : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/member/user")
     public String adminUser(@RequestParam(value = "pg", required = false, defaultValue = "1") String cp,
-                             @RequestParam(value = "sch", required = false, defaultValue= "") String sch,
-                             HttpServletRequest request, Model model) throws Exception {
+                            @RequestParam(value = "sch", required = false, defaultValue = "") String sch,
+                            HttpServletRequest request, Model model) throws Exception {
         String next = "/ADMIN/userList";
 
         PageDTO<MemberDTO> pageDTO = adminMemberService.selectAllUser(Integer.parseInt(cp), sch);
@@ -42,15 +43,16 @@ public class AdminMemberController {
 
     /**
      * 관리자 리스트 페이지 (adminList)
-     * @author 명지
-     * @param cp : 현재 페이지 / defaultValue = 1
+     *
+     * @param cp  : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/member/admin")
-    public String adminAdmin(@RequestParam(value="pg", required = false, defaultValue = "1") String cp,
-                                 @RequestParam(value="sch", required = false, defaultValue = "") String sch,
-                                 HttpServletRequest request, Model model) throws Exception {
+    public String adminAdmin(@RequestParam(value = "pg", required = false, defaultValue = "1") String cp,
+                             @RequestParam(value = "sch", required = false, defaultValue = "") String sch,
+                             HttpServletRequest request, Model model) throws Exception {
         String next = "/ADMIN/adminList";
 
         PageDTO<MemberDTO> pageDTO = adminMemberService.selectAllAdmin(Integer.parseInt(cp), sch);
@@ -62,12 +64,13 @@ public class AdminMemberController {
 
     /**
      * 사용자 정보 수정 및 등록 페이지
-     * @author 명지
+     *
      * @param idx : 회원번호 / defaultValue = ""
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/member/user/edit")
-    public String adminUserEdit(@RequestParam(value="idx", required = false, defaultValue= "") String idx,
+    public String adminUserEdit(@RequestParam(value = "idx", required = false, defaultValue = "") String idx,
                                 @ModelAttribute("MemberDTO") MemberDTO dto, Model model) throws Exception {
         String next = "/ADMIN/userEdit";
 
@@ -83,13 +86,14 @@ public class AdminMemberController {
 
     /**
      * 관리자 정보 수정 및 등록 페이지
-     * @author 명지
+     *
      * @param idx : 회원번호 / defaultValue = ""
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/member/admin/edit")
-    public String adminAdminEdit(@RequestParam(value="idx", required = false, defaultValue= "") String idx,
-                                @ModelAttribute("MemberDTO") MemberDTO dto, Model model) throws Exception {
+    public String adminAdminEdit(@RequestParam(value = "idx", required = false, defaultValue = "") String idx,
+                                 @ModelAttribute("MemberDTO") MemberDTO dto, Model model) throws Exception {
         String next = "/ADMIN/adminEdit";
 
         // 수정 모드
@@ -104,13 +108,14 @@ public class AdminMemberController {
 
     /**
      * Member 특정 회원 삭제
-     * @author 명지
+     *
      * @param idx : 회원 번호
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/member/delete")
-    public String adminMemberDelete(@RequestParam(value="idx", required = true) String idx,
-                                    @RequestParam(value="role", required = true) String role) throws Exception {
+    public String adminMemberDelete(@RequestParam(value = "idx", required = true) String idx,
+                                    @RequestParam(value = "role", required = true) String role) throws Exception {
         String next = "/admin/member/";
         next += role.equals("ADMIN") ? "admin" : "user";
 
