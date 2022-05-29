@@ -1,8 +1,8 @@
 package com.dingco.pedal.controller;
 
 import com.dingco.pedal.annotation.Login;
-import com.dingco.pedal.dto.LoginDTO;
 import com.dingco.pedal.dto.MemberDTO;
+import com.dingco.pedal.dto.PayGroupMemberDTO;
 import com.dingco.pedal.dto.PayRoomDTO;
 import com.dingco.pedal.service.PayRoomService;
 import com.dingco.pedal.session.SessionConst;
@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -33,6 +34,7 @@ public class MainController {
             return "/main";
         }else{
             int m_idx = memberDTO.getM_idx();
+
             List<PayRoomDTO> list = payRoomService.selectPayRoom(m_idx);
             ObjectMapper mapper = new ObjectMapper();
             String payRoomJson = mapper.writeValueAsString(list);

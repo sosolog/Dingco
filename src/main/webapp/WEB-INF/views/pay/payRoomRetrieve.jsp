@@ -360,18 +360,18 @@
 
 <script type="text/html" id="pay-result-tmpl">
     {{each(index, result) resultList}}
-    <tr>
+    <tr class="tmpl_class">
         <td>
-            <input type="text" id="pay-result-sender" style="width: 80px" value="{{= sender.payMember_name }}" readonly>
+            <input type="text" id="pay-result-sender" class="pay-result-sender-class" style="width: 80px" value="{{= sender.payMember_name }}" readonly>
         </td>
         <td>
-            <input type="text" id="pay-result-recipient" style="width: 80px" value="{{= recipient.payMember_name }}" readonly>
+            <input type="text" id="pay-result-recipient" class="pay-result-recipient-class" style="width: 80px" value="{{= recipient.payMember_name }}" readonly>
         </td>
         <td>
-            <input type="text" id="pay-result-amount" value="{{= comma(amount)}}" readonly>
+            <input type="text" id="pay-result-amount" class="pay-result-amount-class" value="{{= comma(amount)}}" readonly>
         </td>
         <td>
-            <input type="checkbox" id="pay-result-paid" onchange="changePaidStatus(this, {{= index}})" {{= paid ? 'checked' : ''}} >
+            <input type="checkbox" id="pay-result-paid" class="pay-result-paid-class" onchange="changePaidStatus(this, {{= index}})" {{= paid ? 'checked' : ''}} >
         </td>
     </tr>
     {{/each}}
@@ -380,9 +380,9 @@
     {{each(index, p) pSave}}
     {{if p.payMember_account != null}}
     <tr style="color: #888888">
-        <td>\${p.payMember_bank}</td>
-        <td>\${p.payMember_account}</td>
-        <td>\${p.payMember_name}</td>
+        <td class="account-form-tmpl-bank">\${p.payMember_bank}</td>
+        <td class="account-form-tmpl-account">\${p.payMember_account}</td>
+        <td class="account-form-tmpl-name">\${p.payMember_name}</td>
     </tr>
     {{/if}}
     {{/each}}
