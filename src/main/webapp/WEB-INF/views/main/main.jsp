@@ -35,6 +35,7 @@
    </span>
     {{/each}}
 </script>
+
 <script type="text/html" id="payRoom-list-tmpl">
     {{each(index, p) pList}}
     <div>

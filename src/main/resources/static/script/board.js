@@ -441,7 +441,8 @@ function getFAQList(page = 1, searchKey, success_fn = resetfaqList){
  * @param data : 비동기 통신 ajax를 통해서 페이징 처리된 레코드 데이터
  */
 function resetfaqList(data) {
-
+    console.log("렌더링 데이터");
+    console.log(data);
     $("#faqList").html($("#faq-list-tmpl").tmpl(data));
 }
 
@@ -451,6 +452,8 @@ function resetfaqList(data) {
  * @param data : 비동기 통신 ajax를 통해서 추가 레코드 데이터
  */
 function appendfaqList(data) {
+    console.log("추가 데이터");
+    console.log(data);
     $("#faq-list-tmpl").tmpl(data).appendTo("#faqList");
 
 }
