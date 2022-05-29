@@ -1,79 +1,82 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<script type="text/javascript"  src="/script/jquery.tmpl.js"></script>
-<script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
-
-<style>
-    .modal {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        display: none; background-color: rgba(0, 0, 0, 0.4);
-    }
-    .modal.show { display: block; }
-    .modal_body {
-        position: absolute; top: 50%; left: 50%; width: 400px; height: 600px;
-        padding: 40px; text-align: center; background-color: rgb(255, 255, 255);
-        border-radius: 10px; box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-        transform: translateX(-50%) translateY(-50%);
-    }
-</style>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<script type="text/javascript" src="/script/jquery.tmpl.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
 
 <script>
     moment.locale('ko');
     let memberArr = [];
     let payRoomArr = ${payRoomList};
 
-    $(document).ready(function() {
-        $("#payRoomList_data").html($("#payRoom-list-tmpl").tmpl({pList:payRoomArr}));
+    $(document).ready(function () {
+        $("#payRoomList_data").html($("#payRoom-list-tmpl").tmpl({pList: payRoomArr}));
     });
 </script>
+
 <!-- 방생성 modal member 명단 template-->
 <script type="text/html" id="member-list-tmpl">
     {{each(index, m) mList}}
     <span id="mList_\${index}">
         \${m}<button data-idx="\${index}" onclick="deleteMemberDuringCreatingPayRoom(this)">X</button>
-   </span>
+    </span>
     {{/each}}
 </script>
+
+<!--더치페이 리스트 목록 템플릿-->
 <script type="text/html" id="payRoom-list-tmpl">
     {{each(index, p) pList}}
-    <div>
-        <a id="pList_\${index}" href="/pay/\${p.pr_idx}">
-            \${p.room_name}
+    <div class="wrap_payRoom">
+        <a class="box" id="pList_\${index}" href="/pay/\${p.pr_idx}">
+            <span class="tit">\${p.room_name}</span>
+            <span class="date">\${p.create_date}</span>
         </a>
-        <span>
-        \${p.create_date}
-   </span>
     </div>
     {{/each}}
 </script>
 
 
 <div id="main">
-<c:if test="${loginMember == null}">
-    <div class="unlogin">
-        <span class="info">로그인 후 이용해 주세요</span>
-        <a href="/login"><span>로그인</span></a>
-    </div>
-</c:if>
-<c:if test="${loginMember != null}">
-    <div id="payRoomList">
-        <div>진행 중인 더치페이</div>
-        <button onclick="openPayRoomForm()">방생성</button>
-        <hr>
-        <div id="payRoomList_data"></div>
-        <div class="modal">
-            <div class="modal_body">
-                <button onclick="closePayRoomForm()">X</button>
-                <hr>
-                방이름 : <input type="text" name="room_name" id="room_name"><br>
-                방멤버 : <input type="text" name="groupMember" id="groupMember"><button onclick="memberList()">추가</button><br>
-                <div id="memberList"></div>
-                <span id="result_payRoom" style="color: red"></span><br>
-                <button onclick="payRoomInfo()">방생성</button>
+    <c:if test="${loginMember == null}">
+        <div class="unlogin">
+            <span class="info">로그인 후 이용해 주세요</span>
+            <a href="/login"><span>로그인</span></a>
+        </div>
+    </c:if>
+    <c:if test="${loginMember != null}">
+        <div id="payRoomList">
+            <div class="list_top">
+                <span class="tit">진행 중인 더치페이</span>
+                <a class="btn-add-room" onclick="openPayRoomForm()"><img src="/images/ico_add_room.png"></a>
+            </div>
+            <div id="payRoomList_data"></div>
+            <div class="list_bottom">
+                <a><span>더보기</span></a>
+            </div>
+
+
+            <div class="modal">
+                <div class="modal_body">
+                    <div class="top">
+                        <span class="tit">방 만들기</span>
+                        <a onclick="closePayRoomForm()"><img src="/images/ico_close.png"></a>
+                    </div>
+                    <div class="input_box">
+                        <div class="one_box">
+                            <span>방 이름</span>
+                            <input type="text" class="room_name" name="room_name" id="room_name">
+                        </div>
+                        <div class="one_box">
+                            <span>방 멤버</span>
+                            <input type="text" class="room_member" name="groupMember" id="groupMember">
+                            <a onclick="memberList()"><img src="/images/btn-add-member.png"></a>
+                        </div>
+                        <div class="memberList" id="memberList"></div>
+                    </div>
+                    <span class="result_payRoom" id="result_payRoom"></span>
+                    <a class="btn-create-room" onclick="payRoomInfo()"><span>방생성</span></a>
+                </div>
             </div>
         </div>
-    </div>
-</c:if>
+    </c:if>
 </div>
 
