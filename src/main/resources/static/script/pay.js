@@ -23,7 +23,7 @@ function deleteMemberDuringCreatingPayRoom(btn){
     let index = $(btn).attr("data-idx");
 
     memberArr.splice(index,1); // memberArr 에서 member 삭제
-    $(this).parent().remove(); // html에서 해당 member span 태그 삭제
+    $(btn).parent().remove(); // html에서 해당 member span 태그 삭제
 }
 
 // 방생성 중 memberList에 member 추가
