@@ -26,9 +26,10 @@ public class AdminFAQServiceImpl implements AdminFAQService {
     /**
      * FAQ 전체 게시글 가져오기
      * DB에서 데이터 가져온 다음 PageDTO 객체를 이용하여 페이징 처리
-     * @author 명지
-     * @param cp : 현재 페이지 / defaultValue = 1
+     *
+     * @param cp  : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
+     * @author 명지
      */
 
     @Override
@@ -54,8 +55,9 @@ public class AdminFAQServiceImpl implements AdminFAQService {
 
     /**
      * FAQ 특정 게시글 가져오기
-     * @author 명지
+     *
      * @param idx : 게시글 번호
+     * @author 명지
      */
     @Override
     public FAQDTO selectOneFAQ(int idx) throws Exception {
@@ -63,13 +65,38 @@ public class AdminFAQServiceImpl implements AdminFAQService {
     }
 
     /**
-     * FAQ 특정 게시글 삭제
-     * @author 명지
+     * FAQ 특정 게시글 삭제 (DELETE)
+     *
      * @param idx : 게시글 번호
      * @throws Exception
+     * @author 명지
      */
     @Override
     public int deleteOneFAQ(int idx) throws Exception {
         return adminFAQDAO.deleteOneFAQ(idx);
+    }
+
+    /**
+     * FAQ 특정 게시글 수정 (UPDATE)
+     *
+     * @param dto : 게시글 dto
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int updateOneFAQ(FAQDTO dto) throws Exception {
+        return adminFAQDAO.updateOneFAQ(dto);
+    }
+
+    /**
+     * FAQ 특정 게시글 등록 (INSERT)
+     *
+     * @param dto : 게시글 dto
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int insertOneFAQ(FAQDTO dto) throws Exception {
+        return adminFAQDAO.insertOneFAQ(dto);
     }
 }

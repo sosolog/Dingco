@@ -9,23 +9,23 @@
         select count(*)
         from FAQ
         where category_idx = 1
-        <if test='sch != null'> and (title like CONCAT('%',#{sch},'%') or content like CONCAT('%',#{sch},'%')) </if>
+        <if test='sch != null'>and (title like CONCAT('%',#{sch},'%') or content like CONCAT('%',#{sch},'%'))</if>
         order by number_idx desc
     </select>
 
     <!--NOTICE 전체 게시글 가져오기-->
     <select id="selectAllNotice" parameterType="hashmap" resultType="FAQDTO">
         select f.number_idx,
-               f.m_idx,
-               f.title,
-               f.content,
-               f.readcnt,
-               date_format(f.writeday, '%Y-%m-%d') writeday,
-               m.userid
+        f.m_idx,
+        f.title,
+        f.content,
+        f.readcnt,
+        date_format(f.writeday, '%Y-%m-%d') writeday,
+        m.userid
         from FAQ f
-            left outer join MEMBER m on f.m_idx = m.m_idx
+        left outer join MEMBER m on f.m_idx = m.m_idx
         where f.category_idx = 1
-            <if test='sch != null'> and (f.title like CONCAT('%',#{sch},'%') or f.content like CONCAT('%',#{sch},'%')) </if>
+        <if test='sch != null'>and (f.title like CONCAT('%',#{sch},'%') or f.content like CONCAT('%',#{sch},'%'))</if>
         order by f.number_idx desc
         limit ${perPage} offset ${offset}
     </select>
@@ -39,13 +39,29 @@
                date_format(f.writeday, '%Y-%m-%d') writeday,
                f.readcnt
         from FAQ f
-            left outer join MEMBER m on f.m_idx = m.m_idx
+                 left outer join MEMBER m on f.m_idx = m.m_idx
         where f.number_idx = #{idx}
     </select>
 
     <!--NOTICE 특정 게시글 삭제하기-->
     <delete id="deleteOneNotice" parameterType="int">
-        delete from FAQ
+        delete
+        from FAQ
         where number_idx = #{idx};
     </delete>
+
+    <!--NOTICE 특정 게시글 수정하기-->
+    <update id="updateOneNotice" parameterType="FAQDTO">
+        update FAQ
+        set title   = #{title},
+            content = #{content},
+            m_idx   = #{m_idx}
+        where number_idx = #{number_idx}
+    </update>
+
+    <!--NOTICE 특정 게시글 등록하기-->
+    <insert id="insertOneNotice" parameterType="FAQDTO">
+        insert into FAQ (title, content, m_idx, category_idx)
+            value (#{title}, #{content}, #{m_idx}, #{category_idx});
+    </insert>
 </mapper>

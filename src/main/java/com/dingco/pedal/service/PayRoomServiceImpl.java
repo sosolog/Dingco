@@ -166,5 +166,13 @@ public class PayRoomServiceImpl implements PayRoomService {
         return dao.showDutchPayResultInfo(pr_idx, dp_idx);
     }
 
+    /**
+     * 테스트
+     */
+    @Override
+    public List<PayGroupMemberDTO> selectPayGroupMemberList(int pr_idx) {
+        return dao.selectPayGroupMemberList(pr_idx);
+    }
+
 
 }

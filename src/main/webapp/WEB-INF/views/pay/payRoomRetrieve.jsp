@@ -4,19 +4,6 @@
 <script type="text/javascript"  src="/script/jquery.tmpl.js"></script>
 <script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
 
-    <style>
-        .modal, .second_modal {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; background-color: rgba(0, 0, 0, 0.4);
-        }
-        .modal.show, .second_modal.show { display: block; }
-        .modal_body {
-            position: absolute; top: 50%; left: 50%; width: 400px; height: 600px;
-            padding: 40px; text-align: center; background-color: rgb(255, 255, 255);
-            border-radius: 10px; box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-            transform: translateX(-50%) translateY(-50%);
-        }
-    </style>
     <script>
         // 페이방 기본 정보
         let payRoom = ${payRoom};
@@ -39,7 +26,6 @@
         groupMemberArr.forEach( x => memberArr.push(x.payMeber_name));
 
         $(document).ready(function(){
-            console.log({pSave:groupMemberArr, accountIdx:1});
             // 페이방 정보 보여주기
             $("#room_name").val(room_name); // 페이방 이름
             $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr})); // 방 멤버 목록
@@ -54,17 +40,17 @@
                 closeDutchPayForm()
             }
         });
-
-
     </script>
 
     <!-- 방생성 modal member 명단 template-->
     <script type="text/html" id="member-list-tmpl">
-        {{each(index, m) mList}}
-            <span id="mList_\${index}" class="mList_\${index}" data-idx="\${m.prgm_idx}">
-            \${m.name}<button type="button" class="btn-member-delete" data-idx="\${index}" onclick="memberCheck($(this))">X</button>
-            </span>
-        {{/each}}
+        <div class="memberBox">
+            {{each(index, m) mList}}
+                <span id="mList_\${index}" class="mList_\${index}" data-idx="\${m.prgm_idx}">
+                \${m.name}<a class="btn-member-delete" data-idx="\${index}" onclick="memberCheck($(this))"><img src="/images/delete_member.png"></a>
+                </span>
+            {{/each}}
+        </div>
     </script>
 
     <script type="text/html" id="pay-form-tmpl">
@@ -120,117 +106,141 @@
         {{/each}}
     </script>
 
+    <!-- 더치페이 방 리스트 template -->
     <script type="text/html" id="show-dutch-list-tmpl">
         {{each(index, p) dList}}
         <tr>
-            <td>\${p.create_date}</td>
-            <td><a href="javascript:showDutchPayInfo(\${p.dp_idx})"> \${p.name}</a></td>
-            <td>\${p.total}</td>
-            <td>정산현황</td>
-            <td><button type="button" onclick="deleteOneDutchPay(\${p.dp_idx})">삭제</button></td>
+            <td><span>\${p.create_date}</span></td>
+            <td><a href="javascript:showDutchPayInfo(\${p.dp_idx})"><span>\${p.name}</span></a></td>
+            <td><span>\${p.total}</span></td>
+            <td><span>정산현황</span></td>
+            <td><a onclick="deleteOneDutchPay(\${p.dp_idx})"><span>삭제</span></a></td>
         </tr>
         {{/each}}
     </script>
 
-    <!-- 계좌번호 template-->
+    <!-- 계좌번호 template -->
     <script type="text/html" id="account-form-tmpl">
         <!-- 추가/수정 폼 -->
         {{if accountIdx == 0}}
-            <td>
-                <input type="hidden" value="{{= accountInfo ? accountInfo.prgm_idx : ''}}" id="saved-account-prgm_idx">
-                <input type="text" id="new-account-bank" style="width: 50px" value="{{= accountInfo ? accountInfo.bank : ''}}">
-            </td>
+            <td><input type="hidden" value="{{= accountInfo ? accountInfo.prgm_idx : ''}}" id="saved-account-prgm_idx">
+            <input type="text" id="new-account-bank" style="width: 50px" value="{{= accountInfo ? accountInfo.bank : ''}}"></td>
             <td><input type="text" id="new-account-number" style="width: 100px" value="{{= accountInfo ? accountInfo.account : ''}}"></td>
-            {{if accountInfo == null}} <!-- 추가 -->
-                <td>
-                    <select id="new-account-owner">
-                        {{each(index,p) pr}}
-                            {{if p.account == null}}
-                                <option class="new-account-selector" value="\${p.prgm_idx}">\${p.name}</option>
-                            {{/if}}
-                        {{/each}}
-                    </select>
-                </td>
-                <td>
-                    <button type="button" id="btn-update-account" onclick="saveNewAccount($(this))">저장</button>
-                </td>
-            {{/if}}
-            {{if accountInfo != null}} <!-- 수정 -->
-                <td>
+            <td>
+                {{if accountInfo == null}}<!-- 추가 -->
+                <select id="new-account-owner">
+                    {{each(index,p) pr}}
+                    {{if p.account == null}}
+                    <option class="new-account-selector" value="\${p.prgm_idx}">\${p.name}</option>
+                    {{/if}}
+                    {{/each}}
+                </select>
+            </td>
+            <td>
+                <button type="button" id="btn-update-account" onclick="saveNewAccount($(this))">저장</button>
+            </td>
+            <td>
+                {{/if}}
+                {{if accountInfo != null}} <!-- 수정 -->
                     <input readonly value="\${accountInfo.name}">
-                </td>
-                <td>
-                    <button type="button" id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button>
-                </td>
-            {{/if}}
+            </td>
+            <td>
+                <button type="button" id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button>
+            </td>
+                {{/if}}
         {{/if}}
         <!-- 계좌번호 목록 -->
         {{if accountIdx == 1}}
-            {{each(index, p) pSave}}
-                {{if p.account != null}}
-                    <tr style="color: #888888" class="save-account-form\${index}">
+        {{each(index, p) pSave}}
+        {{if p.account != null}}
+        <tr style="color: #888888" class="save-account-form\${index}">
 
-                        <td id="save-bank">\${p.bank}</td>
-                        <td id="save-number">\${p.account}</td>
-                        <td id="save-owner">\${p.name}</td>
-                        <td>
-                            <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
-                            <button type="button" id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
-                            <button type="button" id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>
-                        </td>
-                    </tr>
-                {{/if}}
-            {{/each}}
+            <td id="save-bank">\${p.bank}</td>
+            <td id="save-number">\${p.account}</td>
+            <td id="save-owner">\${p.name}</td>
+            <td>
+                <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
+                <button type="button" id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
+                <button type="button" id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>
+            </td>
+        </tr>
+        {{/if}}
+        {{/each}}
         {{/if}}
     </script>
 
-<h1>여기는 PAY방입니다</h1><br>
-    <button type="button" onclick="javascript:location.href='/pay/list'">취소</button>
-    <h2>Pedal</h2>
-<button>등록</button><br>
-방이름 : <input type="text" name="room_name" id="room_name" readonly><br>
-방멤버 : <input type="text" name="groupMember" id="groupMember" ><button type="button" onclick="memberListOne()">추가</button><br>
-<div id="memberList"></div>
-<button id="one-btn">1개만</button><button id="all-btn">여러개</button><br>
-<span>결제 목록</span><button onclick="openDutchPayForm()">추가</button><br>
-<table>
-    <thead>
-        <tr>
-            <th>결제일</th>
-            <th>제목</th>
-            <th>총 결제금액</th>
-            <th>정산현황</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="dutchList">
-    </tbody>
-</table>
+<!------------------- html ------------------->
 
-<span>계좌 목록</span><button type="button" id="btn-account-plus" onclick="createNewAccount($(this))">+</button><br>
-<table>
-    <thead>
-        <tr>
-            <th>은행</th>
-            <th>계좌번호</th>
-            <th>이름</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="accountList">
-    </tbody>
-</table>
+<%--<button>등록</button><br>--%>
+
+<div id="payRoom">
+
+
+
+    <div class="roomInfo">
+        <div class="room_tit"><input type="text" name="room_name" id="room_name" readonly></div>
+        <div class="room_member">
+            <span>참여자</span>
+            <input type="text" name="groupMember" id="groupMember">
+            <a onclick="memberListOne()"><img src="/images/btn-add-member.png"></a>
+        <div id="memberList"></div>
+        </div>
+    </div>
+
+    <div class="payRoomList">
+        <div class="list_top">
+            <span class="tit">결제 목록</span>
+            <a class="btn-add-room" onclick="openDutchPayForm()"><img src="/images/btn-add-member.png"></a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th><span>결제일</span></th>
+                <th><span>제목</span></th>
+                <th><span>총 결제금액</span></th>
+                <th><span>정산현황</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="dutchList"></tbody>
+        </table>
+    </div>
+
+
+
+    <div class="payRoomList">
+        <div class="list_top">
+            <span class="tit">계좌 목록</span>
+            <a class="btn-add-room" id="btn-account-plus" onclick="createNewAccount($(this))"><img src="/images/btn-add-member.png"></a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th><span>은행</span></th>
+                <th><span>계좌번호</span></th>
+                <th><span>이름</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="accountList">
+            </tbody>
+        </table>
+    </div>
+
+<!-- 결제 목록 추가하기 template -->
 <div class="modal">
     <div class="modal_body">
-        <button type="button" onclick="closeDutchPayForm()">X</button>
-        <button type="button" onclick="saveDutchPayForm()">저장</button>
+        <div class="top">
+            <span class="tit">편집하기</span>
+            <a onclick="closeDutchPayForm()"><img src="/images/ico_close.png"></a>
+        </div>
         <input type="hidden" id="retrieve-pay-id">
-        <hr>
-        편집하기<br>
 
-        <input type="text" id="pay_name" name="pay_name" placeholder="결제이름">
-            <button type="button" id="btn-pay-plus"onclick="return togglePayForm($(this))">+</button>
-        <br>
+        <div class="room_tit">
+            <input type="text" id="pay_name" name="pay_name" placeholder="결제이름">
+            <a id="btn-pay-plus"onclick="return togglePayForm($(this))"><img src="/images/btn-add-member.png"></a>
+        </div>
+
         <input type="hidden" id="is-pay-form-opened">
         <table>
             <thead>
@@ -249,26 +259,48 @@
 
             </tbody>
         </table>
-
-        총금액<input name="allPrice" id="allPrice" value="0" readonly><br>
-        절사옵션
-        <select name="cutPrice" id="cutPrice">
-            <option value="0" id="noCut" selected=true>없음</option>
-            <option value="10" >10원</option>
-            <option value="100">100원</option>
-            <option value="1000">1000원</option>
-        </select><br>
-        결제일<input type="date" name="pay-date" id="pay-date"><br>
-        마감일<input type="date" name="due-date" id="due-date"><br>
-        영수증<input type="text" name="bill" id="bill"><br>
-        <button type="button" onclick="showDutchPayResult()">결과 미리보기(정산하기)</button>
+        <div class="calInfo">
+            <div class="box">
+                <span>총 금액</span>
+                <input name="allPrice" id="allPrice" value="0" readonly>
+            </div>
+            <div class="box">
+                <span>절사 옵션</span>
+                <select name="cutPrice" id="cutPrice">
+                    <option value="0" id="noCut" selected=true>없음</option>
+                    <option value="10" >10원</option>
+                    <option value="100">100원</option>
+                    <option value="1000">1000원</option>
+                </select>
+                <div class="reset"></div>
+            </div>
+            <div class="box">
+                <span>결제일</span>
+                <input type="date" name="pay-date" id="pay-date">
+            </div>
+            <div class="box">
+                <span>마감일</span>
+                <input type="date" name="due-date" id="due-date">
+            </div>
+            <div class="box">
+                <span>영수증</span>
+                <input type="text" name="bill" id="bill">
+            </div>
+        </div>
+        <a class="btn-save" onclick="saveDutchPayForm()"><span>저장</span></a>
+        <a class="btn-show-result" onclick="showDutchPayResult()"><span>결과 미리보기(정산하기)</span></a>
     </div>
 </div>
+
+<!-- 결과 미리보기 화면 -->
 <div class="second_modal">
     <div class="modal_body">
-        <button type="button" onclick="closeDutchPayForm()">X</button>
-        <hr>
-        <span>결과보기</span><br>
+        <div class="top">
+            <span class="tit">결과보기</span>
+            <a onclick="closeDutchPayForm()"><img src="/images/ico_close.png"></a>
+        </div>
+        <%--<button type="button" onclick="closeDutchPayForm()">X</button>
+        <hr>--%>
         <span><input type="text" id="pay-name-last" name="pay_name" readonly></span>
         <!-- 정렬 하기 관련 ㅎㅎㅎ-->
         <table>
@@ -299,27 +331,42 @@
             </tbody>
         </table>
 
-        결제일<input type="date" name="pay-date" id="pay-date-last" readonly><br>
-        마감일<input type="date" name="due-date" id="due-date-last" readonly><br>
-        <button type="button" onclick="alert('공유 로직??')">공유</button>
-        <button type="button" onclick="getDutchPayInfo(getDp_idx())">수정하기</button><br>
-        <button type="button" onclick="saveDutchPayResult()">저장하기</button>
+        <div class="calInfo">
+            <div class="box">
+                <span>결제일</span>
+                <input type="date" name="pay-date" id="pay-date-last" readonly>
+            </div>
+            <div class="box">
+                <span>마감일</span>
+                <input type="date" name="due-date" id="due-date-last" readonly>
+            </div>
+        </div>
+
+        <a class="btn-edit" onclick="copyClipDutchPayInfo()"><span>공유하기</span></a>
+        <a class="btn-edit" onclick="getDutchPayInfo(getDp_idx())"><span>수정하기</span></a>
+        <a class="btn-save" onclick="saveDutchPayResult()"><span>저장하기</span></a>
     </div>
 </div>
+</div>
+
+
+<!------------------- html ------------------->
+
+
 <script type="text/html" id="pay-result-tmpl">
     {{each(index, result) resultList}}
-    <tr>
+    <tr class="tmpl_class">
         <td>
-            <input type="text" id="pay-result-sender" style="width: 80px" value="{{= sender.name }}" readonly>
+            <input type="text" id="pay-result-sender" class="pay-result-sender-class" style="width: 80px" value="{{= sender.name }}" readonly>
         </td>
         <td>
-            <input type="text" id="pay-result-recipient" style="width: 80px" value="{{= recipient.name }}" readonly>
+            <input type="text" id="pay-result-recipient" class="pay-result-recipient-class" style="width: 80px" value="{{= recipient.name }}" readonly>
         </td>
         <td>
-            <input type="text" id="pay-result-amount" value="{{= comma(amount)}}" readonly>
+            <input type="text" id="pay-result-amount" class="pay-result-amount-class" value="{{= comma(amount)}}" readonly>
         </td>
         <td>
-            <input type="checkbox" id="pay-result-paid" onchange="changePaidStatus(this, {{= index}})" {{= paid ? 'checked' : ''}} >
+            <input type="checkbox" id="pay-result-paid" class="pay-result-paid-class" onchange="changePaidStatus(this, {{= index}})" {{= paid ? 'checked' : ''}} >
         </td>
     </tr>
     {{/each}}
@@ -328,9 +375,9 @@
     {{each(index, p) pSave}}
     {{if p.account != null}}
     <tr style="color: #888888">
-        <td>\${p.bank}</td>
-        <td>\${p.account}</td>
-        <td>\${p.name}</td>
+        <td class="account-form-tmpl-bank">\${p.bank}</td>
+        <td class="account-form-tmpl-account">\${p.account}</td>
+        <td class="account-form-tmpl-name">\${p.name}</td>
     </tr>
     {{/if}}
     {{/each}}

@@ -4,10 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.config.PayRoomMapper">
 
+    <!-- m_idx에 맞는 페이방 가져오기 -->
     <select id="selectPayRoom" parameterType="int" resultType="PayRoomDTO">
-        select pr_idx, room_name, date_format(create_date,'%Y-%m-%d') as create_date
-        from PAYROOM
+        select pr.pr_idx, pr.m_idx, pr.room_name, date_format(pr.create_date,'%Y-%m-%d') as create_date
+        from PAYROOM pr
         where m_idx = #{m_idx}
+        order by create_date desc
+    </select>
+
+    <!-- m_idx에 맞는 페이방에 있는 멤버 가져오기-->
+    <select id="selectPayGroupMemberList" parameterType="int" resultType="String">
+        select pm.paymember_name
+        from PAYROOM pr
+                 left outer join PAYGROUPMEMBER pm on pr.pr_idx = pm.pr_idx
+        where pr.pr_idx = #{pr_idx}
         order by create_date desc
     </select>
 
@@ -23,6 +33,8 @@
 </foreach>
     </insert>
 
+    <!-- N+1 문제 조심 -->
+
     <resultMap id="payRoom" type="PayRoomDTO">
         <id property="pr_idx" column="pr_idx"></id>
         <result property="m_idx" column="m_idx"></result>
@@ -31,12 +43,12 @@
         <collection property="groupMemberList" column="pr_idx" javaType="java.util.ArrayList" ofType="PayGroupMemberDTO" select="selectPayRoomGroupMember">
         </collection>
     </resultMap>
-
     <select id="selectPayRoomGroupMember" resultType="PayGroupMemberDTO">
         select pr_idx, prgm_idx, PAYMEMBER_NAME, PAYMEMBER_ACCOUNT, PAYMEMBER_BANK
         from PAYGROUPMEMBER
         where PR_IDX = #{pr_idx}
     </select>
+
     <select id="selectPayRoomRetrieve" resultMap="payRoom" parameterType="hashmap">
         select pr_idx, m_idx, room_name, date_format(create_date,'%Y-%m-%d') as create_date
         from PAYROOM

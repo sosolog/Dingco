@@ -550,6 +550,53 @@ function plusMinus(idInfoArr,btn) {
         })
     }
 
+function copyClipDutchPayInfo() {
+    var clipText = '';
+
+    var pay_cnt = $('.pay-result-sender-class').length;
+    var senderList = $('.pay-result-sender-class');
+    var recipientList = $('.pay-result-recipient-class');
+    var amount = $('.pay-result-amount-class');
+    var paid = $('.pay-result-paid-class');
+
+    var bank_cnt = $('.account-form-tmpl-bank').length;
+    var bank = $('.account-form-tmpl-bank');
+    var account = $('.account-form-tmpl-account');
+    var name = $('.account-form-tmpl-name');
+
+
+    const header = $("#pay-name-last").val() + " 모임 정산 내용입니다.\n\n"
+
+    var content = "정산내용\n\n"
+
+    for (let i = 0; i < pay_cnt; i++) {
+        if($(paid[i]).prop("checked") == false) {
+            content += senderList[i].value + "님은 " + recipientList[i].value + "님에게 " + amount[i].value + "원 입금 부탁드립니다.\n";
+        }
+    }
+    content += "\n";
+
+    var footer = "계좌정보\n\n"
+
+    for (let i = 0; i < bank_cnt; i++) {
+        footer += $(name[i]).text() + "에게 보내실 분은 " + $(bank[i]).text() + $(account[i]).text() + "로 보내주세요.\n";
+    }
+    footer += "\n계좌가 없는 인원은 카카오톡으로 보내주세요.";
+
+
+    try {
+        clipText += header;
+        clipText += content;
+        clipText += footer;
+
+        navigator.clipboard.writeText(clipText).then(function () {
+            window.alert("클립보드로 복사되었습니다.")//클립보드로 복사
+        })
+    } catch (err) {
+        window.alert("복사할 수 없습니다. 에러코드는 다음과 같습니다." + err)//클립보드로 복사
+    }
+}
+
     function getDutchPayInfo(dp_idx) {
         $(".second_modal").removeClass("show");
         $.ajax({

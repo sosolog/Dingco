@@ -18,6 +18,7 @@
         <c:set var="email2" value="${memberDTO.email2}"/>
     </c:if>
     <c:set var="uploadFileName" value="${memberDTO.uploadFileName}"/>
+    <c:set var="storeFileName" value="${memberDTO.storeFileName}"/>
     <c:set var="joindate" value="${memberDTO.joindate}"/>
     <c:if test="${not empty memberDTO.kakao_idx}">
         <c:set var="isSNSUser" value="카카오 (ID: ${memberDTO.kakao_idx})"/>
@@ -51,7 +52,25 @@
                 </c:if>
                 <tr class="short-line">
                     <td>프로필 사진</td>
-                    <td><span>${uploadFileName}</span></td>
+                    <td>
+                        <span>
+                            <c:if test="${storeFileName == null}">등록된 이미지가 없습니다</c:if>
+                            <c:if test="${storeFileName != null}">${uploadFileName}</c:if>
+                        </span>
+                        <div class="profile">
+                            <!-- Original -->
+                            <input type="hidden" name="oUploadFileName" value="${uploadFileName}">
+                            <input type="hidden" name="oStoreFileName" value="${storeFileName}">
+                            <!-- New -->
+                            <label class="image" for="file"><a class="btn-file-upload">업로드</a></label>
+                            <div class="imagebox">
+                                <c:if test="${storeFileName == null}"><img id="preview" src="/images/join/profile_no_image.png"></c:if>
+                                <c:if test="${storeFileName != null}"><img id="preview" src="/files/member/${storeFileName}"></c:if>
+                            </div>
+                            <input id="file" name="file" type="file" accept=".gif, .jpg, .png, .bmp, .jpeg, .heic" onchange="imageFileSizeCheck('file')"/>
+                            <%--<span class="info">3MB 이내 (gif,jpg,png,bmp,jpeg,heic)</span>--%>
+                        </div>
+                    </td>
                 </tr>
                 <tr class="short-line">
                     <td>이름</td>
@@ -89,5 +108,5 @@
 
 <!--삭제 버튼-->
 <c:if test="${mode == '수정'}">
-    <a id="btn-delete" href="/admin/member/delete?idx=${m_idx}&role=USER"><img src="/images/admin/remove.png"></a>
+    <a id="btn-delete" href="/admin/member/delete?idx=${m_idx}&role=USER"><img src="/ADMIN/images/remove.png"></a>
 </c:if>

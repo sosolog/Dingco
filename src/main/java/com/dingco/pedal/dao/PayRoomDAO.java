@@ -1,6 +1,7 @@
 package com.dingco.pedal.dao;
 
 import com.dingco.pedal.dto.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Repository
 public class PayRoomDAO {
 
@@ -157,5 +159,10 @@ public class PayRoomDAO {
         return session.selectOne("com.config.PayRoomMapper.showDutchPayResultInDB", map);
     }
 
-
+    /**
+     * 테스트
+     */
+    public List<PayGroupMemberDTO> selectPayGroupMemberList(int pr_idx) {
+        return session.selectList("com.config.PayRoomMapper.selectPayGroupMemberList",pr_idx);
+    }
 }

@@ -8,7 +8,7 @@
     </div>
     <div id="search">
         <form action="/admin/member/admin" method="get" name="searchForm">
-            <a class="icon" onclick="adminSearch(searchForm)"><img src="/images/admin/search.png"></a>
+            <a class="icon" onclick="adminSearch(searchForm)"><img src="/ADMIN/images/search.png"></a>
             <input id="sch" name="sch" placeholder="이름 또는 아이디를 입력하세요" value="${sch}"
                    onKeypress="javascript:if(event.keyCode==13) {adminSearch(searchForm)}" autocomplete="off">
         </form>
@@ -39,7 +39,7 @@
                         <c:if test="${empty dto.email1}">-</c:if>
                     </td>
                     <td style="width: 10%">${dto.joindate}</td>
-                    <td style="width: 10%"><a class="edit" href="/admin/member/admin/edit?idx=${dto.m_idx}"><img src="/images/admin/edit.png"></a></td>
+                    <td style="width: 10%"><a class="edit" href="/admin/member/admin/edit?idx=${dto.m_idx}"><img src="/ADMIN/images/edit.png"></a></td>
                 </tr>
             </c:forEach>
             </tbody>

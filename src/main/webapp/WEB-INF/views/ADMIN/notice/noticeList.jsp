@@ -8,7 +8,7 @@
     </div>
     <div id="search">
         <form action="/admin/notice" method="get" name="searchForm">
-            <a class="icon" onclick="adminSearch(searchForm)"><img src="/images/admin/search.png"></a>
+            <a class="icon" onclick="adminSearch(searchForm)"><img src="/ADMIN/images/search.png"></a>
             <input id="sch" name="sch" placeholder="제목 또는 내용을 입력하세요" value="${sch}"
                    onKeypress="javascript:if(event.keyCode==13) {adminSearch(searchForm)}" autocomplete="off">
         </form>
@@ -32,7 +32,7 @@
                     <td style="width: 10%">${dto.userid}</td>
                     <td style="width: 15%">${dto.writeday}</td>
                     <td style="width: 5%"><a class="edit" href="/admin/notice/edit?idx=${dto.number_idx}"><img
-                            src="/images/admin/edit.png"></a></td>
+                            src="/ADMIN/images/edit.png"></a></td>
                 </tr>
             </c:forEach>
             </tbody>

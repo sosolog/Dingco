@@ -22,13 +22,14 @@ public class AdminFAQController {
 
     /**
      * FAQ 리스트 페이지 (faqList)
-     * @author 명지
-     * @param cp : 현재 페이지 / defaultValue = 1
+     *
+     * @param cp  : 현재 페이지 / defaultValue = 1
      * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
+     * @author 명지
      */
     @GetMapping("/admin/faq")
-    public String adminFAQ(@RequestParam(value="pg", required = false, defaultValue = "1") String cp,
-                           @RequestParam(value="sch", required = false, defaultValue = "") String sch,
+    public String adminFAQ(@RequestParam(value = "pg", required = false, defaultValue = "1") String cp,
+                           @RequestParam(value = "sch", required = false, defaultValue = "") String sch,
                            HttpServletRequest request, Model model) throws Exception {
         String next = "/ADMIN/faqList";
 
@@ -41,12 +42,13 @@ public class AdminFAQController {
 
     /**
      * FAQ 특정 게시글 가져오기
-     * @author 명지
+     *
      * @param idx : 게시글 번호 / defaultValue = ""
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/faq/edit")
-    public String adminFAQEdit(@RequestParam(value="idx", required = false, defaultValue = "") String idx,
+    public String adminFAQEdit(@RequestParam(value = "idx", required = false, defaultValue = "") String idx,
                                @ModelAttribute("FAQDTO") FAQDTO dto, Model model) throws Exception {
         String next = "/ADMIN/faqEdit";
 
@@ -62,12 +64,13 @@ public class AdminFAQController {
 
     /**
      * FAQ 특정 게시글 삭제
-     * @author 명지
+     *
      * @param idx : 게시글 번호
      * @throws Exception
+     * @author 명지
      */
     @GetMapping("/admin/faq/delete")
-    public String adminFAQDelete(@RequestParam(value="idx", required = true) String idx) throws Exception {
+    public String adminFAQDelete(@RequestParam(value = "idx", required = true) String idx) throws Exception {
         String next = "/admin/faq";
 
         adminFAQService.deleteOneFAQ(Integer.parseInt(idx));
@@ -75,4 +78,26 @@ public class AdminFAQController {
         return "redirect:" + next;
     }
 
+    /**
+     * FAQ 특정 게시글 등록/수정 (INSERT/UPDATE)
+     *
+     * @param mode : edit 모드 (insert/update)
+     * @param dto  : 게시글 정보 dto
+     * @throws Exception
+     * @author 명지
+     */
+    @PostMapping("/admin/faq/edit.action")
+    public String adminFAQEditAction(@RequestParam(value = "mode", required = true) String mode, FAQDTO dto) throws Exception {
+        String next = "";
+
+        if (mode.equals("update")) {
+            adminFAQService.updateOneFAQ(dto);
+            next = "/admin/faq/edit" + "?idx=" + dto.getNumber_idx();
+        } else if (mode.equals("insert")) {
+            adminFAQService.insertOneFAQ(dto);
+            next = "/admin/faq";
+        }
+
+        return "redirect:" + next;
+    }
 }
