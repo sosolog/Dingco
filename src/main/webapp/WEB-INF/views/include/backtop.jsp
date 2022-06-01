@@ -25,7 +25,7 @@
                 <a href="/main"><img src="/images/ico_back_01.png"></a>
             </div>
         </c:if>
-        <c:if test="${fn:contains(url, 'join') or fn:contains(url, 'oauth')}">
+        <c:if test="${fn:contains(url, 'join') or fn:contains(url, 'oauth') or fn:contains(url, 'callback') or fn:contains(url, '/login/kakao')}">
             <div class="ico_lt">
                 <a onclick="javascript:history.back()"><img src="/images/ico_back_01.png"></a>
             </div>
@@ -76,7 +76,5 @@
                 <a class="write" href="/inquiry/write"><span>등록</span></a>
             </div>
         </c:if>
-
-
     </header>
 </div>
