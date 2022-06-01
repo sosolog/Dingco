@@ -44,7 +44,7 @@
 
     <!-- 방생성 modal member 명단 template-->
     <script type="text/html" id="member-list-tmpl">
-        <div class="memberBox">
+        <div class="memberBox" style="display: inline-block;">
             {{each(index, m) mList}}
                 <span id="mList_\${index}" class="mList_\${index}" data-idx="\${m.prgm_idx}">
                 \${m.name}<a class="btn-member-delete" data-idx="\${index}" onclick="memberCheck($(this))"><img src="/images/delete_member.png"></a>
@@ -171,12 +171,7 @@
 
 <!------------------- html ------------------->
 
-<%--<button>등록</button><br>--%>
-
 <div id="payRoom">
-
-
-
     <div class="roomInfo">
         <div class="room_tit"><input type="text" name="room_name" id="room_name" readonly></div>
         <div class="room_member">

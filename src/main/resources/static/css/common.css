@@ -1990,3 +1990,9 @@ header .title .headerText span {
     color: #4677DE;
     font-weight: 700;
 }
+
+.btn-member-delete {
+    display: inline-block;
+    position: absolute;
+    margin: -4px 0px 0px 4px;
+}

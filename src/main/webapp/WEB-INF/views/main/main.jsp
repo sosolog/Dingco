@@ -16,9 +16,9 @@
 <!-- 방생성 modal member 명단 template-->
 <script type="text/html" id="member-list-tmpl">
     {{each(index, m) mList}}
-    <span id="mList_\${index}">
-        \${m}<button data-idx="\${index}" onclick="deleteMemberDuringCreatingPayRoom(this)">X</button>
-    </span>
+        <span id="mList_\${index}" style="display: inline-block; margin-right: 38px;">
+            \${m}<a class="btn-member-delete" data-idx="\${index}" onclick="deleteMemberDuringCreatingPayRoom(this)"><img src="/images/delete_member.png"></a>
+        </span>
     {{/each}}
 </script>
 
