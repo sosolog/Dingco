@@ -654,6 +654,26 @@ header .title .headerText span {
     color: #FFFFFF;
 }
 
+/**** 계좌 목록 추가 ****/
+.new-account-bank {
+    width: 70px;
+    font-size: 20px;
+    border-bottom: 1px solid rgba(210, 210, 210, 0.5);
+}
+
+.new-account-number {
+    width: 160px;
+    font-size: 20px;
+    border-bottom: 1px solid rgba(210, 210, 210, 0.5);
+}
+
+.new-account-owner {
+    margin-top: 0px;
+    width: 80%;
+    padding: 10px;
+    font-size: 18px !important;
+}
+
 
 /**** payRoom ****/
 #payRoom {
@@ -766,6 +786,18 @@ header .title .headerText span {
     font-weight: 500;
 }
 
+/* 결과보기 */
+.pay-result-sender-class, .pay-result-recipient-class, .pay-result-amount-class, .pay-result-paid-class {
+    font-size: 18px;
+    text-align: center;
+}
+
+.sub-tit {
+    display: inline-block;
+    padding: 20px 0px 10px;
+    font-size: 19px;
+    font-weight: 700;
+}
 
 /* #black */
 #aside-black {
@@ -1995,4 +2027,43 @@ header .title .headerText span {
     display: inline-block;
     position: absolute;
     margin: -4px 0px 0px 4px;
+}
+
+
+.btn-delete-pay, .btn-delete-account {
+    display: inline-block;
+    text-decoration: underline;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 0px;
+    color: #E74133;
+    margin: 0px 7px 0px 7px;
+}
+
+.btn-delete-account {
+    font-size: 18px;
+}
+
+.btn-update-pay, .btn-update-account {
+    display: inline-block;
+    text-decoration: underline;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 0px;
+    color: #414142;
+    margin: 0px 7px 0px 7px;
+}
+
+.btn-update-account {
+    font-size: 18px;
+}
+
+.btn-updated-account {
+    display: inline-block;
+    text-decoration: underline;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 0px;
+    color: #4677DE;
+    margin: 0px 7px 0px 7px;
 }
