@@ -25,7 +25,7 @@
                 <a href="/main"><img src="/images/ico_back_01.png"></a>
             </div>
         </c:if>
-        <c:if test="${fn:contains(url, 'join')}">
+        <c:if test="${fn:contains(url, 'join') or fn:contains(url, 'oauth')}">
             <div class="ico_lt">
                 <a onclick="javascript:history.back()"><img src="/images/ico_back_01.png"></a>
             </div>
