@@ -125,7 +125,7 @@ public class LoginController {
     @RequestMapping(value = "/login/kakao.action", method = RequestMethod.POST)
     public String kakaologinaction(@RequestParam Map<String, Object> memberDTO) throws Exception {
         mService.memberKakaoAdd(memberDTO);
-        return "redirect:login";
+        return "redirect:/login";
     }
 
     // 민욱 - 네이버 콜백

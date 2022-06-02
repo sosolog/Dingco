@@ -33,19 +33,30 @@
     }
 </script>
 
-<div id="reg-form" style="visibility: hidden">
+<div id="reg-form" style="visibility: hidden"></div>
 
-<h2>소셜 회원가입 페이지</h2>
-<br>
+<div id="join">
 <form id="socialMemberNaverLogin" name="socialMemberNaverLogin" action="/join/naver.action" method="post">
     <input type="hidden" id="naver_idx" name="naver_idx">
-    <%--<input type="hidden" id="socialIdCheckResult" value="false">--%>
-    * 아이디:<input type="text" id="userid" name="userid">
-    <span id="idCheckResult"></span><br>
-    * 이름:<input type="text" id= "username" name="username" readonly="readonly"><br>
-    <br>
-    <br>
-    <input type="button" value="회원가입" onclick="socialLoginValidCheck(socialMemberNaverLogin)"/>
+    <input type="hidden" id="socialIdCheckResult" value="false">
+    <table class="join_table">
+        <tr>
+            <td class="item_th"><span> 이름</span></td>
+            <td class="item_box">
+                <div><input type="text" id="username" name="username" value="${username}" readonly></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="item_th"><span>아이디</span></td>
+            <td class="item_box">
+                <div><input type="text" id="userid" name="userid" value="" placeholder="아이디를 입력해주세요" onkeyup="memberIdDuplicateCheck()"></div>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="text-align: left;"><span id="idCheckResult" class="id_check"></span></td>
+        </tr>
+    </table>
+    <a class="btn_login" onclick="socialLoginValidCheck(socialMemberNaverLogin)"><span>가입하기</span></a>
 </form>
-
 </div>

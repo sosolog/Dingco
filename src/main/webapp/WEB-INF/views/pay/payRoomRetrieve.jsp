@@ -44,7 +44,7 @@
 
     <!-- 방생성 modal member 명단 template-->
     <script type="text/html" id="member-list-tmpl">
-        <div class="memberBox">
+        <div class="memberBox" style="display: inline-block;">
             {{each(index, m) mList}}
                 <span id="mList_\${index}" class="mList_\${index}" data-idx="\${m.prgm_idx}">
                 \${m.name}<a class="btn-member-delete" data-idx="\${index}" onclick="memberCheck($(this))"><img src="/images/delete_member.png"></a>
@@ -99,8 +99,10 @@
             </td>
             <td>
                 <!-- DB 저장된 더치페이 -- 결제 목록 -- 1. DB에서 가져올때 같이 가져온 결제 목록 2. 새로 추가한 결제 목록 -->
-                <button type="button" class="btn-delete-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="deleteSavePay(this)">삭제</button>
-                <button type="button" class="btn-update-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="showUpdatePayForm(this)">수정</button>
+                <a class="btn-update-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="showUpdatePayForm(this)">수정</a>
+                <a class="btn-delete-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="deleteSavePay(this)">삭제</a>
+                <%--<button type="button" class="btn-delete-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="deleteSavePay(this)">삭제</button>
+                <button type="button" class="btn-update-pay" data-idx="{{= p.p_idx ? p.p_idx : index}}" onclick="showUpdatePayForm(this)">수정</button>--%>
             </td>
         </tr>
         {{/each}}
@@ -111,10 +113,10 @@
         {{each(index, p) dList}}
         <tr>
             <td><span>\${p.create_date}</span></td>
-            <td><a href="javascript:showDutchPayInfo(\${p.dp_idx})"><span>\${p.name}</span></a></td>
+            <td><a href="javascript:showDutchPayInfo(\${p.dp_idx})"><span style="text-decoration: underline">\${p.name}</span></a></td>
             <td><span>\${p.total}</span></td>
-            <td><span>정산현황</span></td>
-            <td><a onclick="deleteOneDutchPay(\${p.dp_idx})"><span>삭제</span></a></td>
+            <td><span>(정산현황)</span></td>
+            <td><a onclick="deleteOneDutchPay(\${p.dp_idx})"><span style="color: #E74133; text-decoration: underline">삭제</span></a></td>
         </tr>
         {{/each}}
     </script>
@@ -123,12 +125,14 @@
     <script type="text/html" id="account-form-tmpl">
         <!-- 추가/수정 폼 -->
         {{if accountIdx == 0}}
-            <td><input type="hidden" value="{{= accountInfo ? accountInfo.prgm_idx : ''}}" id="saved-account-prgm_idx">
-            <input type="text" id="new-account-bank" style="width: 50px" value="{{= accountInfo ? accountInfo.bank : ''}}"></td>
-            <td><input type="text" id="new-account-number" style="width: 100px" value="{{= accountInfo ? accountInfo.account : ''}}"></td>
+            <td style="width: 140px;">
+                <input type="hidden" value="{{= accountInfo ? accountInfo.prgm_idx : ''}}" id="saved-account-prgm_idx">
+                <input type="text" class="new-account-bank" id="new-account-bank" value="{{= accountInfo ? accountInfo.bank : ''}}">
+            </td>
+            <td style="width: 310px;"><input type="text" class="new-account-number" id="new-account-number" value="{{= accountInfo ? accountInfo.account : ''}}"></td>
             <td>
                 {{if accountInfo == null}}<!-- 추가 -->
-                <select id="new-account-owner">
+                <select class="new-account-owner" id="new-account-owner">
                     {{each(index,p) pr}}
                     {{if p.account == null}}
                     <option class="new-account-selector" value="\${p.prgm_idx}">\${p.name}</option>
@@ -137,15 +141,16 @@
                 </select>
             </td>
             <td>
-                <button type="button" id="btn-update-account" onclick="saveNewAccount($(this))">저장</button>
+                <a id="btn-update-account" class="btn-updated-account" onclick="saveNewAccount($(this))">저장</a>
             </td>
             <td>
                 {{/if}}
                 {{if accountInfo != null}} <!-- 수정 -->
-                    <input readonly value="\${accountInfo.name}">
+                    <input readonly value="\${accountInfo.name}" style="text-align: center; font-size: 20px; width: 100px;">
             </td>
             <td>
-                <button type="button" id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button>
+                <a id="btn-updated-account" class="btn-updated-account" onclick="updateSavedAccount($(this))">저장</a>
+                <%--<button type="button" id="btn-updated-account" onclick="updateSavedAccount($(this))">저장</button>--%>
             </td>
                 {{/if}}
         {{/if}}
@@ -154,14 +159,15 @@
         {{each(index, p) pSave}}
         {{if p.account != null}}
         <tr style="color: #888888" class="save-account-form\${index}">
-
-            <td id="save-bank">\${p.bank}</td>
-            <td id="save-number">\${p.account}</td>
-            <td id="save-owner">\${p.name}</td>
+            <td id="save-bank"><span>\${p.bank}</span></td>
+            <td id="save-number"><span>\${p.account}</span></td>
+            <td id="save-owner"><span>\${p.name}</span></td>
             <td>
                 <input type="hidden" id="prgm_idx" value="\${p.prgm_idx}">
-                <button type="button" id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
-                <button type="button" id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>
+                <a id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</a>
+                <a id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</a>
+                <%--<button type="button" id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteSaveAccount($(this))">삭제</button>
+                <button type="button" id="btn-update-account-ajax" class="btn-update-account" data-idx="\${index}" onclick="updateSaveAccount($(this))">수정</button>--%>
             </td>
         </tr>
         {{/if}}
@@ -171,12 +177,7 @@
 
 <!------------------- html ------------------->
 
-<%--<button>등록</button><br>--%>
-
 <div id="payRoom">
-
-
-
     <div class="roomInfo">
         <div class="room_tit"><input type="text" name="room_name" id="room_name" readonly></div>
         <div class="room_member">
@@ -301,7 +302,7 @@
         </div>
         <%--<button type="button" onclick="closeDutchPayForm()">X</button>
         <hr>--%>
-        <span><input type="text" id="pay-name-last" name="pay_name" readonly></span>
+        <span><input type="text" class="sub-tit" id="pay-name-last" name="pay_name" readonly></span>
         <!-- 정렬 하기 관련 ㅎㅎㅎ-->
         <table>
             <thead>
@@ -317,7 +318,7 @@
             </tbody>
         </table>
 
-        <span>계좌 정보</span>
+        <span class="sub-tit">계좌 정보</span>
         <table>
             <thead>
             <tr>
