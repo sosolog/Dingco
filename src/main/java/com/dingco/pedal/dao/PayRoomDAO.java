@@ -63,13 +63,14 @@ public class PayRoomDAO {
         }
     }
 
-    public void insertPayIntoDutch(PayDTO payDTO) throws Exception{
+    public int insertPayIntoDutch(PayDTO payDTO) throws Exception{
         session.insert("com.config.PayRoomMapper.insertPayList", payDTO);
 
         PayAndParticipants payAndParticipants = new PayAndParticipants();
         payAndParticipants.setP_idx(payDTO.getP_idx());
         payAndParticipants.setParticipants(payDTO.getParticipants());
         session.insert("com.config.PayRoomMapper.insertPayParticipants", payAndParticipants);
+        return 1;
     }
 
     public List<DutchPayDTO> dutchpayListInfo(int pr_idx) throws Exception{
@@ -93,7 +94,6 @@ public class PayRoomDAO {
 
     public PayGroupMemberDTO memberAdd(PayGroupMemberDTO payGroupMemberDTO) throws Exception{
         session.insert("com.config.PayRoomMapper.memberAdd",payGroupMemberDTO);
-        System.out.println(payGroupMemberDTO.getPrgm_idx());
         return payGroupMemberDTO;
     }
 

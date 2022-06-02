@@ -59,8 +59,8 @@ public class PayRoomServiceImpl implements PayRoomService {
     }
 
     @Override
-    public void insertPayIntoDutch(PayDTO payDTO) throws Exception {
-        dao.insertPayIntoDutch(payDTO);
+    public int insertPayIntoDutch(PayDTO payDTO) throws Exception {
+        return dao.insertPayIntoDutch(payDTO);
     }
 
     @Override
