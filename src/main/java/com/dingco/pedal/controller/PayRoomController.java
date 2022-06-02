@@ -49,23 +49,6 @@ public class PayRoomController {
         return next;
     }
 
-//    /** 사용 X
-//     * payRoom(페이방) 목록 보기
-//     */
-//    @GetMapping("/pay/list")
-//    public String payRoomList(Model model,@Login MemberDTO memberDTO) throws Exception {
-//        int m_idx = memberDTO.getM_idx();
-//        List<PayRoomDTO> list = payRoomService.selectPayRoom(m_idx);
-//        log.info("payRoomService.selectPayRoom(m_idx) = " + payRoomService.selectPayRoom(m_idx));
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        String payRoomJson = mapper.writeValueAsString(list);
-//        log.info("payRoomJson = " + payRoomJson);
-//        model.addAttribute("payRoomList",payRoomJson);
-//
-//        return "payRoomList";
-//    }
-
     /**
      * payRoom 생성 (이름, 참여자 목록 insert)
      * @param roomName 생성할 페이방 이름
@@ -159,18 +142,8 @@ public class PayRoomController {
         int num = payRoomService.updateAccount(groupMemberDTO);
     }
 
-//    /** 사용 X (계좌정보 수정로직으로 통합)
-//     * 페이방 참여자 1명의 계좌정보 삭제, 실제로는 해당 부분만 null로 update!
-//     */
-//    @PutMapping("/pay/accountNull")
-//    @ResponseBody
-//    public void accountNull(@RequestParam int prgm_idx) throws Exception {
-//       int num = payRoomService.accountNull(prgm_idx);
-//    }
-
     // END : 페이방 참여자 CRUD & 참여자 계좌정보 CRUD
-
-
+    
     /**
      * payRoom 내 더치페이 목록 보기
      * @param pr_idx 페이방 번호
@@ -282,89 +255,4 @@ public class PayRoomController {
     public int saveDutchPayResult(@PathVariable int pr_idx, @PathVariable int dp_idx, @RequestBody List<DutchPayResultDTO> resultList) throws Exception{
         return payRoomService.saveDutchPayResult(dp_idx, resultList);
     }
-
-
-//    /** 사용 X
-//     * 결제 정보 1개 보기
-//     */
-//    @GetMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
-//    @ResponseBody
-//    public PayDTO showOnePayInfo(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx) throws Exception {
-//        return payRoomService.showOnePayInfo(p_idx);
-//    }
-
-//    /** 사용 X
-//     * 더치페이 내 결제 정보 1개 입력
-//     */
-//    @PostMapping("/pay/{pr_idx}/dutch/{dp_idx}")
-//    @ResponseBody
-//    public int addPayIntoDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, PayDTO payDTO) throws Exception {
-//        return payRoomService.insertPayIntoDutch(payDTO);
-//    }
-
-//    /** 사용 X
-//     * 더치페이 내 결제 정보 1개 수정
-//     */
-//    @PutMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
-//    @ResponseBody
-//    public int updateOnePayInDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx, PayDTO payDTO) throws Exception {
-//        return payRoomService.updateOnePayInDutchpay(payDTO);
-//    }
-
-//    /** 사용 X
-//     * 더치페이 내 결제 정보 1개 삭제
-//     */
-//    @DeleteMapping("/pay/{pr_idx}/dutch/{dp_idx}/{p_idx}")
-//    @ResponseBody
-//    public int deleteOnePayInDutchpay(@PathVariable int pr_idx, @PathVariable int dp_idx, @PathVariable int p_idx) throws Exception {
-//        return payRoomService.deleteOnePayInDutchpay(p_idx);
-//    }
-
-//    /** 사용 X
-//     * 페이방 멤버 목록 가져오기
-//     */
-//    @GetMapping("/pay/{pr_idx}/member")
-//    @ResponseBody
-//    public List<PayGroupMemberDTO> showPayRoomGroupMember(@PathVariable int pr_idx) throws Exception{
-//        return payRoomService.showPayRoomGroupMember(pr_idx);
-//    }
-
-//    /** 사용 X
-//     * 더치페이 기본정보 수정 (결제 목록 제외)
-//     */
-//    @PutMapping("/pay/{pr_idx}/dutch/{dp_idx}")
-//    @ResponseBody
-//    public int updateDutchPay(@PathVariable int pr_idx, @PathVariable int dp_idx, DutchPayDTO dutchPayDTO) throws Exception{
-//        return payRoomService.updateDutchPay(dutchPayDTO);
-//    }
-
-//    /** 사용 X
-//     * 더치페이 정보에 저장된 결제목록 한번에 수정
-//     */
-//    @PutMapping("/pay/RetrieveInfo")
-//    @ResponseBody
-//        public int putRetrieveInfo(DutchPayDTO updateDTO) throws Exception {
-//        if(updateDTO.getPayList()!=null){
-//            for (PayDTO paydto: updateDTO.getPayList()) {
-//                payRoomService.updateOnePayInDutchpay(paydto);
-//            }
-//        }
-//        return 1;
-//    }
-
-//    /** 사용 X
-//     * 더치페이 정보에 저장된 결제목록 한번에 삭제
-//     */
-//    @DeleteMapping("/pay/RetrieveInfo")
-//    @ResponseBody
-//    public int deleteRetrieveInfo(@RequestParam("deleteArr[]") List<Integer> deleteArr) throws Exception {
-//        System.out.println("deleteArr = " + deleteArr);
-//        int num = 0;
-//        if(deleteArr.size()!=0){
-//            for (int delete:deleteArr) {
-//                num = payRoomService.deleteOnePayInDutchpay(delete);
-//            }
-//        }
-//        return num;
-//    }
 }
