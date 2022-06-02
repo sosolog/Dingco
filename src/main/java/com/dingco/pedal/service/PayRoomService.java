@@ -15,7 +15,7 @@ public interface PayRoomService {
     int updateAccount(PayGroupMemberDTO groupMemberDTO) throws Exception;
     int accountNull(int prgm_idx) throws Exception;
     int insertDutchPay(DutchPayDTO dutchPayDTO) throws Exception;
-    void insertPayIntoDutch(PayDTO payDTO) throws Exception;
+    int insertPayIntoDutch(PayDTO payDTO) throws Exception;
     List<DutchPayDTO> dutchPayListInfo(int pr_idx) throws Exception;
 
     DutchPayDTO dutchPayInfo(int pr_idx, int dp_idx) throws Exception;
