@@ -46,16 +46,107 @@ public class InquiryController {
     }
 
     /**
-     *
-     * @param dto
-     * @param i_idx2
-     * @return
+     * 사용자 문의글 작성 화면
+     * @param dto : 문의글 정보
+     * @param i_idx2 : (재문의 글 작성시에만 필요) 상위 문의 번호
      */
     @GetMapping("/inquiry/write")
     public String writeUserInquiryUI(@ModelAttribute("inquiryDTO") InquiryDTO dto,
                                      @RequestParam(name = "idx", required = false) String i_idx2){
         return "InquiryWrite";
     }
+
+    /**
+     * 사용자 문의글 작성 action
+     * @param memberDTO : 세션에 저장된 로그인 정보
+     * @param inquiryDTO : 문의글 정보
+     * @return 성공시, 문의글 목록화면으로 redirect
+     * @throws Exception
+     */
+    @PostMapping("/inquiry")
+    public String writeUserInquiry(@Login MemberDTO memberDTO,
+                                   @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO) throws Exception {
+        log.info("memberDTO = {}, inquiryDTO = {}", memberDTO, inquiryDTO);
+        inquiryDTO.setM_idx(memberDTO.getM_idx());
+        List<MultipartFile> files = inquiryDTO.getFiles();
+        List<FileName> fileNames = inquiryDTO.getFileNames();
+        if (files != null){
+            FileUploadUtils uploadUtils = new FileUploadUtils(baseDir, TableDir.INQUIRY);
+            uploadUtils.uploadFiles(files, fileNames);
+        }
+        int result = inquiryService.writeUserInquiry(inquiryDTO);
+
+        log.info("memberDTO = {}, inquiryDTO = {}", memberDTO, inquiryDTO);
+        log.info("result = {}", result);
+        return "redirect:inquiry";
+    }
+
+    /**
+     * 사용자 문의글 1개 상세 보기 화면
+     * @param memberDTO : 세션에 저장된 로그인한 멤버 정보
+     * @param i_idx : 문의글 번호
+     * @throws Exception
+     */
+    @GetMapping("/inquiry/{idx}")
+    public ModelAndView showOneUserInquiry(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx) throws Exception {
+        InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
+        if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
+            throw new NotMatchedException("유효하지 않은 접근입니다.");
+        }
+        log.debug("result = "+inquiryDTO);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("InquiryRetrieve");
+        modelAndView.addObject("inquiryDTO", inquiryDTO);
+        modelAndView.addObject("memberDTO", memberDTO);
+        return modelAndView;
+    }
+
+    /**
+     * 사용자 문의글 수정 화면
+     * @param memberDTO : 세션에 저장된 로그인 정보
+     * @param i_idx : 문의글 번호
+     * @param inquiryDTO : 문의글 정보
+     * @throws Exception
+     */
+    @GetMapping("/inquiry/{idx}/edit")
+    public String updateUserInquiryUI(@Login MemberDTO memberDTO,
+                                      @PathVariable("idx") int i_idx,
+                                      @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO,
+                                      Model model) throws Exception {
+        inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
+        if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
+            throw new NotMatchedException("유효하지 않은 접근입니다.");
+        }
+        model.addAttribute("inquiryDTO", inquiryDTO);
+        return "InquiryWrite";
+    }
+
+    /**
+     * 사용자 문의글 수정 action
+     * @param memberDTO : 세션에 저장된 로그인 정보
+     * @param i_idx : 문의글 번호
+     * @param inquiryDTO : 문의글 정보
+     * @throws Exception
+     */
+    @PostMapping("/inquiry/{idx}")
+    public String updateUserInquiry(@Login MemberDTO memberDTO,
+                                    @PathVariable("idx") int i_idx,
+                                    InquiryDTO inquiryDTO) throws Exception {
+        if (memberDTO.getM_idx() != inquiryDTO.getM_idx()){
+            throw new NotMatchedException("유효하지 않은 접근입니다.");
+        }
+        List<MultipartFile> files = inquiryDTO.getFiles();
+        List<FileName> fileNames = inquiryDTO.getFileNames();
+        if (files != null){
+            FileUploadUtils uploadUtils = new FileUploadUtils(baseDir, TableDir.INQUIRY);
+            uploadUtils.uploadFiles(files, fileNames);
+        }
+        int result = inquiryService.updateUserInquiry(inquiryDTO);
+        log.debug("result = "+result);
+        return "redirect:/inquiry/"+i_idx;
+    }
+
 
     /**
      * 사용자 문의글 목록 가져오기
@@ -75,78 +166,29 @@ public class InquiryController {
         return pageDTO;
     }
 
-    @PostMapping("/inquiry")
-    public String writeUserInquiry(@Login MemberDTO memberDTO,
-                                   @ModelAttribute("inquiryDTO") InquiryDTO inquiryDTO) throws Exception {
-        log.info("memberDTO = {}, inquiryDTO = {}", memberDTO, inquiryDTO);
-        inquiryDTO.setM_idx(memberDTO.getM_idx());
-        List<MultipartFile> files = inquiryDTO.getFiles();
-        List<FileName> fileNames = inquiryDTO.getFileNames();
-        if (files != null){
-            FileUploadUtils uploadUtils = new FileUploadUtils(baseDir, TableDir.INQUIRY);
-            uploadUtils.uploadFiles(files, fileNames);
-        }
-        int result = inquiryService.writeUserInquiry(inquiryDTO);
-
-        log.info("memberDTO = {}, inquiryDTO = {}", memberDTO, inquiryDTO);
-        log.info("result = {}", result);
-        return "redirect:inquiry";
-    }
-
-    @GetMapping("/inquiry/{idx}/edit")
-    public String updateUserInquiryUI(@Login MemberDTO memberDTO,
-                                      @PathVariable("idx") int i_idx,
-                                      @ModelAttribute("inquiryDTO") InquiryDTO dto,
-                                      Model model) throws Exception {
-        dto = inquiryService.showOneUserInquiry(i_idx);
-//        if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "사용자".equals(memberDTO.getAuthorities())){
-//            throw new NotMatchedException("유효하지 않은 접근입니다.");
-//        }
-        model.addAttribute("inquiryDTO", dto);
-        return "InquiryWrite";
-    }
-
-    @PostMapping("/inquiry/{idx}")
-    public String updateUserInquiry(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx, InquiryDTO inquiryDTO) throws Exception {
-        System.out.println("i_idx = " + i_idx + ", inquiryDTO = " + inquiryDTO);
-        if (memberDTO.getM_idx() != inquiryDTO.getM_idx()){
-            throw new NotMatchedException("유효하지 않은 접근입니다.");
-        }
-        List<MultipartFile> files = inquiryDTO.getFiles();
-        List<FileName> fileNames = inquiryDTO.getFileNames();
-        if (files != null){
-            FileUploadUtils uploadUtils = new FileUploadUtils(baseDir, TableDir.INQUIRY);
-            uploadUtils.uploadFiles(files, fileNames);
-        }
-        int result = inquiryService.updateUserInquiry(inquiryDTO);
-        log.debug("result = "+result);
-        return "redirect:/inquiry/"+i_idx;
-    }
-
+    /**
+     * 사용자 문의글 상태 변경
+     * @param memberDTO : 세션에 저장된 로그인한 멤버 정보
+     * @param i_idx : 문의글 번호
+     * @param inquiryDTO : 문의글 정보(문의글 상태 포함)
+     * @throws Exception
+     */
     @ResponseBody
     @PostMapping("/inquiry/{idx}/status")
-    public int updateUserInquiryStatus(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx, InquiryDTO inquiryDTO) throws Exception {
+    public int updateUserInquiryStatus(@Login MemberDTO memberDTO,
+                                       @PathVariable("idx") int i_idx,
+                                       InquiryDTO inquiryDTO) throws Exception {
         inquiryDTO.setI_idx(i_idx);
-        System.out.println("i_idx = " + i_idx + ", inquiryDTO = " + inquiryDTO);
-        int result = inquiryService.updateUserInquiryStatus(inquiryDTO);
-        log.debug("result = "+result);
-        return result;
-    }
-    @GetMapping("/inquiry/{idx}")
-    public ModelAndView showOneUserInquiry(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx) throws Exception {
-        InquiryDTO inquiryDTO = inquiryService.showOneUserInquiry(i_idx);
-        if (memberDTO.getM_idx() != inquiryDTO.getM_idx() && "USER".equals(memberDTO.getAuthorities())){
-            throw new NotMatchedException("유효하지 않은 접근입니다.");
-        }
-        log.debug("result = "+inquiryDTO);
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("InquiryRetrieve");
-        modelAndView.addObject("inquiryDTO", inquiryDTO);
-        modelAndView.addObject("memberDTO", memberDTO);
-        return modelAndView;
+        return inquiryService.updateUserInquiryStatus(inquiryDTO);
     }
 
+
+    /**
+     * 사용자 문의글 1개 삭제
+     * @param memberDTO : 세션에 저장된 로그인한 멤버 정보
+     * @param i_idx : 문의글 번호
+     * @throws Exception
+     */
     @ResponseBody
     @DeleteMapping("/inquiry/{idx}")
     public int deleteUserInquiry(@Login MemberDTO memberDTO, @PathVariable("idx") int i_idx) throws Exception {
@@ -159,31 +201,21 @@ public class InquiryController {
         // 하나의 서비스에서 다른 서비스 또는 DAO를 @Autowired 하여 하나의 서비스 안에서 트랜잭션 처리 하는 것이 맞는가?
         result = commentService.deleteAllComments(i_idx);
         result = inquiryService.deleteUserInquiry(i_idx);
-        log.debug("result = "+result);
         return result;
     }
 
-//    더이상 사용 안함
-//    @ResponseBody
-//    @DeleteMapping("/image/{img_idx}")
-//    public int deleteImage(@PathVariable int img_idx, @RequestBody String filePath) throws Exception {
-//        System.out.println("img_idx = " + img_idx + ", filePath = " + filePath.replace('/', '\\'));
-//        System.out.println(baseDir+filePath);
-//        File file = new File(baseDir+filePath.replace('/', '\\'));
-//        if (file.exists()){
-//            int result = inquiryService.deleteImage(img_idx);
-//            file.delete();
-//            return 1;
-//        }
-//        return 0;
-//    }
-
+    /** ( 사용자 문의글 수정 완료 )
+     * 사용자 문의글 내 사진 삭제 (여러개 삭제) - 문의글 수정 완료해야 수정 중 삭제한 이미지가 DB 에서 삭제됨
+     * @param i_idx : 문의글 번호
+     * @param filePath : 삭제할 이미지 이름 목록
+     * @param idxList : 삭제할 이미지 번호 목록
+     * @throws Exception
+     */
     @ResponseBody
     @DeleteMapping("/inquiry/{i_idx}/image")
     public int deleteImage(@PathVariable int i_idx,
                            @RequestParam("pathList[]") List<String> filePath,
                            @RequestParam("idxList[]") List<Integer> idxList) throws Exception {
-        System.out.println("i_idx = " + i_idx + ", filePath = " + filePath + ", idxList = " + idxList);
         for (int i = 0; i < idxList.size(); i++) {
             String path = filePath.get(i).replace('/', '\\');
             File file = new File(baseDir+path);
