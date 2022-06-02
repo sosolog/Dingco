@@ -393,9 +393,9 @@ function getInquiryList(page = 1, searchKey, success_fn = resetList){
 // START: AJAX 성공시, 실행되는 함수
 // 처음 화면 랜더링 & 검색어 입력 후, 처음으로 리스트 가져올 시
 function resetList(data) {
-    console.log()
+    console.log(data)
     curPage = 1;
-    totalPage = Math.ceil(data.totalRecord / data.perPage);
+    totalPage = data.totalPage;
     $("#inqList").html($("#inquiry-list-tmpl").tmpl(data));
 }
 
