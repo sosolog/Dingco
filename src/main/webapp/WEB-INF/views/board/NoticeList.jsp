@@ -29,33 +29,11 @@
             </a>
         </td>
         <td class="writeday">
-            <a href="notice/\${dto.number_idx}">
+<%--            <a href="notice/\${dto.number_idx}">--%>
                 <span> \${dto.writeday} </span>
             </a>
         </td>
-        <td class="btn_openFAQ">
-            <a onclick="openFAQ(\${dto.number_idx})" id="btn_openFAQ\${dto.number_idx}">
-                <img src="/images/openFAQ.png">
-            </a>
-            <a onclick="flipFAQ(\${dto.number_idx})" id="btn_flipFAQ\${dto.number_idx}" style="display: none">
-                <img src="/images/flipFAQ.png">
-            </a>
-        </td>
-    </tr>
-    <tr id="openFAQ\${dto.number_idx}" class="openFAQ" style="display: none;">
-        <td class="content" colspan="100%">
-            <div class="open_title">
-                <span>Q. </span>
-                <span>\${dto.title}</span>
-            </div>
-            <div class="open_content">
-                <span>A. </span>
-                <span>\${dto.content}</span>
-            </div>
-            <div class="open_writeday">
-                <span>\${dto.writeday}</span><br>
-            </div>
-        </td>
+
     </tr>
     {{/each}}
 </script>

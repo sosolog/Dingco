@@ -1,2 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="board/NoticeRetrieve.jsp" flush="true" />
+<%@ include file="./include/header.jsp" %>
+<%@ include file="./include/backtop.jsp" %>
+<%@ include file="./board/NoticeRetrieve.jsp" %>
+<%@ include file="./include/footer.jsp" %>
