@@ -40,28 +40,35 @@ public class GoogleLogin {
         GOOGLE_SNS_CLIENT_SECRET = value;
     }
 
+
+    //code를 이용하여 post 방식으로 access_token 가져오기
     public static JsonNode getAccessToken(String autorize_code) {
 
         final String RequestUrl = "https://www.googleapis.com/oauth2/v4/token";
 
         final List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+        // BasicNameValuePair = POST방식에서 사용되는 데이터 전달 방식, Request 메시지를 바디에 포함하여 전달
+        // 관련 사이트 - https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=javaking75&logNo=220341345946
+
         postParams.add(new BasicNameValuePair("grant_type", "authorization_code"));
         postParams.add(new BasicNameValuePair("client_id", GOOGLE_SNS_CLIENT_ID));
         postParams.add(new BasicNameValuePair("client_secret", GOOGLE_SNS_CLIENT_SECRET));
         postParams.add(new BasicNameValuePair("redirect_uri", GOOGLE_SNS_CALLBACK_URL)); // 리다이렉트 URI
         postParams.add(new BasicNameValuePair("code", autorize_code)); // 로그인 과정중 얻은 code 값
 
-        final HttpClient client = HttpClientBuilder.create().build();
-        final HttpPost post = new HttpPost(RequestUrl);
+        final HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
+        final HttpPost post = new HttpPost(RequestUrl); // post방식을 이용하여 RequestUrl 넘기기
         JsonNode returnNode = null;
 
         try {
-            post.setEntity(new UrlEncodedFormEntity(postParams) );
+            post.setEntity(new UrlEncodedFormEntity(postParams) ); // RequestUrl을 넘기면서 ?와 &로 쿼리스트링을 만들어주는 과정
+
             final HttpResponse  response = client.execute(post);
+            // post.setEntity를 통해 결국 https://www.googleapis.com/oauth2/v4/token?grant_type=authorization_code&~~~ 로 요청
 
             // JSON 형태 반환값 처리
             ObjectMapper mapper = new ObjectMapper();
-            returnNode = mapper.readTree(response.getEntity().getContent());
+            returnNode = mapper.readTree(response.getEntity().getContent()); // response를 통해 얻은 토큰정보를 Json으로 저장
 
 
         } catch (UnsupportedEncodingException e) {
@@ -78,24 +85,24 @@ public class GoogleLogin {
 
     }
 
-    public static JsonNode getGoogleUserInfo(String autorize_code) {
+    // access_token을 이용하여 get 방식으로 회원정보 가져오기
+    public static JsonNode getGoogleUserInfo(String accessToken) {
 
         final String RequestUrl = "https://people.googleapis.com/v1/people/me?personFields=emailAddresses%2Cnames";
 
-        final HttpClient client = HttpClientBuilder.create().build();
-        final HttpGet get = new HttpGet(RequestUrl);
+        final HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
+        final HttpGet get = new HttpGet(RequestUrl); // get방식을 이용하여 RequestUrl 넘기기
 
         JsonNode returnNode = null;
 
         // add header
-        get.addHeader("Authorization", "Bearer " + autorize_code);
+        get.addHeader("Authorization", "Bearer " + accessToken); //access_token은 header를 통해 정보를 전달
 
         try {
             final HttpResponse response = client.execute(get);
-            final int responseCode = response.getStatusLine().getStatusCode();
 
             ObjectMapper mapper = new ObjectMapper();
-            returnNode = mapper.readTree(response.getEntity().getContent());
+            returnNode = mapper.readTree(response.getEntity().getContent());// response를 통해 얻은 회원정보를 Json으로 저장
 
 
 
