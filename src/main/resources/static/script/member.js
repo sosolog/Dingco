@@ -236,7 +236,7 @@ function finduserid(f){
 }
 
 
-<!-- 이메일, 아이디 DB에서 확인 -->
+<!-- 주황 - 이메일, 아이디 DB에서 확인 -->
 function findpasswd(f){
     console.log(f)
     var userid = f.userid.value;
@@ -275,7 +275,7 @@ function findpasswd(f){
     });
 }
 
-// 비동기 로그인 체크
+// 주황 - 비동기 로그인 체크
 function loginValidCheck(f){
     var userid = $("#userid").val();
     var passwd = $("#passwd").val();
@@ -312,12 +312,14 @@ function loginValidCheck(f){
 
 }
 
+// START 주황 - 구글로그인 API
 function onSuccess(googleUser) {
     console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 }
 function onFailure(error) {
     console.log(error);
 }
+
 function renderButton() {
     gapi.signin2.render('my-signin2', {
         'scope': 'profile https://www.googleapis.com/auth/profile.emails.read',
@@ -330,6 +332,7 @@ function renderButton() {
     });
 
 }
+// END 주황 - 구글로그인 API
 
 <!-- 민욱: 이메일 인증번호 보내기 -->
 function emailValidateSend(){

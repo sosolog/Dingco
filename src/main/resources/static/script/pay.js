@@ -125,8 +125,8 @@ function saveNewDutchPayInfo(success_fn=function (data){
         data: JSON.stringify(dutchObj),
         contentType: "application/json; charset=UTF-8",
         success:success_fn,
-        error:function (x,i,e){
-            console.log(e);
+        error:function (xhr,sta,error){
+            console.log(error);
         }
     })
 }
@@ -253,8 +253,8 @@ function deleteOneDutchPay(dp_idx){
                 console.log(data);
                 showDutchPayList(pr_idx);
             },
-            error:function (x,i,e){
-                console.log(e);
+            error:function (xhr,sta,error){
+                console.log(error);
             }
         })
     }
@@ -480,8 +480,8 @@ function plusMinus(idInfoArr,btn) {
                 console.log("after ajax succces : data = ", data);
                 btn.parents("tr").html($("#account-form-tmpl").tmpl({accountInfo:data,accountIdx:0}));
             },
-            error: function (x, i, e) {
-                console.log(e);
+            error:function (xhr,sta,error){
+                console.log(error);
             }
         })
     }
@@ -544,8 +544,8 @@ function plusMinus(idInfoArr,btn) {
                 console.log(data);
                 $("#dutchList").html($("#show-dutch-list-tmpl").tmpl({dList: data}));
             },
-            error: function (x, i, e) {
-                console.log(e);
+            error:function (xhr,sta,error){
+                console.log(error);
             }
         })
     }
@@ -620,8 +620,8 @@ function copyClipDutchPayInfo() {
                 $("#bill").val("");
                 $("#retrieve-pay-id").val(data.dp_idx);
             },
-            error: function (x, i, e) {
-                console.log(e);
+            error:function (xhr,sta,error){
+                console.log(error);
             }
         })
     }
@@ -792,8 +792,8 @@ function saveDutchPayForRetrievedInfo(success_fn = function (data){
         data: JSON.stringify(obj),
         contentType: "application/json; charset=UTF-8",
         success:success_fn,
-        error:function (x,i,e){
-            console.log(e);
+        error:function (xhr,sta,error){
+            console.log(error);
         }
     });
 }
@@ -835,8 +835,8 @@ function postMemberCheckAjax(member){
             $("#memberList").html($("#member-list-tmpl").tmpl({mList:groupMemberArr}));
             console.log(groupMemberArr);
         },
-        error:function (x,i,e){
-            console.log(e);
+        error:function (xhr,sta,error){
+            console.log(error);
         }
     })
 }
@@ -868,15 +868,15 @@ function getMemberCheckAjax(prgm_idx,self){
                     success:function (data){
                         // console.log("성공한 ajax"+data);
                     },
-                    error(x,i,e){
-                        console.log(e);
+                    error:function (xhr,sta,error){
+                        console.log(error);
                     }
                 })
             }
 
         },
-        error:function (x,i,e){
-            console.log(e);
+        error:function (xhr,sta,error){
+            console.log(error);
         }
     })
 }
@@ -911,8 +911,8 @@ function putAccountAjax(member) {
         success: function (data) {
             console.log("success : return void"); // return 타입 void
         },
-        error: function (x, i, e) {
-            console.log(e);
+        error:function (xhr,sta,error){
+            console.log(error);
         }
     })
 }
@@ -933,8 +933,8 @@ function calculateDutchPayResult(dp_idx){
         url:`/pay/${pr_idx}/dutch/${dp_idx}/result`,
         type:"GET",
         success:showDutchPayResultInfoToModal,
-        error:function (x,i,e){
-            console.log(e);
+        error:function (xhr,sta,error){
+            console.log(error);
         }
     })
 }
@@ -971,8 +971,8 @@ function showDutchPayInfo(dp_idx){
                 getDutchPayInfo(dp_idx);
             }
         },
-        error: function (x, i, e) {
-            console.log(e);
+        error:function (xhr,sta,error){
+            console.log(error);
         }
     })
 }
@@ -987,8 +987,8 @@ function saveDutchPayResult(){
         success: function (data) {
             console.log(data)
         },
-        error: function (x, i, e) {
-            console.log(e);
+        error:function (xhr,sta,error){
+            console.log(error);
         }
     })
 }
