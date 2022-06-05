@@ -40,9 +40,6 @@ public class PayRoomDAO {
         return session.update("com.config.PayRoomMapper.updateAccount",groupMemberDTO);
     }
 
-    public int accountNull(int prgm_idx) throws Exception{
-        return session.update("com.config.PayRoomMapper.accountNull",prgm_idx);
-    }
 
     public int insertDutchPay(DutchPayDTO dutchPayDTO) throws Exception{
         session.insert("com.config.PayRoomMapper.insertDutchPay",dutchPayDTO);
@@ -99,6 +96,25 @@ public class PayRoomDAO {
 
     public PayDTO showOnePayInfo(int p_idx) {
         return session.selectOne("com.config.PayRoomMapper.showOnePayInfo", p_idx);
+    }
+
+    public int deletePayRoom(int pr_idx){
+        return session.delete("com.config.PayRoomMapper.deletePayRoom", pr_idx);
+    }
+    public int deletePayParticipants(int pr_idx){
+        return session.delete("com.config.PayRoomMapper.deletePayParticipants", pr_idx);
+    }
+    public int deleteDutchPayResults(int pr_idx){
+        return session.delete("com.config.PayRoomMapper.deleteDutchPayResults", pr_idx);
+    }
+    public int deletePayList(int pr_idx){
+        return session.delete("com.config.PayRoomMapper.deletePayList", pr_idx);
+    }
+    public int deletePayGroupMember(int pr_idx){
+        return session.delete("com.config.PayRoomMapper.deletePayGroupMember", pr_idx);
+    }
+    public int deleteDutchPayList(int pr_idx){
+        return session.delete("com.config.PayRoomMapper.deleteDutchPayList", pr_idx);
     }
 
     public int deleteOneDutpay(int dp_idx){
