@@ -9,8 +9,31 @@
     let payRoomArr = ${payRoomList};
 
     $(document).ready(function () {
+        console.log(payRoomArr);
         $("#payRoomList_data").html($("#payRoom-list-tmpl").tmpl({pList: payRoomArr}));
     });
+
+
+    // 최초 화면 - 결제목록(더치페이목록) - 삭제 버튼
+    // 더치페이 내역 하나 삭제
+    function deleteOnePayRoom(pr_idx,btn){
+        console.log(`\${pr_idx} 번 더치페이 삭제`);
+        var isOk = confirm("정말로 삭제하시겠습니까? 이후엔 다시 복구할 수 없습니다.");
+        if(isOk){
+            $.ajax({
+                url:`/pay/\${pr_idx}`,
+                type:"DELETE",
+                success:function (data){
+                    console.log(data);
+                    console.log(btn.parents(".wrap_payRoom"));
+                    btn.parents(".wrap_payRoom").remove();
+                },
+                error:function (xhr,sta,error){
+                    console.log(error);
+                }
+            })
+        }
+    }
 </script>
 
 <!-- 방생성 modal member 명단 template-->
@@ -28,8 +51,12 @@
     <div class="wrap_payRoom">
         <a class="box" id="pList_\${index}" href="/pay/\${p.pr_idx}">
             <span class="tit">\${p.room_name}</span>
-            <span class="date">\${p.create_date}</span>
+            <span class="date">
+                \${p.create_date}
+                <a id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteOnePayRoom(\${p.pr_idx},$(this))">삭제</a>
+            </span>
         </a>
+
     </div>
     {{/each}}
 </script>
