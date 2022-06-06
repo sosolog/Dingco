@@ -27,10 +27,6 @@
         <span> \${dto.title} </span>
       </a>
     </td>
-    <td class="writeday">
-        <span> \${dto.writeday} </span>
-      </a>
-    </td>
     <td class="btn_openFAQ">
       <a onclick="openFAQ(\${dto.number_idx})" id="btn_openFAQ\${dto.number_idx}">
         <img src="/images/openFAQ.png">
@@ -79,7 +75,6 @@
         <tr>
             <td class="idx" style="width: 12%;"> No </td>
             <td class="title"> 제목 </td>
-            <td class="writeday"> 작성일 </td>
             <td class="open"></td>
             <td class="flip"></td>
         </tr>
