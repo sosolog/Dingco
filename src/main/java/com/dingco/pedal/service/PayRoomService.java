@@ -2,7 +2,6 @@ package com.dingco.pedal.service;
 
 
 import com.dingco.pedal.dto.*;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,6 @@ public interface PayRoomService {
     List<PayRoomDTO> selectPayRoom(int m_idx) throws Exception;
     PayRoomDTO selectPayRoomRetrieve(HashMap<String, Integer> map) throws Exception;
     int updateAccount(PayGroupMemberDTO groupMemberDTO) throws Exception;
-    int accountNull(int prgm_idx) throws Exception;
     int insertDutchPay(DutchPayDTO dutchPayDTO) throws Exception;
     int insertPayIntoDutch(PayDTO payDTO) throws Exception;
     List<DutchPayDTO> dutchPayListInfo(int pr_idx) throws Exception;
@@ -24,6 +22,7 @@ public interface PayRoomService {
 
     PayGroupMemberDTO memberAdd(PayGroupMemberDTO payGroupMemberDTO) throws Exception;
     PayDTO showOnePayInfo(int p_idx) throws Exception;
+    int deletePayRoom(int pr_idx) throws Exception;
     int deleteOnePayInDutchpay(int p_idx) throws Exception;
     int deleteOneDutchpay(int dp_idx) throws Exception;
     List<PayGroupMemberDTO> showPayRoomGroupMember(int pr_idx) throws Exception;

@@ -179,6 +179,43 @@
         values (#{pr_idx},#{payMember_name})
     </insert>
 
+    <delete id="deletePayRoom">
+        delete from PAYROOM where pr_idx = #{pr_idx}
+    </delete>
+    <delete id="deleteDutchPayList">
+        delete from DUTCHPAYLIST where dp_idx in
+                                       ( select * from (SELECT dp_idx FROM PAYROOM pr
+                                                join DUTCHPAYLIST dp on pr.pr_idx = dp.pr_idx
+                                                 where pr.pr_idx = #{pr_idx}) t)
+    </delete>
+    <delete id="deletePayList">
+        delete from PAYLIST where p_idx in
+                                       ( select * from (SELECT p_idx FROM PAYROOM pr
+                                                  join DUTCHPAYLIST dp on pr.pr_idx = dp.pr_idx
+                                                  join PAYLIST p on dp.dp_idx = p.DP_IDX
+                                        where pr.pr_idx = #{pr_idx}) t )
+    </delete>
+    <delete id="deleteDutchPayResults">
+        delete from DUTCHPAYRESULT where dpr_idx in
+                                       ( select * from (SELECT dpr_idx FROM PAYROOM pr
+                                                                join DUTCHPAYLIST dp on pr.pr_idx = dp.pr_idx
+                                                                join DUTCHPAYRESULT dpr on dp.dp_idx = dpr.dp_idx
+                                        where pr.pr_idx = #{pr_idx}) t )
+    </delete>
+    <delete id="deletePayParticipants">
+        delete from PAYPARTICIPANTS where p_idx in
+                                       (select * from (SELECT distinct p.p_idx FROM PAYROOM pr
+                                                                         join DUTCHPAYLIST dp on pr.pr_idx = dp.pr_idx
+                                                                         join PAYLIST p on dp.dp_idx = p.DP_IDX
+                                                                         join PAYPARTICIPANTS pp on p.P_IDX = pp.p_idx
+                                        where pr.pr_idx =  #{pr_idx}) t)
+    </delete>
+    <delete id="deletePayGroupMember">
+        delete from PAYGROUPMEMBER where prgm_idx in
+                                       (select * from (SELECT prgm_idx FROM PAYROOM pr
+                                                                 join PAYGROUPMEMBER prgm on pr.pr_idx = prgm.pr_idx
+                                        where pr.pr_idx = #{pr_idx}) t )
+    </delete>
     <delete id="deleteOnePayInDutchpay">
         delete from PAYLIST where p_idx = #{p_idx}
     </delete>

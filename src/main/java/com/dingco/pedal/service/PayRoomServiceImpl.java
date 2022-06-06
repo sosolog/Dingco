@@ -39,11 +39,6 @@ public class PayRoomServiceImpl implements PayRoomService {
     }
 
     @Override
-    public int accountNull(int prgm_idx) throws Exception {
-        return dao.accountNull(prgm_idx);
-    }
-
-    @Override
     public List<PayRoomDTO> selectPayRoom(int m_idx) throws Exception {
         return dao.selectPayRoom(m_idx);
 
@@ -100,6 +95,18 @@ public class PayRoomServiceImpl implements PayRoomService {
     @Override
     public PayDTO showOnePayInfo(int p_idx) throws Exception {
         return dao.showOnePayInfo(p_idx);
+    }
+
+    @Override
+    @Transactional
+    public int deletePayRoom(int pr_idx) throws Exception {
+        int result = dao.deletePayParticipants(pr_idx);
+        result = dao.deleteDutchPayResults(pr_idx);
+        result = dao.deletePayList(pr_idx);
+        result = dao.deletePayGroupMember(pr_idx);
+        result = dao.deleteDutchPayList(pr_idx);
+        result = dao.deletePayRoom(pr_idx);
+        return result;
     }
 
     @Override

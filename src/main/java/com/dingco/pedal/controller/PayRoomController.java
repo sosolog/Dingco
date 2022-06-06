@@ -50,6 +50,20 @@ public class PayRoomController {
     }
 
     /**
+     * payRoom(페이방) 세부 사항 보기 UI
+     * @param pr_idx payRoom 번호
+     * @param memberDTO 세션에 저장된 로그인 정보
+     * @return payRoom 이 현재 로그인된 회원의 payRoom 이면, 세부 화면으로
+     *         아니라면, 메인 화면으로
+     * @throws Exception
+     */
+    @DeleteMapping("/pay/{pr_idx}")
+    @ResponseBody
+    public int payRoomDelete(@PathVariable("pr_idx") int pr_idx) throws Exception {
+        return payRoomService.deletePayRoom(pr_idx);
+    }
+
+    /**
      * payRoom 생성 (이름, 참여자 목록 insert)
      * @param roomName 생성할 페이방 이름
      * @param memberList 생성할 페이방의 참여자 목록
