@@ -112,19 +112,13 @@
     </update>
 
 
-    <select id="findTotalNoticeRecordCount" resultType="int">
-        select count(*)
-        from FAQ
-        where CATEGORY_IDX = 1
-    </select>
 
-
-    <select id="findTotalNoticeSearchRecordCount" resultType="int" parameterType="String">
+    <select id="findTotalNOTICESearchRecordCount" resultType="int" parameterType="String">
         select count(*)
         from FAQ f
                  join CATEGORY c on f.category_idx = c.CATEGORY_IDX
                  join MEMBER m on f.m_idx = m.m_idx
-        where f.category_idx = 1 and (f.title like CONCAT('%',#{searchKey},'%') or f.content like CONCAT('%',#{searchKey},'%'))
+        where f.category_idx = 1  and (f.title like CONCAT('%',#{searchKey},'%') or f.content like CONCAT('%',#{searchKey},'%'))
 
     </select>
 

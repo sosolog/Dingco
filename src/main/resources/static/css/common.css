@@ -1523,15 +1523,15 @@ header .title .headerText span {
 }
 
 /* faqList */
-#faqList {
+#fList {
     padding: 95px 45px;
 }
 
-#faqList .sch {
+#fList .sch {
     width: 100%;
 }
 
-#faqList .sch_wrap {
+#fList .sch_wrap {
     position: relative;
     width: 100%;
     margin: 35px auto;
@@ -1539,11 +1539,11 @@ header .title .headerText span {
     border: 1px solid rgba(125, 125, 125, 0.5);
 }
 
-#faqList .sch_wrap .sch_input_wrap {
+#fList .sch_wrap .sch_input_wrap {
     padding: 0 85px 0 30px;
 }
 
-#faqList .sch_input {
+#fList .sch_input {
     position: relative;
     width: 100%;
     padding: 20px 0;
@@ -1556,23 +1556,23 @@ header .title .headerText span {
     text-overflow: ellipsis;
 }
 
-#faqList .sch_wrap .sch_ico_rt {
+#fList .sch_wrap .sch_ico_rt {
     position: absolute;
     top: 10px;
     right: 20px;
-    background: url("/static/images/ico_search_02.png");
+    /*background: url("/static/images/ico_search_02.png");*/
 }
 
-#faqList .wrap_table {
+#fList .wrap_table {
     width: 100%;
     border-top: 6px solid #4677DE;
 }
 
-#faqList .wrap_table table {
+#fList .wrap_table table {
     width: 100%;
 }
 
-#faqList .wrap_table table thead {
+#fList .wrap_table table thead {
     width: 100%;
     height: 60px;
     background: #FCFCFC;
@@ -1582,11 +1582,11 @@ header .title .headerText span {
     text-align: center;
 }
 
-#faqList table thead td {
+#fList table thead td {
     border-bottom: 1px solid #D2D2D2;
 }
 
-#faqList table tbody {
+#fList table tbody {
     width: 100%;
     font-weight: 500;
     font-size: 24px;
@@ -1594,54 +1594,55 @@ header .title .headerText span {
     text-align: center;
 }
 
-#faqList table tbody tr {
+#fList table tbody tr {
     width: 100%;
 }
 
-#faqList table tbody .btn_flipFAQ {
+#fList table tbody .btn_flipFAQ {
     display: none;
 }
 
-#faqList table tbody td {
+#fList table tbody td {
     padding: 15px 0px;
     border-bottom: 1px solid #D2D2D2;
 }
 
-#faqList table tbody .openFAQ {
+#fList table tbody .openFAQ {
 
 }
 
-#faqList table tbody .content {
+#fList table tbody .content {
     background-color: #FAFAFA;
     padding: 50px 40px 25px;
     text-align: left;
+    white-space: pre-line;
 }
 
-#faqList table tbody .content .open_title {
+#fList table tbody .content .open_title {
     padding-bottom: 30px;
 }
 
-#faqList table tbody .content .open_title span {
+#fList table tbody .content .open_title span {
     font-size: 24px;
     font-weight: 900;
     color: #4677DE;
 }
 
-#faqList table tbody .content .open_content {
+#fList table tbody .content .open_content {
     padding-bottom: 20px;
 }
 
-#faqList table tbody .content .open_content span {
+#fList table tbody .content .open_content span {
     font-size: 24px;
     font-weight: 700;
     color: #333333;
 }
 
-#faqList table tbody .content .open_writeday {
+#fList table tbody .content .open_writeday {
     text-align: right;
 }
 
-#faqList table tbody .content .open_writeday span {
+#fList table tbody .content .open_writeday span {
     font-size: 20px;
     font-weight: 500;
     color: #888888;
@@ -2098,6 +2099,7 @@ header .title .headerText span {
 
 #noticeRetrieve .content {
     padding: 50px 10px;
+    white-space: pre-line;
 }
 
 #noticeRetrieve .content span {

@@ -32,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(1) // 우선순위
                 .addPathPatterns("/inquiry", "/inquiry/**", "/mypage/**", "/pay/**", "/faq/*", "/notice/*")
-                .excludePathPatterns("/faq/search");
+                .excludePathPatterns("/faq/search","/notice/search");
 
         // User : 세션 있을 때 메인 페이지로 이동
         registry.addInterceptor(new SessionCheckInterceptor())

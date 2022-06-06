@@ -61,7 +61,7 @@
 
 <!-- 스크롤 페이징 폼 -->
 
-<div id="inquiryList">
+<div id="fList">
   <div class="sch">
     <div class="sch_wrap">
       <div class="sch_input_wrap">

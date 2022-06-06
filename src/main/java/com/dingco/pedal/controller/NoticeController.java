@@ -27,7 +27,7 @@ public class NoticeController {
      * @return : 스크롤 페이징 폼
      */
     @GetMapping("/notice")
-    public String showFAQListScroll() throws Exception {
+    public String showNOTICEListScroll() throws Exception {
         return "NoticeList";
     }
 
@@ -39,13 +39,15 @@ public class NoticeController {
      */
     @ResponseBody
     @GetMapping("/notice/search")
-    public PageDTO<FAQDTO> selectFAQSearchRecord(@RequestParam(value = "pg", required = false, defaultValue = "1") String cp,
+    public PageDTO<FAQDTO> selectNOTICESearchRecord(@RequestParam(value = "pg", required = false, defaultValue = "1") String cp,
                                                  @RequestParam(value = "sch", required = false, defaultValue= "") String searchKey) throws Exception {
 
         int curPage = Integer.parseInt(cp);
 
         // 검색 조건에 맞는 데이터 조회(+페이징)
         PageDTO<FAQDTO> pageDTO = service.selectNOTICESearchRecord(curPage, searchKey);
+
+        log.info("pageDTO = " + pageDTO);
 
         return pageDTO;
     }
@@ -57,6 +59,7 @@ public class NoticeController {
     public String noticeWriteUI(@Login MemberDTO memberDTO, Model m) throws Exception {
 
         List<HashMap<String, String>> category = service.categoryBoardNotice();
+
         m.addAttribute("category", category);
         m.addAttribute("dto", memberDTO);
         return "NoticeWrite";

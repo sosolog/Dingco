@@ -20,16 +20,21 @@ public class FAQServiceImpl implements FAQService {
      * dao.selectFAQSearchRecordPaging(curPage, searchKey)
      */
     @Override
+    public PageDTO<FAQDTO> selectNOTICESearchRecord(int curPage, String searchKey) throws Exception {
+        PageDTO pageDTO = dao.selectNOTICESearchRecordPaging(curPage, searchKey);
+        return pageDTO;
+    }
+
+    /**
+     * 검색 조건에 맞는 레코드 들고오기(+페이징)
+     * dao.selectFAQSearchRecordPaging(curPage, searchKey)
+     */
+    @Override
     public PageDTO<FAQDTO> selectFAQSearchRecord(int curPage, String searchKey) throws Exception {
         PageDTO pageDTO = dao.selectFAQSearchRecordPaging(curPage, searchKey);
         return pageDTO;
     }
 
-    @Override
-    public PageDTO<FAQDTO> selectNOTICESearchRecord(int curPage, String searchKey) throws Exception {
-        PageDTO pageDTO = dao.selectNOTICESearchRecordPaging(curPage, searchKey);
-        return pageDTO;
-    }
 
     /**
      * 카테고리 넘기기

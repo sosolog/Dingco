@@ -13,9 +13,10 @@ public interface FAQService {
    /**
     * 검색 조건에 맞는 레코드 들고오기
     */
+   public PageDTO<FAQDTO> selectNOTICESearchRecord(int curPage, String searchKey) throws Exception;
+
    public PageDTO<FAQDTO> selectFAQSearchRecord(int curPage, String searchKey) throws Exception;
 
-   public PageDTO<FAQDTO> selectNOTICESearchRecord(int curPage, String searchKey) throws Exception;
    /**
     * CRUD
     */
