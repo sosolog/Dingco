@@ -3,8 +3,19 @@
 
 
 ### 개발환경
-<img width="919" alt="image" src="https://user-images.githubusercontent.com/88137420/173075670-1affaeec-8943-447a-afc8-84d7e07ec806.png">
+<img width="893" alt="image" src="https://user-images.githubusercontent.com/88137420/173075965-60b97bcd-ade7-40b1-9e08-69ddd6dbf586.png">
+
+### WBS
+![image](https://user-images.githubusercontent.com/88137420/173076171-fc3c58a0-37c2-4675-b184-9dad8c7e4f1d.png)
 
 
 ### 유저 플로우
-<img width="919" alt="image" src="https://user-images.githubusercontent.com/88137420/173075597-ef554eb1-29a4-4e0f-9b48-86dc448acbe2.png">
+![image](https://user-images.githubusercontent.com/88137420/173076035-a85a0796-9ee7-4d67-ba50-4add2033c1df.png)
+
+### ERD
+<img width="804" alt="image" src="https://user-images.githubusercontent.com/88137420/173076070-e09352ff-6f22-4e18-8b7d-c9e98d64ff91.png">
+
+### IA
+![image](https://user-images.githubusercontent.com/88137420/173076113-0b3f3f3a-27b1-43f0-b005-e7c4c7d96ae5.png)
+
+
