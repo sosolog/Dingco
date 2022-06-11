@@ -17,5 +17,3 @@
 
 ### IA
 ![image](https://user-images.githubusercontent.com/88137420/173076113-0b3f3f3a-27b1-43f0-b005-e7c4c7d96ae5.png)
-
-
