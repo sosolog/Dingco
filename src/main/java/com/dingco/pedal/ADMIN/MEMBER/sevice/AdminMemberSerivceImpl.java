@@ -1,6 +1,7 @@
 package com.dingco.pedal.ADMIN.MEMBER.sevice;
 
 import com.dingco.pedal.ADMIN.MEMBER.dao.AdminMemberDAO;
+import com.dingco.pedal.ADMIN.MEMBER.dto.AdminDTO;
 import com.dingco.pedal.ADMIN.MEMBER.dto.UserDTO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
@@ -144,6 +145,30 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
     @Override
     public int updateUserInfo(UserDTO memberDTO) throws Exception {
         return adminMemberDAO.updateUserInfo(memberDTO);
+    }
+
+    /**
+     * Admin 회원 등록
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int insertAdminInfo(AdminDTO memberDTO) throws Exception {
+        return adminMemberDAO.insertAdminInfo(memberDTO);
+    }
+
+    /**
+     * Admin 회원 정보 수정
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int updateAdminInfo(AdminDTO memberDTO) throws Exception {
+        return adminMemberDAO.updateAdminInfo(memberDTO);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.dingco.pedal.ADMIN.MEMBER.controller;
 
+import com.dingco.pedal.ADMIN.MEMBER.dto.AdminDTO;
 import com.dingco.pedal.ADMIN.MEMBER.dto.UserDTO;
 import com.dingco.pedal.ADMIN.MEMBER.sevice.AdminMemberService;
 import com.dingco.pedal.dto.MemberDTO;
@@ -8,7 +9,9 @@ import com.dingco.pedal.util.FileUploadUtils;
 import com.dingco.pedal.util.TableDir;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +29,9 @@ import java.util.HashMap;
 public class AdminMemberController {
 
     private final AdminMemberService adminMemberService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Value("${file.base}")
     private String baseDir;
@@ -146,7 +152,6 @@ public class AdminMemberController {
 
         String next = "";
 
-        // 유효성 검사 성공 시 update 로직 진행
         // -------- Start : File upload -------- //
         FileUploadUtils fileUploadUtils = new FileUploadUtils(baseDir, TableDir.MEMBER);
 
@@ -174,6 +179,10 @@ public class AdminMemberController {
 
         log.info(memberDTO.toString());
         if (mode.equals("추가")) {
+            // 패스워드 암호화(명지)
+            memberDTO.setPasswd(passwordEncoder.encode(memberDTO.getPasswd()));
+            
+            // 등록
             adminMemberService.insertUserInfo(memberDTO);
             next = "redirect:/admin/member/user";
         } else {
@@ -202,6 +211,39 @@ public class AdminMemberController {
             model.addAttribute("memberDTO", dto);
         }
 
+        return next;
+    }
+
+    /**
+     * 관리자 정보 수정 및 등록 (action)
+     *
+     * @Validated(value = ValidationSequence.class) : 유효성 검증의 우선순위 세팅
+     * @param memberDTO : DTO의 유효성 검증에 성공한 파라미터 저장(@ModelAttribute 사용)
+     * @param request : VIEW에서 이미 처리 완료한 유효성 검증(받아오기)
+     * @param model : VIEW에서 이미 처리 완료한 유효성 검증(보내기)
+     * @return : 성공 -> 메인 페이지 / 실패
+     *
+     * @throws Exception
+     * @author 명지
+     */
+    @PostMapping("/admin/member/admin/edit.action")
+    public String adminAdminEditAction(@RequestParam(value = "idx", required = false, defaultValue = "") String idx,
+                                      @RequestParam(value = "mode", required = true) String mode,
+                                      @ModelAttribute("memberDTO") AdminDTO memberDTO,
+                                      HttpServletRequest request, Model model) throws Exception {
+
+        String next = "";
+
+        log.info(memberDTO.toString());
+        if (mode.equals("추가")) {
+            adminMemberService.insertAdminInfo(memberDTO);
+            next = "redirect:/admin/member/admin";
+        } else {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println("::::::::::::::"+memberDTO.getM_idx());
+            adminMemberService.updateAdminInfo(memberDTO);
+            next = "redirect:/admin/member/admin/edit?idx="+memberDTO.getM_idx();
+        }
         return next;
     }
 

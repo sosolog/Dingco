@@ -1,5 +1,6 @@
 package com.dingco.pedal.ADMIN.MEMBER.dao;
 
+import com.dingco.pedal.ADMIN.MEMBER.dto.AdminDTO;
 import com.dingco.pedal.ADMIN.MEMBER.dto.UserDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
@@ -108,6 +109,28 @@ public class AdminMemberDAO {
      */
     public int updateUserInfo(UserDTO memberDTO) throws Exception {
         return session.update("admin.MemberMapper.updateUserInfo", memberDTO);
+    }
+
+    /**
+     * Admin 회원 등록
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    public int insertAdminInfo(AdminDTO memberDTO) throws Exception {
+        return session.insert("admin.MemberMapper.insertAdminInfo", memberDTO);
+    }
+
+    /**
+     * Admin 회원 정보 수정
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    public int updateAdminInfo(AdminDTO memberDTO) throws Exception {
+        return session.update("admin.MemberMapper.updateAdminInfo", memberDTO);
     }
 
     /**

@@ -116,7 +116,7 @@
         VALUES (#{userid},#{passwd},#{username}, #{email1},#{email2},#{uploadFileName},#{storeFileName})
     </insert>
 
-    <!--USER 회원 정보 수정(일반) -->
+    <!--USER 회원 정보 수정-->
     <update id="updateUserInfo" parameterType="MemberDTO">
         update MEMBER
         set
@@ -129,8 +129,14 @@
         where m_idx=#{m_idx}
     </update>
 
-    <!--USER 회원 정보 수정(소셜) -->
-    <update id="updateUserInfoSocial" parameterType="MemberDTO">
+    <!--ADMIN 회원 추가-->
+    <insert id="insertAdminInfo" parameterType="MemberDTO">
+        INSERT INTO MEMBER (userid, passwd, username, AUTHORITIES)
+        VALUES (#{userid},#{passwd},#{username}, "ADMIN")
+    </insert>
+
+    <!--ADMIN 회원 정보 수정-->
+    <update id="updateAdminInfo" parameterType="MemberDTO">
         update MEMBER
         set
             userid=#{userid},

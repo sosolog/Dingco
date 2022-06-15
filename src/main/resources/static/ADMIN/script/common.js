@@ -125,10 +125,7 @@ function saveUserEditForm(f){
     var username = f.username.value;
     var userid = f.userid.value;
     var chk_id = f.chk_id.value;
-    if (mode == '추가') {
-        var passwd = f.passwd.value;
-    }
-    console.log(isSNSUser);
+    if (mode == '추가') { var passwd = f.passwd.value; }
     if (isSNSUser == 'X' || isSNSUser == '') {
         var email1 = f.email1.value;
         var email2 = f.email2.value;
@@ -185,6 +182,50 @@ function saveUserEditForm(f){
 
     if (result) { f.submit(); }
 }
+
+
+// Member - Admin 정보 수정 폼 제출
+function saveAdminEditForm(f){
+    var mode = f.mode.value;
+    var username = f.username.value;
+    var userid = f.userid.value;
+    var chk_id = f.chk_id.value;
+    if (mode == '추가') { var passwd = f.passwd.value; }
+    var result = true;
+
+    // USERNAME
+    if (letterCheck.checkSpc.test(username) || username.length < 2 || username.length > 10) {
+        $('#usernameCheckResult').text('2~10자의 한글과 영문 대 소문자를 사용하세요. (특수기호, 공백 사용 불가)');
+        result = false;
+    } else {
+        $('#usernameCheckResult').text('');
+    }
+
+    // USERID
+    if (letterCheck.checkSpc.test(userid) || userid.length < 5 || userid.length > 20) {
+        $('#useridCheckResult').text('5~20자의 영문 대 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.');
+        result = false;
+    } else {
+        $('#useridCheckResult').text('');
+    }
+
+    // PASSWD
+    if (mode == '추가' && (letterCheck.blank_pattern.test(passwd) || passwd.length < 7 || passwd.length > 15)) {
+        $('#passwdCheckResult').text('필수 정보입니다.(빈값, 공백 사용불가) (7 ~ 15자)');
+        result = false;
+    } else {
+        $('#passwdCheckResult').text('');
+    }
+
+    // DUPL - USERID
+    if (chk_id == "false") {
+        $('#useridCheckResult').text('아이디 중복확인이 필요합니다.');
+        result = false;
+    }
+
+    if (result) { f.submit(); }
+}
+
 
 // Inquiry 검색 폼 제출
 function submitSearchForm(f){

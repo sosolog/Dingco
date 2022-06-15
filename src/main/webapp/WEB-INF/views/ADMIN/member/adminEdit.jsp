@@ -13,19 +13,15 @@
     <c:set var="username" value="${memberDTO.username}"/>
     <c:set var="userid" value="${memberDTO.userid}"/>
     <c:set var="passwd" value="${memberDTO.passwd}"/>
-    <c:if test="${not empty memberDTO.email1}">
-        <c:set var="email1" value="${memberDTO.email1}"/>
-        <c:set var="email2" value="${memberDTO.email2}"/>
-    </c:if>
-    <c:set var="uploadFileName" value="${memberDTO.uploadFileName}"/>
     <c:set var="joindate" value="${memberDTO.joindate}"/>
 </c:if>
 
-<form action="/admin/member/admin/edit.action" name="editForm" method="post" enctype="multipart/form-data">
+<form action="/admin/member/admin/edit.action" name="editForm" method="post">
+<input type="hidden" name="mode" value="${mode}">
 <div id="main-box">
     <div id="top-menu">
         <span class="title">관리자 정보 ${mode}</span>
-        <a class="btn-save" onclick="saveEditForm(editForm)"><span>저장</span></a>
+        <a class="btn-save" onclick="saveAdminEditForm(editForm)"><span>저장</span></a>
         <a class="btn-cancel" onclick="history.back()"><span>취소</span></a>
     </div>
     <div id="edit-table">
@@ -34,7 +30,7 @@
                 <c:if test="${mode == '수정'}">
                 <tr class="short-line">
                     <td>관리자 번호</td>
-                    <td><input readonly="readonly" name="" value="${m_idx}"></td>
+                    <td><input readonly="readonly" name="m_idx" value="${m_idx}"></td>
                 </tr>
                 </c:if>
                 <tr class="short-line">
@@ -54,22 +50,6 @@
                         </c:if>
                     </td>
                 </tr>
-                <tr class="short-line">
-                    <td>이메일</td>
-                    <td>
-                        <input type="hidden" name="o_email1" id="o_email1" value="${email1}">
-                        <input type="hidden" name="o_email2" id="o_email2" value="${email2}">
-                        <input name="email1" id="email1" placeholder="이메일 앞자리 (ex. abcde)" value="${email1}" style="width: 200px; margin-top: 6px;">
-                        <span style="font-size:20px; color: #777777;">@</span>
-                        <input name="email2" id="email2" placeholder="이메일 뒷자리 (ex. naver.com)" value="${email2}" style="width: 250px;">
-                        <span id="emailCheckResult" style="color: #E74133; display: inline-block;"></span>
-                        <a onclick="dupliCheckEmail()" style="padding: 7px 13px; border: 1px solid #999999; float:right;"><span>중복확인</span></a>
-                        <input name="chk_email" id="chk_email" type="hidden" value="false">
-                        <c:if test="${mode == '수정'}">
-                            <a onclick="returnEmail()" style="padding: 7px 13px; border: 1px solid #999999; float:right; margin-right: 10px;"><span>기존 이메일 사용</span></a>
-                        </c:if>
-                    </td>
-                </tr>
                 <c:if test="${mode == '추가'}">
                     <tr class="short-line">
                         <td>비밀번호</td>
@@ -79,6 +59,12 @@
                         </td>
                     </tr>
                 </c:if>
+                <%--<c:if test="${mode == '수정'}">
+                    <tr class="short-line">
+                        <td>비밀번호</td>
+                        <td><a style="padding: 7px 13px; border: 1px solid #999999;"><span>비밀번호 초기화</span></a></td>
+                    </tr>
+                </c:if>--%>
                 <c:if test="${mode == '수정'}">
                 <tr class="short-line">
                     <td>가입일</td>
