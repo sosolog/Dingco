@@ -1,5 +1,6 @@
 package com.dingco.pedal.ADMIN.MEMBER.dao;
 
+import com.dingco.pedal.ADMIN.MEMBER.dto.UserDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
 import org.apache.ibatis.session.SqlSession;
@@ -85,5 +86,49 @@ public class AdminMemberDAO {
      */
     public int deleteOneMember(int idx) throws Exception {
         return session.delete("admin.MemberMapper.deleteOneMember", idx);
+    }
+
+    /**
+     * User 회원 등록
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    public int insertUserInfo(UserDTO memberDTO) throws Exception {
+        return session.insert("admin.MemberMapper.insertUserInfo", memberDTO);
+    }
+
+    /**
+     * User 회원 정보 수정
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    public int updateUserInfo(UserDTO memberDTO) throws Exception {
+        return session.update("admin.MemberMapper.updateUserInfo", memberDTO);
+    }
+
+    /**
+     * Member 중복 아이디 확인
+     *
+     * @param userid : 아이디
+     * @throws Exception
+     * @author 명지
+     */
+    public int selectDuplId(String userid) throws Exception {
+        return session.selectOne("admin.MemberMapper.selectDuplId", userid);
+    }
+
+    /**
+     * Member 중복 이메일 확인
+     *
+     * @param email : 이메일 (email1, email2)
+     * @throws Exception
+     * @author 명지
+     */
+    public int selectDuplEmail(HashMap<String, String> email) throws Exception {
+        return session.selectOne("admin.MemberMapper.selectDuplEmail", email);
     }
 }

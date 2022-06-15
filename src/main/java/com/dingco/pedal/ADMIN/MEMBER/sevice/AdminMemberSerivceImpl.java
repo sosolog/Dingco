@@ -1,6 +1,7 @@
 package com.dingco.pedal.ADMIN.MEMBER.sevice;
 
 import com.dingco.pedal.ADMIN.MEMBER.dao.AdminMemberDAO;
+import com.dingco.pedal.ADMIN.MEMBER.dto.UserDTO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
@@ -120,4 +121,56 @@ public class AdminMemberSerivceImpl implements AdminMemberService {
     public int deleteOneMember(int idx) throws Exception {
         return adminMemberDAO.deleteOneMember(idx);
     }
+
+    /**
+     * User 회원 등록
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int insertUserInfo(UserDTO memberDTO) throws Exception {
+        return adminMemberDAO.insertUserInfo(memberDTO);
+    }
+
+    /**
+     * User 회원 정보 수정
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int updateUserInfo(UserDTO memberDTO) throws Exception {
+        return adminMemberDAO.updateUserInfo(memberDTO);
+    }
+
+    /**
+     * 회원 추가 - 아이디 중복 검사
+     *
+     * @param userid
+     * @return : 유효성 검증 성공시 cnt = 1 / 유효성 검사 실패시 cnt = 0
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int selectDuplId(String userid) throws Exception {
+        return adminMemberDAO.selectDuplId(userid);
+    }
+
+    /**
+     * 회원 추가 - 이메일 중복 검사
+     *
+     * @param email
+     * @return : 유효성 검증 성공시 cnt = 1 / 유효성 검사 실패시 cnt = 0
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public int selectDuplEmail(HashMap<String, String> email) throws Exception {
+        return adminMemberDAO.selectDuplEmail(email);
+    }
+
+
 }

@@ -42,10 +42,6 @@
             <div class="box_wrap">
                 <span class="tit">내 활동</span>
                 <div class="menu_detail">
-                    <a href="/faq">
-                        <span>다가오는 결제</span>
-                        <img src="/images/aside/new.png">
-                    </a>
                     <a href="/logout"><span class="logout">로그아웃</span></a>
                 </div>
             </div>
