@@ -2,9 +2,7 @@ package com.dingco.pedal.ADMIN.INQUIRY.service;
 
 import com.dingco.pedal.ADMIN.INQUIRY.dao.AdminInquiryDAO;
 import com.dingco.pedal.ADMIN.NOTICE.dao.AdminNoticeDAO;
-import com.dingco.pedal.dto.FAQDTO;
-import com.dingco.pedal.dto.InquiryDTO;
-import com.dingco.pedal.dto.PageDTO;
+import com.dingco.pedal.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,4 +71,47 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
         return inquiryDTO;
     }
 
+    /**
+     * Inquiry 특정 문의 댓글 가져오기 (ALL)
+     *
+     * @param i_idx : 문의번호
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public List<CommentDTO> showAllComment(int i_idx) throws Exception {
+        return adminInquiryDAO.showAllComment(i_idx);
+    }
+
+    /**
+     * Inquiry 특정 문의 댓글 가져오기 (SUB)
+     *
+     * @param c_idx : 댓글 번호
+     * @throws Exception
+     * @author 명지
+     */
+    @Override
+    public List<CommentDTO> showSubComment(int i_idx, int c_idx) throws Exception {
+        return adminInquiryDAO.showSubComment(i_idx, c_idx);
+    }
+
+    @Override
+    public int writeComment(CommentDTO commentDTO) throws Exception {
+        return adminInquiryDAO.writeComment(commentDTO);
+    }
+
+    @Override
+    public int updateComment(CommentDTO commentDTO) throws Exception {
+        return adminInquiryDAO.updateComment(commentDTO);
+    }
+
+    @Override
+    public int deleteComment(CommentDTO commentDTO) throws Exception {
+        return adminInquiryDAO.deleteComment(commentDTO);
+    }
+
+    @Override
+    public int updateUserInquiryStatus(InquiryDTO dto) throws Exception {
+        return adminInquiryDAO.updateUserInquiryStatus(dto);
+    }
 }

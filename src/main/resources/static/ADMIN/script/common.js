@@ -252,3 +252,162 @@ function imageFileSizeCheck(file){
         reader.readAsDataURL(file);
     }
 }
+
+
+// Inquiry - 대댓글 작성
+// 대댓글 보여주기 - 토글
+function toggleShowReCommentList(btn, c_idx, i_idx) {
+    $(`#form-${c_idx}-recomment`).hide();
+    var status = $(btn).attr("data-status");
+    console.log(status)
+    if (status == 0) {
+        $(btn).attr("data-status", "1");
+        $(btn).children().html("대댓글창 닫기");
+        $.ajax({
+            url: '/admin/inquiry/comment',
+            type: 'get',
+            data: {
+                i_idx: i_idx,
+                c_idx: c_idx
+            },
+            success: function(res) {
+                console.log(res);
+                $("#recomment-list-"+c_idx).parents('.tmpl-parents').css("display", "");
+                $("#comment-recomment-list-tmpl").tmpl(res).appendTo("#recomment-list-"+c_idx);
+                /*$("#comment-"+c_idx).tmpl(res)*/
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status + ' ' + jqXHR.responseText);
+            }
+        })
+    } else {
+        var comment_ctn = $("#recomment-list-"+c_idx+" tr").length;
+        $("#recomment-list-"+c_idx).parents('.tmpl-parents').css("display", "none");
+        $("#recomment-list-"+c_idx).empty();
+        $(btn).attr("data-status", "0");
+        $(btn).children().html("답글 "+comment_ctn+"개");
+    }
+}
+
+// 새 댓글 작성
+function createNewComment(i_idx) {
+    var comment = $("#comment").val().trim();
+    if(comment.length >= 2){ // 유효성 검사
+        /*writeComments(comment_data, true);*/
+        $.ajax({
+            type: 'POST',
+            url: '/admin/inquiry/comment.action',
+            data: {
+                i_idx: i_idx,
+                comment: comment
+            },
+            success: function (result) {
+                location.reload();
+            }
+        })
+    } else {
+        alert("2자 이상 입력해주세요!")
+    }
+    $("#comment").val("")
+}
+
+// 대댓글 작성하기 : 대댓글 폼 -> 확인 버튼 클릭
+function createReComment(i_idx, c_idx){
+    var comment = $(`#recomment_${c_idx}`).val();
+    console.log(comment)
+    if(comment.length >= 2){ // 유효성 검사
+        let comment_data = {
+            comment: comment,
+            c_idx2: c_idx
+        }
+        /*writeComments(comment_data, true);*/
+        $.ajax({
+            type: 'POST',
+            url: `/inquiry/${i_idx}/comment`,
+            data: comment_data,
+            success: function (result) {
+                location.reload();
+            }
+        })
+    } else {
+        alert("2자 이상 입력해주세요!");
+    }
+    /*$("#comment").val("");*/
+}
+
+// 댓글/대댓글 수정 -> Ajax 작업
+function updateComment(i_idx, c_idx){
+    var comment = $(`#comment_input_${c_idx}`).val();
+    /*$(`#btn-${c_idx}-update`).hide();*/
+    $.ajax({
+        type: 'PUT',
+        url: `/admin/inquiry/comment.action`,
+        data: {
+            comment: comment,
+            i_idx: i_idx,
+            c_idx: c_idx
+        },
+        success: function (result) {
+            location.reload();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+        }
+    })
+}
+
+// 대댓글 폼 보여주기
+function showReCommentForm(c_idx) {
+    $(`#form-${c_idx}-recomment`).css("display","");
+    $(`#span-create-${c_idx}-re-comment`).css("display","none");
+}
+
+// 대댓글 폼 닫기
+function hideReCommentForm(c_idx) {
+    $(`#form-${c_idx}-recomment`).css("display","none");
+    $(`#span-create-${c_idx}-re-comment`).css("display","");
+}
+
+// 댓글 삭제하기
+function deleteComment(i_idx, c_idx) {
+    $.ajax({
+        type: 'DELETE',
+        url: '/admin/inquiry/comment.action',
+        data: {
+            i_idx: i_idx,
+            c_idx: c_idx
+        },
+        success: function (result) {
+            console.log(result)
+            location.reload();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+        }
+    })
+}
+
+// ADMIN 용 - 문의상태 변경하기
+function changeInquiryStatus(i_idx) {
+    var v_status = $("input[type='radio'][name='status']:checked").val();
+    changeInqStatus(v_status, i_idx);
+}
+
+// 공통 : 문의상태 변경 작업
+function changeInqStatus(v_status, i_idx, success_fn=function (result) {
+    console.log(result)
+    location.reload();
+}){
+    $.ajax({
+        type: 'POST',
+        url: '/admin/inquiry/status.action',
+        data: {
+            status: v_status,
+            i_idx: i_idx
+        },
+        success: success_fn,
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR.status + ' ' + jqXHR.responseText);
+        }
+    })
+}
