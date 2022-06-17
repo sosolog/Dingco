@@ -53,7 +53,7 @@ public class AdminMemberController {
         PageDTO<MemberDTO> pageDTO = adminMemberService.selectAllUser(Integer.parseInt(cp), sch);
         model.addAttribute("pageDTO", pageDTO);
         model.addAttribute("sch", sch);
-
+        System.out.println(pageDTO.toString());
         return next;
     }
 

@@ -7,11 +7,10 @@
     <select id="cntAllInquiry" resultType="int" parameterType="hashmap">
         select count(*)
         from INQUIRY
-        where m_idx = #{m_idx}
         <if test="sch != null">
-        and title like concat('%', #{sch}, '%')
+            where title like concat('%', #{sch}, '%')
         </if>
-        limit ${perPage} offset ${offset}
+        /*limit ${perPage} offset ${offset}*/
     </select>
 
     <select id="selectAllInquiry" resultType="InquiryDTO" parameterType="hashmap">
@@ -33,7 +32,7 @@
             and title like concat('%', #{sch}, '%')
         </if>
         order by inq_group desc, i_idx
-        limit ${perPage} offset ${offset}
+        /*limit ${perPage} offset ${offset}*/
     </select>
 
     <select id="selectOneInquiry" resultType="InquiryDTO" parameterType="int">

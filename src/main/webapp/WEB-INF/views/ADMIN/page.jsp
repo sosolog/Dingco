@@ -21,8 +21,6 @@
 	<c:set var="paramSch" value="&sch=${sch}"/>
 </c:if>
 
-${totalRecord}
-${pageListInBlock}
 <div id="paging">
 <!-- 현재 블럭의 페이지 리스트의 길이가 0일 경우 -->
 <c:if test="${pageListInBlock.size() == 0}">

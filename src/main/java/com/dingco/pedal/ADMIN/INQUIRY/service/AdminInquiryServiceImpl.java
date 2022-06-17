@@ -39,6 +39,7 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
     public PageDTO<InquiryDTO> selectAllInquiry(int cp, String sch, String status, String category) throws Exception {
 
         int offset = (cp - 1) * perPage; // 페이징 시작점(페이징 블럭에 따라서 동적으로 값 설정)
+        int limit = perPage;
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("perPage", perPage);
@@ -47,8 +48,9 @@ public class AdminInquiryServiceImpl implements AdminInquiryService {
         map.put("category", category);
         map.put("offset", offset);
 
-        int totalRecord = adminInquiryDAO.cntAllInquiry(map); // Notice 전체 레코드 개수 조회
-        List<InquiryDTO> dtolist = adminInquiryDAO.selectAllInquiry(map);
+        int totalRecord = adminInquiryDAO.cntAllInquiry(map); // Inquiry 전체 레코드 개수 조회
+        System.out.println("totalRecord: "+totalRecord);
+        List<InquiryDTO> dtolist = adminInquiryDAO.selectAllInquiry(map, offset, limit);
 
         // pageDTO 객체 생성(파라미터 : final 변수) + 순서 중요(PageDTO final 변수 순서와 동일하게 세팅 필수)
         PageDTO<InquiryDTO> pageDTO = new PageDTO<InquiryDTO>(dtolist, perPage, totalRecord, cp);

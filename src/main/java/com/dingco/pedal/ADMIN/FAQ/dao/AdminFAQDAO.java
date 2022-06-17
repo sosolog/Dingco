@@ -2,6 +2,7 @@ package com.dingco.pedal.ADMIN.FAQ.dao;
 
 import com.dingco.pedal.dto.FAQDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,6 @@ public class AdminFAQDAO {
      * @author 명지
      */
     public int cntAllFAQ(HashMap<String, Object> map) throws Exception {
-        // [ERROR] 2페이지부터 ...
         return session.selectOne("admin.FAQMapper.cntAllFAQ", map);
     }
 
@@ -35,8 +35,8 @@ public class AdminFAQDAO {
      * @throws Exception
      * @author 명지
      */
-    public List<FAQDTO> selectAllFAQ(HashMap<String, Object> map) throws Exception {
-        return session.selectList("admin.FAQMapper.selectAllFAQ", map);
+    public List<FAQDTO> selectAllFAQ(HashMap<String, Object> map, int offset, int limit) throws Exception {
+        return session.selectList("admin.FAQMapper.selectAllFAQ", map, new RowBounds(offset, limit));
     }
 
     /**

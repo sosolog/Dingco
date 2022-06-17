@@ -10,7 +10,7 @@
         <if test="sch != null">
             where room_name like concat('%', #{sch}, '%')
         </if>
-        limit ${perPage} offset ${offset}
+        /*limit ${perPage} offset ${offset}*/
     </select>
 
     <select id="selectAllPayRoom" parameterType="hashmap" resultType="PayRoomDTO">

@@ -3,6 +3,7 @@ package com.dingco.pedal.ADMIN.INQUIRY.dao;
 import com.dingco.pedal.dto.CommentDTO;
 import com.dingco.pedal.dto.InquiryDTO;
 import com.dingco.pedal.dto.MemberDTO;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,8 +33,8 @@ public class AdminInquiryDAO {
      * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
      * @author 명지
      */
-    public List<InquiryDTO> selectAllInquiry(HashMap<String, Object> map) throws Exception {
-        return session.selectList("admin.InquiryMapper.selectAllInquiry", map);
+    public List<InquiryDTO> selectAllInquiry(HashMap<String, Object> map, int offset, int limit) throws Exception {
+        return session.selectList("admin.InquiryMapper.selectAllInquiry", map, new RowBounds(offset, limit));
     }
 
     /**

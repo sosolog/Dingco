@@ -4,6 +4,7 @@ import com.dingco.pedal.ADMIN.MEMBER.dto.AdminDTO;
 import com.dingco.pedal.ADMIN.MEMBER.dto.UserDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,8 +35,8 @@ public class AdminMemberDAO {
      * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
      * @author 명지
      */
-    public List<MemberDTO> selectAllUser(HashMap<String, Object> map) throws Exception {
-        return session.selectList("admin.MemberMapper.selectAllUser", map);
+    public List<MemberDTO> selectAllUser(HashMap<String, Object> map, int offset, int limit) throws Exception {
+        return session.selectList("admin.MemberMapper.selectAllUser", map, new RowBounds(offset, limit));
     }
 
     /**
@@ -54,8 +55,8 @@ public class AdminMemberDAO {
      * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
      * @author 명지
      */
-    public List<MemberDTO> selectAllAdmin(HashMap<String, Object> map) throws Exception {
-        return session.selectList("admin.MemberMapper.selectAllAdmin", map);
+    public List<MemberDTO> selectAllAdmin(HashMap<String, Object> map, int offset, int limit) throws Exception {
+        return session.selectList("admin.MemberMapper.selectAllAdmin", map, new RowBounds(offset, limit));
     }
 
     /**

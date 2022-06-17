@@ -48,6 +48,7 @@ public class AdminInquiryController {
         }
 
         PageDTO<InquiryDTO> pageDTO = adminInquiryService.selectAllInquiry(Integer.parseInt(cp), sch, status, category);
+        System.out.println(pageDTO.toString());
         model.addAttribute("pageDTO", pageDTO);
         model.addAttribute("sch", sch);
         model.addAttribute("status", status);
