@@ -411,3 +411,7 @@ function changeInqStatus(v_status, i_idx, success_fn=function (result) {
         }
     })
 }
+
+
+
+

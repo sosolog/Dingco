@@ -468,12 +468,20 @@ textarea {
     border-top: 1.5px solid #6C6C6C;
 }
 
+#edit-table .horizontal-table {
+    border-top: 1.5px solid #6C6C6C;
+}
+
+#edit-table .horizontal-table span {
+    color: var(--c-gray-readonly);
+}
+
 #edit-table tbody {
     font-weight: var(--w-medium);
     color: var(--c-gray-title);
 }
 
-#edit-table td {
+#edit-table td, th {
     border-bottom: 1px solid #DBDFE3;
 }
 
@@ -515,6 +523,24 @@ textarea {
     font-weight: var(--w-bold);
     color: var(--c-gray-light);
     background-color: var(--bg-gray-light);
+    text-align: center;
+}
+
+#edit-table .horizontal-table thead tr th {
+    font-size: 17px;
+    font-weight: var(--w-bold);
+    color: var(--c-gray-light);
+    background-color: var(--bg-gray-light);
+    text-align: center;
+    padding: 15px;
+}
+
+#edit-table .horizontal-table tr td {
+    width: 13%;
+    font-size: 17px;
+    font-weight: var(--w-medium);
+    color: var(--c-gray-readonly);
+    background-color: #FFFFFF;
     text-align: center;
 }
 
@@ -566,6 +592,156 @@ textarea {
 }
 
 
+
+/**** second_modal ****/
+.second_modal {
+    font-family: NanumSquare;
+    z-index: 150;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.second_modal.show {
+    display: block;
+}
+
+.second_modal .modal_body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    padding: 30px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.second_modal .modal_body .top {
+    padding-bottom: 20px;
+}
+
+.second_modal .modal_body .top .tit {
+    display: inline-block;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.second_modal .modal_body .top a {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 50px;
+    height: 50px;
+}
+
+.second_modal .modal_body .top img {
+    width: 100%;
+}
+
+.second_modal .modal_body .room_tit {
+    padding: 10px 0px;
+}
+
+.second_modal .modal_body .room_tit input {
+    font-size: 22px;
+    font-weight: 700;
+    color: #646464;
+    padding: 5px 0px;
+    width: 93%;
+}
+
+.second_modal .modal_body .room_tit a {
+    position: absolute;
+}
+
+.second_modal .modal_body table, thead, tbody {
+    width: 100%;
+    text-align: center;
+    border-top: 5px solid #646464;
+}
+
+.second_modal .modal_body thead th {
+    padding: 10px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.second_modal .modal_body thead th span {
+    font-size: 20px;
+    color: #646464;
+    font-weight: 500;
+}
+
+.second_modal .modal_body tbody td {
+    padding: 10px 0px;
+    border-bottom: 1px solid #D2D2D2;
+}
+
+.second_modal .modal_body tbody td span {
+    font-size: 20px;
+    color: #646464;
+    font-weight: 500;
+}
+
+.second_modal .modal_body .calInfo {
+    padding: 10px 0px;
+}
+
+.second_modal .modal_body .calInfo input {
+    width: 80.5%;
+    border-bottom: 1px solid #4E4E4E;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.second_modal .modal_body .btn-edit {
+    margin: 10px 0px;
+    display: block;
+    padding: 20px;
+    border: 1px solid #4677DE;
+    text-align: center;
+}
+
+.second_modal .modal_body .btn-edit span {
+    font-size: 20px;
+    color: #4677DE;
+}
+
+.second_modal .modal_body .btn-save {
+    margin: 10px 0px;
+    display: block;
+    padding: 20px;
+    background-color: #4677DE;
+    border: 1px solid #4677DE;
+    text-align: center;
+}
+
+.second_modal .modal_body .btn-save span {
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+/* 결과보기 */
+.pay-result-sender-class, .pay-result-recipient-class, .pay-result-amount-class, .pay-result-paid-class {
+    font-size: 18px;
+    text-align: center;
+}
+
+.sub-tit {
+    display: inline-block;
+    padding: 20px 0px 10px;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+
+
 /**** btn-delete ****/
 #btn-delete {
     position: fixed;
@@ -577,4 +753,44 @@ textarea {
 
 #btn-delete img {
     width: 100%;
+}
+
+
+/**** mini-tit ****/
+.mini-tit {
+    font-family: NanumSquare;
+    display: block;
+    padding: 25px 5px 15px 30px;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--c-gray-light);
+}
+
+/**** mini-btn ****/
+.mini-btn {
+    padding: 5px 10px;
+    background-color: #444444;
+    border: 1px solid #444444;
+    float:right;
+    border-radius: 5px;
+    color: #FFFFFF;
+}
+
+.mini-btn2 {
+    padding: 5px 10px;
+    background-color: #ffffff;
+    border: 1px solid #444444;
+    float:right;
+    margin-right: 10px;
+    border-radius: 5px;
+    color: #444444;
+}
+
+.mini-btn3 {
+    padding: 5px 10px;
+    background-color: #ffffff;
+    border: 1px solid #444444;
+    margin-right: 10px;
+    border-radius: 2px;
+    color: #444444;
 }

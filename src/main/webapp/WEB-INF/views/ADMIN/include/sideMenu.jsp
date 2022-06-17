@@ -20,7 +20,7 @@
             </td>
             <td class="box">
                 <span class="category">콘텐츠 관리</span>
-                <a href="/admin/pay" class="option <c:if test="${fn:contains(url, 'pay')}">on</c:if>">더치페이 방 목록</a>
+                <a href="/admin/payList" class="option <c:if test="${fn:contains(url, 'pay')}">on</c:if>">더치페이 방 목록</a>
             </td>
             <td class="box">
                 <span class="category">공지사항</span>

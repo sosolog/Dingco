@@ -21,7 +21,8 @@
 	<c:set var="paramSch" value="&sch=${sch}"/>
 </c:if>
 
-
+${totalRecord}
+${pageListInBlock}
 <div id="paging">
 <!-- 현재 블럭의 페이지 리스트의 길이가 0일 경우 -->
 <c:if test="${pageListInBlock.size() == 0}">
@@ -34,7 +35,6 @@
 
 <!-- 현재 블럭의 페이지 리스트의 길이가 0이 아닐경우-->
 <c:if test="${pageListInBlock.size() != 0}">
-
 	<!-- 지난 블럭이 존재할 경우 '<' 버튼 클릭시 지난 블럭의 마지막 페이지로 이동-->
 	<c:if test="${lastPageInPrevBlock != null}">
 		<a href="${path}?pg=${lastPageInPrevBlock}${paramSch}">&lt;</a>

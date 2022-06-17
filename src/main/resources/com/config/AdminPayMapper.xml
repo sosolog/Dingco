@@ -3,5 +3,43 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="admin.PayMapper">
-    
+
+    <select id="cntAllPayRoom" resultType="int" parameterType="hashmap">
+        select count(*)
+        from PAYROOM
+        <if test="sch != null">
+            where room_name like concat('%', #{sch}, '%')
+        </if>
+        limit ${perPage} offset ${offset}
+    </select>
+
+    <select id="selectAllPayRoom" parameterType="hashmap" resultType="PayRoomDTO">
+        SELECT pr.pr_idx, pr.m_idx, pr.room_name, date_format(pr.create_date,'%Y-%m-%d') as create_date, m.userid
+        FROM PAYROOM pr
+        LEFT OUTER JOIN MEMBER m ON pr.m_idx = m.m_idx
+        <if test="sch != null">
+            where room_name like concat('%', #{sch}, '%')
+        </if>
+        order by create_date desc
+    </select>
+
+    <resultMap id="payRoom" type="PayRoomDTO">
+        <id property="pr_idx" column="pr_idx"></id>
+        <result property="m_idx" column="m_idx"></result>
+        <result property="room_name" column="room_name"></result>
+        <result property="create_date" column="create_date"></result>
+        <collection property="groupMemberList" column="pr_idx" javaType="java.util.ArrayList" ofType="PayGroupMemberDTO" select="selectPayRoomGroupMember">
+        </collection>
+    </resultMap>
+    <select id="selectPayRoomGroupMember" resultType="PayGroupMemberDTO">
+        select pr_idx, prgm_idx, PAYMEMBER_NAME, PAYMEMBER_ACCOUNT, PAYMEMBER_BANK
+        from PAYGROUPMEMBER
+        where PR_IDX = #{pr_idx}
+    </select>
+
+    <select id="selectOnePayRoom" resultMap="payRoom" parameterType="int">
+        select pr_idx, m_idx, room_name, date_format(create_date,'%Y-%m-%d') as create_date
+        from PAYROOM
+        where PR_IDX = #{pr_idx}
+    </select>
 </mapper>

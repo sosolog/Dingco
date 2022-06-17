@@ -16,35 +16,6 @@
     <c:set var="status" value="${inquiryDTO.status}"/>
 </c:if>
 
-<style>
-    .mini-btn {
-        padding: 5px 10px;
-        background-color: #444444;
-        border: 1px solid #444444;
-        float:right;
-        border-radius: 5px;
-        color: #FFFFFF;
-    }
-
-    .mini-btn2 {
-        padding: 5px 10px;
-        background-color: #ffffff;
-        border: 1px solid #444444;
-        float:right;
-        margin-right: 10px;
-        border-radius: 5px;
-        color: #444444;
-    }
-
-    .mini-btn3 {
-        padding: 5px 10px;
-        background-color: #ffffff;
-        border: 1px solid #444444;
-        margin-right: 10px;
-        border-radius: 2px;
-        color: #444444;
-    }
-</style>
 <script src="/script/jquery.tmpl.js"></script>
 <script type="text/javascript">
     let m_idx2 = ${inquiryDTO.m_idx};
