@@ -10,7 +10,8 @@
     <form name="loginForm" class="loginForm" action="/login.action" method="post">
         <div class="input_wrap">
             <input type="text" name="userid" id="userid" placeholder="아이디">
-            <input type="password" name="passwd" id="passwd" placeholder="패스워드" onkeydown="if(event.keyCode === 13) loginValidCheck(loginForm);">
+            <input type="password" name="passwd" id="passwd" placeholder="패스워드"
+                   onkeydown="if(event.keyCode === 13) loginValidCheck(loginForm);">
         </div>
         <span class="result" id="result"></span>
         <a class="btn_login" onclick="loginValidCheck(loginForm)"><span>로그인</span></a>
@@ -30,12 +31,19 @@
         <div id="naver_id_login" style="display: none"></div>
         <div class="loginimg" onclick="naverlogin()"><img src="/images/snslogin/naver_login_01.png"></div>
         <div class="loginimg"><a href="http://localhost:9090/login/oauth/google"><img src="/images/snslogin/google_login_01.png"></a></div>
-        <div class="loginimg"><a href="https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code"><img src="/images/snslogin/kakao_login_01.png"></a></div>
+        <!--카카오 로그인-->
+        <div class="loginimg">
+            <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}">
+                <img src="/images/snslogin/kakao_login_01.png">
+            </a>
+        </div>
     </div>
 
     <div id="name"></div>
     <br>
 </div>
+
+
 
 <script type="text/javascript">
     var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "http://localhost:9090/callback");
