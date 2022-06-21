@@ -19,7 +19,7 @@ public class CommentDAO {
         return session.insert("com.config.CommentMapper.writeComment", commentDTO);
     }
 
-    public List<CommentDTO> showAllComment(int i_idx, MemberDTO memberDTO) throws Exception{
+    public List<CommentDTO> showAllComment(int i_idx, MemberDTO memberDTO) throws Exception {
         HashMap<String, Object> map = new HashMap<>();
         map.put("i_idx", i_idx);
         map.put("m_idx", memberDTO.getM_idx());

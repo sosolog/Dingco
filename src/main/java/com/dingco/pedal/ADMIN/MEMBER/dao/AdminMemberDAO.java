@@ -1,7 +1,10 @@
 package com.dingco.pedal.ADMIN.MEMBER.dao;
 
+import com.dingco.pedal.ADMIN.MEMBER.dto.AdminDTO;
+import com.dingco.pedal.ADMIN.MEMBER.dto.UserDTO;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.dto.PageDTO;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,8 +35,8 @@ public class AdminMemberDAO {
      * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
      * @author 명지
      */
-    public List<MemberDTO> selectAllUser(HashMap<String, Object> map) throws Exception {
-        return session.selectList("admin.MemberMapper.selectAllUser", map);
+    public List<MemberDTO> selectAllUser(HashMap<String, Object> map, int offset, int limit) throws Exception {
+        return session.selectList("admin.MemberMapper.selectAllUser", map, new RowBounds(offset, limit));
     }
 
     /**
@@ -52,8 +55,8 @@ public class AdminMemberDAO {
      * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
      * @author 명지
      */
-    public List<MemberDTO> selectAllAdmin(HashMap<String, Object> map) throws Exception {
-        return session.selectList("admin.MemberMapper.selectAllAdmin", map);
+    public List<MemberDTO> selectAllAdmin(HashMap<String, Object> map, int offset, int limit) throws Exception {
+        return session.selectList("admin.MemberMapper.selectAllAdmin", map, new RowBounds(offset, limit));
     }
 
     /**
@@ -85,5 +88,71 @@ public class AdminMemberDAO {
      */
     public int deleteOneMember(int idx) throws Exception {
         return session.delete("admin.MemberMapper.deleteOneMember", idx);
+    }
+
+    /**
+     * User 회원 등록
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    public int insertUserInfo(UserDTO memberDTO) throws Exception {
+        return session.insert("admin.MemberMapper.insertUserInfo", memberDTO);
+    }
+
+    /**
+     * User 회원 정보 수정
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    public int updateUserInfo(UserDTO memberDTO) throws Exception {
+        return session.update("admin.MemberMapper.updateUserInfo", memberDTO);
+    }
+
+    /**
+     * Admin 회원 등록
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    public int insertAdminInfo(AdminDTO memberDTO) throws Exception {
+        return session.insert("admin.MemberMapper.insertAdminInfo", memberDTO);
+    }
+
+    /**
+     * Admin 회원 정보 수정
+     *
+     * @param memberDTO : 회원 정보
+     * @throws Exception
+     * @author 명지
+     */
+    public int updateAdminInfo(AdminDTO memberDTO) throws Exception {
+        return session.update("admin.MemberMapper.updateAdminInfo", memberDTO);
+    }
+
+    /**
+     * Member 중복 아이디 확인
+     *
+     * @param userid : 아이디
+     * @throws Exception
+     * @author 명지
+     */
+    public int selectDuplId(String userid) throws Exception {
+        return session.selectOne("admin.MemberMapper.selectDuplId", userid);
+    }
+
+    /**
+     * Member 중복 이메일 확인
+     *
+     * @param email : 이메일 (email1, email2)
+     * @throws Exception
+     * @author 명지
+     */
+    public int selectDuplEmail(HashMap<String, String> email) throws Exception {
+        return session.selectOne("admin.MemberMapper.selectDuplEmail", email);
     }
 }

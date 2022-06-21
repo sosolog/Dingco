@@ -25,8 +25,6 @@ public class PayRoomServiceImpl implements PayRoomService {
         return pr_idx;
     }
 
-    ;
-
     @Override
     public PayRoomDTO selectPayRoomRetrieve(HashMap<String, Integer> map) throws Exception {
         return dao.selectPayRoomRetrieve(map);

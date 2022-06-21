@@ -16,5 +16,5 @@ public class PayRoomDTO {
     private List<PayGroupMemberDTO> groupMemberList;
 //    GroupMember --> 이름, 계좌번호?? gm_idx
 //    Pay내역 --> 결제자(GroupMember) gm_idx, 결자한인원(List<GroupMember>) gm_idx, gm_idx,....
-
+    private String userid; // 방 생성자 아이디
 }

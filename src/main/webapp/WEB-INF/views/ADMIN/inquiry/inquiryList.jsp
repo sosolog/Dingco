@@ -41,13 +41,14 @@
             <c:forEach var="dto" items="${pageDTO.dtoList}" varStatus="status">
                 <tr class="inquiry-line">
                     <td style="width: 10%">${dto.i_idx}</td>
-                    <td style="width: 10%">${dto.userid}(${dto.username})</td>
-                    <td style="width: 50%"><a href="/admin/inquiry/edit?idx=${dto.i_idx}"><span style="text-decoration: underline">${dto.title}</span></a></td>
+                    <td style="width: 13%">${dto.userid}(${dto.username})</td>
+                    <td style="width: 47%"><a href="/admin/inquiry/edit?idx=${dto.i_idx}"><span style="text-decoration: underline">${dto.title}</span></a></td>
                     <td style="width: 10%">${dto.upload_date}</td>
                     <td style="width: 10%">${dto.category_id}</td>
                     <td style="width: 10%">
                         <c:if test="${dto.status == 'YET'}"><span style="color: #FF4040">미응답</span></c:if>
-                        <c:if test="${dto.status == 'DONE'}"><span style="color: #303030">응답완료</span></c:if>
+                        <c:if test="${dto.status == 'DONE'}"><span style="color: #303030">문의종료</span></c:if>
+                        <c:if test="${dto.status == 'IN_PROCESS'}"><span style="color: #303030">응답완료</span></c:if>
                         <c:if test="${dto.status == 'RE_INQUIRY'}"><span style="color: #4677DE">재문의</span></c:if>
                     </td>
                 </tr>

@@ -247,10 +247,6 @@ header .title .headerText span {
     border-bottom: 1px solid rgba(210, 210, 210, 0.8);
 }
 
-#main #payRoomList .wrap_payRoom .box {
-    display: block;
-}
-
 #main #payRoomList .wrap_payRoom .tit {
     font-size: 24px;
     color: #4E4E4E;
@@ -905,7 +901,7 @@ header .title .headerText span {
 }
 
 #aside .menu .box_wrap .menu_detail {
-    padding: 45px 20px 0px;
+    padding: 20px 20px 0px;
 }
 
 #aside .menu .box_wrap .menu_detail a {
@@ -1633,6 +1629,7 @@ header .title .headerText span {
 }
 
 #fList table tbody .content .open_content span {
+    line-height: 35px;
     font-size: 24px;
     font-weight: 700;
     color: #333333;
@@ -1647,6 +1644,12 @@ header .title .headerText span {
     font-weight: 500;
     color: #888888;
 }
+
+#fList table #faqList .title {
+    text-align: left;
+}
+
+
 
 /* inquiryList */
 #inquiryList {
@@ -1937,6 +1940,7 @@ header .title .headerText span {
 }
 
 #inquiryWrite .title input[type=text] {
+    width: 600px;
     font-size: 30px;
     color: #333333;
 }
@@ -2081,6 +2085,7 @@ header .title .headerText span {
 }
 
 #noticeRetrieve .info {
+    text-align: right;
     padding: 10px;
 }
 
@@ -2103,6 +2108,7 @@ header .title .headerText span {
 }
 
 #noticeRetrieve .content span {
+    line-height: 40px;
     font-size: 24px;
     color: #333333;
 }

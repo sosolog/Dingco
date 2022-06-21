@@ -2,6 +2,7 @@ package com.dingco.pedal.ADMIN.NOTICE.dao;
 
 import com.dingco.pedal.dto.FAQDTO;
 import com.dingco.pedal.dto.PageDTO;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,8 +32,8 @@ public class AdminNoticeDAO {
      * @param map : perPage(시작 게시글), sch(검색어), offset(가져올 개수)
      * @author 명지
      */
-    public List<FAQDTO> selectAllNotice(HashMap<String, Object> map) {
-        return session.selectList("admin.NoticeMapper.selectAllNotice", map);
+    public List<FAQDTO> selectAllNotice(HashMap<String, Object> map, int offset, int limit) {
+        return session.selectList("admin.NoticeMapper.selectAllNotice", map, new RowBounds(offset, limit));
     }
 
     /**

@@ -116,9 +116,9 @@ public class LoginController {
     }
 
     /**
-     * 카카오 로그인 action
+     * 카카오 회원가입 action
      *
-     * @return 로그인 페이지
+     * @return 회원가입 페이지
      * @throws Exception
      * @author 명지
      */

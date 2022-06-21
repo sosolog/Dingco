@@ -8,7 +8,7 @@
         select count(*)
         from MEMBER
         where authorities = 'USER'
-        <if test='sch != null'> and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%')) </if>
+        <if test='sch != null'>and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%'))</if>
         order by m_idx desc
         <!--limit #{perPage} offset #{offSet}-->
     </select>
@@ -16,17 +16,17 @@
     <!--USER 전체 사용자 가져오기-->
     <select id="selectAllUser" parameterType="hashmap" resultType="MemberDTO">
         select m_idx,
-               userid,
-               username,
-               email1,
-               email2,
-               date_format(joindate, '%Y-%m-%d') joindate,
-               kakao_idx,
-               naver_idx,
-               google_idx
+        userid,
+        username,
+        email1,
+        email2,
+        date_format(joindate, '%Y-%m-%d') joindate,
+        kakao_idx,
+        naver_idx,
+        google_idx
         from MEMBER
         where authorities = 'USER'
-        <if test='sch != null'> and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%')) </if>
+        <if test='sch != null'>and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%'))</if>
         order by m_idx desc
         <!--limit #{perPage} offset #{offSet}-->
     </select>
@@ -36,7 +36,7 @@
         select count(*)
         from MEMBER
         where authorities = 'ADMIN'
-        <if test='sch != null'> and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%')) </if>
+        <if test='sch != null'>and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%'))</if>
         order by m_idx desc
         <!--limit #{perPage} offset #{offSet}-->
     </select>
@@ -51,23 +51,28 @@
         date_format(joindate, '%Y-%m-%d') joindate
         from MEMBER
         where authorities = 'ADMIN'
-        <if test='sch != null'> and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%')) </if>
+        <if test='sch != null'>and (userid like CONCAT('%',#{sch},'%') or username like CONCAT('%',#{sch},'%'))</if>
         order by m_idx desc
         <!--limit #{perPage} offset #{offSet}-->
     </select>
 
     <!--USER 특정 사용자 정보 가져오기-->
     <select id="selectOneUser" parameterType="int" resultType="MemberDTO">
-        select m_idx, kakao_idx, naver_idx, google_idx,
+        select m_idx,
+               kakao_idx,
+               naver_idx,
+               google_idx,
                username,
                userid,
                passwd,
-               email1, email2,
-               uploadfilename, storefilename,
+               email1,
+               email2,
+               uploadfilename,
+               storefilename,
                DATE_FORMAT(joindate, '%Y-%m-%d') joindate,
                authorities
         from MEMBER
-        WHERE m_idx=#{idx}
+        WHERE m_idx = #{idx}
     </select>
 
     <!--ADMIN 특정 관리자 정보 가져오기-->
@@ -76,16 +81,66 @@
                username,
                userid,
                passwd,
-               email1, email2,
+               email1,
+               email2,
                DATE_FORMAT(joindate, '%Y-%m-%d') joindate,
                authorities
         from MEMBER
-        WHERE m_idx=#{idx}
+        WHERE m_idx = #{idx}
     </select>
 
     <!--USER/ADMIN 특정 사용자/관리자 삭제하기-->
     <delete id="deleteOneMember" parameterType="int">
-        delete from MEMBER
+        delete
+        from MEMBER
         where m_idx = #{idx};
     </delete>
+
+    <!--USER/ADMIN 중복 아이디 체크-->
+    <select id="selectDuplId" resultType="int" parameterType="String">
+        select count(*)
+        from MEMBER
+        where userid = #{userid}
+    </select>
+
+    <!--USER/ADMIN 중복 이메일 체크-->
+    <select id="selectDuplEmail" resultType="int" parameterType="hashmap">
+        select count(*)
+        from MEMBER
+        where email1 = #{email1} and email2 = #{email2}
+    </select>
+
+    <!--USER 회원 추가-->
+    <insert id="insertUserInfo" parameterType="MemberDTO">
+        INSERT INTO MEMBER (userid, passwd, username, email1, email2, uploadfilename, storefilename)
+        VALUES (#{userid},#{passwd},#{username}, #{email1},#{email2},#{uploadFileName},#{storeFileName})
+    </insert>
+
+    <!--USER 회원 정보 수정-->
+    <update id="updateUserInfo" parameterType="MemberDTO">
+        update MEMBER
+        set
+            userid=#{userid},
+            username=#{username},
+            email1=#{email1},
+            email2=#{email2},
+            uploadFileName=#{uploadFileName},
+            storeFileName=#{storeFileName}
+        where m_idx=#{m_idx}
+    </update>
+
+    <!--ADMIN 회원 추가-->
+    <insert id="insertAdminInfo" parameterType="MemberDTO">
+        INSERT INTO MEMBER (userid, passwd, username, AUTHORITIES)
+        VALUES (#{userid},#{passwd},#{username}, "ADMIN")
+    </insert>
+
+    <!--ADMIN 회원 정보 수정-->
+    <update id="updateAdminInfo" parameterType="MemberDTO">
+        update MEMBER
+        set
+            userid=#{userid},
+            username=#{username}
+        where m_idx=#{m_idx}
+    </update>
 </mapper>

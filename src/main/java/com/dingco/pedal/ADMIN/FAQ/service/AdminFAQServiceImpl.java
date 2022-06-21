@@ -35,6 +35,7 @@ public class AdminFAQServiceImpl implements AdminFAQService {
     @Override
     public PageDTO<FAQDTO> selectAllFAQ(int cp, String sch) throws Exception {
         int offset = (cp - 1) * perPage; // 페이징 시작점(페이징 블럭에 따라서 동적으로 값 설정)
+        int limit = perPage;
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("perPage", perPage);
@@ -42,7 +43,7 @@ public class AdminFAQServiceImpl implements AdminFAQService {
         map.put("offset", offset);
 
         int totalRecord = adminFAQDAO.cntAllFAQ(map); // Notice 전체 레코드 개수 조회
-        List<FAQDTO> dtolist = adminFAQDAO.selectAllFAQ(map);
+        List<FAQDTO> dtolist = adminFAQDAO.selectAllFAQ(map, offset, limit);
 
         // pageDTO 객체 생성(파라미터 : final 변수) + 순서 중요(PageDTO final 변수 순서와 동일하게 세팅 필수)
         PageDTO<FAQDTO> pageDTO = new PageDTO<FAQDTO>(dtolist, perPage, totalRecord, cp);

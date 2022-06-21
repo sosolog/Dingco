@@ -28,17 +28,18 @@
             <a onclick="updateComment(\${c_idx})"><span>수정</span></a>
             <div class="reset"></div>
         </div>
-        {{if (m_idx != 0 && !auth) || (m_idx == 0 && auth)}}
         <div id="btn-\${c_idx}-default">
             {{if comment }}
                 {{if (m_idx != 0 && !auth) || (m_idx == 0 && auth)}}
                 <button onclick="showUpdateCommentForm(\${c_idx})">수정</button>
                 <button onclick="deleteComment(\${c_idx})">삭제</button>
                 {{/if}}
+            {{if (m_idx == 0 && !auth)}}
             <button onclick="showReCommentForm(\${c_idx})">대댓글 작성</button>
             {{/if}}
+            {{/if}}
         </div>
-        {{/if}}
+
         {{if count_sub > 0}}
         <a class="show-re-comment" data-status="0" onclick="toggleShowReCommentList(this, \${c_idx})"><span>답글 \${count_sub}개</span></a>
             <%--<button class="show-re-comment" data-cidx="\${c_idx}" data-status="0">대댓글 보기</button>--%>

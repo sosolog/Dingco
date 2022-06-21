@@ -19,7 +19,6 @@
 <%------ End : JSTL 변수 설정 ------%>
 
 <div id="mypage">
-
     <form action="/mypage.action" id="editMypage" name="editMypage" method="post" enctype="multipart/form-data">
         <div class="profile">
             <!-- Original -->
