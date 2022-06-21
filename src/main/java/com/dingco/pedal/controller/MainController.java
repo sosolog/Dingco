@@ -28,6 +28,7 @@ public class MainController {
     @GetMapping("/main")
     public String main(Model model, @Login MemberDTO memberDTO, HttpSession session)throws Exception {
 
+
        MemberDTO dto = (MemberDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
         if(dto == null){

@@ -25,7 +25,15 @@
                 <a href="/main"><img src="/images/ico_back_01.png"></a>
             </div>
         </c:if>
-        <c:if test="${fn:contains(url, 'join') or fn:contains(url, 'oauth') or fn:contains(url, 'callback') or fn:contains(url, '/login/kakao')}">
+        <c:if test="${fn:contains(url, '/callback')}">
+            <div class="ico_lt" id=naver_ico_lt_vis" style="visibility: hidden">
+                <a onclick="javascript:history.back()"><img src="/images/ico_back_01.png"></a>
+            </div>
+            <div class="title" id=naver_join_vis" style="visibility: hidden">
+                <a class="headerText"><span>회원가입</span></a>
+            </div>
+        </c:if>
+        <c:if test="${fn:contains(url, 'join') or fn:contains(url, 'oauth') or fn:contains(url, '/login/kakao')}">
             <div class="ico_lt">
                 <a onclick="javascript:history.back()"><img src="/images/ico_back_01.png"></a>
             </div>

@@ -10,14 +10,17 @@
     function naverLoginCallback() {
         var naver_idx = naver_id_login.getProfileData('id')
         $.ajax({
-            url:"/login/oauth/naver/duplicate",
+            url:"/join/oauth/naver/duplicate",
             type:"post",
             data:{"naver_idx":naver_idx},
             success:function (data){
                 if(data){
                     location.href = "main";
                 }else {
+                    $(".ico_lt").css("visibility", "visible");
+                    $(".title").css("visibility", "visible");
                     $("#reg-form").css("visibility", "visible");
+
 
                     // userid 세팅
                     $("#username").val(naver_id_login.getProfileData('name'));
@@ -33,8 +36,7 @@
     }
 </script>
 
-<div id="reg-form" style="visibility: hidden"></div>
-
+<div id="reg-form" style="visibility: hidden">
 <div id="join">
 <form id="socialMemberNaverLogin" name="socialMemberNaverLogin" action="/join/naver.action" method="post">
     <input type="hidden" id="naver_idx" name="naver_idx">
@@ -59,4 +61,5 @@
     </table>
     <a class="btn_login" onclick="socialLoginValidCheck(socialMemberNaverLogin)"><span>가입하기</span></a>
 </form>
+</div>
 </div>

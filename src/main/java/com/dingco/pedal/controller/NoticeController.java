@@ -52,27 +52,6 @@ public class NoticeController {
         return pageDTO;
     }
 
-
-    ////////// CRUD //////////
-
-    @GetMapping("/notice/write")
-    public String noticeWriteUI(@Login MemberDTO memberDTO, Model m) throws Exception {
-
-        List<HashMap<String, String>> category = service.categoryBoardNotice();
-
-        m.addAttribute("category", category);
-        m.addAttribute("dto", memberDTO);
-        return "NoticeWrite";
-    }
-
-
-    @PostMapping("/notice/write")
-    public String noticeWrite(FAQDTO dto) throws Exception {
-        service.writeUserFaq(dto);
-        System.out.println(dto);
-        return "redirect:/notice";
-    }
-
     @GetMapping("/notice/{idx}")
     public String noticeRetrieve(@PathVariable("idx") int number_idx, @Login MemberDTO memberDTO, Model m) throws Exception {
 
@@ -85,19 +64,7 @@ public class NoticeController {
         return "NoticeRetrieve";
     }
 
-    @ResponseBody
-    @PutMapping("/notice/{idx}")
-    public int update(@PathVariable("idx") int number_idx, FAQDTO dto) throws Exception {
-        int result = service.updateUserBoard(dto);
-        return result;
-    }
 
-    @ResponseBody
-    @DeleteMapping("/notice/{idx}")
-    public int delete(@PathVariable("idx") int number_idx) throws Exception {
-        int result = service.deleteUserBoard(number_idx);
-        return result;
-    }
 
 }
 

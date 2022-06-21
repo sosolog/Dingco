@@ -39,14 +39,26 @@ public class SendEmailController {
     }
     //////////////////////////////////임시비밀번호_이메일////////////////////////////////////////////
 
-    // 민욱: 이메인 인증_등록된 이메일로 이메일 인증번호를 발송하고 발송된 이메일 인증번호를 세션에 저장
+    /**
+     * 이메일 전송
+     * @param request(세션에 인증번호 값을 저장하기 위해 사용)
+     * @param map(이메일 아이디, 이메일 주소)
+     * @throws Exception
+     */
     @GetMapping("/join/email/send")
     public @ResponseBody void emailValidationSend(HttpServletRequest request, @RequestParam Map<String,String> map) throws Exception {
         sendEmailService.emailValidationCreate(request, map);
     }
 
 
-    // 민욱: 이메인 인증_등록된 이메일로 이메일 인증번호를 확인해서 세션에 저장 되어있는 인증번호를 비교
+
+
+    /**
+     * 이메일 인증번호 확인_REST
+     * @param request(세션에 저장 인증번호 값을 불러오기 위해 사용)
+     * @param emailValidationCheckNumber(인증번호 이메일 전달 값)
+     * @return 같으면 true, 다르면 false
+     */
     @GetMapping("/join/email/check")
     public @ResponseBody
     String emailValidationCheck(HttpServletRequest request,

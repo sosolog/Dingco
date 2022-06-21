@@ -27,17 +27,12 @@ public interface FAQService {
    // FAQ 카테고리 넘기기
    public List<HashMap<String, String>> categoryBoardFaq()throws Exception;
 
-   //글 생성
-   public int writeUserFaq(FAQDTO dto) throws Exception;
+
 
    //글 자세히 보기
    public FAQDTO retrieve(int number_idx) throws Exception;
 
-   // 글 수정
-   public int updateUserBoard(FAQDTO dto)throws Exception;
 
-   // 글 삭제
-   public int deleteUserBoard(int number_idx);
 
 
 }

@@ -52,17 +52,6 @@ public class FAQServiceImpl implements FAQService {
         return list;
     }
 
-    /**
-     * CRUD
-     */
-
-    @Override
-    public int writeUserFaq(FAQDTO dto) throws Exception {
-        System.out.println(dto);
-        int num = dao.writeUserFaq(dto);
-        return num;
-    }
-
 
     @Override
     public FAQDTO retrieve(int number_idx) throws Exception {
@@ -70,22 +59,6 @@ public class FAQServiceImpl implements FAQService {
         return faqDTO;
     }
 
-    @Override
-    public int updateUserBoard(FAQDTO dto) throws Exception {
-        int num = dao.updateUserBoard(dto);
-        return num;
-    }
-
-    @Override
-    public int deleteUserBoard(int number_idx) {
-        int num = dao.deleteUserBoard(number_idx);
-        return num;
-
-    }
-
-    /**
-     * 기본 페이징 처리(관리자 페이지에서 이용)
-     */
 
 
 }

@@ -37,7 +37,7 @@ public class JoinController {
 
 
     /**
-     * 민욱_회원가입 폼
+     * 회원가입 목록 화면(메인 화면)
      */
     @GetMapping("/join")
     public String join(@ModelAttribute("memberDTO") MemberDTO memberDTO) {
@@ -46,9 +46,9 @@ public class JoinController {
 
 
     /**
-     * 민욱_회원가입_회원 추가(유효성 검증, 파일 업로드)
-     *
-     * @param memberDTO     : DTO의 유효성 검증에 성공한 파라미터 저장(@ModelAttribute 사용)
+     * 회원가입 회원 추가(유효성 검증, 파일 업로드)
+     * @Validated(value = ValidationSequence.class) : 유효성 검증의 우선순위 세팅
+     * @param memberDTO : DTO의 유효성 검증에 성공한 파라미터 저장(@ModelAttribute 사용)
      * @param bindingResult : DTO의 유효성 검증에 실패한 에러 내용 저장
      * @param file          : 파일 업로드
      * @param request       : VIEW에서 이미 처리 완료한 유효성 검증(받아오기)
@@ -60,6 +60,7 @@ public class JoinController {
     public String memberAdd(@Validated(value = ValidationSequence.class) @ModelAttribute("memberDTO") MemberDTO memberDTO, BindingResult bindingResult,
                             @RequestParam(required = false) MultipartFile file,
                             HttpServletRequest request, Model model) throws Exception {
+
 
         // 살패 로직(성공한 파라미터와 실패한 에러 내용을 가지고 다시 회원가입 폼 이동/이미 처리 완료한 유효성 검사 처리)
         if (bindingResult.hasErrors()) {
@@ -110,8 +111,7 @@ public class JoinController {
 
 
     /**
-     * 민욱_소셜 회원가입_회원 추가
-     *
+     * 소셜 회원가입(네이버)
      * @param memberDTO
      */
     @PostMapping("/join/naver.action")
@@ -130,8 +130,7 @@ public class JoinController {
 
 
     /**
-     * 민욱_회원가입_아이디 유효성 검증
-     *
+     * id 중복 검사_REST
      * @param userid
      * @return : 유효성 검증 성공시 cnt = 1 / 유효성 검사 실패시 cnt = 0
      */
@@ -144,14 +143,13 @@ public class JoinController {
 
 
     /**
-     * 민욱_소셜 로그인_네이버 고유 id 확인 및 회원정보 들고 오기
-     *
-     * @param request   : socialMemberNaverIdxCheck를 통해서 네이버 고유 id가 있다면 session에 DTO(회원정보)의 값을 저장
+     * 소셜 id 중복 검사_REST
+     * @param request : socialMemberNaverIdxCheck를 통해서 네이버 고유 id가 있다면 session에 DTO(회원정보)의 값을 저장
      * @param naver_idx : 네이버 고유 id(PK)
      * @return 네이버 고유 id가 존재시 cnt = 1 / 네이버 고유 id가 없을시 cnt = 0
      */
     @ResponseBody
-    @PostMapping("/login/oauth/naver/duplicate")
+    @PostMapping("/join/oauth/naver/duplicate" )
     public int socialMemberNaverIdxCheck(HttpServletRequest request,
                                          @RequestParam("naver_idx") String naver_idx) throws Exception {
         // 네이버 고유 id 확인(DB)
@@ -168,8 +166,7 @@ public class JoinController {
     }
 
     /**
-     * 민욱: 회원가입_이메일 유효성 검증
-     *
+     * 이메일 중복 검사_REST
      * @param map : email1, email2
      */
     @GetMapping("/join/email/duplicate")

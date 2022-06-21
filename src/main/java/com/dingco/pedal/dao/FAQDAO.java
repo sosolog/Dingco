@@ -102,11 +102,7 @@ public class FAQDAO {
     }
 
 
-    // 글 작성
-    public int writeUserFaq(FAQDTO dto) throws Exception {
-        System.out.println(dto);
-        return session.insert("com.config.FAQMapper.writeUserFaq", dto);
-    }
+
 
     //글 자세히 보기
     public FAQDTO retrieve(int number_idx) throws Exception {
@@ -119,15 +115,7 @@ public class FAQDAO {
         return session.update("com.config.FAQMapper.readcnt", number_idx);
     }
 
-    // 글 수정
-    public int updateUserBoard(FAQDTO dto) throws Exception {
-        return session.update("com.config.FAQMapper.updateUserBoard", dto);
-    }
 
-    // 글 삭제
-    public int deleteUserBoard(int number_idx) {
-        return session.delete("com.config.FAQMapper.deleteUserBoard", number_idx);
-    }
 
 
 }

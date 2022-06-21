@@ -47,69 +47,11 @@ public class FAQController {
         // 검색 조건에 맞는 데이터 조회(+페이징)
         PageDTO<FAQDTO> pageDTO = faqService.selectFAQSearchRecord(curPage, searchKey);
 
-        log.info("pageDTO = " + pageDTO);
 
         return pageDTO;
     }
 
 
-////////// CRUD //////////
 
-    @GetMapping("/faq/write")
-    public String FAQWriteUI(@Login MemberDTO memberDTO, Model model) throws Exception {
-
-        List<HashMap<String, String>> category = faqService.categoryBoardFaq();
-
-        model.addAttribute("dto", memberDTO);
-        model.addAttribute("category", category);
-        return "FaqWrite";
-    }
-
-
-    @PostMapping("/faq/write")
-    public String FAQWrite(FAQDTO dto) throws Exception {
-        faqService.writeUserFaq(dto);
-        System.out.println(dto);
-        return "redirect:/faq";
-    }
-
-    @GetMapping("/faq/{idx}")
-    public String faqRetrieveForm(@PathVariable("idx") int number_idx,
-                                  Model m) throws Exception {
-
-        FAQDTO faqDTO = faqService.retrieve(number_idx);
-        List<HashMap<String, String>> category = faqService.categoryBoardFaq();
-
-        m.addAttribute("faqDTO", faqDTO);
-        m.addAttribute("category", category);
-
-        return "FaqRetrieve";
-    }
-    @GetMapping("/faq/retrieve/{idx}")
-    public String faqRetrieve(@PathVariable("idx") int number_idx, @Login MemberDTO memberDTO, Model m) throws Exception {
-
-        FAQDTO faqDTO = faqService.retrieve(number_idx);
-        List<HashMap<String, String>> category = faqService.categoryBoardFaq();
-
-        m.addAttribute("faqDTO", faqDTO);
-        m.addAttribute("memberDTO", memberDTO);
-        m.addAttribute("category", category);
-        return "FaqRetrieve";
-    }
-
-    @ResponseBody
-    @PutMapping("/faq/{idx}")
-    public int update(@PathVariable("idx") int number_idx, FAQDTO dto) throws Exception {
-        int result = faqService.updateUserBoard(dto);
-
-        return result;
-    }
-
-    @ResponseBody
-    @DeleteMapping("/faq/{idx}")
-    public int delete(@PathVariable("idx") int number_idx) throws Exception {
-        int result = faqService.deleteUserBoard(number_idx);
-        return result;
-    }
 
 }
