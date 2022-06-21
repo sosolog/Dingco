@@ -4,6 +4,19 @@
 <script type="text/javascript"  src="/script/jquery.tmpl.js"></script>
 <script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
 
+    <style>
+        .mini-btn4 {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: #FFFFFF;
+            border: 1px solid #4E4E4E;
+            font-size: 17px;
+            margin: auto;
+            border-radius: 3px;
+        }
+
+    </style>
+
     <script>
         // 페이방 기본 정보
         let payRoom = ${payRoom};
@@ -70,7 +83,7 @@
                 </select>
             </td>
             <td>
-                <button type="button" id="form-pay-participants" style="width: 50px"  onclick="changeParticipants()">
+                <button type="button" id="form-pay-participants" class="mini-btn4"  onclick="changeParticipants()">
                     <span>{{= participants_prgm_idx ? participants_prgm_idx.length : groupMember.length}}</span>명
                 </button>
                 <div id="form-pay-participants-list" style="display: none">
@@ -80,10 +93,10 @@
                                {{= participants_prgm_idx && !participants_prgm_idx.includes(p.prgm_idx) ? null : 'checked'}}>
                         \${p.name}
                     {{/each}}
-                    <button type="button" id="btn-participants" onclick="changeParticipantsNumber()">OK</button>
+                    <button type="button" id="btn-participants" class="mini-btn4" onclick="changeParticipantsNumber()">OK</button>
                 </div>
             </td>
-            <td><button type="button" id="btn-updated-pay" onclick="return {{= pay ? 'saveUpdatedPay('+pay.p_idx+', this)' : 'saveNewPay()'}}">저장</button></td>
+            <td><button type="button" id="btn-updated-pay" class="mini-btn4" onclick="return {{= pay ? 'saveUpdatedPay('+pay.p_idx+', this)' : 'saveNewPay()'}}">저장</button></td>
         </tr>
     </script>
 
@@ -254,7 +267,7 @@
             </tr>
             </thead>
             <tbody id="payList">
-
+            <!--pay-form-tmpl-->
             </tbody>
             <tbody id="payList2">
 

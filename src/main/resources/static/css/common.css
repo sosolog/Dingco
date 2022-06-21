@@ -63,6 +63,40 @@ select {
     outline: none;
 }
 
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: #fff;
+    border-radius: 2px;
+    cursor: pointer;
+    height: 20px;
+    outline: 0;
+    width: 20px;
+    border: 1px solid #4E4E4E !important;
+    margin: -6px 2px;
+}
+input[type="checkbox"]::after {
+    /*border: solid #fff;*/
+    content: 'V';
+    display: none;
+    /*height: 40%;*/
+    /*left: 40%;*/
+    position: relative;
+    top: 0%;
+    color: #FFFFFF;
+    font-size: 15px;
+    /*width: 15%;*/
+    padding: 3px;
+    text-align: center;
+}
+input[type="checkbox"]:checked {
+    background: #505bf0;
+}
+input[type="checkbox"]:checked::after {
+    display: block;
+}
+
 /* IE 기본 스타일 제거 */
 select::-ms-expand {
     display: none; /* IE 10, 11 */
@@ -441,7 +475,7 @@ header .title .headerText span {
     margin-top: 0px;
 }
 
-.modal .modal_body table input {
+.modal .modal_body table input[type="text"] {
     font-size: 18px;
     padding: 10px 0px;
     border-bottom: 1px solid rgba(210, 210, 210, 0.5);

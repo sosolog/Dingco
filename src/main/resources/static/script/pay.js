@@ -178,7 +178,7 @@ function clearDutchPayForm() {
     $("#payList").html("");
 
     $("#is-pay-form-opened").val("");
-    $("#btn-pay-plus").text("+");
+    $("#btn-pay-plus").html('<img src="/images/btn-add-member.png">');
 
     $("#payList2").html("");
     savedPayArr = [];
@@ -318,12 +318,12 @@ function isPayFormOpened() {
 // 새 pay 입력시, 폼 탬플릿 보여주기/없애기 토글
 function togglePayForm(btn){
     if(!isPayFormOpened()){
-        $("#btn-pay-plus").text("-");
+        $("#btn-pay-plus").html('<img src="/images/btn_remove_room.png">');
         $("#pay-form-tmpl").tmpl({groupMember:groupMemberArr, pay: null, participants_prgm_idx:null}).appendTo("#payList");
         $("#is-pay-form-opened").val("true");
         btnDisabled(btn);
     }else{
-        $("#btn-pay-plus").text("+");
+        $("#btn-pay-plus").html('<img src="/images/btn-add-member.png">');
         $("#pay-form:last").remove();
         $("#is-pay-form-opened").val("");
         btnAbled();
@@ -425,11 +425,11 @@ function saveNewAccount(btn) {
 function plusMinus(idInfoArr,btn) {
     if ($(idInfoArr[0]).length == 0) {
         btnDisabled(btn);
-        $(idInfoArr[1]).text("-");
+        $(idInfoArr[1]).html('<img src="/images/btn_remove_room.png">');
         $(idInfoArr[2]).tmpl(idInfoArr[3]).appendTo(idInfoArr[4]);
     } else {
         btnAbled();
-        $(idInfoArr[5]).text("+");
+        $(idInfoArr[5]).html('<img src="/images/btn-add-member.png">');
         $("#accountList").html($("#account-form-tmpl").tmpl({pSave: groupMemberArr, accountIdx: 1}));
     }
 }
