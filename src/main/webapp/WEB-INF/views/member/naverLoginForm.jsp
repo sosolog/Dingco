@@ -4,7 +4,7 @@
 
 <script>
     // 네이버 로그인
-    var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "http://localhost:9090/callback");
+    var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "http://sirosid1996.cafe24.com/callback");
     // 네이버 사용자 프로필 조회
     naver_id_login.get_naver_userprofile("naverLoginCallback()");
     function naverLoginCallback() {
