@@ -36,6 +36,12 @@ public class AdminPayDAO {
         return session.selectList("admin.PayMapper.selectAllPayRoom", map);
     }
 
+    /**
+     * PayRoom 특정 더치페이 방 조회하기
+     *
+     * @param pr_idx  : 조회할 더치페이 방 고유 번호
+     * @author 명지
+     */
     public PayRoomDTO selectOnePayRoom(int pr_idx) throws Exception {
         return session.selectOne("admin.PayMapper.selectOnePayRoom", pr_idx);
     }

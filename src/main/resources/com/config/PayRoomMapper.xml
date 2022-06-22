@@ -320,4 +320,12 @@
         </collection>
     </resultMap>
 
+
+    <!-- m_idx에 맞는 + 검색 결과에 맞는 페이방 가져오기 -->
+    <select id="searchPayRoom" parameterType="hashmap" resultType="PayRoomDTO">
+        select pr.pr_idx, pr.m_idx, pr.room_name, date_format(pr.create_date,'%Y-%m-%d') as create_date
+        from PAYROOM pr
+        where m_idx = #{m_idx} and room_name like concat('%', #{sch}, '%')
+        order by create_date desc
+    </select>
 </mapper>

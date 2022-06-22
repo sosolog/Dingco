@@ -32,8 +32,8 @@ public class AdminPayServiceImpl implements AdminPayService {
      * PayRoom 전체 더치페이 방 가져오기
      * DB에서 데이터 가져온 다음 PageDTO 객체를 이용하여 페이징 처리
      *
-     * @param cp       : 현재 페이지 / defaultValue = 1
-     * @param sch      : 찾을 문자열(검색 조건) / defaultValue = ""
+     * @param cp  : 현재 페이지 / defaultValue = 1
+     * @param sch : 찾을 문자열(검색 조건) / defaultValue = ""
      * @author 명지
      */
     @Override
@@ -57,6 +57,12 @@ public class AdminPayServiceImpl implements AdminPayService {
         return pageDTO;
     }
 
+    /**
+     * PayRoom 특정 더치페이 방 조회하기
+     *
+     * @param pr_idx  : 조회할 더치페이 방 고유 번호
+     * @author 명지
+     */
     @Override
     public PayRoomDTO selectOnePayRoom(int pr_idx) throws Exception {
         return adminPayDAO.selectOnePayRoom(pr_idx);

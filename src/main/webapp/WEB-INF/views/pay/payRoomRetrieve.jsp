@@ -70,7 +70,7 @@
                 </select>
             </td>
             <td>
-                <button type="button" id="form-pay-participants" style="width: 50px"  onclick="changeParticipants()">
+                <button type="button" id="form-pay-participants" class="mini-btn"  onclick="changeParticipants()">
                     <span>{{= participants_prgm_idx ? participants_prgm_idx.length : groupMember.length}}</span>명
                 </button>
                 <div id="form-pay-participants-list" style="display: none">
@@ -80,10 +80,10 @@
                                {{= participants_prgm_idx && !participants_prgm_idx.includes(p.prgm_idx) ? null : 'checked'}}>
                         \${p.name}
                     {{/each}}
-                    <button type="button" id="btn-participants" onclick="changeParticipantsNumber()">OK</button>
+                    <button type="button" id="btn-participants" class="mini-btn" onclick="changeParticipantsNumber()">OK</button>
                 </div>
             </td>
-            <td><button type="button" id="btn-updated-pay" onclick="return {{= pay ? 'saveUpdatedPay('+pay.p_idx+', this)' : 'saveNewPay()'}}">저장</button></td>
+            <td><button type="button" id="btn-updated-pay" class="mini-btn" onclick="return {{= pay ? 'saveUpdatedPay('+pay.p_idx+', this)' : 'saveNewPay()'}}">저장</button></td>
         </tr>
     </script>
 
@@ -254,7 +254,7 @@
             </tr>
             </thead>
             <tbody id="payList">
-
+            <!--pay-form-tmpl-->
             </tbody>
             <tbody id="payList2">
 
