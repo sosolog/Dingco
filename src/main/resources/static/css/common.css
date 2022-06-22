@@ -2220,7 +2220,7 @@ header .title .headerText span {
 .sch_wrap {
     position: relative;
     width: 90%;
-    height: 88px;
+    /*height: 88px;*/
     margin: 10px auto;
     background-color: #F4F4F4;
     border-radius: 10px;
