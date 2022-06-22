@@ -52,6 +52,7 @@ public class AdminPayController {
 
     /**
      * 특정 더치페이방 자세히 보기
+     *
      * @param pr_idx payRoom 번호
      * @return payRoom 이 현재 로그인된 회원의 payRoom 이면, 세부 화면으로 아니라면, 메인 화면으로
      * @throws Exception
@@ -69,5 +70,4 @@ public class AdminPayController {
 
         return next;
     }
-
 }
