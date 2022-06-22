@@ -47,10 +47,10 @@
 
 
 <script type="text/javascript">
-    var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "http://localhost:9090/callback");
+    var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "http://sirosid1996.cafe24.com/callback");
     var state = naver_id_login.getUniqState();
     naver_id_login.setButton("white", 2,40);
-    naver_id_login.setDomain("http://localhost:9090/login");
+    naver_id_login.setDomain("http://sirosid1996.cafe24.com/login");
     naver_id_login.setState(state);
     naver_id_login.init_naver_id_login();
 </script>
