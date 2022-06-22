@@ -175,6 +175,13 @@ public class PayRoomDAO {
         return session.selectOne("com.config.PayRoomMapper.showDutchPayResultInDB", map);
     }
 
+    public List<PayRoomDTO> searchPayRoom (MemberDTO memberDTO, String searchWord) throws Exception {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("m_idx", memberDTO.getM_idx());
+        map.put("sch", searchWord);
+        return session.selectList("com.config.PayRoomMapper.searchPayRoom", map);
+    }
+
     /**
      * 테스트
      */

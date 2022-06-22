@@ -171,6 +171,11 @@ public class PayRoomServiceImpl implements PayRoomService {
         return dao.showDutchPayResultInfo(pr_idx, dp_idx);
     }
 
+    @Override
+    public List<PayRoomDTO> searchPayRoom(MemberDTO memberDTO, String searchWord) throws Exception {
+        return dao.searchPayRoom(memberDTO, searchWord);
+    }
+
     /**
      * 테스트
      */

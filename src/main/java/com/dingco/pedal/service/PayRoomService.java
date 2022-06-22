@@ -32,6 +32,7 @@ public interface PayRoomService {
     PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception;
     int saveDutchPayResult(int dp_idx, List<DutchPayResultDTO> dutchPayResultDTOList) throws Exception;
     DutchPayDTO showDutchPayResultInfo(int pr_idx, int dp_idx) throws Exception;
+    List<PayRoomDTO> searchPayRoom (MemberDTO memberDTO, String searchWord) throws Exception;
 
     /**
      * 테스트
