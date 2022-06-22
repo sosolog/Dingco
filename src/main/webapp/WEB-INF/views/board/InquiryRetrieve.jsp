@@ -19,7 +19,17 @@
         <div class="top">
             <span>{{= m_idx == 0 ? '관리자' : (auth ? '사용자'+m_idx : '작성자')}}</span>
             <span>(\${post_date})</span>
-            <a onclick="openCommentOption(\${c_idx})"><img src="/images/commentOption.png"></a>
+            <div id="btn-\${c_idx}-default">
+                {{if comment }}
+                {{if (m_idx != 0 && !auth) || (m_idx == 0 && auth)}}
+                <button onclick="showUpdateCommentForm(\${c_idx})" class="mini-btn">수정</button>
+                <button onclick="deleteComment(\${c_idx})" class="mini-btn" style="color:#E74133; border-color: #E74133;">삭제</button>
+                {{/if}}
+                {{if (m_idx == 0 && !auth)}}
+                <button onclick="showReCommentForm(\${c_idx})" class="mini-btn">대댓글 작성</button>
+                {{/if}}
+                {{/if}}
+            </div>
         </div>
         <div class="commentContent">
             <span id="comment_\${c_idx}">{{= comment ? comment : '(삭제된 댓글)'}}</span>
@@ -28,25 +38,12 @@
             <a onclick="updateComment(\${c_idx})"><span>수정</span></a>
             <div class="reset"></div>
         </div>
-        <div id="btn-\${c_idx}-default">
-            {{if comment }}
-                {{if (m_idx != 0 && !auth) || (m_idx == 0 && auth)}}
-                <button onclick="showUpdateCommentForm(\${c_idx})">수정</button>
-                <button onclick="deleteComment(\${c_idx})">삭제</button>
-                {{/if}}
-            {{if (m_idx == 0 && !auth)}}
-            <button onclick="showReCommentForm(\${c_idx})">대댓글 작성</button>
-            {{/if}}
-            {{/if}}
-        </div>
-
         {{if count_sub > 0}}
-        <a class="show-re-comment" data-status="0" onclick="toggleShowReCommentList(this, \${c_idx})"><span>답글 \${count_sub}개</span></a>
-            <%--<button class="show-re-comment" data-cidx="\${c_idx}" data-status="0">대댓글 보기</button>--%>
+        <a class="show-re-comment" data-status="0" data-cidx="\${c_idx}" onclick="toggleShowReCommentList(this, \${c_idx})"><span>답글 \${count_sub}개</span></a>
             <div id="recomment-list-\${c_idx}"></div>
         {{/if}}
         <div id="form-\${c_idx}-recomment" class="writeComment" style="display:none;">
-            <textarea id="recomment_\${c_idx}"></textarea>
+            <textarea id="recomment_\${c_idx}" placeholder="대댓글을 입력해주세요"></textarea>
             <a onclick="createReComment(\${c_idx})"><span>등록</span></a>
             <div class="reset"></div>
         </div>
@@ -58,25 +55,57 @@
     <div>
         <table>
             <tr>
-                <td>L </td>
-                <td>작성자</td>
+                <td>
+                    <span style="font-size: 20px; float: left;">L</span>
+                    <div class="top" style="padding: 0px 15px; text-align: left;">
+                        <span>{{= m_idx == 0 ? '관리자' : (auth ? '사용자'+m_idx : '작성자')}}</span>
+                        <span>(\${post_date})</span>
+                        <div id="btn-\${c_idx}-default">
+                            {{if comment }}
+                                <%--{{if (m_idx != 0 && !auth) || (m_idx == 0 && auth)}}
+                                <button onclick="showUpdateCommentForm(\${c_idx})" class="mini-btn">수정</button>
+                                <button onclick="deleteComment(\${c_idx})" class="mini-btn" style="color:#E74133; border-color: #E74133;">삭제</button>
+                                {{/if}}--%>
+                                {{if (m_idx != 0 && !auth) || (m_idx == 0 && auth)}}
+                                    <div id="btn-\${c_idx}-default" style="padding-left: 10px;">
+                                        <button onclick="showUpdateCommentForm(\${c_idx})" class="mini-btn">수정</button>
+                                        <button onclick="deleteComment(\${c_idx}, true)" class="mini-btn" style="color:#E74133; border-color: #E74133; margin-left: 5px;">삭제</button>
+                                    </div>
+                                    <%--<div id="btn-\${c_idx}-update" style="display: none">
+                                        <button onclick="updateComment(\${c_idx}, true)">확인</button>
+                                    </div>--%>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </td>
+            <tr>
+                <td>
+                    <div class="commentContent" style="padding-left: 30px; text-align: left;">
+                        <span id="comment_\${c_idx}">{{= comment ? comment : '(삭제된 댓글)'}}</span>
+                    </div>
+                </td>
+                <%--<td>작성자</td>
                 <td>{{= m_idx == 0 ? '관리자' : (auth ? '사용자'+m_idx : '작성자')}}</td>
                 <td>작성일</td>
-                <td>\${post_date}</td>
+                <td>\${post_date}</td>--%>
             </tr>
-            <tr>
+            <%--<tr>
                 <td> </td>
                 <td>내용</td>
                 <td colspan="3"><span id="comment_\${c_idx}">\${comment}</span></td>
-            </tr>
+            </tr>--%>
         </table>
+
+
         {{if (m_idx != 0 && !auth) || (m_idx == 0 && auth)}}
-        <div id="btn-\${c_idx}-default">
+        <%--<div id="btn-\${c_idx}-default">
             <button onclick="showUpdateCommentForm(\${c_idx})">수정</button>
             <button onclick="deleteComment(\${c_idx}, true)">삭제</button>
-        </div>
+        </div>--%>
         <div id="btn-\${c_idx}-update" style="display: none">
-        <button onclick="updateComment(\${c_idx}, true)">확인</button>
+        <a onclick="updateComment(\${c_idx}, true)" class="mini-btn3"><span>확인</span></a>
+            <div class="reset"/>
         </div>
         {{/if}}
     </div>
@@ -133,13 +162,15 @@
     </c:if>
 
     <c:if test="${memberDTO.authorities != 'ADMIN'}">
-        <c:if test="${dto.status == 'IN_PROCESS'}">
-            <button type="button" onclick="terminateInquiry()">문의 종료하기</button>
-        </c:if>
         <c:if test="${dto.status != 'YET' && dto.status != 'RE_INQUIRY'}">
-            <button type="button" onclick="processReInquiry()">재문의하기</button>
+            <button type="button" onclick="processReInquiry()" class="mini-btn2">재문의하기</button>
         </c:if>
-        <div class="grayLine"></div>
+        <c:if test="${dto.status == 'IN_PROCESS'}">
+            <button type="button" onclick="terminateInquiry()" class="mini-btn2">문의 종료하기</button>
+        </c:if>
+        <c:if test="${dto.status == 'IN_PROCESS' || (dto.status != 'YET' && dto.status != 'RE_INQUIRY')}">
+            <div class="grayLine"></div>
+        </c:if>
     </c:if>
 
     <div class="commentBox">

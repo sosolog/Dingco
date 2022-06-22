@@ -77,16 +77,12 @@ input[type="checkbox"] {
     margin: -6px 2px;
 }
 input[type="checkbox"]::after {
-    /*border: solid #fff;*/
     content: 'V';
     display: none;
-    /*height: 40%;*/
-    /*left: 40%;*/
     position: relative;
     top: 0%;
     color: #FFFFFF;
     font-size: 15px;
-    /*width: 15%;*/
     padding: 3px;
     text-align: center;
 }
@@ -1804,7 +1800,7 @@ header .title .headerText span {
 }
 
 #inquiryRetrieve .info span {
-    font-size: 20px;
+    font-size: 10px;
     color: #A1A1A1;
     letter-spacing: -0.4px;
 }
@@ -1820,7 +1816,7 @@ header .title .headerText span {
 
 #inquiryRetrieve .title span {
     font-weight: 700;
-    font-size: 30px;
+    font-size: 15px;
     color: #333333;
 }
 
@@ -1829,7 +1825,7 @@ header .title .headerText span {
 }
 
 #inquiryRetrieve .content span {
-    font-size: 24px;
+    font-size: 12px;
     color: #333333;
 }
 
@@ -1876,7 +1872,8 @@ header .title .headerText span {
     padding-left: 10px;
 }
 
-#inquiryRetrieve .commentOne .top a {
+#inquiryRetrieve .commentOne .top div {
+    display: inline-block;
     float: right;
 }
 
@@ -2178,3 +2175,38 @@ header .title .headerText span {
     object-fit: cover;
 }
 
+
+/**** mini-btn ****/
+.mini-btn {
+    display: inline-block;
+    padding: 3px 10px;
+    background-color: #FFFFFF;
+    border: 1px solid #4E4E4E;
+    font-size: 17px;
+    margin: auto;
+    border-radius: 3px;
+}
+
+.mini-btn2 {
+    display: inline-block;
+    padding: 7px 20px;
+    border: 1px solid #4E4E4E;
+    background-color: #FFFFFF;
+    font-size: 20px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.mini-btn3 {
+
+    float: right;
+    padding: 10px 16px;
+    background-color: #717274;
+    border-radius: 5px;
+}
+
+.mini-btn3 span {
+    display: inline-block;
+    color: #ffffff;
+    font-size: 17px;
+}

@@ -183,7 +183,7 @@ function showUpdateCommentForm(c_idx) {
     console.log(comment);
     $(`#btn-${c_idx}-default`).hide();
     $(`#btn-${c_idx}-update`).show();
-    $(`#comment_${c_idx}`).html(`<div class="writeComment"><textarea type='text' id='comment_input_${c_idx}' placeholder='내용을 입력해주세요'>${comment}</textarea></div>`)
+    $(`#comment_${c_idx}`).html(`<div class="writeComment"><textarea type='text' id='comment_input_${c_idx}' placeholder='내용을 입력해주세요' style="width:600px">${comment}</textarea></div>`)
 }
 
 
