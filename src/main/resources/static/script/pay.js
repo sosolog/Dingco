@@ -542,6 +542,17 @@ function plusMinus(idInfoArr,btn) {
             traditional: "true",
             success: function (data) {
                 console.log(data);
+                var st_date = new Date().toISOString().substr(0, 10).replace('T', ' ');
+                let now = new Date(st_date);
+                data.forEach(d => {
+                    if (d.due_date == null) {
+                        d.remainDate = '-'
+                    } else {
+                        let dueDate = new Date(d.due_date);
+                        let diffDate = now.getTime() - dueDate.getTime();
+                        d.remainDate = diffDate / (1000 * 60 * 60 * 24);
+                    }
+                });
                 $("#dutchList").html($("#show-dutch-list-tmpl").tmpl({dList: data}));
             },
             error:function (xhr,sta,error){
@@ -731,6 +742,7 @@ function closeDutchPayForm() {
 
     // 현재까지 저장되어있던 정보 삭제
     clearDutchPayForm();
+    showDutchPayList(pr_idx);
 }
 
 function saveDutchPayForm(success_fn) {

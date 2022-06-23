@@ -36,7 +36,10 @@ public class DutchPayDTO {
     private String dueDate; // 정산 마감일
 
     private List<MultipartFile> imageFile;
-  
+
+    @JsonProperty("paid_list")
+    private List<String> paidList;
+
         
 
 

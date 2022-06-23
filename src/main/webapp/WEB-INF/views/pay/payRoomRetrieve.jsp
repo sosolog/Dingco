@@ -115,7 +115,23 @@
             <td><span>\${p.create_date}</span></td>
             <td><a href="javascript:showDutchPayInfo(\${p.dp_idx})"><span style="text-decoration: underline">\${p.name}</span></a></td>
             <td><span>\${p.total}</span></td>
-            <td><span>(정산현황)</span></td>
+
+            <td><span>
+                {{if p.paid_list == null || p.paid_list.length <= 0}} 정산전
+                {{else p.paid_list.length == 1 & p.paid_list[0] == 'Y'}} 정산완료
+                {{else}} 정산중 {{/if}}
+                {{if !(p.paid_list.length == 1 & p.paid_list[0] == 'Y')}}
+                    {{if p.remainDate == '-'}}
+                    <span style="font-weight: bold">(-)</span>
+                    {{else p.remainDate == 0}}
+                    <span style="color: red; font-weight: bold">(D-Day)</span>
+                    {{else p.remainDate > 0}}
+                    <span style="color: red; font-weight: bold">(D+{{= p.remainDate}})</span>
+                    {{else}}
+                    <span style="font-weight: bold">(D{{= p.remainDate}})</span>
+                    {{/if}}
+                {{/if}}
+            </span></td>
             <td><a onclick="deleteOneDutchPay(\${p.dp_idx})"><span style="color: #E74133; text-decoration: underline">삭제</span></a></td>
         </tr>
         {{/each}}
