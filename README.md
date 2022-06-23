@@ -1,5 +1,11 @@
+<br>
 ## 페이의 달인
 
+모바일 웹에 최적화된 Spring Boot 기반의 더치페이 서비스
+
+Project execution period : 2022.04.03~2022.06.28
+
+### Description
 
 
 ### 개발환경
