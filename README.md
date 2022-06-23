@@ -5,7 +5,7 @@
 ### 개발환경
 
 ・ Frontend : HTML, CSS, JS(ES6)<br>
-・ Backend : Java, Spring Boot, Mybatis<br>  
+・ Backend : Java, Spring Boot, Mybatis<br>
 ・ DB : MariaDB<br>
 ・ IDE & Collaboration : IntelliJ, Workbench, Git, Notion<br>
 ・ deployment : Cafe24 Hosting -> AWS<br>
