@@ -3,7 +3,12 @@
 
 
 ### 개발환경
-<img width="893" alt="image" src="https://user-images.githubusercontent.com/88137420/173075965-60b97bcd-ade7-40b1-9e08-69ddd6dbf586.png">
+
+・ Frontend : HTML, CSS, JS(ES6)
+・ Backend : Java, Spring Boot, Mybatis  
+・ DB : MariaDB
+・ IDE & Collaboration : IntelliJ, Workbench, Git, Notion
+・ deployment : Cafe24 Hosting -> AWS
 
 ### WBS
 ![image](https://user-images.githubusercontent.com/88137420/173076171-fc3c58a0-37c2-4675-b184-9dad8c7e4f1d.png)
