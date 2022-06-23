@@ -5,16 +5,18 @@
 
 <!--더치페이 리스트 목록 템플릿-->
 <script type="text/html" id="payRoom-list-tmpl">
+    {{each(index, p) pList}}
     <div class="wrap_payRoom">
-        ${searchPayRooms}
-        <%--<a class="box" href="/pay/${pr_idx}">
-            <span class="tit">${room_name}</span>
+        <a class="box" id="pList_\${index}" href="/pay/\${p.pr_idx}">
+            <span class="tit">\${p.room_name}</span>
             <span class="date">
-                ${create_date}
-                <a id="btn-delete-account-ajax" class="btn-delete-account" onclick="deleteOnePayRoom(${pr_idx},$(this))">삭제</a>
+                \${p.create_date}
+                <a id="btn-delete-account-ajax" class="btn-delete-account" data-idx="\${index}" onclick="deleteOnePayRoom(\${p.pr_idx},$(this))">삭제</a>
             </span>
-        </a>--%>
+        </a>
+
     </div>
+    {{/each}}
 </script>
 
 
