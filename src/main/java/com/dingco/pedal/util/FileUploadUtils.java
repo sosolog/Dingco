@@ -47,6 +47,6 @@ public class FileUploadUtils {
 
     // 서버의 저장소 위치
     public String getFullPath (String filename){
-        return uploadBaseDir + tableDir.getDirectoryName() + "\\" + filename;
+        return uploadBaseDir + "/" + tableDir.getDirectoryName() + "/" + filename;
     }
 }
