@@ -117,12 +117,25 @@
             (#{p_idx}, #{item.prgm_idx})
         </foreach>
     </insert>
-    <select id="dutchpayListInfo" parameterType="int" resultType="DutchPayDTO">
-        select dp.dp_idx, dp.dp_name dutchPayName, date_format(dp.create_date,'%Y-%m-%d') createDate, dp.due_date dueDate, t.totalPay
+    <select id="dutchpayListInfo" parameterType="int" resultMap="dutchPayForListInfo">
+        select dp.dp_idx, dp.dp_name dutchPayName, date_format(dp.create_date,'%Y-%m-%d') createDate,
+               dp.due_date dueDate, t.totalPay, dr.paid paidList
         from (select sum(price) totalPay, dp_idx from PAYLIST group by dp_idx) t
-            right outer join DUTCHPAYLIST dp on dp.dp_idx = t.dp_idx
+                 right outer join DUTCHPAYLIST dp on dp.dp_idx = t.dp_idx
+                 left outer join (select distinct dp_idx, paid from DUTCHPAYRESULT group by dp_idx, paid) dr
+                                 on dp.dp_idx = dr.dp_idx
         where dp.pr_idx = #{pr_idx};
     </select>
+    <resultMap id="dutchPayForListInfo" type="DutchPayDTO">
+        <id property="dp_idx" column="dp_idx"></id>
+        <result property="dutchPayName" column="dutchPayName"></result>
+        <result property="createDate" column="createDate"></result>
+        <result property="dueDate" column="dueDate"></result>
+        <result property="totalPay" column="totalPay"></result>
+        <collection property="paidList" ofType="java.lang.String">
+            <result column="paidList"/>
+        </collection>
+    </resultMap>
 
     <resultMap id="dutchPay" type="DutchPayDTO">
         <id property="dp_idx" column="dp_idx"></id>
@@ -310,11 +323,11 @@
             <result property="amount" column="amount"></result>
             <result property="isPaid" column="paid"></result>
             <association property="recipient" javaType="PayGroupMemberDTO">
-                <id property="prgm_idx" column="recipient"/>
+                <result property="prgm_idx" column="recipient"/>
                 <result property="payMember_name" column="recipient_name"/>
             </association>
             <association property="sender" javaType="PayGroupMemberDTO">
-                <id property="prgm_idx" column="sender"/>
+                <result property="prgm_idx" column="sender"/>
                 <result property="payMember_name" column="sender_name"/>
             </association>
         </collection>

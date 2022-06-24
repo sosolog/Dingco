@@ -1,9 +1,20 @@
+<br>
 ## 페이의 달인
 
+모바일 웹에 최적화된 Spring Boot 기반의 더치페이 서비스
+
+Project execution period : 2022.04.03~2022.06.28
+
+### Description
 
 
 ### 개발환경
-<img width="893" alt="image" src="https://user-images.githubusercontent.com/88137420/173075965-60b97bcd-ade7-40b1-9e08-69ddd6dbf586.png">
+
+・ Frontend : HTML, CSS, JS(ES6)<br>
+・ Backend : Java, Spring Boot, Mybatis<br>
+・ DB : MariaDB<br>
+・ IDE & Collaboration : IntelliJ, Workbench, Git, Notion<br>
+・ deployment : Cafe24 Hosting -> AWS<br>
 
 ### WBS
 ![image](https://user-images.githubusercontent.com/88137420/173076171-fc3c58a0-37c2-4675-b184-9dad8c7e4f1d.png)
