@@ -13,7 +13,7 @@
             data: { "sch": f.searchKey.value },
             success:function(res){
                 console.log(res.searchPayRooms);
-                $("#payRoom-list-tmpl").tmpl(res).appendTo("#payRoomList_data");
+                $("#payRoomList_data").html($("#payRoom-list-tmpl").tmpl({pList: res.searchPayRooms}));
             },
             error:function (xhr,sta,error){
                 console.log(error);

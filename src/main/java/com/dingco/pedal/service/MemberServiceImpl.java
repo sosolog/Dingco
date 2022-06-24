@@ -5,6 +5,7 @@ import com.dingco.pedal.dto.MemberDTO;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Value("${sns.kakao.rest.api.key}")
+    private String KAKAO_REST_API_KEY;
+
+    @Value("${sns.kakao.redirect.uri}")
+    private String KAKAO_REDIRECT_URI;
 
 
     // 민욱: 회원가입_회원 추가
@@ -110,8 +117,8 @@ public class MemberServiceImpl implements MemberService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=ee5887b0e2e8cce297b9421bb915bc70"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://sirosid1996.cafe24.com/login/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&client_id="+KAKAO_REST_API_KEY); // TODO REST_API_KEY 입력
+            sb.append("&redirect_uri="+KAKAO_REDIRECT_URI); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();

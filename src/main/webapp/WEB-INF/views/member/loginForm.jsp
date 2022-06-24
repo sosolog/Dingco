@@ -2,9 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<c:set var="REST_API_KEY" value="ee5887b0e2e8cce297b9421bb915bc70"/>
-<c:set var="REDIRECT_URI" value="http://sirosid1996.cafe24.com/login/kakao"/>
-
 <div id="login">
     <span class="logo">Pedal</span>
     <form name="loginForm" class="loginForm" action="/login.action" method="post">

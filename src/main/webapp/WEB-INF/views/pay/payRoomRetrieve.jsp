@@ -299,10 +299,6 @@
                 <span>마감일</span>
                 <input type="date" name="due-date" id="due-date">
             </div>
-            <div class="box">
-                <span>영수증</span>
-                <input type="text" name="bill" id="bill">
-            </div>
         </div>
         <a class="btn-save" onclick="saveDutchPayForm()"><span>저장</span></a>
         <a class="btn-show-result" onclick="showDutchPayResult()"><span>결과 미리보기(정산하기)</span></a>

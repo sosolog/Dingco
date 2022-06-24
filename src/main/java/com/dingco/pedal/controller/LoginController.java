@@ -35,11 +35,16 @@ public class LoginController {
     private String GOOGLE_SNS_CLIENT_ID;
     @Value("${sns.google.callback.url}")
     private String GOOGLE_SNS_CALLBACK_URL;
+    @Value("${sns.kakao.rest.api.key}")
+    private String KAKAO_REST_API_KEY;
+    @Value("${sns.kakao.redirect.uri}")
+    private String KAKAO_REDIRECT_URI;
 
     //주황 - 로그인폼(로그인, 회원가입, 계정찾기, SNS API 로그인)
     @GetMapping("/login")
-    public String loginForm() {
-
+    public String loginForm(Model model, HttpServletRequest request) {
+        model.addAttribute("KAKAO_REST_API_KEY", KAKAO_REST_API_KEY);
+        model.addAttribute("KAKAO_REDIRECT_URI", KAKAO_REDIRECT_URI);
         return "loginForm";
 
     }
