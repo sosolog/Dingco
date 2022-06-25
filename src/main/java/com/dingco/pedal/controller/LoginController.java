@@ -93,6 +93,12 @@ public class LoginController {
         return "redirect:main";
     }
 
+    //주황 - 개인정보 처리방침
+    @GetMapping("/login/personal/info")
+    public String personalInfo(){
+        return "/member/userInfo";
+    }
+
     /**
      * 카카오 로그인 페이지
      *
