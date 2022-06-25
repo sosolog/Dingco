@@ -33,11 +33,11 @@ Cafe24의 Hosting을 구매해서 데이터베이스를 공유하고 배포를 �
 <br>
 
 ### WBS
-![image](https://user-images.githubusercontent.com/88137420/173076171-fc3c58a0-37c2-4675-b184-9dad8c7e4f1d.png)<br>
+![image](https://user-images.githubusercontent.com/88137420/175780403-9e9c8024-1c49-4867-a57f-c730fd222ccf.png)
 <br>
 <br>
 ### IA
-![image](https://user-images.githubusercontent.com/88137420/175779853-12469885-c342-4fff-991c-19991814c165.png)<br>
+![image](https://user-images.githubusercontent.com/88137420/175779853-12469885-c342-4fff-991c-19991814c165.png)
 <br>
 <br>
 ### 유저 플로우
