@@ -4,6 +4,7 @@
 
 ### ・ 프로젝트 개요
 http://www.pedal-dingco.site:9090/main<br>
+참여인원 : 명지, 민욱, 주황, 영준, 소현
 <br>
 <i>[소개]</i><br>
 <br>
