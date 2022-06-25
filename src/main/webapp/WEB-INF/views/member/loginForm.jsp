@@ -29,7 +29,7 @@
         <div class="loginimg" onclick="naverlogin()"><img src="/images/snslogin/naver_login_01.png"></div>
 <%--        <div class="loginimg"><a href="http://localhost:9090/login/oauth/google"><img src="/images/snslogin/google_login_01.png"></a></div>--%>
 <%--        <div class="loginimg"><a href="http://3.37.182.2:9090/login/oauth/google"><img src="/images/snslogin/google_login_01.png"></a></div>--%>
-        <div class="loginimg"><a href="http://sirosid1996.cafe24.com/login/oauth/google"><img src="/images/snslogin/google_login_01.png"></a></div>
+        <div class="loginimg"><a href="http://www.pedal-dingco.site:9090/login/oauth/google"><img src="/images/snslogin/google_login_01.png"></a></div>
         <!--카카오 로그인-->
         <div class="loginimg">
             <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}">
