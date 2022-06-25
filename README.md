@@ -31,7 +31,10 @@ Cafe24의 Hosting을 구매해서 데이터베이스를 공유하고 배포를 �
 ・ deployment : Cafe24 Hosting -> AWS EC2, RDS<br>
 <br>
 <br>
-
+### 핵심기능
+![image](https://user-images.githubusercontent.com/88137420/175780484-3e48f13b-eec9-4865-8f49-4ff7e6b155f5.png)
+<br>
+<br>
 ### WBS
 ![image](https://user-images.githubusercontent.com/88137420/175780403-9e9c8024-1c49-4867-a57f-c730fd222ccf.png)
 <br>
@@ -45,7 +48,8 @@ Cafe24의 Hosting을 구매해서 데이터베이스를 공유하고 배포를 �
 <br>
 <br>
 ### ERD
-<img width="804" alt="image" src="https://user-images.githubusercontent.com/88137420/173076070-e09352ff-6f22-4e18-8b7d-c9e98d64ff91.png"><br>
+![image](https://user-images.githubusercontent.com/88137420/175780521-66da4193-d9ca-499f-81a1-4ff63a513f27.png)
+
 <br>
 <br>
 ### 회고
