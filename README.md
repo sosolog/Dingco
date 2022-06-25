@@ -44,17 +44,16 @@ Cafe24의 Hosting을 구매해서 데이터베이스를 공유하고 배포를 �
 <br>
 <br>
 ### 유저 플로우
-![image](https://user-images.githubusercontent.com/88137420/173076035-a85a0796-9ee7-4d67-ba50-4add2033c1df.png)<br>
+![image](https://user-images.githubusercontent.com/88137420/175780638-8b48173f-d848-41f1-b2b3-5520f1b38926.png)
 <br>
 <br>
 ### ERD
 ![image](https://user-images.githubusercontent.com/88137420/175780521-66da4193-d9ca-499f-81a1-4ff63a513f27.png)
-
 <br>
 <br>
 ### 회고
-명지 :
-민욱 : 
-주황 :
-영준 :
-소현 :
+명지 : <br>
+민욱 : <br>
+주황 : <br>
+영준 : <br>
+소현 : <br>
