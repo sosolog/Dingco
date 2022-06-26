@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DutchPayResultDTO {
+    private int dpr_idx;
     private PayGroupMemberDTO recipient;
     private PayGroupMemberDTO sender;
     private int amount;
