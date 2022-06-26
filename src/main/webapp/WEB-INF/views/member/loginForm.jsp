@@ -45,10 +45,10 @@
 
 
 <script type="text/javascript">
-    var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "http://sirosid1996.cafe24.com/callback");
+    var naver_id_login = new naver_id_login("srtVLSBDQTIgJD7D65Ls", "https://www.pedal-dingco.site/callback");
     var state = naver_id_login.getUniqState();
     naver_id_login.setButton("white", 2,40);
-    naver_id_login.setDomain("http://sirosid1996.cafe24.com/login");
+    naver_id_login.setDomain("https://www.pedal-dingco.site/login");
     naver_id_login.setState(state);
     naver_id_login.init_naver_id_login();
 </script>

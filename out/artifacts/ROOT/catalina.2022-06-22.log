@@ -1,0 +1,700 @@
+22-Jun-2022 20:55:00.990 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/pedal]
+22-Jun-2022 20:55:01.007 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'dispatcherServlet'
+22-Jun-2022 20:55:01.012 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+22-Jun-2022 20:55:01.138 심각 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.StandardContext.listenerStop Exception sending context destroyed event to listener instance of class org.springframework.boot.web.servlet.support.SpringBootServletInitializer$SpringBootContextLoaderListener
+ java.lang.IllegalStateException: java.io.FileNotFoundException: /sirosid1996/tomcat/webapps/pedal/WEB-INF/lib/lombok-1.18.22.jar (그런 파일이나 디렉터리가 없습니다)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.getArchiveEntry(AbstractSingleArchiveResourceSet.java:100)
+	at org.apache.catalina.webresources.AbstractArchiveResourceSet.getResource(AbstractArchiveResourceSet.java:265)
+	at org.apache.catalina.webresources.StandardRoot.getResourceInternal(StandardRoot.java:281)
+	at org.apache.catalina.webresources.Cache.getResource(Cache.java:62)
+	at org.apache.catalina.webresources.StandardRoot.getResource(StandardRoot.java:216)
+	at org.apache.catalina.webresources.StandardRoot.getClassLoaderResource(StandardRoot.java:225)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findResourceInternal(WebappClassLoaderBase.java:2541)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findClassInternal(WebappClassLoaderBase.java:2377)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findClass(WebappClassLoaderBase.java:855)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1304)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1163)
+	at org.mariadb.jdbc.internal.util.DeRegister.deregister(DeRegister.java:26)
+	at java.sql.DriverManager.deregisterDriver(DriverManager.java:414)
+	at org.springframework.boot.web.servlet.support.SpringBootServletInitializer.deregisterJdbcDrivers(SpringBootServletInitializer.java:118)
+	at org.springframework.boot.web.servlet.support.SpringBootServletInitializer$SpringBootContextLoaderListener.contextDestroyed(SpringBootServletInitializer.java:249)
+	at org.apache.catalina.core.StandardContext.listenerStop(StandardContext.java:4906)
+	at org.apache.catalina.core.StandardContext.stopInternal(StandardContext.java:5545)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:221)
+	at org.apache.catalina.core.ContainerBase.removeChild(ContainerBase.java:849)
+	at org.apache.catalina.startup.HostConfig.undeploy(HostConfig.java:1429)
+	at org.apache.catalina.startup.HostConfig.checkResources(HostConfig.java:1355)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1615)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:318)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:95)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1168)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1377)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1381)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1349)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.FileNotFoundException: /sirosid1996/tomcat/webapps/pedal/WEB-INF/lib/lombok-1.18.22.jar (그런 파일이나 디렉터리가 없습니다)
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.jar.JarFile.<init>(JarFile.java:166)
+	at java.util.jar.JarFile.<init>(JarFile.java:130)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:170)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:155)
+	at org.apache.catalina.webresources.AbstractArchiveResourceSet.openJarFile(AbstractArchiveResourceSet.java:316)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.getArchiveEntry(AbstractSingleArchiveResourceSet.java:96)
+	... 29 more
+
+22-Jun-2022 20:55:01.169 경고 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc JDBC driver de-registration failed for web application [pedal]
+ java.lang.IllegalStateException: java.io.FileNotFoundException: /sirosid1996/tomcat/webapps/pedal/WEB-INF/lib/lombok-1.18.22.jar (그런 파일이나 디렉터리가 없습니다)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.getArchiveEntry(AbstractSingleArchiveResourceSet.java:100)
+	at org.apache.catalina.webresources.AbstractArchiveResourceSet.getResource(AbstractArchiveResourceSet.java:265)
+	at org.apache.catalina.webresources.StandardRoot.getResourceInternal(StandardRoot.java:281)
+	at org.apache.catalina.webresources.Cache.getResource(Cache.java:62)
+	at org.apache.catalina.webresources.StandardRoot.getResource(StandardRoot.java:216)
+	at org.apache.catalina.webresources.StandardRoot.getClassLoaderResource(StandardRoot.java:225)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findResourceInternal(WebappClassLoaderBase.java:2541)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findClassInternal(WebappClassLoaderBase.java:2377)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findClass(WebappClassLoaderBase.java:855)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1304)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1163)
+	at org.mariadb.jdbc.internal.util.DeRegister.deregister(DeRegister.java:26)
+	at java.sql.DriverManager.deregisterDriver(DriverManager.java:414)
+	at org.apache.catalina.loader.JdbcLeakPrevention.clearJdbcDriverRegistrations(JdbcLeakPrevention.java:73)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc(WebappClassLoaderBase.java:1663)
+	at org.apache.catalina.loader.WebappClassLoaderBase.clearReferences(WebappClassLoaderBase.java:1587)
+	at org.apache.catalina.loader.WebappClassLoaderBase.stop(WebappClassLoaderBase.java:1539)
+	at org.apache.catalina.loader.WebappLoader.stopInternal(WebappLoader.java:445)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:221)
+	at org.apache.catalina.core.StandardContext.stopInternal(StandardContext.java:5580)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:221)
+	at org.apache.catalina.core.ContainerBase.removeChild(ContainerBase.java:849)
+	at org.apache.catalina.startup.HostConfig.undeploy(HostConfig.java:1429)
+	at org.apache.catalina.startup.HostConfig.checkResources(HostConfig.java:1355)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1615)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:318)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:95)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1168)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1377)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1381)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1349)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.FileNotFoundException: /sirosid1996/tomcat/webapps/pedal/WEB-INF/lib/lombok-1.18.22.jar (그런 파일이나 디렉터리가 없습니다)
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.jar.JarFile.<init>(JarFile.java:166)
+	at java.util.jar.JarFile.<init>(JarFile.java:130)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:170)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:155)
+	at org.apache.catalina.webresources.AbstractArchiveResourceSet.openJarFile(AbstractArchiveResourceSet.java:316)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.getArchiveEntry(AbstractSingleArchiveResourceSet.java:96)
+	... 36 more
+
+22-Jun-2022 20:55:01.172 경고 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [pedal] appears to have started a thread named [SeedGenerator Thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.Object.wait(Object.java:502)
+ sun.security.provider.SeedGenerator$ThreadedSeedGenerator.run(SeedGenerator.java:334)
+ java.lang.Thread.run(Thread.java:745)
+22-Jun-2022 20:56:41.283 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /sirosid1996/tomcat/webapps/pedal.war
+22-Jun-2022 20:56:43.677 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 20:56:45.033 심각 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.startup.HostConfig.deployWARs Error waiting for multi-thread deployment of WAR files to complete
+ java.util.concurrent.ExecutionException: java.lang.OutOfMemoryError: Metaspace
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:192)
+	at org.apache.catalina.startup.HostConfig.deployWARs(HostConfig.java:766)
+	at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java:436)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1624)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:318)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:95)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1168)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1377)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1381)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1349)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.OutOfMemoryError: Metaspace
+
+22-Jun-2022 20:57:21.662 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /home/hosting_users/usr/local/fakechroot/lib/fakechroot:/usr/local/fakechroot/lib/fakechroot:/home/hosting_users/usr/lib:/home/hosting_users/lib:/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 20:57:21.719 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 20:57:21.728 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 20:57:21.729 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 246 ms
+22-Jun-2022 20:57:21.741 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 20:57:21.741 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 20:57:21.752 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /sirosid1996/tomcat/webapps/pedal.war
+22-Jun-2022 20:57:21.885 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 20:57:23.549 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 20:57:23.620 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 20:57:25.203 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 20:57:26.854 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /sirosid1996/tomcat/webapps/pedal.war has finished in 5,101 ms
+22-Jun-2022 20:57:26.854 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 20:57:26.970 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 20:57:26.971 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 117 ms
+22-Jun-2022 20:57:26.971 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 20:57:27.095 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 20:57:27.097 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 126 ms
+22-Jun-2022 20:57:27.097 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 20:57:27.230 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 20:57:27.231 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 134 ms
+22-Jun-2022 20:57:27.233 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 20:57:27.236 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 5506 ms
+22-Jun-2022 20:58:01.539 정보 [http-nio-8239-exec-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-Jun-2022 21:10:07.785 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context [/pedal]
+22-Jun-2022 21:10:07.788 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'dispatcherServlet'
+22-Jun-2022 21:10:07.792 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+22-Jun-2022 21:10:07.797 심각 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.StandardContext.listenerStop Exception sending context destroyed event to listener instance of class org.springframework.boot.web.servlet.support.SpringBootServletInitializer$SpringBootContextLoaderListener
+ java.lang.IllegalStateException: java.io.FileNotFoundException: /sirosid1996/tomcat/webapps/pedal/WEB-INF/lib/springfox-swagger2-2.9.2.jar (그런 파일이나 디렉터리가 없습니다)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.getArchiveEntry(AbstractSingleArchiveResourceSet.java:100)
+	at org.apache.catalina.webresources.AbstractArchiveResourceSet.getResource(AbstractArchiveResourceSet.java:265)
+	at org.apache.catalina.webresources.StandardRoot.getResourceInternal(StandardRoot.java:281)
+	at org.apache.catalina.webresources.Cache.getResource(Cache.java:62)
+	at org.apache.catalina.webresources.StandardRoot.getResource(StandardRoot.java:216)
+	at org.apache.catalina.webresources.StandardRoot.getClassLoaderResource(StandardRoot.java:225)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findResourceInternal(WebappClassLoaderBase.java:2541)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findClassInternal(WebappClassLoaderBase.java:2377)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findClass(WebappClassLoaderBase.java:855)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1304)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1163)
+	at org.springframework.web.context.ContextLoaderListener.contextDestroyed(ContextLoaderListener.java:113)
+	at org.springframework.boot.web.servlet.support.SpringBootServletInitializer$SpringBootContextLoaderListener.contextDestroyed(SpringBootServletInitializer.java:245)
+	at org.apache.catalina.core.StandardContext.listenerStop(StandardContext.java:4906)
+	at org.apache.catalina.core.StandardContext.stopInternal(StandardContext.java:5545)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:221)
+	at org.apache.catalina.core.ContainerBase.removeChild(ContainerBase.java:849)
+	at org.apache.catalina.startup.HostConfig.undeploy(HostConfig.java:1429)
+	at org.apache.catalina.startup.HostConfig.checkResources(HostConfig.java:1355)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1615)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:318)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:95)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1168)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1377)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1381)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1349)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.FileNotFoundException: /sirosid1996/tomcat/webapps/pedal/WEB-INF/lib/springfox-swagger2-2.9.2.jar (그런 파일이나 디렉터리가 없습니다)
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.jar.JarFile.<init>(JarFile.java:166)
+	at java.util.jar.JarFile.<init>(JarFile.java:130)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:170)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:155)
+	at org.apache.catalina.webresources.AbstractArchiveResourceSet.openJarFile(AbstractArchiveResourceSet.java:316)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.getArchiveEntry(AbstractSingleArchiveResourceSet.java:96)
+	... 27 more
+
+22-Jun-2022 21:10:07.802 경고 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [pedal] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+22-Jun-2022 21:10:28.306 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context []
+22-Jun-2022 21:20:28.341 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 21:20:28.345 심각 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.core.ContainerBase.addChildInternal ContainerBase.addChild: start: 
+ org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[sirosid1996].StandardHost[sirosid1996.cafe24.com].StandardContext[]]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:162)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:753)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:729)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:717)
+	at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1126)
+	at org.apache.catalina.startup.HostConfig$DeployDirectory.run(HostConfig.java:1868)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.catalina.LifecycleException: Failed to start component [org.apache.catalina.webresources.StandardRoot@1af4de1]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:162)
+	at org.apache.catalina.core.StandardContext.resourcesStart(StandardContext.java:4977)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5110)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+	... 10 more
+Caused by: org.apache.catalina.LifecycleException: Failed to initialize component [org.apache.catalina.webresources.JarResourceSet@9b2a36d]
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:107)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:135)
+	at org.apache.catalina.webresources.StandardRoot.startInternal(StandardRoot.java:722)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+	... 13 more
+Caused by: java.lang.IllegalArgumentException: java.util.zip.ZipException: error in opening zip file
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.initInternal(AbstractSingleArchiveResourceSet.java:142)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	... 16 more
+Caused by: java.util.zip.ZipException: error in opening zip file
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.jar.JarFile.<init>(JarFile.java:166)
+	at java.util.jar.JarFile.<init>(JarFile.java:130)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:170)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:155)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.initInternal(AbstractSingleArchiveResourceSet.java:139)
+	... 17 more
+
+22-Jun-2022 21:20:28.345 심각 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.startup.HostConfig.deployDirectory Error deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+ java.lang.IllegalStateException: ContainerBase.addChild: start: org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[sirosid1996].StandardHost[sirosid1996.cafe24.com].StandardContext[]]
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:757)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:729)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:717)
+	at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1126)
+	at org.apache.catalina.startup.HostConfig$DeployDirectory.run(HostConfig.java:1868)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+22-Jun-2022 21:20:28.345 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 4 ms
+22-Jun-2022 21:21:43.814 정보 [main] org.apache.catalina.core.StandardServer.await A valid shutdown command was received via the shutdown port. Stopping the Server instance.
+22-Jun-2022 21:21:43.814 정보 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:21:43.867 정보 [main] org.apache.catalina.core.StandardService.stopInternal Stopping service sirosid1996
+22-Jun-2022 21:21:43.874 정보 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:21:43.874 정보 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:22:26.209 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 21:22:26.258 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:22:26.266 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 21:22:26.267 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 217 ms
+22-Jun-2022 21:22:26.277 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 21:22:26.277 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 21:22:26.283 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 21:22:26.410 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 21:22:27.862 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:22:27.924 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 21:22:29.370 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 21:22:35.813 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 9,531 ms
+22-Jun-2022 21:22:35.814 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 21:22:35.931 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:22:35.933 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 119 ms
+22-Jun-2022 21:22:35.933 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 21:22:36.047 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:22:36.048 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 115 ms
+22-Jun-2022 21:22:36.049 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:22:36.054 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 9787 ms
+22-Jun-2022 21:23:05.853 정보 [http-nio-8239-exec-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-Jun-2022 21:38:36.622 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.startup.HostConfig.undeploy Undeploying context []
+22-Jun-2022 21:38:39.048 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'dispatcherServlet'
+22-Jun-2022 21:38:39.053 정보 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+22-Jun-2022 21:38:39.062 심각 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.core.StandardContext.listenerStop Exception sending context destroyed event to listener instance of class org.springframework.boot.web.servlet.support.SpringBootServletInitializer$SpringBootContextLoaderListener
+ java.lang.IllegalStateException: java.io.FileNotFoundException: /sirosid1996/tomcat/webapps/ROOT/WEB-INF/lib/springfox-swagger2-2.9.2.jar (그런 파일이나 디렉터리가 없습니다)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.getArchiveEntry(AbstractSingleArchiveResourceSet.java:100)
+	at org.apache.catalina.webresources.AbstractArchiveResourceSet.getResource(AbstractArchiveResourceSet.java:265)
+	at org.apache.catalina.webresources.StandardRoot.getResourceInternal(StandardRoot.java:281)
+	at org.apache.catalina.webresources.Cache.getResource(Cache.java:62)
+	at org.apache.catalina.webresources.StandardRoot.getResource(StandardRoot.java:216)
+	at org.apache.catalina.webresources.StandardRoot.getClassLoaderResource(StandardRoot.java:225)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findResourceInternal(WebappClassLoaderBase.java:2541)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findClassInternal(WebappClassLoaderBase.java:2377)
+	at org.apache.catalina.loader.WebappClassLoaderBase.findClass(WebappClassLoaderBase.java:855)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1304)
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1163)
+	at org.springframework.web.context.ContextLoaderListener.contextDestroyed(ContextLoaderListener.java:113)
+	at org.springframework.boot.web.servlet.support.SpringBootServletInitializer$SpringBootContextLoaderListener.contextDestroyed(SpringBootServletInitializer.java:245)
+	at org.apache.catalina.core.StandardContext.listenerStop(StandardContext.java:4906)
+	at org.apache.catalina.core.StandardContext.stopInternal(StandardContext.java:5545)
+	at org.apache.catalina.util.LifecycleBase.stop(LifecycleBase.java:221)
+	at org.apache.catalina.core.ContainerBase.removeChild(ContainerBase.java:849)
+	at org.apache.catalina.startup.HostConfig.undeploy(HostConfig.java:1429)
+	at org.apache.catalina.startup.HostConfig.checkResources(HostConfig.java:1355)
+	at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1615)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:318)
+	at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:95)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:90)
+	at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1168)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1377)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1381)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1349)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.FileNotFoundException: /sirosid1996/tomcat/webapps/ROOT/WEB-INF/lib/springfox-swagger2-2.9.2.jar (그런 파일이나 디렉터리가 없습니다)
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.jar.JarFile.<init>(JarFile.java:166)
+	at java.util.jar.JarFile.<init>(JarFile.java:130)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:170)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:155)
+	at org.apache.catalina.webresources.AbstractArchiveResourceSet.openJarFile(AbstractArchiveResourceSet.java:316)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.getArchiveEntry(AbstractSingleArchiveResourceSet.java:96)
+	... 27 more
+
+22-Jun-2022 21:38:39.065 경고 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+22-Jun-2022 21:38:39.065 경고 [ContainerBackgroundProcessor[StandardEngine[sirosid1996]]] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [SeedGenerator Thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.Object.wait(Object.java:502)
+ sun.security.provider.SeedGenerator$ThreadedSeedGenerator.run(SeedGenerator.java:334)
+ java.lang.Thread.run(Thread.java:745)
+22-Jun-2022 21:38:59.070 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 21:38:59.180 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 110 ms
+22-Jun-2022 21:39:10.848 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /home/hosting_users/usr/local/fakechroot/lib/fakechroot:/usr/local/fakechroot/lib/fakechroot:/home/hosting_users/usr/lib:/home/hosting_users/lib:/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 21:39:10.892 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:39:10.900 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 21:39:10.901 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 206 ms
+22-Jun-2022 21:39:10.910 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 21:39:10.910 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 21:39:10.915 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 21:39:10.950 심각 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ContainerBase.addChildInternal ContainerBase.addChild: start: 
+ org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[sirosid1996].StandardHost[sirosid1996.cafe24.com].StandardContext[]]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:162)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:753)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:729)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:717)
+	at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1126)
+	at org.apache.catalina.startup.HostConfig$DeployDirectory.run(HostConfig.java:1868)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: org.apache.catalina.LifecycleException: Failed to start component [org.apache.catalina.webresources.StandardRoot@5d97f086]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:162)
+	at org.apache.catalina.core.StandardContext.resourcesStart(StandardContext.java:4977)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5110)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+	... 10 more
+Caused by: org.apache.catalina.LifecycleException: Failed to initialize component [org.apache.catalina.webresources.JarResourceSet@4fdbd897]
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:107)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:135)
+	at org.apache.catalina.webresources.StandardRoot.startInternal(StandardRoot.java:722)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+	... 13 more
+Caused by: java.lang.IllegalArgumentException: java.util.zip.ZipException: error in opening zip file
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.initInternal(AbstractSingleArchiveResourceSet.java:142)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	... 16 more
+Caused by: java.util.zip.ZipException: error in opening zip file
+	at java.util.zip.ZipFile.open(Native Method)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+	at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+	at java.util.jar.JarFile.<init>(JarFile.java:166)
+	at java.util.jar.JarFile.<init>(JarFile.java:130)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:170)
+	at org.apache.tomcat.util.compat.JreCompat.jarFileNewInstance(JreCompat.java:155)
+	at org.apache.catalina.webresources.AbstractSingleArchiveResourceSet.initInternal(AbstractSingleArchiveResourceSet.java:139)
+	... 17 more
+
+22-Jun-2022 21:39:10.951 심각 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Error deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+ java.lang.IllegalStateException: ContainerBase.addChild: start: org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[sirosid1996].StandardHost[sirosid1996.cafe24.com].StandardContext[]]
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:757)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:729)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:717)
+	at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1126)
+	at org.apache.catalina.startup.HostConfig$DeployDirectory.run(HostConfig.java:1868)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+
+22-Jun-2022 21:39:10.952 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 36 ms
+22-Jun-2022 21:39:10.952 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 21:39:11.203 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:39:11.218 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 266 ms
+22-Jun-2022 21:39:11.218 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 21:39:11.362 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:39:11.363 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 145 ms
+22-Jun-2022 21:39:11.364 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:39:11.367 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 466 ms
+22-Jun-2022 21:43:24.289 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 21:43:24.332 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:43:24.340 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 21:43:24.341 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 204 ms
+22-Jun-2022 21:43:24.351 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 21:43:24.351 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 21:43:24.355 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 21:43:24.475 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 21:43:25.900 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:43:25.959 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 21:43:27.322 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 21:43:33.726 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 9,371 ms
+22-Jun-2022 21:43:33.726 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 21:43:33.849 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:43:33.852 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 125 ms
+22-Jun-2022 21:43:33.852 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 21:43:33.963 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:43:33.966 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 114 ms
+22-Jun-2022 21:43:33.968 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:43:33.977 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 9636 ms
+22-Jun-2022 21:43:34.008 정보 [http-nio-8239-exec-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-Jun-2022 21:44:20.391 심각 [http-nio-8239-exec-9] org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun 
+ java.lang.OutOfMemoryError: Metaspace
+
+22-Jun-2022 21:44:28.545 심각 [http-nio-8239-exec-3] org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun 
+ java.lang.OutOfMemoryError: Metaspace
+
+22-Jun-2022 21:45:08.498 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /home/hosting_users/usr/local/fakechroot/lib/fakechroot:/usr/local/fakechroot/lib/fakechroot:/home/hosting_users/usr/lib:/home/hosting_users/lib:/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 21:45:08.542 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:45:08.549 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 21:45:08.550 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 208 ms
+22-Jun-2022 21:45:08.560 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 21:45:08.560 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 21:45:08.565 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 21:45:08.688 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 21:45:10.217 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:45:10.281 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 21:45:11.758 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 21:45:13.156 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 4,591 ms
+22-Jun-2022 21:45:13.156 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 21:45:13.277 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:45:13.279 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 123 ms
+22-Jun-2022 21:45:13.279 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 21:45:13.395 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:45:13.396 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 117 ms
+22-Jun-2022 21:45:13.398 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:45:13.401 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 4850 ms
+22-Jun-2022 21:45:13.433 정보 [http-nio-8239-exec-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-Jun-2022 21:54:46.262 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 21:54:46.308 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:54:46.317 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 21:54:46.317 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 209 ms
+22-Jun-2022 21:54:46.327 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 21:54:46.327 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 21:54:46.332 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 21:54:46.613 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:54:51.617 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.util.SessionIdGeneratorBase.createSecureRandom Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [5,002] milliseconds.
+22-Jun-2022 21:54:51.624 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 5,292 ms
+22-Jun-2022 21:54:51.624 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 21:54:51.751 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:54:51.753 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 129 ms
+22-Jun-2022 21:54:51.753 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 21:54:51.872 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:54:51.873 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 120 ms
+22-Jun-2022 21:54:51.875 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:54:51.879 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 5561 ms
+22-Jun-2022 21:55:13.990 정보 [main] org.apache.catalina.core.StandardServer.await A valid shutdown command was received via the shutdown port. Stopping the Server instance.
+22-Jun-2022 21:55:13.990 정보 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:55:14.042 정보 [main] org.apache.catalina.core.StandardService.stopInternal Stopping service sirosid1996
+22-Jun-2022 21:55:14.045 경고 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [SeedGenerator Thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.Object.wait(Object.java:502)
+ sun.security.provider.SeedGenerator$ThreadedSeedGenerator.run(SeedGenerator.java:334)
+ java.lang.Thread.run(Thread.java:745)
+22-Jun-2022 21:55:14.051 정보 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:55:14.052 정보 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:59:13.483 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 21:59:13.535 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:59:13.552 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 21:59:13.553 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 240 ms
+22-Jun-2022 21:59:13.562 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 21:59:13.562 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 21:59:13.567 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 21:59:13.713 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 21:59:15.139 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:59:15.199 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 21:59:16.551 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 21:59:22.910 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 9,343 ms
+22-Jun-2022 21:59:22.910 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 21:59:23.032 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:59:23.035 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 124 ms
+22-Jun-2022 21:59:23.035 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 21:59:23.148 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 21:59:23.149 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 114 ms
+22-Jun-2022 21:59:23.156 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 21:59:23.174 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 9621 ms
+22-Jun-2022 21:59:23.206 정보 [http-nio-8239-exec-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-Jun-2022 22:02:48.640 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 22:02:48.720 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:02:48.736 심각 [main] org.apache.coyote.AbstractProtocol.init Failed to initialize end point associated with ProtocolHandler ["http-nio-8239"]
+ java.net.BindException: 주소가 이미 사용 중입니다
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:350)
+	at org.apache.tomcat.util.net.AbstractEndpoint.init(AbstractEndpoint.java:823)
+	at org.apache.coyote.AbstractProtocol.init(AbstractProtocol.java:476)
+	at org.apache.coyote.http11.AbstractHttp11JsseProtocol.init(AbstractHttp11JsseProtocol.java:120)
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:960)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardService.initInternal(StandardService.java:568)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardServer.initInternal(StandardServer.java:871)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:592)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:615)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:308)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:482)
+
+22-Jun-2022 22:02:48.737 심각 [main] org.apache.catalina.core.StandardService.initInternal Failed to initialize connector [Connector[HTTP/1.1-8239]]
+ org.apache.catalina.LifecycleException: Failed to initialize component [Connector[HTTP/1.1-8239]]
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:107)
+	at org.apache.catalina.core.StandardService.initInternal(StandardService.java:568)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardServer.initInternal(StandardServer.java:871)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:592)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:615)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:308)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:482)
+Caused by: org.apache.catalina.LifecycleException: Protocol handler initialization failed
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:962)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	... 12 more
+Caused by: java.net.BindException: 주소가 이미 사용 중입니다
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at org.apache.tomcat.util.net.NioEndpoint.bind(NioEndpoint.java:350)
+	at org.apache.tomcat.util.net.AbstractEndpoint.init(AbstractEndpoint.java:823)
+	at org.apache.coyote.AbstractProtocol.init(AbstractProtocol.java:476)
+	at org.apache.coyote.http11.AbstractHttp11JsseProtocol.init(AbstractHttp11JsseProtocol.java:120)
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:960)
+	... 13 more
+
+22-Jun-2022 22:02:48.737 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 298 ms
+22-Jun-2022 22:02:48.748 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 22:02:48.748 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 22:02:48.755 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 22:02:48.959 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 22:02:51.032 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:02:51.101 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 22:02:52.724 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 22:02:59.112 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 10,357 ms
+22-Jun-2022 22:02:59.113 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 22:02:59.232 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:02:59.235 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 123 ms
+22-Jun-2022 22:02:59.235 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 22:02:59.353 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:02:59.354 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 119 ms
+22-Jun-2022 22:02:59.356 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 10618 ms
+22-Jun-2022 22:03:19.851 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 22:03:19.894 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:19.902 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 22:03:19.903 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 203 ms
+22-Jun-2022 22:03:19.912 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 22:03:19.912 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 22:03:19.917 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 22:03:20.037 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 22:03:21.481 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:03:21.539 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 22:03:22.939 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 22:03:29.316 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 9,398 ms
+22-Jun-2022 22:03:29.316 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 22:03:29.431 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:03:29.433 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 117 ms
+22-Jun-2022 22:03:29.433 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 22:03:29.541 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:03:29.544 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 111 ms
+22-Jun-2022 22:03:29.546 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:29.555 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 9651 ms
+22-Jun-2022 22:03:29.556 심각 [main] org.apache.catalina.core.StandardServer.await StandardServer.await: create[localhost:8240]: 
+ java.net.BindException: 주소가 이미 사용 중입니다 (Bind failed)
+	at java.net.PlainSocketImpl.socketBind(Native Method)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at org.apache.catalina.core.StandardServer.await(StandardServer.java:438)
+	at org.apache.catalina.startup.Catalina.await(Catalina.java:729)
+	at org.apache.catalina.startup.Catalina.start(Catalina.java:675)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:349)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:483)
+
+22-Jun-2022 22:03:29.556 정보 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:29.607 정보 [main] org.apache.catalina.core.StandardService.stopInternal Stopping service sirosid1996
+22-Jun-2022 22:03:29.609 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+22-Jun-2022 22:03:29.621 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+22-Jun-2022 22:03:29.621 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [SeedGenerator Thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ sun.security.provider.SeedGenerator$ThreadedSeedGenerator.run(SeedGenerator.java:362)
+ java.lang.Thread.run(Thread.java:745)
+22-Jun-2022 22:03:29.621 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [SeedGenerator Thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Thread.sleep(Native Method)
+ sun.security.provider.SeedGenerator$ThreadedSeedGenerator$BogusThread.run(SeedGenerator.java:475)
+ java.lang.Thread.run(Thread.java:745)
+22-Jun-2022 22:03:29.626 정보 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:29.660 정보 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:43.537 정보 [main] org.apache.catalina.core.StandardServer.await A valid shutdown command was received via the shutdown port. Stopping the Server instance.
+22-Jun-2022 22:03:43.537 정보 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:43.537 정보 [main] org.apache.catalina.core.StandardService.stopInternal Stopping service sirosid1996
+22-Jun-2022 22:03:43.539 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+22-Jun-2022 22:03:43.552 경고 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+22-Jun-2022 22:03:43.552 경고 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [SeedGenerator Thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.Object.wait(Object.java:502)
+ sun.security.provider.SeedGenerator$ThreadedSeedGenerator.run(SeedGenerator.java:334)
+ java.lang.Thread.run(Thread.java:745)
+22-Jun-2022 22:03:43.559 정보 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:43.559 정보 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:46.279 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 22:03:46.322 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:46.330 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 22:03:46.330 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 206 ms
+22-Jun-2022 22:03:46.340 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 22:03:46.340 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 22:03:46.344 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/ROOT
+22-Jun-2022 22:03:46.463 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 22:03:48.052 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:03:48.153 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 22:03:49.846 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 22:03:56.231 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/ROOT has finished in 9,886 ms
+22-Jun-2022 22:03:56.231 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 22:03:56.352 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:03:56.354 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 123 ms
+22-Jun-2022 22:03:56.354 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 22:03:56.469 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:03:56.469 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 115 ms
+22-Jun-2022 22:03:56.472 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:03:56.478 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 10147 ms
+22-Jun-2022 22:03:56.515 정보 [http-nio-8239-exec-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-Jun-2022 22:27:33.061 정보 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: :/usr/local/mysql/lib:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jun-2022 22:27:33.137 정보 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:27:33.155 정보 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jun-2022 22:27:33.157 정보 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 334 ms
+22-Jun-2022 22:27:33.168 정보 [main] org.apache.catalina.core.StandardService.startInternal Starting service sirosid1996
+22-Jun-2022 22:27:33.168 정보 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.0.50
+22-Jun-2022 22:27:33.195 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive /sirosid1996/tomcat/webapps/ROOT.war
+22-Jun-2022 22:27:33.667 경고 [sirosid1996.cafe24.com-startStop-1] org.apache.tomcat.util.descriptor.web.WebXml.setVersion Unknown version string [4.0]. Default version will be used.
+22-Jun-2022 22:27:35.230 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:27:35.294 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log 2 Spring WebApplicationInitializers detected on classpath
+22-Jun-2022 22:27:36.656 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring embedded WebApplicationContext
+22-Jun-2022 22:27:43.060 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive /sirosid1996/tomcat/webapps/ROOT.war has finished in 9,864 ms
+22-Jun-2022 22:27:43.060 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/host-manager
+22-Jun-2022 22:27:43.178 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:27:43.181 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/host-manager has finished in 121 ms
+22-Jun-2022 22:27:43.181 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /sirosid1996/tomcat/webapps/manager
+22-Jun-2022 22:27:43.309 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jun-2022 22:27:43.310 정보 [sirosid1996.cafe24.com-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /sirosid1996/tomcat/webapps/manager has finished in 129 ms
+22-Jun-2022 22:27:43.318 정보 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:27:43.332 정보 [main] org.apache.catalina.startup.Catalina.start Server startup in 10175 ms
+22-Jun-2022 22:27:47.620 정보 [http-nio-8239-exec-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-Jun-2022 22:29:43.913 정보 [main] org.apache.catalina.core.StandardServer.await A valid shutdown command was received via the shutdown port. Stopping the Server instance.
+22-Jun-2022 22:29:43.913 정보 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:29:43.965 정보 [main] org.apache.catalina.core.StandardService.stopInternal Stopping service sirosid1996
+22-Jun-2022 22:29:43.967 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.core.ApplicationContext.log Destroying Spring FrameworkServlet 'dispatcherServlet'
+22-Jun-2022 22:29:43.973 정보 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+22-Jun-2022 22:29:43.986 경고 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+22-Jun-2022 22:29:43.986 경고 [sirosid1996.cafe24.com-startStop-2] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [ROOT] appears to have started a thread named [SeedGenerator Thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.Object.wait(Object.java:502)
+ sun.security.provider.SeedGenerator$ThreadedSeedGenerator.run(SeedGenerator.java:334)
+ java.lang.Thread.run(Thread.java:745)
+22-Jun-2022 22:29:43.996 정보 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8239"]
+22-Jun-2022 22:29:43.997 정보 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-8239"]
