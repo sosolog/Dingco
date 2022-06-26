@@ -152,7 +152,8 @@ public class PayRoomDAO {
     @Transactional
     public int updateDutchPay(DutchPayDTO dutchPayDTO)  {
         session.delete("com.config.PayRoomMapper.deleteDutchPayResult", dutchPayDTO.getDp_idx());
-        return session.update("com.config.PayRoomMapper.updateDutchPay", dutchPayDTO);
+        session.update("com.config.PayRoomMapper.updateDutchPay", dutchPayDTO);
+        return dutchPayDTO.getDp_idx();
     }
 
     public PayGroupMemberDTO selectAccount(int prgm_idx) throws Exception{

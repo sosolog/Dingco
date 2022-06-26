@@ -138,7 +138,9 @@ public class PayRoomServiceImpl implements PayRoomService {
     @Override
     @Transactional
     public int updateDutchPay(List<PayDTO> insertPayList, List<PayDTO> updatePayList, List<Integer> deletePayList, DutchPayDTO dutchPayDTO) throws Exception {
+        int dp_idx = dutchPayDTO.getDp_idx();
         for (PayDTO dto : insertPayList) {
+            dto.setDp_idx(dp_idx);
             dao.insertPayIntoDutch(dto);
         }
         for (PayDTO dto : updatePayList) {

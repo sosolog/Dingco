@@ -298,9 +298,11 @@
         where dp_idx = #{dp_idx}
     </delete>
     <select id="showDutchPayResultInDB" resultMap="dutchPayForDutchPayResult" parameterType="hashmap">
+<!--    <select id="showDutchPayResultInDB" resultType="DutchPayDTO" parameterType="hashmap">-->
         select d.dp_idx, d.pr_idx, d.dp_name,
                DATE_FORMAT(d.create_date, '%Y-%m-%d') create_date,
                DATE_FORMAT(d.due_date, '%Y-%m-%d') due_date,
+               r.dpr_idx,
                r.sender, pg1.paymember_name sender_name,
                r.recipient, pg2.paymember_name recipient_name,
                r.amount,
@@ -308,6 +310,7 @@
                    when 'Y' then true
                    else false
                    end paid
+--         from DUTCHPAYLIST d
         from DUTCHPAYLIST d
                  right outer join DUTCHPAYRESULT r on d.dp_idx = r.dp_idx
                  join PAYGROUPMEMBER pg1 on r.sender = pg1.prgm_idx
@@ -320,6 +323,7 @@
         <result property="createDate" column="create_date"></result>
         <result property="dueDate" column="due_date"></result>
         <collection property="dutchpayResultList" ofType="DutchPayResultDTO">
+            <id property="dpr_idx" column="dpr_idx"></id>
             <result property="amount" column="amount"></result>
             <result property="isPaid" column="paid"></result>
             <association property="recipient" javaType="PayGroupMemberDTO">
