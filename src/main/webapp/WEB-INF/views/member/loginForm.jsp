@@ -32,7 +32,7 @@
         <div class="loginimg"><a href="https://www.pedal-dingco.site/login/oauth/google"><img src="/images/snslogin/google_login_01.png"></a></div>
         <!--카카오 로그인-->
         <div class="loginimg">
-            <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}">
+            <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}">
                 <img src="/images/snslogin/kakao_login_01.png">
             </a>
         </div>
