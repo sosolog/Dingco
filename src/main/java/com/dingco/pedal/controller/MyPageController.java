@@ -4,6 +4,7 @@ import com.dingco.pedal.annotation.Login;
 import com.dingco.pedal.dto.MemberDTO;
 import com.dingco.pedal.service.MemberService;
 import com.dingco.pedal.service.SendEmailService;
+import com.dingco.pedal.session.SessionConst;
 import com.dingco.pedal.util.FileUploadUtils;
 import com.dingco.pedal.util.TableDir;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.File;
 import java.util.Map;
@@ -105,7 +107,7 @@ public class MyPageController {
         memberDTO.setPasswd(passwordEncoder.encode(memberDTO.getPasswd()));
 
         mService.updateMypage(memberDTO);
-        next = "redirect:/login/mypage";
+        next = "redirect:/mypage";
 
         return next;
     }

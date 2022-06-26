@@ -28,7 +28,7 @@
         </c:if>
         <c:if test="${fn:contains(url, '/pay/')}">
             <div class="ico_rt">
-                <a class="save" onclick="submitInquiryForm(inquiryForm, ${inquiryDTO.i_idx})"><span>저장</span></a>
+                <a class="save" href="javascript:history.back()"><span>저장</span></a>
             </div>
         </c:if>
     </header>

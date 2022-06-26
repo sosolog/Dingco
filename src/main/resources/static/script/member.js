@@ -86,7 +86,7 @@ function editUserForm_submit(f){
     // 최종 결과
     if (mesg==""){
         f.submit();
-        alert("회원 정보가 수정되었습니다");
+        alert("회원 정보가 수정되었습니다. 메인 화면으로 이동합니다.");
     } else {
         mesg = mesg.slice(0, -2);
         alert(mesg + "을(를) 확인해주세요");

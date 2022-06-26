@@ -25,6 +25,7 @@
         <div class="pro_box">
             <div class="img_wrap">
                 <c:if test="${loginMember.storeFileName == null}"><img src="/images/aside/profile_no_image.png"></c:if>
+
                 <c:if test="${loginMember.storeFileName != null}"><img src="/files/member/${loginMember.storeFileName}"></c:if>
             </div>
             <div class="text_box">
