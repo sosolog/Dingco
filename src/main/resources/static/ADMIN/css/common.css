@@ -794,3 +794,12 @@ textarea {
     border-radius: 2px;
     color: #444444;
 }
+
+
+
+.login-result {
+    color: #ffffff;
+    display: block;
+    margin-top: 20px;
+    font-family: NanumSquare;
+}

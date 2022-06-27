@@ -48,7 +48,6 @@ public class AdminInquiryController {
         }
 
         PageDTO<InquiryDTO> pageDTO = adminInquiryService.selectAllInquiry(Integer.parseInt(cp), sch, status, category);
-        System.out.println(pageDTO.toString());
         model.addAttribute("pageDTO", pageDTO);
         model.addAttribute("sch", sch);
         model.addAttribute("status", status);
@@ -78,11 +77,6 @@ public class AdminInquiryController {
         System.out.println(commentDTO.toString());
         model.addAttribute("commentDTO", commentDTO);
 
-        // 대댓글
-//        List<CommentDTO> reCommentDTO = adminInquiryService.showSubComment(Integer.parseInt(idx));
-//        System.out.println(reCommentDTO.toString());
-//        model.addAttribute("reCommentDTO", reCommentDTO);
-
         return next;
     }
 
@@ -98,9 +92,7 @@ public class AdminInquiryController {
     @GetMapping("/admin/inquiry/comment")
     public List<CommentDTO> showSubComment(@Login MemberDTO memberDTO,
                                            @RequestParam(value = "i_idx", required = true) String i_idx,
-                                           @RequestParam(value = "c_idx", required = true) String c_idx
-    ) throws Exception {
-
+                                           @RequestParam(value = "c_idx", required = true) String c_idx ) throws Exception {
         return adminInquiryService.showSubComment(Integer.parseInt(i_idx), Integer.parseInt(c_idx));
     }
 

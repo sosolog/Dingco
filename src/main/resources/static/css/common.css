@@ -1816,7 +1816,7 @@ header .title .headerText span {
 
 #inquiryRetrieve .title span {
     font-weight: 700;
-    font-size: 15px;
+    font-size: 30px;
     color: #333333;
 }
 
@@ -1825,8 +1825,9 @@ header .title .headerText span {
 }
 
 #inquiryRetrieve .content span {
-    font-size: 12px;
+    font-size: 22px;
     color: #333333;
+    line-height: 40px;
 }
 
 #inquiryRetrieve .blueLine {
@@ -2182,7 +2183,7 @@ header .title .headerText span {
     padding: 3px 10px;
     background-color: #FFFFFF;
     border: 1px solid #4E4E4E;
-    font-size: 17px;
+    font-size: 21px;
     margin: auto;
     border-radius: 3px;
 }
