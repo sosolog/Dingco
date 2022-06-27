@@ -7,10 +7,11 @@
     <select id="cntAllInquiry" resultType="int" parameterType="hashmap">
         select count(*)
         from INQUIRY
+        where i_status like concat('%', #{status}, '%')
+        and category_id like concat('%', #{category}, '%')
         <if test="sch != null">
-            where title like concat('%', #{sch}, '%')
+            and title like concat('%', #{sch}, '%')
         </if>
-        /*limit ${perPage} offset ${offset}*/
     </select>
 
     <select id="selectAllInquiry" resultType="InquiryDTO" parameterType="hashmap">

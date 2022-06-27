@@ -13,7 +13,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     @Override
     public MemberDTO selectByLoginId(String userid, String passwd) throws Exception {
-        return adminLoginDAO.selectByLoginId(userid).orElse(null);
+        return adminLoginDAO.selectByLoginId(userid, passwd).orElse(null);
     }
 
 }

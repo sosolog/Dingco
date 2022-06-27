@@ -20,7 +20,7 @@
                 </tr>
             </table>
             <a class="btn_login" onclick="loginValidCheck(loginForm)"><span>Log In</span></a>
-            <span id="result" style="color:#fff"></span>
+            <span id="result" class="login-result"></span>
         </div>
     </form>
 </div>

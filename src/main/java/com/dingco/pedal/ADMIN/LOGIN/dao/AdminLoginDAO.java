@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Repository
@@ -21,8 +22,11 @@ public class AdminLoginDAO {
      * @throws Exception
      * @author 명지
      */
-    public Optional<MemberDTO> selectByLoginId(String userid) throws Exception {
-        return Optional.ofNullable(session.selectOne("admin.LoginMapper.selectByLoginId", userid));
+    public Optional<MemberDTO> selectByLoginId(String userid, String passwd) throws Exception {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("userid", userid);
+        map.put("passwd", passwd);
+        return Optional.ofNullable(session.selectOne("admin.LoginMapper.selectByLoginId", map));
     }
 
 }
